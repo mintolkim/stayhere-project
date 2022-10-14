@@ -13,6 +13,9 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+target/*
+META-INF/*
+.springBeans
 
 # External tool builders
 .externalToolBuilders/
