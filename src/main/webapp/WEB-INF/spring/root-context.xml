@@ -12,9 +12,9 @@
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 		<!-- 연결문자열에 log4jdbc가 추가됨 -->
 		<property name="url"
-			value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="username" value="stayhere" />
-		<property name="password" value="1234" />
+			value="jdbc:log4jdbc:oracle:thin:@spotlight.cugjy6qmw28v.ap-northeast-1.rds.amazonaws.com:1521:STAYHERE" />
+		<property name="username" value="spotlight" />
+		<property name="password" value="spotlight6!" />
 	</bean>
 	<!-- 아파치 DBCP 설정 -->
 	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
