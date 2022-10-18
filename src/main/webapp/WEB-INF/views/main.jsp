@@ -5,8 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%@ include file="./include/header.jsp" %>
 </head>
 <body>
-<h2>테스트해봅니다.</h2>
+  <h2>메인페이지</h2>
 </body>
 </html>
