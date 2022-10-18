@@ -9,12 +9,14 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 		<!-- 드라이버 클래스 이름이 변경됨 -->
-		 <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 		<!-- 연결문자열에 log4jdbc가 추가됨 -->
 		<property name="url"
-			value="jdbc:oracle:thin:@192.168.240.10:1521/xe" />
-		<property name="username" value="stayhere" />
-		<property name="password" value="1234" />
+
+			value="jdbc:log4jdbc:oracle:thin:@spotlight_medium?TNS_ADMIN=C:/Wallet_spotlight" />
+		<property name="username" value="ADMIN" />
+		<property name="password" value="Spotlight123" />
+
 	</bean>
 	<!-- 아파치 DBCP 설정 -->
 	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 

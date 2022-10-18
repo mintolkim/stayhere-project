@@ -6,8 +6,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.example.stayhere.model.MemberDAO;
-import com.example.stayhere.model.MemberDTO;
+import com.example.stayhere.model.dao.MemberDAO;
+import com.example.stayhere.model.dto.MemberDTO;
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -15,8 +15,8 @@ public class MemberServiceImpl implements MemberService {
 	MemberDAO memberDao;
 
 	@Override
-	public List<MemberDTO> list() {
-		return memberDao.list();
+	public List<MemberDTO> memberList() {
+		return memberDao.memberList();
 	}
 
 }
