@@ -30,7 +30,7 @@ public class HomeController {
 	public String home(Locale locale, Model model) {
 		List<MemberDTO> list = memberService.list();
 		model.addAttribute("list", list);
-		return "member/member_list";
+		return "pages/index";
 	}
 	
 }
