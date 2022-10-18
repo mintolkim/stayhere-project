@@ -4,9 +4,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="member">
-	<select id="memberlist" resultType="com.example.stayhere.model.MemberDTO">
-		select* from member 
-		order by name
+	
+	<select id="memberlist" resultType="memberDto">
+	 select * from member
+	 order by name
 	</select>
 	
 </mapper>
