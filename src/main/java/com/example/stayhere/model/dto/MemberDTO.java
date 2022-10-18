@@ -1,4 +1,4 @@
-package com.example.stayhere.model;
+package com.example.stayhere.model.dto;
 
 import java.util.Date;
 

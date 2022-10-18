@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.example.stayhere.model.MemberDTO;
+import com.example.stayhere.model.dto.MemberDTO;
 import com.example.stayhere.service.MemberService;
 
 /**
@@ -28,7 +28,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		List<MemberDTO> list = memberService.list();
+		List<MemberDTO> list = memberService.memberList();
 		model.addAttribute("list", list);
 		return "member/member_list";
 	}
