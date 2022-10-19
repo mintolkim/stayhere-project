@@ -5,17 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<%@ include file="./include/header.jsp"%>
-<style type="text/css">
-footer {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-}
-</style>
 </head>
-<body>
 	<!-- Footer-->
 	<footer class="bg-dark py-4 mt-auto">
 		<div class="container px-5">
@@ -36,10 +26,9 @@ footer {
 		</div>
 	</footer>
 	<!-- Bootstrap core JS-->
-	<script
+	 <script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 	<script src="${path }/resources/js/scripts.js"></script>
 	<!-- Footer-->
-</body>
 </html>

@@ -5,9 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>NAVBAR</title>
-<%@ include file="./include/header.jsp"%>
 </head>
-<body>
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container px-5">
@@ -59,5 +57,4 @@
 			</div>
 		</div>
 	</nav>
-</body>
 </html>
