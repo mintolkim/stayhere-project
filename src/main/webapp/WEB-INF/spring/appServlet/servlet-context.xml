@@ -16,7 +16,6 @@
 		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/include/**" location="/WEB-INF/views/include/" />
-
 	<resources mapping="/images/**" location="/resources/images" />
 	<resources mapping="/imgUpload/**" location="/resources/imgUpload/" />
 

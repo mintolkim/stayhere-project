@@ -57,6 +57,44 @@ public class RoomsDAOImpl implements RoomsDAO {
 	public RoomsDTO detailRooms(int room_idx) {
 		return sqlSession.selectOne("rooms.detail_rooms", room_idx);
 	}
+  	
+	@Override
+	public List<RoomsDTO> getRoomAllList(int start, int end) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		return sqlSession.selectList("rooms.getRoomAllList", map);
+	}
+
+	@Override
+	public List<String> getRoomPhoto(int room_idx) {
+		return sqlSession.selectList("rooms.getRoomPhoto", room_idx);
+	}
+
+	@Override
+	public int getRoomAllCount() {
+		return sqlSession.selectOne("rooms.getRoomAllCount");
+	}
+
+	@Override
+	public int getRoomOptionCount(String city, String check_in, String check_out) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("city", city);
+		map.put("check_in", check_in);
+		map.put("check_out", check_out);
+		return sqlSession.selectOne("rooms.getRoomOptionCount", map);
+	}
+
+	@Override
+	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("city", city);
+		map.put("check_in", check_in);
+		map.put("check_out", check_out);
+		return sqlSession.selectList("rooms.getRoomOptionList", map);
+	}
 
 	
 
