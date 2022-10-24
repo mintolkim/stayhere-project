@@ -20,6 +20,7 @@
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link" href="index.html">FIND STAY</a></li>
 					<li class="nav-item"><a class="nav-link" href="about.html">PROMOTION</a></li>
+<<<<<<< HEAD
 					<li class="nav-item"><a class="nav-link" href="${path}/reviews/list.do">REVIEW</a></li>
 					<li class="nav-item"><a class="nav-link" href="pricing.html">QNA</a></li>
 					<li class="nav-item dropdown"><a
@@ -52,6 +53,57 @@
 							<li><a class="dropdown-item" href="portfolio-overview.html">매출현황</a></li>
 							<li><hr class="dropdown-divider" /></li>
 							<li><a class="dropdown-item" href="portfolio-overview.html">로그아웃</a></li>
+=======
+					<li class="nav-item"><a class="nav-link" href="contact.html">REVIEW</a></li>
+					<li class="nav-item"><a class="nav-link" href="pricing.html">QNA</a></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#"
+						role="button" data-bs-toggle="dropdown" aria-expanded="false">GUEST</a>
+						<ul class="dropdown-menu dropdown-menu-end"
+							aria-labelledby="navbarDropdownBlog">
+							<li><a class="dropdown-item" href="blog-home.html">로그인</a></li>
+							<li><a class="dropdown-item" href="blog-home.html">회원가입</a></li>
+							<li><a class="dropdown-item" href="blog-home.html">프로필</a></li>
+							<li><a class="dropdown-item" href="blog-home.html">예약정보</a></li>
+							<li><a class="dropdown-item" href="blog-home.html">관심스테이</a></li>
+							<li><a class="dropdown-item" href="blog-home.html">결제내역</a></li>
+							<li><hr class="dropdown-divider" /></li>
+							<li><a class="dropdown-item" href="blog-home.html">로그아웃</a></li>
+						</ul></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" id="navbarDropdownPortfolio"
+						href="#" role="button" data-bs-toggle="dropdown"
+						aria-expanded="false">HOST</a>
+						<ul class="dropdown-menu dropdown-menu-end"
+							aria-labelledby="navbarDropdownPortfolio">
+
+							<c:choose>
+						    <c:when test="${sessionScope.h_userid == null}">
+							<li><a class="dropdown-item" href="${path}/host/login.do">로그인</a></li>
+							<li><a class="dropdown-item" href="${path}/host/join.do">호스트가입</a></li>
+							</c:when>
+							<c:otherwise>
+							<li><b class="dropdown-item">${sessionScope.h_name} 님</b></li>
+							</c:otherwise>
+							</c:choose>
+							<c:choose>
+							 <c:when test="${sessionScope.h_userid == null}">
+							<li><a class="dropdown-item" href="${path}/host/login.do">프로필</a></li>
+							 </c:when>
+							 <c:otherwise>
+							<li><a class="dropdown-item" href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></li>
+							 </c:otherwise>
+							</c:choose>
+
+							<li><a class="dropdown-item" href="portfolio-overview.html">숙소관리</a></li>
+							<li><a class="dropdown-item" href="portfolio-overview.html">숙소등록</a></li>
+							<li><a class="dropdown-item" href="portfolio-overview.html">숙소승인현황</a></li>
+							<li><a class="dropdown-item" href="portfolio-overview.html">예약현황</a></li>
+							<li><a class="dropdown-item" href="portfolio-overview.html">매출현황</a></li>
+							<li><hr class="dropdown-divider" /></li>
+							<li><a class="dropdown-item" href="${path}/host/logout.do">로그아웃</a></li>
+
+>>>>>>> branch 'main' of https://github.com/mintolkim/styahere-project.git
 						</ul></li>
 				</ul>
 			</div>

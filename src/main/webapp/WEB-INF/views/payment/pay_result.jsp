@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="./include/header.jsp"%>
+<%@ include file="../include/header.jsp"%>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>STAYHERE</title>
@@ -18,23 +18,18 @@
 <body class="d-flex flex-column h-100">
  <main class="flex-shrink-0">
   <!-- nav -->
-
-	<%@ include file="./include/navbar.jsp" %>
+	<%@ include file="../include/navbar.jsp" %>
   <!-- 본문영역-->
   <section class="py-5" id="features">
 	<div class="container px-5 my-5">
-		
-	 <!-- 요기 안에서 코드작성해주시면 됩니다..! -->
 	
+	 결제 성공!
+	 <a href="${path}/rooms/list.do">숙소 목록으로</a>
 		
 	</div>
   </section>
  </main>
-<<<<<<< HEAD
- <!--footer  -->
-=======
  <!--footer -->
->>>>>>> branch 'main' of https://github.com/mintolkim/styahere-project.git
- <%@ include file="./include/footer.jsp" %>
+ <%@ include file="../include/footer.jsp" %>
 </body>
 </html>
