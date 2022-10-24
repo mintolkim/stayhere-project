@@ -17,11 +17,6 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="${path}/resources/css/styles.css" rel="stylesheet" />
-<!-- Bootstrap core JS-->
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="${path}/resources/js/scripts.js"></script>
 <!-- jquery script -->
 <script src="${path}/include/jquery-3.6.0.min.js"></script>
 <!-- custom css&javascript -->
