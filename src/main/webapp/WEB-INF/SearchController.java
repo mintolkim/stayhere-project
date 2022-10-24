@@ -23,13 +23,14 @@ import net.sf.json.JSONArray;
 
 
 @Controller
+@RequestMapping("search/*")
 public class SearchController {
 private static final Logger logger=LoggerFactory.getLogger(SearchController.class);
 	
 	@Inject
 	RoomsService roomsService;
 	
-	@RequestMapping(value = "search/listMap.do", method = RequestMethod.GET)
+	@RequestMapping(value = "listMap.do", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam(defaultValue = "") String cityname, 
 			@RequestParam String checkin_date,@RequestParam String checkout_date,
 			@RequestParam(defaultValue = "0") int bed, @RequestParam(defaultValue = "0") int bath,

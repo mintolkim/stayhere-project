@@ -3,17 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <%@ include file="../include/header.jsp"%>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>STAYHERE</title>
-<!-- Favicon-->
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- font awesome 아이콘 -->
 <script src="https://kit.fontawesome.com/fdfee59c02.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- Bootstrap icons-->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
 <!-- datepicker bootstrap -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">
@@ -26,7 +20,6 @@
 <!-- 지도api -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6013ab79a6af6749ee495db13ec37e86"></script>
 <!-- Core theme CSS (includes Bootstrap)-->
-<link href="${path }/resources/css/styles.css" rel="stylesheet" />
 <link href="${path }/resources/css/datepicker.css" rel="stylesheet" />
 <style type="text/css">
 .mapcontainer{
@@ -473,12 +466,5 @@ function changeoption(){
   </div>
  </section> 
 </main>
-<!--footer -->
- <!-- Bootstrap core JS-->
-	 <script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-	<!-- Core theme JS-->
-	<script src="${path }/resources/js/scripts.js"></script>
-	<!-- Footer-->
 </body>
 </html>

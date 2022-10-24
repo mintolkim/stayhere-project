@@ -3,24 +3,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<<meta charset="UTF-8">
 <%@ include file="../include/header.jsp"%>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>STAYHERE</title>
-<!-- Favicon-->
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-<!-- Bootstrap icons-->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-<!-- Core theme CSS (includes Bootstrap)-->
-<link href="${path }/resources/css/styles.css" rel="stylesheet" />
 <style type="text/css">
 input[type=text] {
   width: 130px;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
 }
-
 /* When the input field gets focus, change its width to 100% */
 input[type=text]:focus {
   width: 100%;
