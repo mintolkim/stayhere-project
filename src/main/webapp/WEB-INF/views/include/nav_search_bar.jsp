@@ -10,8 +10,6 @@
 		<img src="resources/images/load_img.gif" alt="loading">
 	</div>
 
-
-	<main class="flex-shrink-0">
 		<!-- nav bar -->
 		<header class="sticky-top">
 			<nav class=" navbar navbar-expand-lg navbar-light bg-white">

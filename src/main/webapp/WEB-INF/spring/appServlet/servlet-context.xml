@@ -43,7 +43,7 @@
 	<!-- 파일업로드를 위한 디렉토리 설정 -->
 	<!-- String uploadPath=new String("c:/upload" > 배포 디렉토리로 변경); -->
 	<beans:bean id="uploadPath" class="java.lang.String">
-	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\stayhere\resources" />
+	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\styahere-project\resources" />
 	</beans:bean>
 	
 	

@@ -15,7 +15,6 @@
 		<property name="password" value="Spotlight123" /> 
 		-->
 
-
 		<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<!-- 드라이버 클래스 이름이 변경됨 -->

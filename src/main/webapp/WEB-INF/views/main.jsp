@@ -22,8 +22,6 @@
 <!-- custom css&javascript -->
 <link rel="stylesheet" href="${path}/resources/css/common.css">
 <script src="${path}/resources/js/common.js"></script>
-
-
 </head>
 <body>
 <%@ include file="./include/nav_search_bar.jsp" %>
@@ -171,7 +169,6 @@
 		});
 	}
 </script>
-</main>
 <!-- 푸터 -->
 <%@ include file="./include/footer.jsp" %>
 
