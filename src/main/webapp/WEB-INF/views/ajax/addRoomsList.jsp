@@ -68,10 +68,10 @@
 						<p class="room-title fw-bold mb-0 text-truncate">${row.country},
 							${row.city}</p>
 						<p class="icon mb-0">
-							<c:if test="${row.review_cnt > 0}">
+							<c:if test="${row.review_count > 0}">
 								<i class="bi-star-fill"></i>
 								<span> <fmt:formatNumber pattern="#.00"
-										value="${row.review_avg}" />
+										value="${row.review_star}" />
 								</span>
 							</c:if>
 						</p>
