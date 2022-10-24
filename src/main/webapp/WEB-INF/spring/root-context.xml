@@ -9,21 +9,18 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 		<!-- 드라이버 클래스 이름이 변경됨 -->
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 		<!-- 연결문자열에 log4jdbc가 추가됨 -->
-		<property name="url"
-
-			value="jdbc:log4jdbc:oracle:thin:@spotlight_medium?TNS_ADMIN=C:/Wallet_spotlight" />
-		<property name="username" value="ADMIN" />
-		<property name="password" value="Spotlight123" />
-
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		<!-- 로컬 데이터  -->
+		<property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="stayhere_test" />
+		<property name="password" value="1234" />	
+		<!-- 오라클 클라우드 연결 데이터 -->
+<!-- 		<property name="url" value="jdbc:log4jdbc:oracle:thin:@spotlight_medium?TNS_ADMIN=C:/Wallet_spotlight" /> -->
+<!-- 		<property name="username" value="ADMIN" /> -->
+<!-- 		<property name="password" value="Spotlight123" /> -->
 	</bean>
-	<!-- 아파치 DBCP 설정 -->
-	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
-		destroy-method="close"> <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" 
-		/> <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl" /> 
-		<property name="username" value="java" /> <property name="password" value="java1234" 
-		/> </bean> -->
+	
 	<!-- SqlSessionFactory 객체 주입 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
