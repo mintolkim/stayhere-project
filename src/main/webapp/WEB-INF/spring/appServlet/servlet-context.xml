@@ -16,6 +16,8 @@
 		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/include/**" location="/WEB-INF/views/include/" />
+	<resources mapping="/images/**" location="/resources/images" />
+	<resources mapping="/imgUpload/**" location="/resources/imgUpload/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
@@ -26,5 +28,24 @@
 	</beans:bean>
 	<!-- 스프링 빈을 태그로 등록하지 않고 자동으로 검색(auto scan) --> 
 	<context:component-scan base-package="com.example.stayhere" />
+	
+		<!-- 파일업로드에 필요한 bean -->
+	<beans:bean id="multipartResolver"
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 파일업로드 최대 용량(byte) -->
+		<beans:property name="maxUploadSize" value="10485760" />
+		<beans:property name="defaultEncoding" value="utf-8" />
+		<!-- 첨부파일 큰경우 메모리대신 파일사용 -->
+		<beans:property name="uploadTempDir" value="file:/C:/upload" />
+		<!-- 메모리사용되는 최대사이즈 -->
+		<beans:property name="maxInMemorySize" value="10485760"/>
+	</beans:bean>
+	<!-- 파일업로드를 위한 디렉토리 설정 -->
+	<!-- String uploadPath=new String("c:/upload" > 배포 디렉토리로 변경); -->
+	<beans:bean id="uploadPath" class="java.lang.String">
+	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\stayhere\resources" />
+	</beans:bean>
+	
+	
 
 </beans:beans>
