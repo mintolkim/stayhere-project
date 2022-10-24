@@ -59,7 +59,6 @@
                   <c:if test="${sessionScope.h_userid == null}">
 	                  <li><a class="dropdown-item"  href="${path}/host/login.do" >로그인</a></li>
 	                  <li><a class="dropdown-item"  href="${path}/host/join.do">호스트가입</a></li>
-	               
                   </c:if>
                   <c:if test="${sessionScope.h_userid != null}">
                     <li><b class="dropdown-item">${sessionScope.h_name} 님</b></li>
