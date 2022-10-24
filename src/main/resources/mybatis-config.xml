@@ -5,7 +5,6 @@
 <configuration>
 
 	<typeAliases>
-	 <typeAlias type="com.example.stayhere.model.guest.dto.GuestDTO" alias="guestDto"/>
 	</typeAliases>
 
 </configuration>
