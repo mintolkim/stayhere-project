@@ -20,7 +20,7 @@
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link" href="index.html">FIND STAY</a></li>
 					<li class="nav-item"><a class="nav-link" href="about.html">PROMOTION</a></li>
-					<li class="nav-item"><a class="nav-link" href="contact.html">REVIEW</a></li>
+					<li class="nav-item"><a class="nav-link" href="${path}/reviews/list.do">REVIEW</a></li>
 					<li class="nav-item"><a class="nav-link" href="pricing.html">QNA</a></li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#"
