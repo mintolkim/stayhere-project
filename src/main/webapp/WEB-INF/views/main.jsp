@@ -18,9 +18,7 @@
 <body class="d-flex flex-column h-100">
  <main class="flex-shrink-0">
   <!-- nav -->
-  <header>
-	<jsp:include page="navbar.jsp"></jsp:include>
-  </header>
+	<%@ include file="./include/navbar.jsp" %>
   <!-- 본문영역-->
   <section class="py-5" id="features">
 	<div class="container px-5 my-5">
@@ -30,9 +28,7 @@
 	</div>
   </section>
  </main>
- <!--footer  -->
- <footer>
-  <jsp:include page="footer.jsp"></jsp:include>
- </footer>
+ <!--footer -->
+ <%@ include file="./include/footer.jsp" %>
 </body>
 </html>

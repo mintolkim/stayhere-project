@@ -42,6 +42,7 @@
 						aria-expanded="false">HOST</a>
 						<ul class="dropdown-menu dropdown-menu-end"
 							aria-labelledby="navbarDropdownPortfolio">
+
 							<c:choose>
 						    <c:when test="${sessionScope.h_userid == null}">
 							<li><a class="dropdown-item" href="${path}/host/login.do">로그인</a></li>
@@ -59,6 +60,7 @@
 							<li><a class="dropdown-item" href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></li>
 							 </c:otherwise>
 							</c:choose>
+
 							<li><a class="dropdown-item" href="portfolio-overview.html">숙소관리</a></li>
 							<li><a class="dropdown-item" href="portfolio-overview.html">숙소등록</a></li>
 							<li><a class="dropdown-item" href="portfolio-overview.html">숙소승인현황</a></li>
@@ -66,6 +68,7 @@
 							<li><a class="dropdown-item" href="portfolio-overview.html">매출현황</a></li>
 							<li><hr class="dropdown-divider" /></li>
 							<li><a class="dropdown-item" href="${path}/host/logout.do">로그아웃</a></li>
+
 						</ul></li>
 				</ul>
 			</div>

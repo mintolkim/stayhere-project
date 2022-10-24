@@ -30,6 +30,14 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.8</version>
 		</dependency>
+		<!-- JSON -->
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+
+			<classifier>jdk15</classifier>
+		</dependency>
 
 		<!-- Spring -->
 		<dependency>
@@ -98,11 +106,11 @@
 			<artifactId>mybatis-spring</artifactId>
 			<version>2.0.7</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.oracle</groupId> -->
-<!-- 			<artifactId>ojdbc6</artifactId> -->
-<!-- 			<version>11.2.0.3</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.oracle</groupId> -->
+		<!-- <artifactId>ojdbc6</artifactId> -->
+		<!-- <version>11.2.0.3</version> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>org.bgee.log4jdbc-log4j2</groupId>
@@ -206,31 +214,33 @@
 			<artifactId>ojdbc8</artifactId>
 			<version>21.5.0.0</version>
 		</dependency>
-		
+
 		<!-- ojdbc 버전 낮추기 oracle 19c버전 -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>com.oracle.ojdbc</groupId> -->
-<!-- 		    <artifactId>ojdbc8</artifactId> -->
-<!-- 		    <version>19.3.0.0</version> -->
-<!-- 		</dependency> -->
-	
+		<!-- <dependency> -->
+		<!-- <groupId>com.oracle.ojdbc</groupId> -->
+		<!-- <artifactId>ojdbc8</artifactId> -->
+		<!-- <version>19.3.0.0</version> -->
+		<!-- </dependency> -->
+
 		<dependency>
 			<groupId>com.oracle.database.security</groupId>
 			<artifactId>oraclepki</artifactId>
 			<version>21.5.0.0</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>com.oracle.database.security</groupId>
 			<artifactId>osdt_cert</artifactId>
 			<version>21.5.0.0</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>com.oracle.database.security</groupId>
 			<artifactId>osdt_core</artifactId>
 			<version>21.5.0.0</version>
 		</dependency>
+
+
 		
 		<!-- 메일 보내기 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
@@ -247,6 +257,7 @@
 		</dependency>
 				
 				
+
 		<!-- 끝 -->
 
 	</dependencies>

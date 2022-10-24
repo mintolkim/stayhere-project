@@ -1,31 +1,95 @@
+
 package com.example.stayhere.model.rooms.dto;
 
 import java.util.Date;
 
 public class RoomsDTO {
-    private int room_idx;//숙소 번호
-    private String h_userid;//호스트 아이디  
-    private String room_name;//숙소 이름
-    private int room_price;//숙소 가격
-    private String contents;//숙소 설명
-    private String city;//도시
-    private String country;//마을명
-    private String address1;//기본주소
-    private String address2;//상세주소
-    private String zipcode;//우편번호
-    private Date check_in;//체크인 날짜
-    private Date check_out;//체크아웃 날짜
-    private int beds;//침대 수
-    private int baths;//화장실 수
-    private String room_type;//방 타입
-    private String lat;//위도
-    private String lng;//경도
-    private String max_people;//최대인원
-    //별점(리뷰테이블 조인)
-    //후기 개수(리뷰테이블 조인)
-    //호스트 이메일(호스트 테이블 조인)
+	private int room_idx;
+	private String h_userid;
+	private String room_name;
+	private int room_price;
+	private String contents;
+	private String city;
+	private String country;
+	private String address1;
+	private String address2;
+	private String zipcode;
+	private Date check_in;
+	private Date check_out;
+	private int beds;
+	private int baths;
+	private String room_type;
+	private String lat;
+	private String lng;	
+	private int max_people;
+	private String photo1;//room_photo 테이블
+	private String photo2;//room_photo 테이블
+	private String photo3;//room_photo 테이블
+	private String photo4;//room_photo 테이블
+	private int review_star;//리뷰별점평균(review테이블)
+	private int review_count;//리뷰갯수(review테이블)
+	
+    public int getMax_people() {
+		return max_people;
+	}
 
-    public int getRoom_idx() {
+	public void setMax_people(int max_people) {
+		this.max_people = max_people;
+	}
+
+	public int getReview_star() {
+		return review_star;
+	}
+
+	public void setReview_star(int review_star) {
+		this.review_star = review_star;
+	}
+
+	public int getReview_count() {
+		return review_count;
+	}
+
+	public void setReview_count(int review_count) {
+		this.review_count = review_count;
+	}
+
+	public RoomsDTO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public String getPhoto1() {
+		return photo1;
+	}
+
+	public void setPhoto1(String photo1) {
+		this.photo1 = photo1;
+	}
+
+	public String getPhoto2() {
+		return photo2;
+	}
+
+	public void setPhoto2(String photo2) {
+		this.photo2 = photo2;
+	}
+
+	public String getPhoto3() {
+		return photo3;
+	}
+
+	public void setPhoto3(String photo3) {
+		this.photo3 = photo3;
+	}
+
+	public String getPhoto4() {
+		return photo4;
+	}
+
+	public void setPhoto4(String photo4) {
+		this.photo4 = photo4;
+	}
+
+	public int getRoom_idx() {
 		return room_idx;
 	}
 	public void setRoom_idx(int room_idx) {
@@ -127,21 +191,17 @@ public class RoomsDTO {
 	public void setLng(String lng) {
 		this.lng = lng;
 	}
-	public String getMax_people() {
-		return max_people;
-	}
-	public void setMax_people(String max_people) {
-		this.max_people = max_people;
-	}
+
 	@Override
 	public String toString() {
 		return "RoomsDTO [room_idx=" + room_idx + ", h_userid=" + h_userid + ", room_name=" + room_name
 				+ ", room_price=" + room_price + ", contents=" + contents + ", city=" + city + ", country=" + country
 				+ ", address1=" + address1 + ", address2=" + address2 + ", zipcode=" + zipcode + ", check_in="
 				+ check_in + ", check_out=" + check_out + ", beds=" + beds + ", baths=" + baths + ", room_type="
-				+ room_type + ", lat=" + lat + ", lng=" + lng + ", max_people=" + max_people + "]";
+				+ room_type + ", lat=" + lat + ", lng=" + lng + ", photo1=" + photo1 + ", photo2=" + photo2
+				+ ", photo3=" + photo3 + ", photo4=" + photo4 + "]";
 	}
-	public RoomsDTO() {
-	}
-   
+	
+	
+    
 }
