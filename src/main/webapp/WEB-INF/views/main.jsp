@@ -17,11 +17,6 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="${path}/resources/css/styles.css" rel="stylesheet" />
-<!-- Bootstrap core JS-->
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="${path}/resources/js/scripts.js"></script>
 <!-- jquery script -->
 <script src="${path}/include/jquery-3.6.0.min.js"></script>
 <!-- custom css&javascript -->
@@ -81,8 +76,7 @@
 										</div>
 									</div>
 									<button class="carousel-control-prev" type="button"
-										data-bs-target="#indicators-${row.room_idx}"
-										data-bs-slide="prev">
+										data-bs-target="#indicators-${row.room_idx}" data-bs-slide="prev">
 										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 										<span class="visually-hidden">Previous</span>
 									</button>
@@ -177,7 +171,7 @@
 		});
 	}
 </script>
-
+</main>
 <!-- 푸터 -->
 <%@ include file="./include/footer.jsp" %>
 
