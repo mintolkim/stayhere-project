@@ -5,7 +5,10 @@
 <configuration>
 
 	<typeAliases>
+		<typeAlias type="com.example.stayhere.model.rooms.dto.RoomsDTO" alias="RoomsDTO" />
+		<typeAlias type="com.example.stayhere.model.reservations.dto.ReservationsDTO" alias="ReservationsDTO" />
 	</typeAliases>
 
 </configuration>
+
 
