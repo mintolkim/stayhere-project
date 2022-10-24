@@ -3,29 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- 헤더에 공통 스크립트 또는 스타일시트 추가하기 -->
 <%@ include file="./include/header.jsp"%>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 그외 페이지별 들어갈 script & css 추가 영역 -->
 
+<!-- 그외 페이지별 들어갈 script & css 추가 영역 -->
 <title>STAYHERE</title>
-<!-- Favicon-->
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-<!-- Bootstrap icons-->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
-	rel="stylesheet" />
-<!-- Core theme CSS (includes Bootstrap)-->
-<link href="${path}/resources/css/styles.css" rel="stylesheet" />
-<!-- jquery script -->
-<script src="${path}/include/jquery-3.6.0.min.js"></script>
-<!-- custom css&javascript -->
-<link rel="stylesheet" href="${path}/resources/css/common.css">
-<script src="${path}/resources/js/common.js"></script>
 </head>
-<body>
+<body class="d-flex flex-column">
+<!-- nav_search_bar 는 검색창 노출화면 -->
 <%@ include file="./include/nav_search_bar.jsp" %>
 
+<!-- 컨텐츠 수정 영역 start -->
 <!-- room-list-->
 <div class="room-list-wrap">
 	<div class="container-fluid p-4">
@@ -169,7 +158,10 @@
 		});
 	}
 </script>
-<!-- 푸터 -->
+
+<!-- 컨텐츠 수정 영역 end -->
+
+<!-- footer -->
 <%@ include file="./include/footer.jsp" %>
 
 </body>
