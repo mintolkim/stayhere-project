@@ -170,8 +170,22 @@ ul li {
 			</div>
            </div>
            <input type="hidden" name="room_idx" value="${dto.room_idx}">
-           <%-- <input type="hidden" name="h_userid" value="${dto.h_userid}"> --%>
+           <input type="hidden" name="room_name" value="${dto.room_name}">
            <input type="hidden" name="room_price" value="${dto.room_price}">
+           <input type="hidden" name="contents" value="${dto.contents}">
+           <input type="hidden" name="city" value="${dto.city}">
+           <input type="hidden" name="country" value="${dto.country}">
+           <input type="hidden" name="address1" value="${dto.address1}">
+           <input type="hidden" name="address2" value="${dto.address2}">
+           <input type="hidden" name="zipcode" value="${dto.zipcode}">
+           <input type="hidden" name="beds" value="${dto.beds}">
+           <input type="hidden" name="baths" value="${dto.baths}">
+           <input type="hidden" name="room_type" value="${dto.room_type}">
+           <input type="hidden" name="lat" value="${dto.lat}">
+           <input type="hidden" name="lng" value="${dto.lng}">
+           <input type="hidden" name="max_people" value="${dto.max_people}">
+           <%-- <input type="hidden" name="h_userid" value="${dto.h_userid}"> --%>
+           <%-- <input type="hidden" name="h_userid" value="${dto.userid}"> --%>
           </form>
          </div>
         </div>

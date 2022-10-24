@@ -18,21 +18,18 @@
 <body class="d-flex flex-column h-100">
  <main class="flex-shrink-0">
   <!-- nav -->
-  <header>
-	<jsp:include page="navbar.jsp"></jsp:include>
-  </header>
+	<%@ include file="./include/navbar.jsp" %>
   <!-- 본문영역-->
   <section class="py-5" id="features">
 	<div class="container px-5 my-5">
 		
 	 <!-- 요기 안에서 코드작성해주시면 됩니다..! -->
+	 <a href="${path}/rooms/list.do">숙소 목록</a>
 		
 	</div>
   </section>
  </main>
- <!--footer  -->
- <footer>
-  <jsp:include page="footer.jsp"></jsp:include>
- </footer>
+ <!-- footer -->
+ <%@ include file="./include/footer.jsp" %>
 </body>
 </html>
