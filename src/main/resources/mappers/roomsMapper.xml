@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 룸정보 불러오기 -->
-	<select id="getRoomAllList" resultType="roomsDto">
+	<select id="getRoomAllList" resultType="RoomsDTO">
 		select *
 			from (
 				select A.* , rownum as rn
@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rp.photo2,
 				rp.photo3,
 				rp.photo4,
-				(select count(*) from review where room_idx=r.room_idx)review_cnt,
+				(select count(*) from review where room_idx=r.room_idx)review_count,
 				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
 			from rooms r join room_photo rp on r.room_idx = rp.room_idx
 			order by room_idx) A
@@ -65,7 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 룸 옵션 리스트 불러오기 -->
-	<select id="getRoomOptionList" resultType="roomsDto">
+	<select id="getRoomOptionList" resultType="RoomsDTO">
 		select *
 			from (
 				select A.* , rownum as rn
@@ -91,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rp.photo2,
 				rp.photo3,
 				rp.photo4,
-				(select count(*) from review where room_idx=r.room_idx)review_cnt,
+				(select count(*) from review where room_idx=r.room_idx)review_count,
 				(select avg(review_star) from review where room_idx=r.room_idx) review_star
 			from rooms r join room_photo rp on r.room_idx = rp.room_idx
 			where check_in=#{check_in} and check_out=#{check_out}	or city=#{city}
