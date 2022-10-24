@@ -1,3 +1,4 @@
+
 package com.example.stayhere.model.rooms.dao;
 
 import java.util.HashMap;
@@ -51,6 +52,13 @@ public class RoomsDAOImpl implements RoomsDAO {
 		map.put("higher",higher);
 		return sqlSession.selectList("search.address_list",map);
 	}
+  
+  	@Override
+	public RoomsDTO detailRooms(int room_idx) {
+		return sqlSession.selectOne("rooms.detail_rooms", room_idx);
+	}
+
 	
 
 }
+
