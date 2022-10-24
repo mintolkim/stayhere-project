@@ -61,9 +61,9 @@
 	               
                   </c:if>
                   <c:if test="${sessionScope.h_userid != null}">
-                      <li><b class="dropdown-item">${sessionScope.h_name} 님</b></li>
-                     <li><hr class="dropdown-divider"/></li>
-                  	  <li><a class="dropdown-item" href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></li>
+                    <li><b class="dropdown-item">${sessionScope.h_name} 님</b></li>
+                    <li><hr class="dropdown-divider"/></li>
+                  	<li><a class="dropdown-item" href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></li>
 	                  <li><a class="dropdown-item" href="portfolio-overview.html">숙소관리</a></li>
 	                  <li><a class="dropdown-item" href="portfolio-overview.html">숙소등록</a></li>
 	                  <li><a class="dropdown-item" href="portfolio-overview.html">숙소승인현황</a></li>
@@ -78,4 +78,37 @@
 					</div>
 				</div>
 			</nav>
+			<!--search bar-->
+			<div class="d-flex justify-content-center">
+				<div class="search-bar border ps-4">
+					<form method="get" action="${path}/search" id="searchFrom">
+						<div class="row">
+							<div class="col-lg-4 d-flex align-items-center rounded-pill">
+								<div class="form-floating form-group">
+									<input class="form-control border-0 shadow-none" id="city"
+										name="city" placeholder="" value="${param.city}"> 
+										<label for="city">도시를 입력해주세요</label>
+								</div>
+							</div>
+							<div class="col-lg-3 d-flex align-items-center">
+								<div class="form-floating form-group">
+									<input class="form-control border-0 shadow-none" id="check-in"
+										type="date" name="check_in" value="${param.check_in}"> <label for="check-in">체크인</label>
+								</div>
+							</div>
+							<div class="col-lg-3 d-flex align-items-center">
+								<div class="form-floating form-group">
+									<input class="form-control border-0 shadow-none" id="check-out"
+										type="date" name="check_out" value="${param.check_out}"> <label for="check-out">체크아웃</label>
+								</div>
+							</div>
+							<div class="col-lg-2 d-flex align-items-center">
+								<button class="btn btn-custom rounded-pill" type="button" onclick="submitMainSearch(searchFrom)">
+									<i class="bi-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
 		</header>

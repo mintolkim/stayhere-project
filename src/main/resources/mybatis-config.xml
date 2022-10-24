@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="com.example.stayhere.model.rooms.dto.RoomsDTO" alias="RoomsDTO" />
+		<typeAlias type="com.example.stayhere.model.guest.dto.GuestDTO" alias="guestDto" />
+		<typeAlias type="com.example.stayhere.model.reservations.dto.ReservationsDTO" alias="ReservationsDTO" />
+	</typeAliases>
+
+</configuration>
+
+
