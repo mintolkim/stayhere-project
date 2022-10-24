@@ -1,0 +1,114 @@
+@charset "UTF-8";
+input {
+    padding: 10px 15px !important;
+    border: 1px solid lightgrey !important;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background-color: #fff !important;
+    color: #2C3E50;s
+    font-size: 14px;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+input:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #512DA8;
+    outline-width: 0;
+}
+
+::placeholder {
+    color: #BDBDBD;
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: #BDBDBD;
+}
+
+::-ms-input-placeholder {
+    color: #BDBDBD;
+}
+
+button:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline-width: 0;
+}
+
+.datepicker {
+  background-color: #fff;
+  border: 1px solid #BDBDBD;
+  border-radius: 0 !important;
+}
+
+.datepicker-dropdown {
+  top: 0;
+  left: 0;
+}
+
+.datepicker table tr td.today, span.focused {
+  border-radius: 50% !important;
+  background-image: linear-gradient(#FFF3E0, #FFE0B2);
+}
+
+.datepicker table tr td.today.range {
+  background-image: linear-gradient(#eeeeee, #eeeeee) !important;
+  border-radius: 0 !important;
+}
+
+/*Weekday title*/
+thead tr:nth-child(3) th {
+  font-weight: bold !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.dow, .old-day, .day, .new-day {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 0px !important;
+}
+
+.old-day:hover, .day:hover, .new-day:hover, .month:hover, .year:hover, .decade:hover, .century:hover {
+  border-radius: 50% !important;
+  background-color: #eee;
+}
+
+.active {
+  border-radius: 50% !important;
+  background-image: linear-gradient(#90CAF9, #64B5F6) !important;
+  color: #fff !important;
+}
+
+.range-start, .range-end {
+  border-radius: 50% !important;
+  background-image: linear-gradient(#FFA726, #FFA726) !important;
+}
+
+.prev, .next, .datepicker-switch {
+  border-radius: 0 !important;
+  padding: 10px 10px 10px 10px !important;
+  text-transform: uppercase;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.prev:hover, .next:hover, .datepicker-switch:hover {
+  background-color: inherit !important;
+  opacity: 1;
+}
+
+.btn-black {
+  background-color: #37474F !important;
+  color: #fff !important;
+  width: 100%;
+}
+
+.btn-black:hover {
+  color: #fff !important;
+  background-color: #000 !important;
+}
