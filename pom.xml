@@ -22,6 +22,14 @@
 		</repository>
 	</repositories>
 	<dependencies>
+		<!-- JSON -->
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+
 
 		<!-- 외부 라이브러리 추가 -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
@@ -240,7 +248,6 @@
 			<version>21.5.0.0</version>
 		</dependency>
 
-
 		
 		<!-- 메일 보내기 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
@@ -254,11 +261,7 @@
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-context-support</artifactId>
 		    <version>${org.springframework-version}</version>
-		</dependency>
-				
-				
-
-		<!-- 끝 -->
+		</dependency>			
 
 	</dependencies>
 	<build>
