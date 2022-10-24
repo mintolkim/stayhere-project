@@ -1,40 +1,185 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <%@ include file="./include/header.jsp"%>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>STAYHERE</title>
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- Bootstrap icons-->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="${path}/resources/css/styles.css" rel="stylesheet" />
-</head>
-<body class="d-flex flex-column h-100">
- <main class="flex-shrink-0">
-  <!-- nav -->
+<!-- Bootstrap core JS-->
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="${path}/resources/js/scripts.js"></script>
+<!-- jquery script -->
+<script src="${path}/include/jquery-3.6.0.min.js"></script>
+<!-- custom css&javascript -->
+<link rel="stylesheet" href="${path}/resources/css/common.css">
+<script src="${path}/resources/js/common.js"></script>
 
-	<%@ include file="./include/navbar.jsp" %>
-  <!-- 본문영역-->
-  <section class="py-5" id="features">
-	<div class="container px-5 my-5">
-		
-	 <!-- 요기 안에서 코드작성해주시면 됩니다..! -->
-	
-		
+
+</head>
+<body>
+<%@ include file="./include/nav_search_bar.jsp" %>
+
+<!-- room-list-->
+<div class="room-list-wrap">
+	<div class="container-fluid p-4">
+		<div id="room-list"
+			class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+			<c:forEach var="row" items="${map.list}">
+				<section class="list-item col-xl-2 col-lg-3 col-md-4 col-sm-6">
+					<a href="${path}/rooms/detail/${row.room_idx}"
+						class="text-black text-decoration-none">
+						<div class="card border-0" style="width: 100%;">
+							<div class="card-img">
+								<!-- 이미지가 여러장일 경우 인디케이터 사용 -->
+								<div id="indicators-${row.room_idx}" class="carousel slide"
+									data-interval="false">
+									<div class="carousel-indicators">
+										<button type="button"
+											data-bs-target="#indicators-${row.room_idx}"
+											data-bs-slide-to="0" class="active" aria-current="true"
+											aria-label="Slide 1"></button>
+										<button type="button"
+											data-bs-target="#indicators-${row.room_idx}"
+											data-bs-slide-to="1" aria-label="Slide 2"></button>
+										<button type="button"
+											data-bs-target="#indicators-${row.room_idx}"
+											data-bs-slide-to="2" aria-label="Slide 3"></button>
+										<button type="button"
+											data-bs-target="#indicators-${row.room_idx}"
+											data-bs-slide-to="3" aria-label="Slide 4"></button>
+									</div>
+									<div class="img-list carousel-inner rounded-img">
+										<div class="carousel-item active">
+											<img src="resources/images/${row.photo1}"
+												class="d-block w-100 card-img-size" alt="...">
+										</div>
+										<div class="carousel-item card-img">
+											<img src="resources/images/${row.photo2}"
+												class="d-block w-100 card-img-size" alt="...">
+										</div>
+										<div class="carousel-item card-img">
+											<img src="resources/images/${row.photo3}"
+												class="d-block w-100 card-img-size" alt="...">
+										</div>
+										<div class="carousel-item card-img">
+											<img src="resources/images/${row.photo4}"
+												class="d-block w-100 card-img-size" alt="...">
+										</div>
+									</div>
+									<button class="carousel-control-prev" type="button"
+										data-bs-target="#indicators-${row.room_idx}"
+										data-bs-slide="prev">
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Previous</span>
+									</button>
+									<button class="carousel-control-next" type="button"
+										data-bs-target="#indicators-${row.room_idx}"
+										data-bs-slide="next">
+										<span class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Next</span>
+									</button>
+								</div>
+								<div
+									class="btn boder-0 shadow-none card-img-overlay-top text-end">
+									<i class="bi-heart text-danger fw-bold fs-5"
+										onclick="wishListToggle()"></i>
+								</div>
+							</div>
+							<div class=" card-body">
+								<div
+									class="d-flex justify-content-between align-items-center py-1 pb-2">
+									<p class="room-title fw-bold mb-0 text-truncate">${row.country},
+										${row.city}</p>
+									<p class="icon mb-0">
+										<c:if test="${row.review_count > 0}">
+											<i class="bi-star-fill"></i>
+											<span> <fmt:formatNumber pattern="#.00"
+													value="${row.review_star}" />
+											</span>
+										</c:if>
+									</p>
+								</div>
+								<p class="card-text text-secondary mb-0 small">침대
+									${row.beds} · 화장실 ${row.baths}</p>
+								<p class="card-text text-secondary mb-0 small">
+									<fmt:formatDate pattern="MM월 dd일" value="${row.check_in}" />
+									<span>~</span>
+									<fmt:formatDate pattern="MM월 dd일" value="${row.check_out}" />
+								<p class="card-text mb-0 pt-2">
+									<span class="fw-bold">\ <fmt:formatNumber
+											pattern="#,###" value="${row.room_price}" />
+									</span> <span>/박</span> <span>·</span> <span> <a href="#2"
+										class="text-secondary">총액 \ <fmt:formatNumber
+												pattern="#,###" value="${row.room_price * 2}" />
+									</a>
+									</span>
+								</p>
+							</div>
+						</div>
+					</a>
+				</section>
+			</c:forEach>
+		</div>
 	</div>
-  </section>
- </main>
-<<<<<<< HEAD
- <!--footer  -->
-=======
- <!--footer -->
->>>>>>> branch 'main' of https://github.com/mintolkim/styahere-project.git
- <%@ include file="./include/footer.jsp" %>
+</div>
+
+<script type="text/javascript">
+	var curPage = 1;
+	var isLoading = false;
+
+	$(window).on("scroll", function() {
+		var scrollTop = $(window).scrollTop(); // 위로 스크롤된 길이
+		var windowsHeight = $(window).height(); //웹브라우저의 창의 높이
+		var documentHeight = $(document).height(); // 문서 전체의 높이
+		var isBottom = scrollTop + windowsHeight + 10 >= documentHeight;
+
+		if (isBottom) {
+			//만일 현재 마지막 페이지라면
+			if (curPage >= '${map.pager.totPage - 1}') {
+				return false; //함수종료
+			} else {
+				isLoading = true; //위에서 종료되지 않으면 로딩상태를 true로 변경
+				$("#load").show(); //로딩바 표시
+				curPage++; //현재페이지 1증가
+				getRoomsList(curPage); //추가로 받을 리스트 ajax처리
+			}
+		}
+	});
+
+	function getRoomsList(curPage) {
+		$.ajax({
+			type : "get",
+			url : "${path}/rooms/addRoomsList",
+			data : {
+				"curPage" : curPage
+			},
+
+			success : function(data) {
+// 				console.log(data);
+				$("#room-list").append(data);
+				$("#load").hide(); //로딩바 숨기기
+				isLoading = false;
+			}
+		});
+	}
+</script>
+
+<!-- 푸터 -->
+<%@ include file="./include/footer.jsp" %>
+
 </body>
 </html>
