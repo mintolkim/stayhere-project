@@ -23,8 +23,8 @@
 			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 		<!-- 연결문자열에 log4jdbc가 추가됨 -->
 		<property name="url"
-			value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="username" value="stayhere" />
+			value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe"  />
+		<property name="username" value="spring" />
 		<property name="password" value="1234" />
 	</bean>
 

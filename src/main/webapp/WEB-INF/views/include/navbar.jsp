@@ -25,16 +25,26 @@
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#"
 						role="button" data-bs-toggle="dropdown" aria-expanded="false">GUEST</a>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#"
+						role="button" data-bs-toggle="dropdown" aria-expanded="false">GUEST</a>
 						<ul class="dropdown-menu dropdown-menu-end"
 							aria-labelledby="navbarDropdownBlog">
-							<li><a class="dropdown-item" href="blog-home.html">로그인</a></li>
-							<li><a class="dropdown-item" href="blog-home.html">회원가입</a></li>
-							<li><a class="dropdown-item" href="blog-home.html">프로필</a></li>
-							<li><a class="dropdown-item" href="blog-home.html">예약정보</a></li>
-							<li><a class="dropdown-item" href="blog-home.html">관심스테이</a></li>
-							<li><a class="dropdown-item" href="blog-home.html">결제내역</a></li>
-							<li><hr class="dropdown-divider" /></li>
-							<li><a class="dropdown-item" href="blog-home.html">로그아웃</a></li>
+							<c:choose>
+							  <c:when test="${sessionScope.userid == null }">
+							   <li><a class="dropdown-item" href="${path}/guest/login.do">로그인</a></li>
+							   <li><a class="dropdown-item" href="${path}/guest/join.do">회원가입</a></li>
+							  </c:when>
+							 <c:otherwise>
+							  <li><b class="dropdown-item">${sessionScope.name} 님</b></li>	
+						      <li><a class="dropdown-item" href="${path}/guest/guest_view/${sessionScope.userid}">프로필</a></li>
+							  <li><a class="dropdown-item" href="blog-home.html">예약정보</a></li>
+							  <li><a class="dropdown-item" href="blog-home.html">관심스테이</a></li>
+							  <li><a class="dropdown-item" href="${path}/guest/list.do">결제내역</a></li>
+							  <li><hr class="dropdown-divider" /></li>
+							  <li><a class="dropdown-item" href="${path}/guest/logout.do">로그아웃</a></li>
+							 </c:otherwise>
+							</c:choose>
 						</ul></li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" id="navbarDropdownPortfolio"

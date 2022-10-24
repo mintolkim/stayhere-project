@@ -32,7 +32,7 @@ public class HomeController {
 	 
 	 model.addAttribute("serverTime", formattedDate );
 	 
-	 return "search/search_map"; 
+	 return "main"; 
 	 }
 	 
 	

@@ -24,7 +24,7 @@
 	<div class="container px-5 my-5">
 		
 	 <!-- 요기 안에서 코드작성해주시면 됩니다..! -->
-		
+		<%=request.getRealPath("/") %> 
 	</div>
   </section>
  </main>
