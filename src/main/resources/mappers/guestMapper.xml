@@ -5,14 +5,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="guest">
-	<select id="list_guest" resultType="guestDto">
+	<select id="list_guest" resultType="GuestDTO">
 		select * from guest 
 		order by name 
 	</select>
 	
 	<insert id="insert_guest" >
-		insert into guest (userid, name, passwd, email, phone, profile_img) 
-		values (#{userid}, #{name}, #{passwd}, #{email}, #{phone}, #{profile_img})
+		insert into guest (userid, name, passwd, email, phone) 
+		values (#{userid}, #{name}, #{passwd}, #{email}, #{phone})
 	</insert>
 	
 	<select id="loginCheck" resultType="String">
@@ -20,14 +20,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where userid=#{userid} and passwd=#{passwd} 
 	</select>
 	
-	<select id="view_guest" resultType="guestDto">
+	<select id="view_guest" resultType="GuestDTO">
 		select * from guest 
 		where userid=#{userid}
 	</select>
 	
 	<update id="update_guest">
 		update guest 
-		set passwd=#{passwd}, name=#{name}, email=#{email}, phone=#{phone} 
+		set passwd=#{passwd}, name=#{name}, email=#{email}, phone=#{phone}, profile_img=#{profile_img} 
 		where userid=#{userid} 
 	</update>
 	
@@ -41,11 +41,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where userid=#{userid} 
 	</select>
 	
-	<select id="login_lookup" parameterType="guestDTO" resultType="int">
+	<select id="login_lookup" parameterType="GuestDTO" resultType="int">
 		select count(userid) from guest 
 		where userid=#{userid} 
 	</select>
 	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePw" parameterType="GuestDTO">
+		update guest 
+		set passwd = #{passwd} 
+		where userid = #{userid}
+	</update>
+	
+	<select id="emailCheck" resultType="int">
+		select count(*) from guest 
+		where email=#{email} 
+	</select>
+	
+	<select id="loginOkNick" resultType="GuestDTO" parameterType="GuestDTO">
+		select userid, name, profile_img 
+		from guest 
+		where userid like #{userid}
+	</select>
+	
+	<select id="memberOne" resultType="GuestDTO">
+		select * from guest 
+		where email=#{email} 
+	</select>	
+	<select id="findId" resultType="String">
+		select userid from guest
+		where email=#{email}
+	</select>
 </mapper>
 
 

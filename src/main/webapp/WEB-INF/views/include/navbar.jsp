@@ -9,7 +9,7 @@
 </div>
 
 <!-- nav bar -->
-<header>
+<header class="sticky-top">
 	<nav class=" navbar navbar-expand-lg navbar-light bg-white">
 		<div
 			class="container-fluid flex-wrap flex-lg-nowrap gx-5 py-2 border-bottom">
@@ -25,12 +25,14 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link" href="${path}/search">FIND	STAY</a></li>
+					<li class="nav-item"><a class="nav-link" href="index.html">FIND
+							STAY</a></li>
 					<li class="nav-item"><a class="nav-link" href="about.html">PROMOTION</a></li>
-					<li class="nav-item"><a class="nav-link" href="${path}/reviews/list.do">REVIEW</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="${path}/reviews/list.do">REVIEW</a></li>
 					<li class="nav-item"><a class="nav-link" href="pricing.html">QNA</a></li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#"
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#"
 						role="button" data-bs-toggle="dropdown" aria-expanded="false">GUEST</a>
 						<ul class="dropdown-menu dropdown-menu-end"
 							aria-labelledby="navbarDropdownBlog">
@@ -44,8 +46,8 @@
 								<li><a class="dropdown-item"
 									href="${path}/guest/guest_view/${sessionScope.userid}">프로필</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">예약정보</a></li>
-								<li><a class="dropdown-item" href="blog-home.html">관심스테이</a></li>
-								<li><a class="dropdown-item" href="${path}/guest/list.do">결제내역</a></li>
+								<li><a class="dropdown-item" href="${path}/wishlist/list.do">관심스테이</a></li>
+								<li><a class="dropdown-item" href="blog-home.html">결제내역</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">문의하기</a></li>
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item" href="${path}/guest/logout.do">로그아웃</a></li>
