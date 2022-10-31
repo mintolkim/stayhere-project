@@ -19,7 +19,7 @@
 	width: 296px;
 	height: 40px;
 
-}
+} 
 
 .btn{
 	width: 296px;
@@ -41,21 +41,21 @@ $(function(){
 			return;
 		}
 		
-		document.form1.action="${path}/host/confirmPw.do";
+		document.form1.action="${path}/host/checkPw";
 		document.form1.submit();
-	});
-});
-
+	}); 
+}); 
+ 
 </script>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column">
  <main class="flex-shrink-0">
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>
   <!-- 본문영역-->
   <section class="py-5" id="features">
 	<div class="container px-5 my-5" align="center">
-	<form name="form1" id="form1">
+	<form name="form1" id="form1" method="post">
     <input type="hidden" id="h_userid" name="h_userid" value="${sessionScope.h_userid}">
 	<h2>Confirm Password</h2>	
 	<br>
@@ -71,9 +71,9 @@ $(function(){
 		 <c:if test="${message == 'confirmPw' }">
 		 <script type="text/javascript">
 		 alert("비밀번호가 맞지 않습니다")
-		 </script>
-		 </c:if>
-	</div>
+		 </script> 
+		 </c:if> 
+	</div> 
   </section>
  </main>
  <!--footer -->

@@ -1,29 +1,25 @@
 package com.example.stayhere.controller;
 
 import java.io.File;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.stayhere.model.host.dao.HostDAO;
 import com.example.stayhere.model.host.dto.HostDTO;
+import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.service.host.HostService;
-import com.mysql.cj.api.Session;
 
 @RequestMapping("host/*")
 @Controller
@@ -37,14 +33,14 @@ public class HostController {
 
 	@RequestMapping("login.do")
 	public String login() {
-		return "host/login";
-	}
+		return "host/login"; 
+	}  
 	
-	@RequestMapping("login_check.do")
+	@RequestMapping("login_check")
 	public ModelAndView login_check(HostDTO dto, HttpSession session, ModelAndView mav) {
 		boolean result = hostService.loginCheck(dto, session);
 		if(result) {
-			mav.setViewName("main");
+			mav.setViewName("redirect:/main");
 		}else {
 			mav.setViewName("host/login");
 			mav.addObject("message", "error");
@@ -89,10 +85,10 @@ public class HostController {
 	
 	@RequestMapping("edit.do")
 	public String edit() {
-		return "host/confirm_pw";
+		return "host/check_pw";
 	}
 	
-	@RequestMapping("confirmPw.do")
+	@RequestMapping("checkPw")
 	public ModelAndView update(HostDTO dto, HttpSession session, ModelAndView mav) {
 		boolean result = hostService.loginCheck(dto, session);
 		HostDTO dto2= hostService.viewHost(dto.getH_userid());
@@ -114,6 +110,7 @@ public class HostController {
 		
 		String h_userid=(String)session.getAttribute("h_userid");
 		dto.setH_userid(h_userid);
+		String H_profile_img = dto.getH_profile_img();
 		
 		String imgUploadPath = uploadPath + File.separator + "imgUpload";
 		String fileName = null;
@@ -121,11 +118,12 @@ public class HostController {
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
 		   fileName =  FileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes());   
 		   mav.addObject("message","profile");
-		} else {//file name dto.get으로 불러와서 저장 null값이면
-		   fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+		   dto.setH_profile_img(File.separator + "imgUpload" + File.separator + fileName);
+		} else {//file name dto.get으로 불러와서 저장 null이면
+		   fileName = H_profile_img;
+		   System.out.println(fileName);
+		   dto.setH_profile_img(fileName);
 		}
-		
-		dto.setH_profile_img(File.separator + "imgUpload" + File.separator + fileName);
 		
 		hostService.update(dto);
 
@@ -140,7 +138,7 @@ public class HostController {
 		return "host/delete_pw";
 	}
 	
-	@RequestMapping("deletePw.do")
+	@RequestMapping("deletePw")
 	public ModelAndView delete(HostDTO dto, HttpSession session, ModelAndView mav) {
 		boolean result = hostService.loginCheck(dto, session);
 		HostDTO dto2= hostService.viewHost(dto.getH_userid());
@@ -156,11 +154,41 @@ public class HostController {
 	}
 	
 	@RequestMapping("delete/{h_userid}")
-	public ModelAndView delete_host(@PathVariable String h_userid,ModelAndView mav,HttpSession session) {
-		hostService.delete(h_userid,session);
-		mav.addObject("message", "delete");
-		mav.setViewName("main");
+	public ModelAndView delete_host(@PathVariable String h_userid,ModelAndView mav,HttpSession session,RoomsDTO dto) {
+		
+			boolean result = hostService.delete_check(dto);
+			
+			if(result) {
+				mav.addObject("message", "notDelete");
+				mav.setViewName("host/delete_pw");
+			}else {
+				hostService.delete(h_userid,session);
+				mav.addObject("message", "delete");
+				mav.setViewName("main");
+			}
+
+			return mav;
+	}
+	
+	@RequestMapping("rooms_Confirm/{h_userid}")
+	public ModelAndView rooms_Confirm(@PathVariable String h_userid,ModelAndView mav) {
+		mav.setViewName("host/rooms_Confirm");
+		List<RoomsDTO> list = hostService.rooms_Confirm(h_userid);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		mav.addObject("map", map);
+
 		return mav;
 	}
-
+	
+	@RequestMapping("rooms_List/{h_userid}")
+	public ModelAndView rooms_Management(@PathVariable String h_userid,ModelAndView mav) {
+		mav.setViewName("host/rooms_List");
+		List<RoomsDTO> list = hostService.rooms_Confirm(h_userid);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		mav.addObject("map", map);
+		return mav;
+	}
 }

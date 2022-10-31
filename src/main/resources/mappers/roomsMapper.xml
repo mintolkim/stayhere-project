@@ -5,12 +5,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="rooms">
+	<!-- 룸정보 불러오기 -->
 	<select id="detail_rooms" resultType="RoomsDTO">
 		select * from rooms 
 		where room_idx=#{room_idx}
 	</select>
 	
-	<!-- 룸정보 불러오기 -->
+	<!-- 메인페이지 룸정보 불러오기 -->
 	<select id="getRoomAllList" resultType="RoomsDTO">
 		select *
 			from (
@@ -37,18 +38,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rp.photo2,
 				rp.photo3,
 				rp.photo4,
-				(select count(*) from review where room_idx=r.room_idx)review_count,
+				(select count(*) from reservations where room_idx=r.room_idx) res_count,
+				(select count(*) from review where room_idx=r.room_idx) review_count,
 				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
 			from rooms r join room_photo rp on r.room_idx = rp.room_idx
-			order by room_idx) A
+			order by review_star desc) A
 		) where rn between #{start} and #{end}
 	</select>
 
-	<!-- 룸 갯수 불러오기 -->
+	<!-- 메인페이지 룸 갯수 불러오기 -->
 	<select id="getRoomAllCount" resultType="int">
 		select count(*) from rooms
 	</select>
-
+	
 	<!-- 룸사진 불러오기 -->
 	<select id="getRoomPhoto" resultType="String">
 		select photo from
@@ -99,6 +101,102 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		) where rn between #{start} and #{end}
 	</select>
 	
+	<!-- 룸등록 -->
+	<insert id="insert">
+		insert all into Rooms(
+						room_idx,
+						h_userid,
+						room_name,
+						room_price,
+						contents,
+						city,
+						country,
+						address1,
+						address2,
+						zipcode,
+						beds,
+						baths,
+						room_type,
+						lat,
+						lng,
+						max_people,
+						add_people
+						) 
+						values(
+						Rooms_seq.nextval,
+						#{h_userid},
+						#{room_name},
+						#{room_price},
+						#{contents},
+						#{city},
+						#{country},
+						#{address1},
+						#{address2},
+						#{zipcode},
+						#{beds},
+						#{baths},
+						#{room_type},
+						#{lat},
+						#{lng},
+						#{max_people},
+						#{add_people}
+						) into Room_photo(
+						p_idx,
+						room_idx,
+						photo1,
+						photo2,
+						photo3,
+						photo4
+						) values(
+						Room_photo_seq.nextval,
+						Rooms_seq.nextval,
+						#{photo1},
+						#{photo2},
+						#{photo3},
+						#{photo4}
+						) select * from dual
+
+	</insert>
+	
+	<!-- 룸 수정시 photo와 정보 같이 불러오기 -->
+	<select id="getRoomInfo" resultType="RoomsDTO">
+	select * FROM rooms, room_photo
+	where rooms.room_idx = room_photo.room_idx
+	and rooms.room_idx = #{room_idx}
+	</select>
+	
+	<!-- 삭제요청 업데이트 -->
+	<update id="deleteConfirm">
+	update rooms
+	set admin_confirm='삭제요청'
+	where room_idx=#{room_idx}
+	</update>
+	
+	<!-- 룸 업데이트 -->
+	<update id="updateRoom">
+	update rooms set 
+	room_name=#{room_name},
+	contents=#{contents},
+	room_type=#{room_type},
+	address1=#{address1},
+	address2=#{address2},
+	room_price=#{room_price},
+	add_people=#{add_people},
+	baths=#{baths},
+	beds=#{beds},
+	max_people=#{max_people}
+	where room_idx=#{room_idx}
+	</update>
+	
+	<!-- 룸 사진 업데이트 두개 조인해서 같은값으로 할 수 있으나.. 다른값으로 업데이트를 못해서 만듬...  -->
+	<update id="updateRoomphoto">
+	update room_photo set
+	photo1=#{photo1},
+	photo2=#{photo2},
+	photo3=#{photo3},
+	photo4=#{photo4}
+	where room_idx=#{room_idx}
+	</update>
 </mapper>
 
 

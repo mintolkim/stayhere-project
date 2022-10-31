@@ -84,7 +84,7 @@ $(function(){
 			alert("이름을 입력하세요.");
 			$("#h_name").focus(); //입력 포커스 이동
 			return; //함수 종료
-		}
+		} 
 		
 		//폼 데이터를 서버로 제출
 		alert("가입을 환영합니다.");
@@ -110,14 +110,14 @@ function checkId(){
         		
             }
         },
-        error:function(){
+        error:function(){ 
             alert("에러입니다");
         }
     });
    };
 </script>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column">
  <main class="flex-shrink-0">
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>

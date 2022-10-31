@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -46,7 +47,7 @@
 								<li><a class="dropdown-item"
 									href="${path}/guest/guest_view/${sessionScope.userid}">프로필</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">예약정보</a></li>
-								<li><a class="dropdown-item" href="blog-home.html">관심스테이</a></li>
+								<li><a class="dropdown-item" href="${path}/wishlist/list.do">관심스테이</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">결제내역</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">문의하기</a></li>
 								<li><hr class="dropdown-divider" /></li>
@@ -83,3 +84,4 @@
 		</div>
 	</nav>
 </header>
+

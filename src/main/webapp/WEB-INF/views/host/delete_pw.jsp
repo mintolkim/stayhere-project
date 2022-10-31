@@ -24,7 +24,7 @@
 .btn{
 	width: 296px;
 	height: 40px;
-	background-color: #ffcd4a;
+	background-color: #ffcd4a; 
 }
 
 a {
@@ -38,24 +38,24 @@ $(function(){
 		if(h_passwd==""){
 			alert("비밀번호를 입력하세요.");
 			$("#h_passwd").focus();
-			return;
+			return; 
 		}
 		
-		document.form1.action="${path}/host/deletePw.do";
+		document.form1.action="${path}/host/deletePw";
 		document.form1.submit();
 	});
 });
 
 </script>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column">
  <main class="flex-shrink-0">
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>
   <!-- 본문영역-->
   <section class="py-5" id="features">
 	<div class="container px-5 my-5" align="center">
-	<form name="form1" id="form1">
+	<form name="form1" id="form1" method="post">
     <input type="hidden" id="h_userid" name="h_userid" value="${sessionScope.h_userid}">
 	<h2>Confirm Password</h2>	
 	<br>
@@ -71,6 +71,12 @@ $(function(){
 		 <c:if test="${message == 'confirmPw' }">
 		 <script type="text/javascript">
 		 alert("비밀번호가 맞지 않습니다")
+		 </script> 
+		 </c:if>
+		 
+		<c:if test="${message == 'notDelete' }">
+		 <script type="text/javascript">
+		 alert("등록된 숙소가 있을 경우에 탈퇴가 불가능 합니다. \n관리자에게 숙소 삭제요청을 먼저 진행해주세요.");
 		 </script>
 		 </c:if>
 	</div>

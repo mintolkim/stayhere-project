@@ -73,6 +73,36 @@ public class GuestDAOImpl implements GuestDAO {
 		return sqlSession.selectOne("guest.login_lookup", dto);
 	}
 
+	@Override
+	public int updatePw(GuestDTO dto) throws Exception {
+		return sqlSession.update("guest.updatePw", dto);
+	}
+
+	@Override
+	public int emailCheck(String email)  {
+		/*
+		 * boolean result = false; int count = sqlSession.selectOne("guest.emailCheck",
+		 * email); if(count == 1) result = true; return result;
+		 */
+		return sqlSession.selectOne("guest.emailCheck", email); 
+	}
+
+	@Override
+	public GuestDTO loginOkNick(GuestDTO dto) {
+		dto = sqlSession.selectOne("guest.loginOkNick", dto);
+		return dto;
+	}
+
+	@Override
+	public String memberOne(String email) {
+		return sqlSession.selectOne("guest.memberOne", email);
+	}
+
+	@Override
+	public String findId(String email) {
+		return sqlSession.selectOne("guest.findId", email);
+	}
+
 
 
 }
