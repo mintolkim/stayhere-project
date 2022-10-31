@@ -7,7 +7,7 @@ import java.util.List;
 import com.example.stayhere.model.host.dto.HostDTO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
 
-public interface HostDAO {
+public interface HostDAO { 
 	 public boolean loginCheck(HostDTO dto);
 	 public HostDTO viewHost(String h_userid);
 	 public void insert(HostDTO host);

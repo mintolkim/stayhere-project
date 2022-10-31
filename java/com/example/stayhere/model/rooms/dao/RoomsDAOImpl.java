@@ -17,7 +17,7 @@ public class RoomsDAOImpl implements RoomsDAO {
 	@Inject
 	SqlSession sqlSession;
 	
-	@Override
+	@Override 
 	public List<RoomsDTO> listMap(String cityname,int bed, int bath, String reviewStar, int lower, int higher) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("cityname", "%"+cityname+"%");

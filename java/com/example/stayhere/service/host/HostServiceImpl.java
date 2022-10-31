@@ -16,7 +16,7 @@ public class HostServiceImpl implements HostService {
 
 	@Inject
 	HostDAO hostDao;
-	
+	 
 	@Override
 	public boolean loginCheck(HostDTO dto, HttpSession session) {
 		boolean result =hostDao.loginCheck(dto);

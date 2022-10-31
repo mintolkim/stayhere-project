@@ -45,7 +45,7 @@ public class RoomsController {
 	@RequestMapping("list.do")
 	public String list() {
 		return "/rooms/rooms_list";
-	}
+	} 
 
 	// 숙소 상세 정보
 	// rooms_detail.jsp

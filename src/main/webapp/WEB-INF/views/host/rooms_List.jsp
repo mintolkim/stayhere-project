@@ -93,7 +93,7 @@ label {
           </div>
           </div>
           </a>
-	      <br>
+	      <br> 
           </c:if>
 		  </c:forEach>
 		 	

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
+<head> 
 <meta charset="UTF-8">
 <%@ include file="../include/header.jsp"%>
 <meta name="viewport"
@@ -27,25 +27,18 @@ label {
 	font-size: 13px;
 }
 .col .lead b { font-size: 25px;}
-#box1 {
+#box1 { 
     width: 100%;
     height: 100%; 
     border-radius: 2%;
     overflow: hidden;
-}
-#profile1 {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background-color: gray;
-    background-color: #c3c3c3;
 }
 #box2, #box3, #box4 {
 	width: 300px;
     border-radius: 2%;
     overflow: hidden;
 }
-#photo_2, #photo_3, #photo_4  {
+#photo_2, #photo_3, #photo_4 {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -54,8 +47,8 @@ label {
 	margin-top: 6%;
 	margin-bottom: 6%;
 	width: 80%;
-} 
-
+}
+ 
 #minus1, #minus2, #minus3, #minus4, #minus5{
 	width: 30px;
 	border-radius: 10%;
@@ -95,20 +88,20 @@ $("#address1").click(function(){
         }
     }).open()
 });
-
+ 
 var callback = function(result, status) {
 	if (status === kakao.maps.services.Status.OK) {
 		$("input[name=lng]").val(result[0].x);
 		$("input[name=lat]").val(result[0].y);
-	}
+	} 
 };
 
-$("#update").click(function(){
+$("#insert").click(function(){
 	room_name=$("#room_name").val();
 	contents=$("#contents").val();
 	room_type=$("#room_type").val();
 	address1=$("#address1").val();
-	address2=$("#address2").val(); 
+	address2=$("#address2").val();
 	room_price=$("#room_price").val();
 	add_people=$("#add_people").val();
 	baths=$("#baths").val();
@@ -169,25 +162,36 @@ $("#update").click(function(){
 		$("#max_people").focus(); //입력 포커스 이동
 		return; //함수 종료
 	}
-
-	confirm("수정 하시겠습니까?");
+	if(photo1==""){
+		alert("사진을 등록해주세요. ");
+		$("#photo1").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	if(photo2==""){
+		alert("사진을 등록해주세요. ");
+		$("#photo2").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	if(photo3==""){
+		alert("사진을 등록해주세요. ");
+		$("#photo3").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	if(photo4==""){
+		alert("사진을 등록해주세요. ");
+		$("#photo4").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	
+	confirm("등록 하시겠습니까? 승인은 평일 기준 2~3일 소요됩니다.");
 	if(confirm){
-	document.form1.action="${path}/rooms/update/${dto.room_idx}";
+	document.form1.action="${path}/rooms/insert";
 	document.form1.submit();
 	}
 
 	});
-	
-$("#deleteRoom").click(function(){
-	confirm("삭제하시겠습니까?")
-	if(confirm){
-		alert("삭제요청이 되었습니다.")
-		document.form1.action="${path}/rooms/delete/${dto.room_idx}";
-		document.form1.submit();
-	}
-})
-	
 });
+
 function fileCheck(el) { 
     if(!/\.(jpeg|jpg|png|gif|bmp)$/i.test(el.value)){ 
     alert('이미지 파일만 업로드 가능합니다.'); 
@@ -222,7 +226,7 @@ function fileCheck(el) {
           <p class="lead" ><a href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></p>
     	  <p class="lead" ><a href="${path}/host/edit.do">회원정보수정</a></p>
     	  <p class="lead" ><a href="${path}/host/rooms_List/${sessionScope.h_userid}">숙소관리</a></p>
-    	  <p class="lead" ><a href="${path}/rooms/write.do">숙소등록</a></p>
+    	  <p class="lead" ><a href="${path}/rooms/write.do"><b style="font-weight: 700;">숙소등록</b></a></p>
     	  <p class="lead" ><a href="${path}/host/rooms_Confirm/${sessionScope.h_userid}">숙소승인현황</a></p>
     	  <p class="lead" ><a>예약현황</a></p>
     	  <p class="lead" ><a>매출현황</a></p>
@@ -233,56 +237,49 @@ function fileCheck(el) {
          <div class="col-lg-8">
 			
 			<input type="hidden" value="${sessionScope.h_userid}">
-			<form name="form1" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="room_idx" value="${dto.room_idx}" id="room_idx">
-			<div align="right" style="color: red; font-size: 13px;">
-			<button type="button" class="btn btn-outline-danger" style="border: none;" id="deleteRoom">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
- 			<path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"></path>
-			</svg></button></div>
+			<form name="form1" method="post" enctype="multipart/form-data" action="${path}/rooms/insert">
 			<div class="card mb-4">
             <div class="card-body">
             <br>
             <div class="small text-muted">${sessionScope.h_name}님 의</div>
-            <h4 class="card-title">숙소 수정</h4>
+            <h4 class="card-title">숙소 등록</h4>
             <div align="left" id="room_write">
             <label>숙소 이름</label>
-            <input class="form-control me-2" type="text" placeholder="Room's name" name="room_name" id="room_name" value="${dto.room_name}">
+            <input class="form-control me-2" type="text" placeholder="Room's name" name="room_name" id="room_name">
             <br>
             <label>소개글</label>
-            <%pageContext.setAttribute("n", "\n"); pageContext.setAttribute("br", "<br>");%> 
-            <textarea class="form-control" rows="3" style="height: 100px;" id="contents" name="contents">${fn:replace(dto.contents,br,n)}</textarea>
+            <textarea class="form-control" rows="3" style="height: 100px;" id="contents" name="contents"></textarea>
             <br>
             <label>타입</label>
 			<select class="form-select" aria-label="Default select example" id="room_type" name="room_type">
-			  <option value="주택" <c:if test="${dto.room_type eq '주택'}">selected</c:if>>주택</option>
-			  <option value="레지던스" <c:if test="${dto.room_type eq '레지던스'}">selected</c:if>>레지던스</option>
-			  <option value="아파트" <c:if test="${dto.room_type eq '아파트'}">selected</c:if> >아파트</option>
-			  <option value="호텔" <c:if test="${dto.room_type eq '호텔'}">selected</c:if> >호텔</option>
-			  <option value="펜션" <c:if test="${dto.room_type eq '펜션'}">selected</c:if> >펜션</option>
+			  <option selected>-</option>
+			  <option value="주택">주택</option>
+			  <option value="레지던스">레지던스</option>
+			  <option value="아파트">아파트</option>
+			  <option value="호텔">호텔</option>
+			  <option value="펜션">펜션</option>
 			</select>
             <br>
 			
  			<label>주소</label>
-			<input type="text" name="address1" id="address1" class="form-control me-2" placeholder="Room's address" value="${dto.address1}">
-			<input type="hidden" name="lat" value="${dto.lat}">
-			<input type="hidden" name="lng" value="${dto.lng}">
+			<input type="text" name="address1" id="address1" class="form-control me-2" placeholder="Room's address">
+			<input type="hidden" name="lat">
+			<input type="hidden" name="lng">
 			<br>
  			<div class="input-group mb-2" align="center">
-			<input type="text" name="zipcode" id="zipcode" class="form-control me-2" placeholder="우편번호" style="width: 20%;" value="${dto.zipcode}">
-			<input type="text" name="address2" id="address2" class="form-control me-2" placeholder="상세주소" style="width: 75%;" value="${dto.address2}"> 
+			<input type="text" name="zipcode" id="zipcode" class="form-control me-2" placeholder="우편번호" style="width: 20%;">
+			<input type="text" name="address2" id="address2" class="form-control me-2" placeholder="상세주소" style="width: 75%;">
 			</div>
 			<br>			
-			<input type="hidden" name="city" id="city" class="form-control me-2" placeholder="city" style="width: 75%;" value="${dto.city}">
-			<input type="hidden" name="country" id="country" class="form-control me-2" placeholder="country" style="width: 20%;" value="${dto.country}">
+			<input type="hidden" name="city" id="city" class="form-control me-2" placeholder="city" style="width: 75%;">
+			<input type="hidden" name="country" id="country" class="form-control me-2" placeholder="country" style="width: 20%;">
 
 	        <label>숙소 가격</label>
 			<div class="input-group mb-3">
 			<button class="btn-warning" id="minus1" type="button">-</button>
-			<input type="text" class="form-control" style="text-align: center;" id="room_price" name="room_price" value="${dto.room_price}">
+			<input type="text" class="form-control" value="10000" style="text-align: center;" id="room_price" name="room_price">
 			<button class="btn-warning" id="plus1" type="button">+</button>
 			</div>
-			 
 			 <script>
 			  $("#plus1").click(function(){
 			   var num = $("#room_price").val();
@@ -293,7 +290,7 @@ function fileCheck(el) {
 			  $("#minus1").click(function(){
 			   var num = $("#room_price").val();
 			   var minusNum = Number(num) - 1000;
-			   $("#room_price").val(minusNum);
+			   $("#room_price").val(minusNum);  
 			  });
 			 </script>
  
@@ -302,7 +299,7 @@ function fileCheck(el) {
             <label>1인당 추가금액</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus2" type="button">-</button>
-			  <input type="text" class="form-control" style="text-align: center;" id="add_people" name="add_people" value="${dto.add_people}">
+			  <input type="text" class="form-control" value="10000" style="text-align: center;" id="add_people" name="add_people">
 			  <button class="btn-warning" id="plus2" type="button">+</button>
 			</div>
 			 <script>
@@ -323,7 +320,7 @@ function fileCheck(el) {
             <label>화장실 갯수</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus3" type="button">-</button>
-			  <input type="text" class="form-control" style="text-align: center;" id="baths" name="baths" value="${dto.baths}">
+			  <input type="text" class="form-control" value="1" style="text-align: center;" id="baths" name="baths">
 			  <button class="btn-warning" id="plus3" type="button">+</button>
 			</div>
 			
@@ -345,7 +342,7 @@ function fileCheck(el) {
             <label>침대 갯수</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus4" type="button">-</button>
-			  <input type="text" class="form-control" style="text-align: center;" id="beds" name="beds" value="${dto.beds}">
+			  <input type="text" class="form-control" value="1" style="text-align: center;" id="beds" name="beds">
 			  <button class="btn-warning" id="plus4" type="button">+</button>
 			</div>
 			
@@ -369,7 +366,7 @@ function fileCheck(el) {
             <label>최대 인원</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus5" type="button"> - </button>
-			  <input type="text" class="form-control" style="text-align: center;" id="max_people" name="max_people" value="${dto.max_people}">
+			  <input type="text" class="form-control" value="1" style="text-align: center;" id="max_people" name="max_people">
 			  <button class="btn-warning" id="plus5" type="button"> + </button>
 			</div>
 			 <script>
@@ -392,7 +389,7 @@ function fileCheck(el) {
             <p class="lead" style="text-align: center; font-size: 12px;">대표 이미지 설정</p>
             <div id="box1">
            <label for="photo1">
-            <img class="card-img-top mb-5 mb-md-0" src="${path}/${dto.photo1}" id="photo_1" style="height: 300px;">
+            <img class="card-img-top mb-5 mb-md-0" src="${path}/resources/images/img_insert.jpg" id="photo_1" style="height: 300px;">
             </label>
             <input type="file" id="photo1" name="photo" style="display: none;" onchange="fileCheck(this)">
        		<script>
@@ -400,7 +397,7 @@ function fileCheck(el) {
 		     if(this.files && this.files[0]) {
 		      var reader = new FileReader;
 		      reader.onload = function(data) {
-		      $("#box1 img").attr("src", data.target.result);
+		       $("#box1 img").attr("src", data.target.result);
 		      }
 		      reader.readAsDataURL(this.files[0]);
 		     }
@@ -414,7 +411,7 @@ function fileCheck(el) {
             <div class="small mb-1">
             <div id="box2">
             <label for="photo2">
-            <img class="card-img-top mb-5 mb-md-0" src="${path}/${dto.photo2}" id="photo_2" style="height: 100px; width: 300px;">
+            <img class="card-img-top mb-5 mb-md-0" src="${path}/resources/images/img_insert.jpg" id="photo_2" style="height: 100px; width: 300px;">
             </label>
             <input type="file" id="photo2" name="photo"  style="display: none;" onchange="fileCheck(this)">
        		<script>
@@ -434,7 +431,7 @@ function fileCheck(el) {
             <div class="small mb-1">
             <div id="box3">
             <label for="photo3">
-            <img class="card-img-top mb-5 mb-md-0" src="${path}/${dto.photo3}" id="photo_3" style="height: 100px; width: 300px;">
+            <img class="card-img-top mb-5 mb-md-0" src="${path}/resources/images/img_insert.jpg" id="photo_3" style="height: 100px; width: 300px;">
             </label>
             <input type="file" id="photo3" name="photo"  style="display: none;" onchange="fileCheck(this)">
        		<script>
@@ -455,7 +452,7 @@ function fileCheck(el) {
             <div class="small mb-1">
             <div id="box4">
             <label for="photo4">
-            <img class="card-img-top mb-5 mb-md-0" src="${path}/${dto.photo4}" id="photo_4" style="height: 100px; width: 300px;">
+            <img class="card-img-top mb-5 mb-md-0" src="${path}/resources/images/img_insert.jpg" id="photo_4" style="height: 100px; width: 300px;">
             </label>
             <input type="file" id="photo4" name="photo"  style="display: none;" onchange="fileCheck(this)">
        		<script>
@@ -468,33 +465,21 @@ function fileCheck(el) {
 		      reader.readAsDataURL(this.files[0]);
 		     }
 		    });
-		    
 		    </script> 
             </div>
             </div>  
             
-	        <c:if test="${message == 'confirm' }">
-			<script type="text/javascript">
-			alert("숙소 등록 신청이 되었습니다. 승인 결과는 승인내역에서 확인하실 수 있습니다.");
-			</script>
-			</c:if>
-			<c:if test="${dto.admin_confirm =='승인대기'}">
-			<input type="hidden" value="승인대기" name="admin_confirm" id="admin_confirm">
-			</c:if>
-			<c:if test="${dto.admin_confirm =='승인'}">
-			<input type="hidden" value="승인" name="admin_confirm" id="admin_confirm">
-			</c:if>
-            
-            <input type="hidden" value="${dto.photo1}" name="photo1">
-            <input type="hidden" value="${dto.photo2}" name="photo2">
-            <input type="hidden" value="${dto.photo3}" name="photo3">
-            <input type="hidden" value="${dto.photo4}" name="photo4">
+         <c:if test="${message == 'confirm' }">
+		 <script type="text/javascript">
+		 alert("숙소 등록 신청이 되었습니다. 승인 결과는 승인내역에서 확인하실 수 있습니다.");
+		 </script>
+		 </c:if>
             
             </div>
             </div>
             <br>
             <div align="center">
-            <input type="button" class="btn btn-warning" id="update" value="숙소 수정하기">
+            <input type="button" class="btn btn-warning" id="insert" value="숙소 등록하기">
             </div>
             </div>
             </div>

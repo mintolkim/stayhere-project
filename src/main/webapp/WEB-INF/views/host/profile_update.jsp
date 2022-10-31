@@ -114,7 +114,7 @@ function fileCheck(el) {
 		<input type="file" id="file" name="file" style="display: none;" onchange="fileCheck(this)">
 		<input type="hidden" name="h_profile_img" value="${dto.h_profile_img}">
 
-		<script>
+		<script> 
 	    $("#file").change(function(){
 	     if(this.files && this.files[0]) {
 	      var reader = new FileReader;

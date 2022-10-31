@@ -92,7 +92,7 @@ label {
     	  <p class="lead">${dto.h_manager_num}</p>
           <label>가입일자</label>
     	  <p class="lead"><fmt:formatDate pattern="yyyy년 MM월 dd일" value="${dto.h_join_date}"/></p>
-          </div>
+          </div> 
           <div class="col mb-5 h-100">
 	
 		  <!-- 프로필  -->	

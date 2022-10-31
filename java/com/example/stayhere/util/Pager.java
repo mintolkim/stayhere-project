@@ -71,7 +71,7 @@ public class Pager {
 
 	public void setCurPage(int curPage) {
 		this.curPage = curPage;
-	}
+	} 
 
 	public int getPrevPage() {
 		return prevPage;

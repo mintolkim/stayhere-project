@@ -110,7 +110,7 @@ function checkId(){
         		
             }
         },
-        error:function(){
+        error:function(){ 
             alert("에러입니다");
         }
     });

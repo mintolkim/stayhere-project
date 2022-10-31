@@ -22,7 +22,7 @@ public class HostDAOImpl implements HostDAO {
 	public boolean loginCheck(HostDTO dto) {
 		String name = sqlSession.selectOne("host.logcheck",dto);
 		return (name==null) ? false : true;
-	}
+	} 
 	
 	@Override
 	public HostDTO viewHost(String h_userid) {

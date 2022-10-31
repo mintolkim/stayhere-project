@@ -18,7 +18,7 @@ package com.example.stayhere.controller;
 		   
 		   String newFileName = uid + "_" + fileName;
 		   String imgPath = uploadPath;
-		   
+		    
 		   File target = new File(imgPath, newFileName);
 		   FileCopyUtils.copy(fileData, target);
 		   

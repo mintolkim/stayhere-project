@@ -6,7 +6,7 @@
 <!-- 헤더에 공통 스크립트 또는 스타일시트 추가하기 -->
 <%@ include file="./include/header.jsp"%>
 <!-- 그외 페이지별 들어갈 script & css 추가 영역  start-->
-
+ 
 <!-- 그외 페이지별 들어갈 script & css 추가 영역 end -->
 <title>STAYHERE</title>
  

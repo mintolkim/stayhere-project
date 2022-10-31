@@ -44,8 +44,8 @@ $(function(){
 		document.form1.action="${path}/host/checkPw";
 		document.form1.submit();
 	}); 
-});
-
+}); 
+ 
 </script>
 </head>
 <body class="d-flex flex-column">
@@ -73,7 +73,7 @@ $(function(){
 		 alert("비밀번호가 맞지 않습니다")
 		 </script> 
 		 </c:if>
-	</div>
+	</div> 
   </section>
  </main>
  <!--footer -->

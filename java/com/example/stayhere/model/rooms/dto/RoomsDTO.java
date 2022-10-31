@@ -28,7 +28,7 @@ public class RoomsDTO {
 	private String room_type;
 	private String lat;
 	private String lng;	
-	private int max_people;
+	private int max_people; 
 	private int add_people;
 	private String photo1;//room_photo 테이블
 	private String photo2;//room_photo 테이블

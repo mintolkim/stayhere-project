@@ -30,7 +30,7 @@ public class RoomsServiceImpl implements RoomsService {
 	@Override
 	public List<RoomsDTO> address_list(String cityname, int bed, int bath, String reviewStar, int lower, int higher) {
 		return roomsDao.address_list(cityname, bed, bath, reviewStar, lower, higher);
-	}
+	} 
 
 	@Override
 	public RoomsDTO detailRooms(int room_idx) {
