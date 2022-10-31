@@ -160,4 +160,3 @@ function fileCheck(el) {
  <!--footer -->
  <%@ include file="../include/footer.jsp" %>
 </body>
-</html>

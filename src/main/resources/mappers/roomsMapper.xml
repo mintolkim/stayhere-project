@@ -2,7 +2,6 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="rooms">
 	<!-- 룸정보 불러오기 -->
@@ -224,18 +223,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	photo4=#{photo4}
 	where room_idx=#{room_idx}
 	</update>
+	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

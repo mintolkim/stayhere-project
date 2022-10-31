@@ -10,6 +10,7 @@
 		<typeAlias type="com.example.stayhere.model.guest.dto.GuestDTO" alias="GuestDTO" />
 		<typeAlias type="com.example.stayhere.model.reservations.dto.ReservationsDTO" alias="ReservationsDTO" />
 		<typeAlias type="com.example.stayhere.model.wishlist.dto.WishlistDTO" alias="WishlistDTO" />
+		<typeAlias type="com.example.stayhere.model.review.dto.ReviewDTO" alias="ReviewDTO" />
 	</typeAliases>
  
 </configuration>

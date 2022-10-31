@@ -110,5 +110,32 @@ public class RoomsServiceImpl implements RoomsService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void insert(RoomsDTO dto) {
+		roomsDao.insert(dto);
+	}
+	
+	@Override
+	public RoomsDTO getRoomInfo(int room_idx) {
+		return roomsDao.getRoomInfo(room_idx);
+	}
+	
+	@Override
+	public void deleteConfirm(int room_idx) {
+		roomsDao.deleteConfirm(room_idx);
+	}
+	
+	@Override
+	public void updateRoom(RoomsDTO dto) {
+		roomsDao.updateRoom(dto);
+	}
+	
+	@Override
+	public void updateRoomphoto(RoomsDTO dto) {
+		roomsDao.updateRoomphoto(dto);
+	}	
+	
+	
 
 }

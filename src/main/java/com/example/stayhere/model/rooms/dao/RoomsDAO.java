@@ -22,5 +22,9 @@ public interface RoomsDAO {
 	public int findRoomMinPrice(); // 방가격 최소값
 	public int getRoomOptionCount(String city, String check_in, String check_out);
 	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out);
-
+	public void insert(RoomsDTO dto);
+	public RoomsDTO getRoomInfo(int room_idx);
+	public void deleteConfirm(int room_idx);
+	public void updateRoom(RoomsDTO dto);
+	public void updateRoomphoto(RoomsDTO dto);  
 }

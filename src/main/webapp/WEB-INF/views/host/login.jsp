@@ -103,4 +103,3 @@ function enter() {
  <!--footer -->
  <%@ include file="../include/footer.jsp" %>
 </body>
-</html>

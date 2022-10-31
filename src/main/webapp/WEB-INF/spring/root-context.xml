@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -27,7 +26,7 @@
 		<!-- 연결문자열에 log4jdbc가 추가됨 -->
 		<property name="url"
 			value="jdbc:log4jdbc:oracle:thin:@localhost:1521/xe" />
-		<property name="username" value="f_project" />
+		<property name="username" value="spring" />
 		<property name="password" value="1234" />
 	</bean>
 
@@ -79,5 +78,3 @@
 	
 	
 </beans>
-
-

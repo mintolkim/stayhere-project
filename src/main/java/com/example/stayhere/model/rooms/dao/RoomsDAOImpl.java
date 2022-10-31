@@ -133,5 +133,32 @@ public class RoomsDAOImpl implements RoomsDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void insert(RoomsDTO dto) {
+		sqlSession.insert("rooms.insert",dto);
+	}
+	
+	@Override
+	public RoomsDTO getRoomInfo(int room_idx) {
+		return sqlSession.selectOne("rooms.getRoomInfo", room_idx);
+	}
+	
+	@Override
+	public void deleteConfirm(int room_idx) {
+		sqlSession.update("rooms.deleteConfirm",room_idx);
+	}
+	
+	@Override
+	public void updateRoom(RoomsDTO dto) {
+		sqlSession.update("rooms.updateRoom",dto);
+	}
+	
+	@Override
+	public void updateRoomphoto(RoomsDTO dto) {
+		sqlSession.update("rooms.updateRoomphoto",dto);
+	}	
+	
+	
 }
 

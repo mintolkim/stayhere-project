@@ -1,5 +1,6 @@
 package com.example.stayhere.service.review;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,7 +24,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public List<String> getAttach(int review_idx) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method
 		return null;
 	}
 
@@ -41,8 +42,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public void create(ReviewDTO dto) throws Exception {
-		// TODO Auto-generated method stub
-
+		reviewDao.create(dto);
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewDTO> listAll() throws Exception {
-		return reviewDao.listAll();
+	public List<ReviewDTO> listAll(int start, int end) throws Exception {
+		return reviewDao.listAll(start, end);
 	}
 
 	@Override
@@ -70,8 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public int countArticle() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return reviewDao.countArticle();
 	}
 
 	@Override
@@ -79,7 +78,7 @@ public class ReviewServiceImpl implements ReviewService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public List<ReviewDTO> reviewsByRoom(int room_idx) {
 		return reviewDao.reviewsByRoom(room_idx);
@@ -93,6 +92,18 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public double starByRoom(int room_idx) {
 		return reviewDao.starByRoom(room_idx);
+	}
+
+	@Override
+	public List<ReviewDTO> reviewsCategory(int review_idx, Date write_date, int view_count, int review_star) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ReviewDTO> reviewsByUser(int userid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

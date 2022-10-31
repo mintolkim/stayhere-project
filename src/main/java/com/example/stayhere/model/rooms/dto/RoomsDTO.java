@@ -31,6 +31,7 @@ public class RoomsDTO {
 	private String room_type;
 	private String lat;
 	private String lng;	
+	private String admin_confirm;
 	private int max_people;//최대인원
 	private int add_people;//추가인원 
 	private String photo1;//room_photo 테이블

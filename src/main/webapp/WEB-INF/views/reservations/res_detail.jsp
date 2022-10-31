@@ -239,4 +239,3 @@ function request_pay() {
 }
 </script>
 </body>
-</html>
