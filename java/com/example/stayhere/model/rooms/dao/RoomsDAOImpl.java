@@ -25,7 +25,7 @@ public class RoomsDAOImpl implements RoomsDAO {
 		map.put("bath", bath);
 		map.put("reviewStar", reviewStar);
 		map.put("lower", lower);
-		map.put("higher",higher);
+		map.put("higher",higher); 
 		return sqlSession.selectList("search.listMap",map);
 	}
 

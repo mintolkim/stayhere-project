@@ -14,7 +14,7 @@ public class RoomsDTO {
 	private int room_idx;
 	private String h_userid;
 	private String room_name;
-	private int room_price;
+	private int room_price; 
 	private String contents;
 	private String city;
 	private String country;

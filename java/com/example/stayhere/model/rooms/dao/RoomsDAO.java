@@ -19,5 +19,5 @@ public interface RoomsDAO {
 	public RoomsDTO getRoomInfo(int room_idx);
 	public void deleteConfirm(int room_idx);
 	public void updateRoom(RoomsDTO dto);
-	public void updateRoomphoto(RoomsDTO dto); 
+	public void updateRoomphoto(RoomsDTO dto);  
 }
