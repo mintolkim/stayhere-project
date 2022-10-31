@@ -101,7 +101,7 @@
 						<textarea id="review_content" name="review_content"	placeholder="내용을 입력하세요"></textarea>
 					</div>
 					<div class="btn btnSubmit">
-						<!-- 삭제는 임시버튼 유저리뷰리스트 만들면 이동 -->
+						<!-- 삭제는 임시버튼 유저리뷰리스트 만들고 이동 -->
 						<button class="btn btnSubmit2 btn-outline-warning" type="submit" id="btnUpdate">수정</button>
 						<button class="btn btnSubmit2 btn-outline-warning" type="submit" id="btnDelete">삭제</button>
 						<button class="btn btnSubmit2 btn-warning" type="submit" id="btnInsert">작성</button>

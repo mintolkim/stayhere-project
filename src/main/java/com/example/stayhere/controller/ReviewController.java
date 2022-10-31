@@ -39,7 +39,7 @@ public class ReviewController {
 	public ModelAndView list(@RequestParam(defaultValue = "1")int curPage) throws Exception{
 		int review_count = reviewService.countArticle();//레코드 갯수 계산
 		//페이지 설정
-		Pager pager = new Pager(6,review_count, curPage);//한 페이지당 6개
+		Pager pager = new Pager(6,review_count, curPage);//한 페이지당 6개개
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
 		List<ReviewDTO> list = reviewService.listAll(start, end);

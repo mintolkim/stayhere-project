@@ -32,7 +32,7 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 	@Override
 	public void delete(int review_idx) throws Exception {
-		// TODO Auto-generated method stubb
+		// TODO Auto-generated method stu
 
 	}
 

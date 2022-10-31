@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		) where rn between #{start} and #{end}
 	</select>
 	
-	<!-- 리뷰작성(룸 연동필요) -->
+	<!-- 리뷰작성 -->
 	<select id="insert" resultType="ReviewDTO">
 		INSERT INTO Review(review_idx, room_idx, r_title, review_content) 
 		VALUES (Review_seq.nextval, 3, #{r_title}, #{review_content})

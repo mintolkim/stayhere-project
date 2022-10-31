@@ -14,7 +14,7 @@ public interface ReviewDAO {
 	public ReviewDTO read(int review_idx) throws Exception; //레코드 조회
 	public List<ReviewDTO> reviewsCategory(int review_idx, Date write_date, int view_count, int review_star);//조회(최신순, 조회수, 별점순)
 	public List<ReviewDTO> listAll(int start, int end) throws Exception; //전체목록
-	public List<ReviewDTO> reviewsByUser(int userid);//유저별 리뷰 목록
+	public List<ReviewDTO> reviewsByUser(int userid);//유저별 리뷰 목록록
 	public List<ReviewDTO> reviewsByRoom(int room_idx);//숙소 별 리뷰 목록
 	public int countByRoom(int room_idx);//숙소 별 후기 개수
 	public double starByRoom(int room_idx);//숙소 별 별점 평균점수

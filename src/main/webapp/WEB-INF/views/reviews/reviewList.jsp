@@ -93,7 +93,7 @@
 							<div class="card-body p-4">
 								<div class="badge bg-primary bg-gradient rounded-pill mb-2">Best</div>
 								<a class="text-decoration-none link-dark stretched-link"
-									href="#!"><div class="h5 card-title mb-3">성공적인 여행</div></a>
+									href="#!"><div class="h5 card-title mb-3">성공적인여행</div></a>
 								<p class="card-text mb-0">(대충 숙소가 좋아 여행이 성공적이라는 내용)</p>
 							</div>
 							<div class="card-footer p-4 pt-0 bg-transparent border-top-0">
