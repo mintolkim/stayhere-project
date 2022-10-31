@@ -10,7 +10,6 @@
 		<img src="${path}/resources/images/load_img.gif" alt="loading">
 	</div>
 
-
 	<main class="flex-shrink-0">
 		<!-- nav bar -->
 		<header class="sticky-top">

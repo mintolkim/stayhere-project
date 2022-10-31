@@ -5,13 +5,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="review">
-	<select id="listAll"
-		resultType="com.example.stayhere.model.review.dto.ReviewDTO">
-		select review_idx, r_title, review_star, review_content,
-		userid, write_date, view_count
-		from review
-		order by review_idx desc
+	<!-- 기본리뷰화면 -->
+	<select id="listAll" resultType="ReviewDTO">
+		select * 
+			from (
+				select rownum as rn, A.*
+				from(
+					select review_idx, r_title, review_star, review_content,
+					g.name, write_date, view_count
+					from review r, guest g
+					order by review_idx desc
+				) A
+		) where rn between #{start} and #{end}
 	</select>
+	
+	<!-- 리뷰작성(룸 연동필요) -->
+	<select id="insert" resultType="ReviewDTO">
+		INSERT INTO Review(review_idx, room_idx, r_title, review_content) 
+		VALUES (Review_seq.nextval, 3, #{r_title}, #{review_content})
+	</select>
+	
+	<!-- 리뷰레코드 갯수 계산 -->
+	<select id="countArticle" resultType="int">
+		SELECT COUNT(*) 
+		FROM Review
+	</select>
+	
+	
 </mapper>
 
 
