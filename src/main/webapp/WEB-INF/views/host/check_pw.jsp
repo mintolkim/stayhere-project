@@ -19,7 +19,7 @@
 	width: 296px;
 	height: 40px;
 
-}
+} 
 
 .btn{
 	width: 296px;
