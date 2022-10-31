@@ -72,7 +72,7 @@ label {
             </c:if>
             </div>
           
-   	        <div class="card">
+   	        <div class="card"> 
             <div class="row no-gutters">
             <div class="col-4">
             <img src="${path}/${row.photo1}" style="height: 190px; width: 200px;" class="card-img" />

@@ -12,7 +12,7 @@ public interface HostDAO {
 	 public HostDTO viewHost(String h_userid);
 	 public void insert(HostDTO host);
 	 public int idCheck(String h_userid);
-	 public void update(HostDTO host);
+	 public void update(HostDTO host); 
 	 public void delete(String h_userid);
 	 public List<RoomsDTO> rooms_Confirm(String h_userid);
 	 public boolean delete_check(RoomsDTO dto);

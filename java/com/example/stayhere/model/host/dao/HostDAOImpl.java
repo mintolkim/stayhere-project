@@ -27,7 +27,7 @@ public class HostDAOImpl implements HostDAO {
 	@Override
 	public HostDTO viewHost(String h_userid) {
 		return sqlSession.selectOne("host.viewHost",h_userid);
-	}
+	} 
 	
 	@Override
 	public void insert(HostDTO host) {

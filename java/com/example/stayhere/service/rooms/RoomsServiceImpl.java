@@ -34,7 +34,7 @@ public class RoomsServiceImpl implements RoomsService {
 
 	@Override
 	public RoomsDTO detailRooms(int room_idx) {
-		return roomsDao.detailRooms(room_idx);
+		return roomsDao.detailRooms(room_idx); 
 	}
 
 	@Override

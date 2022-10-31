@@ -18,7 +18,7 @@
 button { margin-top: 8%; }
 </style>
 <script type="text/javascript">
-$(function(){
+$(function(){ 
 	$("#sub").click(function(){
 		if($("#check").is(':checked')){
 			

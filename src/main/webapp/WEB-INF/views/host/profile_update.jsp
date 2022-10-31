@@ -80,7 +80,7 @@ $(function(){
 		document.form1.action="${path}/host/updateImg";
 		document.form1.submit();
 
-	});
+	}); 
 });
 
 function fileCheck(el) { 

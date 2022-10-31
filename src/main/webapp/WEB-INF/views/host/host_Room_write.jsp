@@ -87,7 +87,7 @@ $("#address1").click(function(){
         	geocoder.addressSearch(address1, callback);  
         }
     }).open()
-});
+}); 
  
 var callback = function(result, status) {
 	if (status === kakao.maps.services.Status.OK) {

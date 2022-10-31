@@ -92,7 +92,7 @@ function enter() {
 	<br>
 	<a href="#">Forgot Password?</a> <a href="${path}/host/join.do">Sign up</a>
 	<br>
-	<br>
+	<br> 
 	<c:if test="${message == 'join' }"><div style="color:blue; font-size: 10px;">로그인 하신 후 사용하세요.</div></c:if>
 	<c:if test="${message == 'error' }"><div style="color:red; font-size: 10px;">아이디 또는 비밀번호가 일치하지 않습니다.</div></c:if>
 	<c:if test="${message == 'logout' }"><div style="color:blue; font-size: 10px;">로그아웃 처리되었습니다.</div></c:if>

@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <select id="idCheck" resultType="int">
   	select count(h_userid) from Host where h_userid=#{h_userid}
-</select>
+</select> 
  
 <insert id="insert" parameterType="HostDTO">
 	insert into Host(h_userid,h_name,h_passwd,h_email,h_phone,h_manager_num) 

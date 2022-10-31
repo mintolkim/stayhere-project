@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from rooms 
 		where room_idx=#{room_idx}
 	</select>
-	 
+	  
 	<!-- 룸정보 불러오기 -->
 	<select id="getRoomAllList" resultType="RoomsDTO">
 		select *

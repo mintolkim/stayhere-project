@@ -20,7 +20,7 @@ public class HostServiceImpl implements HostService {
 	@Override
 	public boolean loginCheck(HostDTO dto, HttpSession session) {
 		boolean result =hostDao.loginCheck(dto);
-		if(result) {//로그인 성공
+		if(result) {//로그인 성공 
 			//세션변수에 값 저장
 			HostDTO dto2=viewHost(dto.getH_userid());
 			//setAttribute("변수명",값)

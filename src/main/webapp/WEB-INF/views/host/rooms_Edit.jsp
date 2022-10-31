@@ -61,7 +61,7 @@ label {
 	border-radius: 10%;
 	background: #f7f7f7;
 	font-weight: 800;
-	border: none;
+	border: none; 
 }
 #plus1, #plus2, #plus3, #plus4, #plus5{
 	width: 30px;

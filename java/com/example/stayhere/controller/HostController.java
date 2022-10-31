@@ -33,7 +33,7 @@ public class HostController {
 
 	@RequestMapping("login.do")
 	public String login() {
-		return "host/login";
+		return "host/login"; 
 	}  
 	
 	@RequestMapping("login_check")

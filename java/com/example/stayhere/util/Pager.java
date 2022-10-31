@@ -16,7 +16,7 @@ public class Pager {
 	private int pageBegin; // #{start} 변수에 전달될 값
 	private int pageEnd; // #{end} 변수에 전달될 값
 	private int blockBegin; // 블록의 시작페이지 번호
-	private int blockEnd; // 블록의 끝페이지 번호
+	private int blockEnd; // 블록의 끝페이지 번호 
 
 	// Pager(페이지당 게시물 수, 레코드갯수, 출력할페이지번호)
 	public Pager(int pageScale, int count, int curPage) {

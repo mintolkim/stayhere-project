@@ -10,5 +10,5 @@
 		<typeAlias type="com.example.stayhere.model.host.dto.HostDTO" alias="HostDTO" />
 		<typeAlias type="com.example.stayhere.model.reservations.dto.ReservationsDTO" alias="ReservationsDTO" />
 	</typeAliases>
-
+ 
 </configuration>

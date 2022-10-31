@@ -24,7 +24,7 @@
 .btn{
 	width: 296px;
 	height: 40px;
-	background-color: #ffcd4a;
+	background-color: #ffcd4a; 
 }
 
 a {

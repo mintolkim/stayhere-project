@@ -78,7 +78,7 @@ label {
           <div class="col-4">
           <img src="${path}/${row.photo1}" style="height: 190px; width: 200px;" class="card-img" />
           </div>
-          <div class="col-8">
+          <div class="col-8"> 
           <div class="card-body">
           <div style="margin-bottom: 1%;">
           <b class="card-title lead" style="font-size: 20px; font-weight: 650">${row.room_name}</b><br>

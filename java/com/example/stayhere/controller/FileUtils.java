@@ -21,7 +21,7 @@ package com.example.stayhere.controller;
 		    
 		   File target = new File(imgPath, newFileName);
 		   FileCopyUtils.copy(fileData, target);
-		   
+		    
 		   
 		   return newFileName;
 		   

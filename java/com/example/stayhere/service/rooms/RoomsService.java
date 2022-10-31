@@ -18,7 +18,7 @@ public interface RoomsService {
 	public void insert(RoomsDTO dto); 
 	public RoomsDTO getRoomInfo(int room_idx);
 	public void deleteConfirm(int room_idx);
-	public void updateRoom(RoomsDTO dto);
+	public void updateRoom(RoomsDTO dto); 
 	public void updateRoomphoto(RoomsDTO dto);
 }
 
