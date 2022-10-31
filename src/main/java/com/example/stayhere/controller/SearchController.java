@@ -31,6 +31,7 @@ public class SearchController {
 	@Inject
 	RoomsService roomsService;
 	
+
 	@RequestMapping(value = "search/map/{cityname}/{checkin_date}/{checkout_date}"
 			,method = RequestMethod.GET)
 	public ModelAndView listMap(

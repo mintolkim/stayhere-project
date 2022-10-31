@@ -113,6 +113,18 @@ function loginKakao() {
     </div>
 	</form>
 
+	<br>
+	<a href="#">Forgot Password?</a> <a href="${path}/guest/join.do">Signup</a>
+	<br>
+	<br>
+	<!-- LoginInterceptor message -->
+	<c:if test="${param.msg == 'nologin' }">
+	 <script> 
+	  alert("로그인이 필요합니다.");
+	 </script>
+	</c:if>
+
+
     <br>
 <%--     <div id="naver_id_login" style="text-align: center">
     	<a href="${url}"><img width="296" height="45" src="${path}/resources/images/naver_login.png" /></a>
@@ -120,6 +132,7 @@ function loginKakao() {
 		<%-- <a href="${naverAuthUrl}">
         	<img width="296" height="45" src="${path}/resources/images/naver_login.png" />
         </a> --%> 
+
 	<c:if test="${message == 'join' }"><div style="color:blue; font-size: 10px;">로그인 하신 후 사용하세요.</div></c:if>
 	<c:if test="${message == 'error' }">
 	 <% out.println("<script>"); 

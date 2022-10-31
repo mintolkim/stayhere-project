@@ -1,19 +1,14 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <%@ include file="../include/header.jsp"%>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>STAYHERE</title>
-<!-- Favicon-->
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- font awesome 아이콘 -->
 <script src="https://kit.fontawesome.com/fdfee59c02.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- Bootstrap icons-->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
 <!-- datepicker bootstrap -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">
@@ -26,7 +21,6 @@
 <!-- 지도api -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6013ab79a6af6749ee495db13ec37e86"></script>
 <!-- Core theme CSS (includes Bootstrap)-->
-<link href="${path }/resources/css/styles.css" rel="stylesheet" />
 <link href="${path }/resources/css/datepicker.css" rel="stylesheet" />
 <style type="text/css">
 .mapcontainer{
@@ -50,6 +44,9 @@ left:0px;
 .pd_top{
 padding-top:0px;
 }
+.map_fix{
+position:fixed;
+top: 80px;}
 #map{
 position: fixed;
 width: 100%;
@@ -96,8 +93,8 @@ transition: 0.3s;
 .slider > .range {
   position: absolute;
   z-index: 2;
-  left: 10%;
-  right: 10%;
+  left: 12%;
+  right: 12%;
   top: 0;
   bottom: 0;
   border-radius: 5px;
@@ -166,14 +163,18 @@ $(document).ready(function(){
 		var docScrollY = $(document).scrollTop();
 		var barThis = $("#topBar");
 		var fixNext = $("#fixNextTag");
+		var map = $("#map");
 		if( docScrollY > topBar.top ) {
 		 barThis.addClass("top_bar_fix");
 		 fixNext.addClass("pd_top");
+		 map.addClass("map_fix");
 		}else{
 			barThis.removeClass("top_bar_fix");
 			fixNext.removeClass("pd_top");
+			 map.removeClass("map_fix");
 		}
 	});
+	
 	//가격범위
 	const inputLeft = document.getElementById("input-left");
 	const inputRight = document.getElementById("input-right");
@@ -192,6 +193,7 @@ $(document).ready(function(){
 	  thumbLeft.style.left = percent + "%";
 	  range.style.left = percent + "%";
 	};
+
 
 	const setRightValue = () => {
 	  const _this = inputRight;
@@ -212,11 +214,7 @@ $(document).ready(function(){
 	inputRight.oninput = function() {
 		document.getElementById("higher_price").innerHTML = priceToString(this.value);
     }
-});
-function priceToString(price) {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-$(function(){
+//검색 옵션
 	var star = "${map.reviewStar}";
 	var bed = "${map.bed}";
 	var bath = "${map.bath}";
@@ -269,7 +267,7 @@ for(var k in adrList){
     var $obj = adrList[k];
     adrArray.push({
     	content : '<div style="height:155px;padding:5px;">'+
-    	'<img src="${path}/images/'+$obj.photo1+'"style="width:100%;height:100px;"><br>'+
+    	'<img src="${path}/resources/images/'+$obj.photo1+'"style="width:100%;height:100px;"><br>'+
     	'<span style="font-size:12px;"><b>'+$obj.room_name+'</b></span><br>'+
     	'<span style="font-size:12px;">'+$obj.room_price.toLocaleString()+'원</span></div>',
     	latlng: new kakao.maps.LatLng($obj.lat,$obj.lng),
@@ -329,7 +327,9 @@ function changeoption(){
 	}
 	$("#optionform").submit();
 }
-
+function priceToString(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
 </script>
 </head>
 <body class="d-flex flex-column h-100">
@@ -340,7 +340,7 @@ function changeoption(){
 <section class="py-4" id="features"> 
 <div class="mapcontainer">
 	<!--검색바  -->
-	<form autocomplete="off" id="optionform" name="form1" method="get"	action="${path}/search/listMap/${map.cityname}/${map.checkin_date}/${map.checkout_date}">
+	<form autocomplete="off" id="optionform" name="form1" method="get"	action="${path}/search/listMap.do">
     <div class="flex-sm-row flex-column d-flex">
       <div class="form-floating">
       <input type="text" class="form-control" name="cityname" id="cityname" value="${map.cityname }" placeholder="지역명을 입력하세요" size="60"
@@ -427,12 +427,12 @@ function changeoption(){
                         <div class="card h-100">
                             <!-- Product image-->
 								<div class="bxslider">
-									<div><img class="card-img-top"src="${path }/images/${room.photo1}" title="${room.address1 }"></div>
-									<div><img class="card-img-top"src="${path }/images/${room.photo2}" title="${room.address1 }"></div>
-									<div><img class="card-img-top"src="${path }/images/${room.photo3}" title="${room.address1 }"></div>
-									<div><img class="card-img-top"src="${path }/images/${room.photo4}" title="${room.address1 }"></div>
+									<div><img class="card-img-top" src="${path }/resources/images/${room.photo1}" title="${room.address1 }"></div>
+									<div><img class="card-img-top" src="${path }/resources/images/${room.photo2}" title="${room.address1 }"></div>
+									<div><img class="card-img-top" src="${path }/resources/images/${room.photo3}" title="${room.address1 }"></div>
+									<div><img class="card-img-top" src="${path }/resources/images/${room.photo4}" title="${room.address1 }"></div>
 								</div>
-								<script>
+								<script type="text/javascript">
 									$('.bxslider').bxSlider({
 										mode : 'horizontal',
 										captions : true,
@@ -473,12 +473,5 @@ function changeoption(){
   </div>
  </section> 
 </main>
-<!--footer -->
- <!-- Bootstrap core JS-->
-	 <script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-	<!-- Core theme JS-->
-	<script src="${path }/resources/js/scripts.js"></script>
-	<!-- Footer-->
 </body>
 </html>
