@@ -4,6 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<c:set var="path" value="${pageContext.request.contextPath}" />
+
 <c:forEach var="row" items="${map.list}">
 	<section class="list-item col-xl-2 col-lg-3 col-md-4 col-sm-6">
 		<a href="${path}/rooms/detail/${row.room_idx}"

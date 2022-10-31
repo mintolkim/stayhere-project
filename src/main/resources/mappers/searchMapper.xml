@@ -4,6 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="search">
+
 <!-- 숙소검색(지도검색) -->
 	<select id="listMap" resultType="com.example.stayhere.model.rooms.dto.RoomsDTO">
 	 select * 
@@ -36,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 (city like #{cityname} or country like #{cityname} or address1 like #{cityname} or address2 like #{cityname}))A
 	 ) where review_star <![CDATA[>=]]> #{reviewStar}
 	</select>
+	
 <!--검색 주소리스트 -->	
 	<select id="address_list" resultType="com.example.stayhere.model.rooms.dto.RoomsDTO">
 	select lat,lng,room_name,room_price,photo1
@@ -52,6 +54,186 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 (city like #{cityname} or country like #{cityname} or address1 like #{cityname} or address2 like #{cityname}))A
 	 ) where review_star <![CDATA[>=]]> #{reviewStar}
 	</select>
+	
+	
+	<!-- 기본검색 룸 갯수 -->
+	<select id="getRoomDefalutCount" resultType="int">
+		select count(*) from rooms
+		where check_in=#{checkin_date} and check_out=#{checkout_date} and 
+     (city like #{cityname} or country like #{cityname} or address1 like #{cityname})
+	</select>
+	
+	
+	<!-- 옵션검색 리스트 불러오기 -->
+	<select id="getRoomDefalutList" resultType="RoomsDTO">
+		select * from (
+			select A.* , rownum as rn from ( select
+				r.room_idx,
+				r.room_name,
+				r.room_price,
+				r.contents,
+				r.city,
+				r.country,
+				r.address1,
+				r.address2,
+				r.zipcode,
+				r.check_in,
+				r.check_out,
+				r.beds,
+				r.baths,
+				r.room_type,
+				r.max_people,
+				nvl(r.lat,0),
+				nvl(r.lng,0),
+				rp.photo1,
+				rp.photo2,
+				rp.photo3,
+				rp.photo4,
+				(select count(*) from review where room_idx=r.room_idx)review_count,
+				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
+				from rooms r join	room_photo rp on r.room_idx = rp.room_idx
+				where check_in=#{checkin_date} and check_out=#{checkout_date} and 
+      	(city like #{cityname} or country like #{cityname} or address1 like #{cityname})
+				) A
+		) where rn between #{start} and #{end}
+	</select>
+	
+		
+	
+	<!-- 옵션검색 룸 갯수 -->
+	<select id="getRoomOptionCount" resultType="int">
+		select count(*) from ( 
+		select
+			(select count(*) from reservations where room_idx= r.room_idx)	res_count,
+			(select count(*) from review where room_idx= r.room_idx)review_count,
+			(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
+			from rooms r 
+				<include refid="search_option_where" />
+				<include refid="search_option_order" />
+		) 
+		<if test="reviewStar != null and reviewStar > 0">
+			where review_star<![CDATA[>=]]>#{reviewStar}
+		</if>
+	</select>
+	
+	
+	
+	<!-- 옵션검색 리스트 불러오기 -->
+	<select id="getRoomOptionList" resultType="RoomsDTO">
+		select * from (
+			select A.* , rownum as rn from ( select
+				r.room_idx,
+				r.room_name,
+				r.room_price,
+				r.contents,
+				r.city,
+				r.country,
+				r.address1,
+				r.address2,
+				r.zipcode,
+				r.check_in,
+				r.check_out,
+				r.beds,
+				r.baths,
+				r.room_type,
+				r.max_people,
+				nvl(r.lat,0),
+				nvl(r.lng,0),
+				rp.photo1,
+				rp.photo2,
+				rp.photo3,
+				rp.photo4,
+				(select count(*) from reservations where room_idx=r.room_idx)	res_count,
+				(select count(*) from review where room_idx=r.room_idx)review_count,
+				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
+				from rooms r join	room_photo rp on r.room_idx = rp.room_idx
+				<include refid="search_option_where" />
+				<include refid="search_option_order" />
+				) A
+		) 
+		<choose>
+			<when test="reviewStar != null and reviewStar > 0">
+				where review_star<![CDATA[>=]]>#{reviewStar}
+				and rn between #{start} and #{end}
+			</when>
+			<otherwise>
+				where rn between #{start} and #{end}
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 룸 가격 최대값  -->
+	<select id="findRoomMaxPrice" resultType="int">
+		select nvl(max(room_price),0) from rooms
+	</select>
+	
+	<!-- 룸 가격 최소값  -->
+	<select id="findRoomMinPrice" resultType="int">
+		select nvl(min(room_price),0) from rooms
+	</select>
+	
+	
+	
+	
+	<!-- 
+			@ include 영역 
+			@ 공통된 영역은 아래와 같이 작성 
+			@ 이외 단일 옵션은 위쪽에 작성한다.
+	 -->
+	
+	<!-- 검색 옵션 조건 where 절-->
+	<sql id="search_option_where">
+		where check_in=#{checkin_date} and check_out=#{checkout_date} and
+				(city like #{cityname} or country like #{cityname} or address1 like #{cityname})
+				
+				<choose>
+					<when test="bed >= 4">
+					 	and beds >= ${bed}
+					</when>
+					<when test="bed != null">
+						and beds = ${bed}
+					</when>
+				</choose>
+				
+				<choose>
+					<when test="bath >= 4">
+					 	and baths >= ${bath}
+					</when>
+					<when test="bath != null">
+						and baths = ${bath}
+					</when>
+				</choose>
+
+				<if test="people != null">
+					and max_people >= ${people}
+				</if>
+				<if test="lower != null and higher != null">
+					and room_price between #{lower} and #{higher}
+				</if>
+	</sql>
+	
+	<!-- 검색 옵션 정렬 조건 order by  절 -->
+	<sql id="search_option_order">
+		<choose>
+					<when test="sort == 'price_desc'">
+						order by room_price desc, baths asc, beds asc 
+					</when>
+					<when test="sort == 'price_asc'">
+						order by room_price asc, baths asc, beds asc 
+					</when>
+					<when test="sort == 'review_asc'">
+						order by review_count asc, baths asc, beds asc 
+					</when>
+					<when test="sort == 'review_desc'">
+						order by review_count desc, baths asc, beds asc 
+					</when>
+					<otherwise>
+						order by res_count desc, baths asc, beds asc
+					</otherwise>
+				</choose>
+	</sql>
+	
+
 </mapper>
 
 

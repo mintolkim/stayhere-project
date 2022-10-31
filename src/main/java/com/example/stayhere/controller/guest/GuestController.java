@@ -55,7 +55,7 @@ public class GuestController {
 		ModelAndView mav = new ModelAndView();
 		if(result) {
 			//로그인 성공시 메인페이지로 이동
-			mav.setViewName("main");
+			mav.setViewName("redirect:/main");
 		} else {
 			//로그인 실패시 로그인 페이지로 리턴
 			mav.setViewName("guest/guest_login");

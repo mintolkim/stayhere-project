@@ -75,28 +75,52 @@ public class RoomsDAOImpl implements RoomsDAO {
 	public int getRoomAllCount() {
 		return sqlSession.selectOne("rooms.getRoomAllCount");
 	}
-
+	
 	@Override
-	public int getRoomOptionCount(String city, String check_in, String check_out) {
+	public int getRoomDefalutCount(String cityname, String checkin_date, String checkout_date) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("city", city);
-		map.put("check_in", check_in);
-		map.put("check_out", check_out);
-		return sqlSession.selectOne("rooms.getRoomOptionCount", map);
+		map.put("cityname", "%"+cityname+"%");
+		map.put("checkin_date", checkin_date);
+		map.put("checkout_date", checkout_date);
+		return sqlSession.selectOne("search.getRoomDefalutCount", map);
 	}
 
 	@Override
-	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out) {
+	public List<RoomsDTO> getRoomDefalutList(int start, int end, String cityname, String checkin_date,
+			String checkout_date) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("start", start);
 		map.put("end", end);
-		map.put("city", city);
-		map.put("check_in", check_in);
-		map.put("check_out", check_out);
-		return sqlSession.selectList("rooms.getRoomOptionList", map);
+		map.put("cityname", "%"+cityname+"%");
+		map.put("checkin_date", checkin_date);
+		map.put("checkout_date", checkout_date);
+		return sqlSession.selectList("search.getRoomDefalutList", map);
+	}
+	
+
+	@Override
+	public int getRoomOptionCount(Map<String, Object> param) {
+		String cityname = (String)param.get("cityname");
+		param.put("cityname", "%"+cityname+"%");
+		return sqlSession.selectOne("search.getRoomOptionCount", param);
 	}
 
-	
+	@Override
+	public List<RoomsDTO> getRoomOptionList(int start, int end,Map<String, Object> param) {
+		param.put("start", start);
+		param.put("end", end);
+		return sqlSession.selectList("search.getRoomOptionList", param);
+	}
+
+	@Override
+	public int findRoomMaxPrice() {
+		return sqlSession.selectOne("search.findRoomMaxPrice");
+	}
+
+	@Override
+	public int findRoomMinPrice() {
+		return sqlSession.selectOne("search.findRoomMinPrice");
+	}
 
 }
 

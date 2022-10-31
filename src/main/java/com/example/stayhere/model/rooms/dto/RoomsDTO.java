@@ -33,7 +33,8 @@ public class RoomsDTO {
 	private String photo2;//room_photo 테이블
 	private String photo3;//room_photo 테이블
 	private String photo4;//room_photo 테이블
+	//임의추가영역
 	private double review_star;//리뷰별점평균(review테이블)
 	private int review_count;//리뷰갯수(review테이블)
-    
+	private int res_count; //예약갯수
 }

@@ -24,11 +24,24 @@
 .card-img-size {
     height: 280px;
     min-height: 280px;
+}
 
+.card-img-size-h-300 {
+    height: 300px;
+    min-height: 300px;
 }
 
 .rounded-img {
     border-radius: 1rem !important;
+}
+
+.rounded-5 {
+    border-radius: 1rem !important;
+  }
+
+.rounded-img-start {
+    border-bottom-left-radius: 1rem !important;
+    border-top-left-radius: 1rem !important;
 }
 
 .navbar-logo {
@@ -45,6 +58,9 @@
     color: var(--bs-gray-700);
 }
 
+.form-control[readonly]{
+	background-color: #fff !important;
+}
 
 /* 커스텀 버튼 */
 .btn-custom {
@@ -59,24 +75,50 @@
     border-color: #ffa726;
 }
 
-.search-bar {
-    border-radius: 10rem;
-    background: #fff;
-    /* box-shadow: 0 0 1rem rgb(0 0 0 / 15%); */
-}
-
 .card-img-overlay-top {
     position: absolute;
     top : 0.5rem;
     right: 0.5rem;
     left: 0.5rem;
+    z-index: 2;
+}
+
+
+/* search bar영역*/
+.search-wrap{
+	background-color: #fff;
+}
+
+.search-wrap.fixed{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #fff;
+    padding: 8px 0;
     z-index: 3;
 }
 
-@media (max-width: 999px) {
-    .search-bar {
-        border-radius: 20px;
-    }
+
+.filter-option-wrap {
+    transition: 0.3s;
+}
+
+.filter-option-wrap.fixed{
+    position: fixed;
+    bottom:88px;
+    width: 16.5%;
+    background-color: #fff;
+    z-index: 3;
+}
+
+
+
+.search-bar {
+    border-radius: 10rem;
+    background: #fff;
+    /* box-shadow: 0 0 1rem rgb(0 0 0 / 15%); */
 }
 
 .search-bar .form-group::after {
@@ -90,7 +132,11 @@
     right: 0;
 }
 
-@media (max-width: 999px) {
+@media (max-width: 991px) {
+    .search-bar {
+        border-radius: 20px;
+    }
+
     .search-bar .form-group{
         width: 100%;
     }
@@ -108,4 +154,26 @@
         bottom: 0;
         left: 50%;
     }
+   
+    
+    .filter-option-wrap.fixed{
+        position: static;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0
+    }
+    
 }
+
+
+@media (max-width: 767px){
+	
+	.rounded-img-start {
+    border-top-left-radius: 1rem !important;
+    border-top-right-radius: 1rem !important;
+    border-bottom-left-radius: 0rem !important;
+	}
+
+}
+
+
