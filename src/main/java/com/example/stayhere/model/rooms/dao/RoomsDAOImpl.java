@@ -121,6 +121,17 @@ public class RoomsDAOImpl implements RoomsDAO {
 	public int findRoomMinPrice() {
 		return sqlSession.selectOne("search.findRoomMinPrice");
 	}
-
+	
+	@Override
+	public int getRoomOptionCount(String city, String check_in, String check_out) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 

@@ -98,6 +98,17 @@ public class RoomsServiceImpl implements RoomsService {
 		//date1.equals(date2) : 동일한 시점 true
 		return checkDate.after(nowDate);
 	}
-
+	
+	@Override
+	public int getRoomOptionCount(String city, String check_in, String check_out) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

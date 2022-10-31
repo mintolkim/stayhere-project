@@ -5,14 +5,139 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="reservations">
-
+	
+	<!-- 예약 데이터 저장 -->
 	<insert id="insert">
-	insert into Reservations (res_idx,userid,room_idx,h_userid,checkin_date,checkout_date,res_state,total_price,res_person)
-	values (Reservations_seq.nextval,#{userid},#{room_idx},#{h_userid}
-	,#{checkin_date, jdbcType= DATE}
-	,#{checkout_date, jdbcType= DATE}
-	,#{res_state},#{room_price},#{res_person})
+		insert into Reservations (res_idx,userid,name,phone,room_idx,h_userid,checkin_date,checkout_date,total_price,res_person,night)
+		values (Reservations_seq.nextval,#{userid},#{name},#{phone},#{room_idx},#{h_userid}
+		,#{checkin_date}
+		,#{checkout_date}
+		,#{total_price},#{res_person},#{night})
 	</insert>
+	
+	<!-- 예약 날짜 저장 -->
+	<insert id="insertReserved">
+		insert into Reserved (room_idx, re_date)
+		values(#{room_idx}, #{re_date})
+	</insert>
+	
+	<!-- 예약 정보 불러오기 -->
+	<select id="getReserveDetail" resultType="com.example.stayhere.model.reservations.dto.ReservationsDTO">
+		select * from Reservations where res_idx=#{res_idx}
+	</select>
+	
+	<!-- 게스트 예약내역 리스트  -->
+	<select id="guestResList" resultType="com.example.stayhere.model.reservations.dto.ReservationsDTO">
+		select 
+		    re.res_idx,
+		    re.userid,
+		    re.name,
+		    re.phone,
+		    re.room_idx,
+		    re.h_userid,
+		    re.checkin_date,
+		    re.checkout_date,
+		    re.res_state,
+		    re.res_date,
+		    re.total_price,
+		    re.res_person,
+		    re.night,
+		    ro.room_name,
+		    ro.room_price,
+		    ro.contents,
+		    ro.city,
+		    ro.country,
+		    ro.address1,
+		    ro.address2,
+		    ro.zipcode,
+		    ro.beds,
+		    ro.baths,
+		    ro.room_type,
+		    ro.lat,
+		    ro.lng,
+		    ro.max_people,
+		    ro.add_people,
+		    rp.photo1
+		from Reservations re
+		join Rooms ro on re.room_idx=ro.room_idx
+		join Room_photo rp on ro.room_idx=rp.room_idx
+		where userid=#{userid} 
+		order by re.checkin_date
+	</select>
+	
+	<!-- 예약취소 상태변경 -->
+	<update id="refuseStatus">
+		update Reservations set res_state='취소완료'
+		where res_idx=#{res_idx}
+	</update>
+	
+	<!-- 예약 취소시 중복날짜 삭제 -->
+	<delete id="reserveCancel">
+		delete from Reserved where room_idx=#{room_idx} and re_date between #{checkin_date} and #{checkout_date}
+	</delete>
+	
+	<!-- 예약 완료 상태변경 -->
+	<update id="approveStatus">
+		update Reservations set res_state='예약완료'
+		where res_idx=#{res_idx}
+	</update>
+	
+	<!-- 입실 완료 상태변경 -->
+	<update id="checkinStatus">
+		update Reservations set res_state='입실완료'
+		where res_idx=#{res_idx}
+	</update>
+	
+	<!-- 퇴실 완료 상태변경 -->
+	<update id="checkoutStatus">
+		update Reservations set res_state='퇴실완료'
+		where res_idx=#{res_idx}
+	</update>
+	
+	
+	<!-- 호스트 예약내역 리스트  -->
+	<select id="hostResList" resultType="com.example.stayhere.model.reservations.dto.ReservationsDTO">
+		select 
+		    re.res_idx,
+		    re.userid,
+		    re.name,
+		    re.phone,
+		    re.room_idx,
+		    re.h_userid,
+		    re.checkin_date,
+		    re.checkout_date,
+		    re.res_state,
+		    re.res_date,
+		    re.total_price,
+		    re.res_person,
+		    re.night,
+		    ro.room_name,
+		    ro.room_price,
+		    ro.contents,
+		    ro.city,
+		    ro.country,
+		    ro.address1,
+		    ro.address2,
+		    ro.zipcode,
+		    ro.beds,
+		    ro.baths,
+		    ro.room_type,
+		    ro.lat,
+		    ro.lng,
+		    ro.max_people,
+		    ro.add_people,
+		    rp.photo1,
+		    rp.photo2,
+		    rp.photo3,
+		    rp.photo4
+		from Reservations re
+		join Rooms ro on re.room_idx=ro.room_idx
+		join Room_photo rp on ro.room_idx=rp.room_idx
+		where re.h_userid=#{h_userid} 
+		order by re.checkin_date
+	</select>
+	
+
 </mapper>
 
 
