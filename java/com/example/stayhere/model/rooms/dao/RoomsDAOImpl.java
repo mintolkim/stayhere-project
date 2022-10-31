@@ -22,7 +22,7 @@ public class RoomsDAOImpl implements RoomsDAO {
 		Map<String,Object> map = new HashMap<>();
 		map.put("cityname", "%"+cityname+"%");
 		map.put("bed",bed );
-		map.put("bath", bath);
+		map.put("bath", bath); 
 		map.put("reviewStar", reviewStar);
 		map.put("lower", lower);
 		map.put("higher",higher); 

@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RoomsDTO {
+public class RoomsDTO { 
 	private int room_idx;
 	private String h_userid;
 	private String room_name;
