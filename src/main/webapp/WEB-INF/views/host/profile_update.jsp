@@ -43,12 +43,6 @@ a { text-decoration: none;}
     background-color: gray;
     background-color: #c3c3c3;
 }
-.box2 {
-    width: 250px;
-    height: 250px; 
-    border-radius: 70%;
-    overflow: hidden;
-}
 label {
 	font-size: 10px;
 }
@@ -88,9 +82,17 @@ $(function(){
 
 	});
 });
+
+function fileCheck(el) { 
+    if(!/\.(jpeg|jpg|png|gif|bmp)$/i.test(el.value)){ 
+    alert('이미지 파일만 업로드 가능합니다.'); 
+    el.value = ''; 
+    el.focus(); 
+   }
+ }
 </script>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column">
  <main class="flex-shrink-0">
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>
@@ -109,24 +111,20 @@ $(function(){
 		</div>
 		<!-- 파일첨부 -->
 		<label class="lead" for="file" style="font-size: 16px;">프로필 사진 변경</label> 
-		<input type="file" id="file" name="file" style="display: none;">
+		<input type="file" id="file" name="file" style="display: none;" onchange="fileCheck(this)">
+		<input type="hidden" name="h_profile_img" value="${dto.h_profile_img}">
 
-
-	<script>
-    $("#file").change(function(){
-     if(this.files && this.files[0]) {
-      var reader = new FileReader;
-      reader.onload = function(data) {
-       $(".box img").attr("src", data.target.result);
-      }
-      reader.readAsDataURL(this.files[0]);
-     }
-    });
-    </script>
-		
-		
-		
-		
+		<script>
+	    $("#file").change(function(){
+	     if(this.files && this.files[0]) {
+	      var reader = new FileReader;
+	      reader.onload = function(data) {
+	       $(".box img").attr("src", data.target.result);
+	      }
+	      reader.readAsDataURL(this.files[0]);
+	     }
+	    });
+	    </script>
 		
 		<br>
 		<br>

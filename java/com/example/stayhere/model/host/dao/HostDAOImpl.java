@@ -1,6 +1,7 @@
 package com.example.stayhere.model.host.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -9,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.example.stayhere.model.host.dto.HostDTO;
+import com.example.stayhere.model.rooms.dto.RoomsDTO;
 
 @Repository
 public class HostDAOImpl implements HostDAO {
@@ -47,6 +49,18 @@ public class HostDAOImpl implements HostDAO {
 	@Override
 	public void delete(String h_userid) {
 		sqlSession.delete("host.delete",h_userid);
+	}
+	
+	@Override
+	public List<RoomsDTO> rooms_Confirm(String h_userid) {
+		return sqlSession.selectList("host.rooms_Confirm",h_userid);
+	}
+	
+	@Override
+	public boolean delete_check(RoomsDTO dto) {
+		List<Boolean> room_name = sqlSession.selectList("host.delete_check",dto);
+		System.out.println(room_name.toString());
+		return (room_name.toString()=="[]") ? false : true;
 	}
 
 }

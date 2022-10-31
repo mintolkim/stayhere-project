@@ -117,7 +117,7 @@ function checkId(){
    };
 </script>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column">
  <main class="flex-shrink-0">
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>

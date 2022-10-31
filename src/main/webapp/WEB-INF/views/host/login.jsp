@@ -47,13 +47,32 @@ $(function(){
 			return;
 		}
 		//폼 데이터를 서버로 제출
-		document.form1.action="${path}/host/login_check.do";
+		document.form1.action="${path}/host/login_check";
 		document.form1.submit();
 	});
 });
+
+function enter() {
+	if (window.event.keyCode == 13) {
+		var h_userid=$("#h_userid").val(); //태그의 value 속성값
+		var h_passwd=$("#h_passwd").val();
+		if(h_userid==""){
+			alert("아이디를 입력하세요.");
+			$("#h_userid").focus(); //입력 포커스 이동
+			return; //함수 종료
+		}
+		if(h_passwd==""){
+			alert("비밀번호를 입력하세요.");
+			$("#h_passwd").focus();
+			return;
+		}
+		document.form1.action="${path}/host/login_check";
+		document.form1.submit();
+    }
+}
 </script>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column">
  <main class="flex-shrink-0">
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>
@@ -61,14 +80,14 @@ $(function(){
   <section class="py-5" id="features">
 	<div class="container px-5 my-5" align="center">
 	
-	<form name="form1">
+	<form name="form1" method="post">
 	<h2>HOST LOGIN</h2>	
 	<br>
 	<input class="form-control me-2" type="text" placeholder="id" name="h_userid" id="h_userid">
 	<br>
-	<input class="form-control me-2" type="password" placeholder="password" name="h_passwd" id="h_passwd">
+	<input class="form-control me-2" type="password" placeholder="password" name="h_passwd" id="h_passwd" onkeyup="enter()">
 	<br>
-	<input type="button" class="btn btn-warning" id="login" value="login">
+	<input type="button" class="btn btn-warning" id="login" value="login" >
 	</form>
 	<br>
 	<a href="#">Forgot Password?</a> <a href="${path}/host/join.do">Sign up</a>

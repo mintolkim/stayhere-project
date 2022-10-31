@@ -1,5 +1,7 @@
 package com.example.stayhere.service.host;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.stayhere.model.host.dao.HostDAO;
 import com.example.stayhere.model.host.dto.HostDTO;
+import com.example.stayhere.model.rooms.dto.RoomsDTO;
 
 @Service
 public class HostServiceImpl implements HostService {
@@ -63,4 +66,14 @@ public class HostServiceImpl implements HostService {
 
 	}
 	
+	@Override
+	public List<RoomsDTO> rooms_Confirm(String h_userid) {
+		return hostDao.rooms_Confirm(h_userid);
+	}
+	
+	@Override
+	public boolean delete_check(RoomsDTO dto) {
+		boolean result =hostDao.delete_check(dto);
+		return result;
+	}
 }

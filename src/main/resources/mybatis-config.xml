@@ -7,8 +7,8 @@
 	<typeAliases>
 		<typeAlias type="com.example.stayhere.model.rooms.dto.RoomsDTO" alias="RoomsDTO" />
 		<typeAlias type="com.example.stayhere.model.guest.dto.GuestDTO" alias="guestDto" />
+		<typeAlias type="com.example.stayhere.model.host.dto.HostDTO" alias="HostDTO" />
 		<typeAlias type="com.example.stayhere.model.reservations.dto.ReservationsDTO" alias="ReservationsDTO" />
-	 	<typeAlias type="com.example.stayhere.model.guest.dto.GuestDTO" alias="guestDto"/>
 	</typeAliases>
 
 </configuration>

@@ -29,11 +29,13 @@ public class RoomsDTO {
 	private String lat;
 	private String lng;	
 	private int max_people;
+	private int add_people;
 	private String photo1;//room_photo 테이블
 	private String photo2;//room_photo 테이블
 	private String photo3;//room_photo 테이블
 	private String photo4;//room_photo 테이블
 	private double review_star;//리뷰별점평균(review테이블)
 	private int review_count;//리뷰갯수(review테이블)
+	private String admin_confirm;
     
 }

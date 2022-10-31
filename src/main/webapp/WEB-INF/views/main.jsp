@@ -46,19 +46,19 @@
 									</div>
 									<div class="img-list carousel-inner rounded-img">
 										<div class="carousel-item active">
-											<img src="resources/images/${row.photo1}"
+											<img src="${path}/${row.photo1}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 										<div class="carousel-item card-img">
-											<img src="resources/images/${row.photo2}"
+											<img src="${path}/${row.photo2}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 										<div class="carousel-item card-img">
-											<img src="resources/images/${row.photo3}"
+											<img src="${path}/${row.photo3}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 										<div class="carousel-item card-img">
-											<img src="resources/images/${row.photo4}"
+											<img src="${path}/${row.photo4}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 									</div>

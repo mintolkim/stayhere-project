@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.stayhere.model.rooms.dao.RoomsDAO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
@@ -60,5 +61,29 @@ public class RoomsServiceImpl implements RoomsService {
 	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out) {
 		return roomsDao.getRoomOptionList(start, end, city, check_in, check_out);
 	}
-
+	
+	@Override
+	public void insert(RoomsDTO dto) {
+		roomsDao.insert(dto);
+	}
+	
+	@Override
+	public RoomsDTO getRoomInfo(int room_idx) {
+		return roomsDao.getRoomInfo(room_idx);
+	}
+	
+	@Override
+	public void deleteConfirm(int room_idx) {
+		roomsDao.deleteConfirm(room_idx);
+	}
+	
+	@Override
+	public void updateRoom(RoomsDTO dto) {
+		roomsDao.updateRoom(dto);
+	}
+	
+	@Override
+	public void updateRoomphoto(RoomsDTO dto) {
+		roomsDao.updateRoomphoto(dto);
+	}
 }

@@ -1,9 +1,10 @@
 package com.example.stayhere.util;
 
 public class Pager {
-	public static final int PAGE_SCALE = 12; // 페이지당 게시물수
-	public static final int BLOCK_SCALE = 12;// 화면당 페이지수
+//	public static final int PAGE_SCALE = 12; // 페이지당 게시물수
+	public static final int BLOCK_SCALE = 10;// 화면당 페이지수
 
+	private int pageScale; //페이징당 게시물수
 	private int curPage; // 현재 페이지
 	private int prevPage; // 이전 페이지
 	private int nextPage; // 다음 페이지
@@ -17,29 +18,15 @@ public class Pager {
 	private int blockBegin; // 블록의 시작페이지 번호
 	private int blockEnd; // 블록의 끝페이지 번호
 
-	// Pager(레코드갯수, 출력할페이지번호)
-	public Pager(int count, int curPage) {
+	// Pager(페이지당 게시물 수, 레코드갯수, 출력할페이지번호)
+	public Pager(int pageScale, int count, int curPage) {
 		curBlock = 1; // 현재블록 번호
 		this.curPage = curPage; // 현재 페이지 번호
+		this.pageScale = pageScale; //페이지당 게시물 수 
 		setTotPage(count); // 전체 페이지 갯수 계산
-		setRange();
 		setPageRange(); // #{start}, #{end} 값 계산
 		setTotBlock(); // 전체 블록 갯수 계산
 		setBlockRange(); // 블록의 시작,끝 번호 계산
-	}
-	
-	public void setRange() {
-		curBlock = (int) Math.ceil((curPage - 1) / BLOCK_SCALE) + 1;
-		blockBegin = (curBlock - 1) * BLOCK_SCALE + 1;
-		blockEnd = blockBegin + (BLOCK_SCALE - 1);
-		if (blockEnd > totPage) {
-			blockEnd = totPage;
-		}
-		prevPage = curPage - 1;
-		nextPage = curPage + 1;
-		if (nextPage == totPage) {
-			totPage += 1;
-		}
 	}
 
 	public void setBlockRange() {
@@ -53,8 +40,12 @@ public class Pager {
 			blockEnd = totPage;
 		}
 		// [이전][다음]을 눌렀을 때 이동할 페이지 번호
-		prevPage = (curBlock == 1) ? 1 : (curBlock - 1) * BLOCK_SCALE;
-		nextPage = curBlock > totBlock ? (curBlock * BLOCK_SCALE) : (curBlock * BLOCK_SCALE) + 1;
+//		prevPage = (curBlock == 1) ? 1 : (curBlock - 1) * BLOCK_SCALE;
+//		nextPage = curBlock > totBlock ? (curBlock * BLOCK_SCALE) : (curBlock * BLOCK_SCALE) + 1;
+		
+		prevPage = curPage - 1;
+		nextPage = curPage + 1;
+		
 		// 마지막 페이지가 범위를 초과하지 않도록 처리
 		if (nextPage >= totPage) {
 			nextPage = totPage;
@@ -70,8 +61,8 @@ public class Pager {
 	public void setPageRange() {
 // 시작번호=(현재페이지-1)x페이지당 게시물수 + 1
 // 끝번호=시작번호 + 페이지당 게시물수 - 1		
-		pageBegin = (curPage - 1) * PAGE_SCALE + 1;
-		pageEnd = pageBegin + PAGE_SCALE - 1;
+		pageBegin = (curPage - 1) * pageScale + 1;
+		pageEnd = pageBegin + pageScale - 1;
 	}
 
 	public int getCurPage() {
@@ -105,7 +96,7 @@ public class Pager {
 	// 전체 페이지 갯수 계산
 	public void setTotPage(int count) {
 // Math.ceil() 올림		
-		totPage = (int) Math.ceil(count * 1.0 / PAGE_SCALE);
+		totPage = (int) Math.ceil(count * 1.0 / pageScale);
 	}
 
 	public int getTotBlock() {
