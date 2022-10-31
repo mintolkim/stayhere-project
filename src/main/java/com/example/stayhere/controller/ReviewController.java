@@ -42,7 +42,6 @@ public class ReviewController {
 		Pager pager = new Pager(6,review_count, curPage);//한 페이지당 6개
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
-		
 		List<ReviewDTO> list = reviewService.listAll(start, end);
 		logger.info(list.toString());
 		ModelAndView mav = new ModelAndView();

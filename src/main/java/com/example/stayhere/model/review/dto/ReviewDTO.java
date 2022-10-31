@@ -19,7 +19,7 @@ public class ReviewDTO {
 	private int review_star;//리뷰별점
 	private String review_content;//리뷰내용
 	private Date write_date;//작성일
-	private int view_count;//조회수
+	private int view_count;//조회수.
 	private String show;//화면 표시 여부(Y/N)
 	private String[] files;//첨부파일 배열
 	private String profile_img;//게스트의 프로필 이미지(guest테이블)

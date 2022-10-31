@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="review">
-	<!-- 기본리뷰화면 -->
+	<!-- 기본리뷰화면. -->
 	<select id="listAll" resultType="ReviewDTO">
 		select * 
 			from (

@@ -78,7 +78,7 @@
 				<form id="form1" name="form1" method="post" action="${path}/reviews/insert.do">
 					<div class="container roomsInfo">
 					  <!-- 숙소정보 끌어와야함.(room_idx, room_name, photo1)
-					  <input name="roomReview" id="roomReview" placeholder="숙소정보끌어오기전  임시 작성칸(번호입력)"> -->
+					  <input name="roomReview" id="roomReview" placeholder="숙소 정보끌어오기전  임시 작성칸(번호입력)"> -->
 					</div>
 					<div class="container star">
 					  <p class="lead fw-normal text-muted mb-0">숙소는 만족하셨나요?</p>

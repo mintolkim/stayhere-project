@@ -77,7 +77,7 @@
 											src="https://dummyimage.com/40x40/ced4da/6c757d"
 											alt="사용자프로필이미지" />
 										<div class="small">
-											<div class="fw-bold">Kelly Rowan</div>
+											<div class="fw-bold">Kale Rowan</div>
 											<div class="text-muted">2022-10-20 18:20 &middot; 조회수
 												60</div>
 										</div>

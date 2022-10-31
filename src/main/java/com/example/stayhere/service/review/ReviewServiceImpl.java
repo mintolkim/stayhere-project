@@ -24,7 +24,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public List<String> getAttach(int review_idx) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub.
 		return null;
 	}
 
