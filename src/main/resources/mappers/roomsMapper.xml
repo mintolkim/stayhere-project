@@ -5,12 +5,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="rooms">
+	<!-- 룸정보 불러오기 -->
 	<select id="detail_rooms" resultType="RoomsDTO">
 		select * from rooms 
 		where room_idx=#{room_idx}
 	</select>
-	  
-	<!-- 룸정보 불러오기 -->
+	
+	<!-- 메인페이지 룸정보 불러오기 -->
 	<select id="getRoomAllList" resultType="RoomsDTO">
 		select *
 			from (
@@ -37,18 +38,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rp.photo2,
 				rp.photo3,
 				rp.photo4,
-				(select count(*) from review where room_idx=r.room_idx)review_count,
+				(select count(*) from reservations where room_idx=r.room_idx) res_count,
+				(select count(*) from review where room_idx=r.room_idx) review_count,
 				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
 			from rooms r join room_photo rp on r.room_idx = rp.room_idx
-			order by room_idx) A
+			order by review_star desc) A
 		) where rn between #{start} and #{end}
 	</select>
 
-	<!-- 룸 갯수 불러오기 -->
+	<!-- 메인페이지 룸 갯수 불러오기 -->
 	<select id="getRoomAllCount" resultType="int">
 		select count(*) from rooms
 	</select>
-
+	
 	<!-- 룸사진 불러오기 -->
 	<select id="getRoomPhoto" resultType="String">
 		select photo from

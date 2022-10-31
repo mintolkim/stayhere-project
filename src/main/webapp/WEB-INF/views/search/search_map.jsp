@@ -340,7 +340,7 @@ function changeoption(){
 <section class="py-4" id="features"> 
 <div class="mapcontainer">
 	<!--검색바  -->
-	<form autocomplete="off" id="optionform" name="form1" method="get"	action="${path}/search/listMap.do">
+	<form autocomplete="off" id="optionform" name="form1" method="get"	action="${path}/search/listMap/${map.cityname}/${map.checkin_date}/${map.checkout_date}">
     <div class="flex-sm-row flex-column d-flex">
       <div class="form-floating">
       <input type="text" class="form-control" name="cityname" id="cityname" value="${map.cityname }" placeholder="지역명을 입력하세요" size="60"

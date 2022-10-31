@@ -5,14 +5,22 @@
 <head>
 <!-- 헤더에 공통 스크립트 또는 스타일시트 추가하기 -->
 <%@ include file="./include/header.jsp"%>
-<!-- 그외 페이지별 들어갈 script & css 추가 영역 -->
+<!-- 그외 페이지별 들어갈 script & css 추가 영역  start-->
+<!-- flatpickr  -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/plugins/rangePlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
-<!-- 그외 페이지별 들어갈 script & css 추가 영역 -->
+<!-- 그외 페이지별 들어갈 script & css 추가 영역 end -->
 <title>STAYHERE</title>
+
 </head>
 <body class="d-flex flex-column">
 <!-- nav_search_bar 는 검색창 노출화면 -->
-<%@ include file="./include/nav_search_bar.jsp" %>
+<%@ include file="./include/navbar.jsp" %>
+<%@ include file="./include/searchbar.jsp" %>
 
 <!-- 컨텐츠 수정 영역 start -->
 <!-- room-list-->
@@ -46,19 +54,19 @@
 									</div>
 									<div class="img-list carousel-inner rounded-img">
 										<div class="carousel-item active">
-											<img src="${path}/${row.photo1}"
+											<img src="resources/images/${row.photo1}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 										<div class="carousel-item card-img">
-											<img src="${path}/${row.photo2}"
+											<img src="resources/images/${row.photo2}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 										<div class="carousel-item card-img">
-											<img src="${path}/${row.photo3}"
+											<img src="resources/images/${row.photo3}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 										<div class="carousel-item card-img">
-											<img src="${path}/${row.photo4}"
+											<img src="resources/images/${row.photo4}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 									</div>
@@ -94,18 +102,19 @@
 										</c:if>
 									</p>
 								</div>
-								<p class="card-text text-secondary mb-0 small">침대
-									${row.beds} · 화장실 ${row.baths}</p>
+								<p class="card-text text-secondary mb-0 small">
+									침대	${row.beds} · 화장실 ${row.baths}</p>
 								<p class="card-text text-secondary mb-0 small">
 									<fmt:formatDate pattern="MM월 dd일" value="${row.check_in}" />
 									<span>~</span>
 									<fmt:formatDate pattern="MM월 dd일" value="${row.check_out}" />
+								</p>	
 								<p class="card-text mb-0 pt-2">
-									<span class="fw-bold">\ <fmt:formatNumber
+									<span class="fw-bold">￦ <fmt:formatNumber
 											pattern="#,###" value="${row.room_price}" />
-									</span> <span>/박</span> <span>·</span> <span> <a href="#2"
-										class="text-secondary">총액 \ <fmt:formatNumber
-												pattern="#,###" value="${row.room_price * 2}" />
+									</span> <span>/박</span> <span>·</span> <span> 
+									<a href="#2" class="text-secondary">총액 ￦ 
+									<fmt:formatNumber	pattern="#,###" value="${row.room_price}" />
 									</a>
 									</span>
 								</p>
@@ -117,9 +126,12 @@
 		</div>
 	</div>
 </div>
+<!-- 컨텐츠 수정 영역 end -->
 
 <script type="text/javascript">
+
 	var curPage = 1;
+	var totPage = ${map.pager.totPage};
 	var isLoading = false;
 
 	$(window).on("scroll", function() {
@@ -127,39 +139,39 @@
 		var windowsHeight = $(window).height(); //웹브라우저의 창의 높이
 		var documentHeight = $(document).height(); // 문서 전체의 높이
 		var isBottom = scrollTop + windowsHeight + 10 >= documentHeight;
-
+// 		console.log("isLoading : " + isLoading);
 		if (isBottom) {
-			//만일 현재 마지막 페이지라면
-			if (curPage >= '${map.pager.totPage - 1}') {
-				return false; //함수종료
-			} else {
-				isLoading = true; //위에서 종료되지 않으면 로딩상태를 true로 변경
-				$("#load").show(); //로딩바 표시
-				curPage++; //현재페이지 1증가
-				getRoomsList(curPage); //추가로 받을 리스트 ajax처리
-			}
+				//만일 현재 마지막 페이지라면
+				if (curPage >= totPage || isLoading) {
+					return false; //함수종료
+				} else {
+					isLoading = true; //위에서 종료되지 않으면 로딩상태를 true로 변경
+					$("#load").show(); //로딩바 표시
+					curPage++; //현재페이지 1증가
+					getRoomsList(curPage); //추가로 받을 리스트 ajax처리
+				}
 		}
 	});
 
+	//룸리스트 불러오기
 	function getRoomsList(curPage) {
 		$.ajax({
 			type : "get",
-			url : "${path}/rooms/addRoomsList",
+			url : "${path}/addRoomsList",
 			data : {
 				"curPage" : curPage
 			},
 
 			success : function(data) {
-// 				console.log(data);
+// 			console.log(data);
 				$("#room-list").append(data);
-				$("#load").hide(); //로딩바 숨기기
 				isLoading = false;
+				$("#load").hide(); //로딩바 숨기기
 			}
 		});
 	}
+	
 </script>
-
-<!-- 컨텐츠 수정 영역 end -->
 
 <!-- footer -->
 <%@ include file="./include/footer.jsp" %>

@@ -45,7 +45,4 @@
 	<beans:bean id="uploadPath" class="java.lang.String">
 	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\styahere-project\resources" />
 	</beans:bean>
-	
-	
-
 </beans:beans>
