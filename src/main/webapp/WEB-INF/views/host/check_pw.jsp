@@ -71,7 +71,7 @@ $(function(){
 		 <c:if test="${message == 'confirmPw' }">
 		 <script type="text/javascript">
 		 alert("비밀번호가 맞지 않습니다")
-		 </script>
+		 </script> 
 		 </c:if>
 	</div>
   </section>
