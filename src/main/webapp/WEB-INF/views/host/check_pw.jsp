@@ -43,7 +43,7 @@ $(function(){
 		
 		document.form1.action="${path}/host/checkPw";
 		document.form1.submit();
-	});
+	}); 
 });
 
 </script>

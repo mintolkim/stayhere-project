@@ -3,7 +3,7 @@ package com.example.stayhere.util;
 public class Pager {
 //	public static final int PAGE_SCALE = 12; // 페이지당 게시물수
 	public static final int BLOCK_SCALE = 10;// 화면당 페이지수
-
+ 
 	private int pageScale; //페이징당 게시물수
 	private int curPage; // 현재 페이지
 	private int prevPage; // 이전 페이지

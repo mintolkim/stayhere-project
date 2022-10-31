@@ -38,7 +38,7 @@ $(function(){
 		if(h_passwd==""){
 			alert("비밀번호를 입력하세요.");
 			$("#h_passwd").focus();
-			return;
+			return; 
 		}
 		
 		document.form1.action="${path}/host/deletePw";

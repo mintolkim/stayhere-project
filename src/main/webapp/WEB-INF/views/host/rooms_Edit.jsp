@@ -54,7 +54,7 @@ label {
 	margin-top: 6%;
 	margin-bottom: 6%;
 	width: 80%;
-}
+} 
 
 #minus1, #minus2, #minus3, #minus4, #minus5{
 	width: 30px;

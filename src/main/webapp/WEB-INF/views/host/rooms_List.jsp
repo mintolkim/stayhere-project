@@ -23,7 +23,7 @@
 a { text-decoration: none; color: black;}
 .lead a { color: black; font-size: 16px;}
 a:hover { color: black; font-size: 16px; font-weight: 640;}
-label {
+label { 
 	font-size: 13px;
 }
 .col .lead b { font-size: 25px;}

@@ -34,7 +34,7 @@ public class HostController {
 	@RequestMapping("login.do")
 	public String login() {
 		return "host/login";
-	}
+	} 
 	
 	@RequestMapping("login_check")
 	public ModelAndView login_check(HostDTO dto, HttpSession session, ModelAndView mav) {

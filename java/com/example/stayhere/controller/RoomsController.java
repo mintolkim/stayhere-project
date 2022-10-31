@@ -40,7 +40,7 @@ public class RoomsController {
 	@Resource(name="uploadPath")
 	String uploadPath;
 
-	// 숙소 목록
+	// 숙소 목록 
 	// rooms_list.jsp
 	@RequestMapping("list.do")
 	public String list() {
