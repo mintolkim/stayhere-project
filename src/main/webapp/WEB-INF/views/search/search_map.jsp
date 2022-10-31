@@ -43,6 +43,9 @@ left:0px;
 .pd_top{
 padding-top:0px;
 }
+.map_fix{
+position:fixed;
+top: 80px;}
 #map{
 position: fixed;
 width: 100%;
@@ -89,8 +92,8 @@ transition: 0.3s;
 .slider > .range {
   position: absolute;
   z-index: 2;
-  left: 10%;
-  right: 10%;
+  left: 12%;
+  right: 12%;
   top: 0;
   bottom: 0;
   border-radius: 5px;
@@ -159,14 +162,18 @@ $(document).ready(function(){
 		var docScrollY = $(document).scrollTop();
 		var barThis = $("#topBar");
 		var fixNext = $("#fixNextTag");
+		var map = $("#map");
 		if( docScrollY > topBar.top ) {
 		 barThis.addClass("top_bar_fix");
 		 fixNext.addClass("pd_top");
+		 map.addClass("map_fix");
 		}else{
 			barThis.removeClass("top_bar_fix");
 			fixNext.removeClass("pd_top");
+			 map.removeClass("map_fix");
 		}
 	});
+	
 	//가격범위
 	const inputLeft = document.getElementById("input-left");
 	const inputRight = document.getElementById("input-right");
@@ -185,6 +192,7 @@ $(document).ready(function(){
 	  thumbLeft.style.left = percent + "%";
 	  range.style.left = percent + "%";
 	};
+
 
 	const setRightValue = () => {
 	  const _this = inputRight;
@@ -205,11 +213,7 @@ $(document).ready(function(){
 	inputRight.oninput = function() {
 		document.getElementById("higher_price").innerHTML = priceToString(this.value);
     }
-});
-function priceToString(price) {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-$(function(){
+//검색 옵션
 	var star = "${map.reviewStar}";
 	var bed = "${map.bed}";
 	var bath = "${map.bath}";
@@ -262,7 +266,7 @@ for(var k in adrList){
     var $obj = adrList[k];
     adrArray.push({
     	content : '<div style="height:155px;padding:5px;">'+
-    	'<img src="${path}/images/'+$obj.photo1+'"style="width:100%;height:100px;"><br>'+
+    	'<img src="${path}/resources/images/'+$obj.photo1+'"style="width:100%;height:100px;"><br>'+
     	'<span style="font-size:12px;"><b>'+$obj.room_name+'</b></span><br>'+
     	'<span style="font-size:12px;">'+$obj.room_price.toLocaleString()+'원</span></div>',
     	latlng: new kakao.maps.LatLng($obj.lat,$obj.lng),
@@ -322,7 +326,9 @@ function changeoption(){
 	}
 	$("#optionform").submit();
 }
-
+function priceToString(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
 </script>
 </head>
 <body class="d-flex flex-column h-100">
@@ -420,12 +426,12 @@ function changeoption(){
                         <div class="card h-100">
                             <!-- Product image-->
 								<div class="bxslider">
-									<div><img class="card-img-top"src="${path }/images/${room.photo1}" title="${room.address1 }"></div>
-									<div><img class="card-img-top"src="${path }/images/${room.photo2}" title="${room.address1 }"></div>
-									<div><img class="card-img-top"src="${path }/images/${room.photo3}" title="${room.address1 }"></div>
-									<div><img class="card-img-top"src="${path }/images/${room.photo4}" title="${room.address1 }"></div>
+									<div><img class="card-img-top" src="${path }/resources/images/${room.photo1}" title="${room.address1 }"></div>
+									<div><img class="card-img-top" src="${path }/resources/images/${room.photo2}" title="${room.address1 }"></div>
+									<div><img class="card-img-top" src="${path }/resources/images/${room.photo3}" title="${room.address1 }"></div>
+									<div><img class="card-img-top" src="${path }/resources/images/${room.photo4}" title="${room.address1 }"></div>
 								</div>
-								<script>
+								<script type="text/javascript">
 									$('.bxslider').bxSlider({
 										mode : 'horizontal',
 										captions : true,

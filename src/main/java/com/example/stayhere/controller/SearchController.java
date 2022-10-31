@@ -31,7 +31,8 @@ private static final Logger logger=LoggerFactory.getLogger(SearchController.clas
 	
 	@RequestMapping(value = "search/listMap.do", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam(defaultValue = "") String cityname, 
-			@RequestParam String checkin_date,@RequestParam String checkout_date,
+			@RequestParam(defaultValue = "") String checkin_date,
+			@RequestParam(defaultValue = "") String checkout_date,
 			@RequestParam(defaultValue = "0") int bed, @RequestParam(defaultValue = "0") int bath,
 			@RequestParam(defaultValue = "0") String reviewStar, 
 			@RequestParam(defaultValue = "100000") int lower, @RequestParam(defaultValue = "900000") int higher) {

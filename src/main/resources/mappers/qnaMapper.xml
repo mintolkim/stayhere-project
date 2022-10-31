@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="qna">
+	<!-- qna전체목록 -->
+	<select id="listQna"
+	resultType="com.example.stayhere.model.qna.dto.QnaDTO">
+	select *
+	from (
+	select rownum as rn, A.*
+	from (
+	select
+	a.q_idx,a.userid,a.subject,a.contents,a.category,a.passwd,
+	a.view_count, a.write_date, a.show,
+	b.profile_img, (select count(*) from qna_scrap where a.q_idx=q_idx) as scrap,
+	(select count(*) from qna_likey where a.q_idx=q_idx )as likey,
+	(select count(*) from qna_comment where a.q_idx=q_idx) as comment_count,
+	(select count(choose) from qna_comment where choose='y'and a.q_idx=q_idx) as choose
+	from qna a
+	join guest b
+	on a.userid=b.userid
+	<include refid="search" />
+	order by ${select} desc
+	) A
+	) where rn between #{start} and #{end}
+</select>
+
+	<sql id="search">
+		<choose>
+			<when test="category == 'all' ">
+				where show='y' and
+				(subject like #{keyword} or
+				contents like #{keyword} or a.userid like #{keyword})
+			</when>
+			<otherwise>
+				where category=#{category} and show='y' and
+				(subject like #{keyword} or contents like #{keyword} or a.userid like #{keyword})
+			</otherwise>
+		</choose>
+	</sql>
+	
+	
+	<!-- 비밀글 확인 -->
+	<select id="passwdch" resultType="String">
+	 select passwd from qna
+	 where q_idx = #{q_idx}
+	</select>
+	<!--qna글 상세보기  -->
+	<select id="detailQna" resultType="com.example.stayhere.model.qna.dto.QnaDTO">
+	select a.q_idx,a.userid,a.subject,a.contents,a.category,a.passwd,
+	a.view_count, a.write_date, a.show,
+	b.profile_img, (select count(*) from qna_scrap where a.q_idx=q_idx)as
+	scrap ,(select count(*) from qna_likey where a.q_idx=q_idx )as likey,
+	(select count(*) from qna_comment where a.q_idx=q_idx) as comment_count
+	from qna a
+	join guest b
+	on a.userid=b.userid
+	where q_idx=#{q_idx}
+	</select>
+	<!--qna 비밀번호 확인  -->
+	<select id="checkpd" resultType="int">
+	select count(*) from qna
+	where q_idx=#{q_idx} and passwd=#{passwd}
+	</select>
+	<!-- qna 댓글리스트 -->
+	<select id="comment" resultType="com.example.stayhere.model.qna_comment.dto.QnaCommentDTO">
+	select comment_idx, q_idx,writer,contents,ref,re_level,re_step, choose,
+	write_date,b.profile_img,c.h_profile_img,(select userid from qna where q_idx=a.q_idx) as userid
+	from qna_comment a
+	full outer join guest b
+	on a.writer=b.userid
+	full outer join host c
+	on a.writer=c.h_userid
+	where q_idx=#{q_idx}
+	order by a.ref desc, a.re_step asc
+	</select>
+	<!-- 댓글쓰기 -->
+	<insert id="addcomment">
+	 insert into qna_comment(comment_idx,q_idx,writer,contents,ref,re_step,re_level)
+	 values((select nvl(max(comment_idx)+1,1) from qna_comment), #{q_idx},#{writer},#{contents},
+	 (select nvl(max(comment_idx)+1,1) from qna_comment),1,0)
+	</insert>
+	<!-- 댓글 불러오기 -->
+	<select id="viewComment" resultType="com.example.stayhere.model.qna_comment.dto.QnaCommentDTO">
+	 select * from qna_comment
+	 where comment_idx=#{comment_idx}
+	</select>
+	<!-- 댓글 순서조정 -->
+	<update id="updateStep">
+	update qna_comment
+	set re_step=re_step+1
+	where ref=#{ref} and re_step >= #{re_step}
+	</update>
+	<!-- 대댓글쓰기 -->
+	<insert id="addcomment2">
+	  insert into qna_comment(comment_idx,q_idx,writer,contents,ref,re_step,re_level)
+	 values((select nvl(max(comment_idx)+1,1) from qna_comment), #{q_idx},#{writer},#{contents},
+	 #{ref},#{re_step},#{re_level})
+	</insert>
+	<!-- 댓글삭제 -->
+	<delete id="delcomment">
+	delete from qna_comment
+	where comment_idx=#{comment_idx} and q_idx=#{q_idx}
+	</delete>
+	<!-- 스크랩추가 -->
+	<insert id="addscrap">
+	 insert into qna_scrap(userid,scrap_idx,q_idx)
+	 values(#{userid},Qna_scrap_seq.nextval,#{q_idx})
+	</insert>
+	<!-- 좋아요추가 -->
+	<insert id="addlikey">
+	 insert into qna_likey(userid,likey_idx,q_idx)
+	 values(#{userid},Qna_likey_seq.nextval,#{q_idx})
+	</insert>
+	<!-- 스크랩체크 -->
+	<select id="scrapcheck" resultType="int">
+	select count(*) from qna_scrap
+	where q_idx=#{q_idx} and userid=#{userid}
+	</select>
+	<!-- 좋아요체크 -->
+	<select id="likeycheck" resultType="int">
+	select count(*) from qna_likey
+	where q_idx=#{q_idx} and userid=#{userid}
+	</select>
+	<!--스크랩취소  -->
+	<delete id="delscrap">
+	 delete from qna_scrap
+	 where q_idx=#{q_idx} and userid=#{userid}
+	</delete>
+	<!--좋아요취소  -->
+	<delete id="dellikey">
+	 delete from qna_likey
+	 where q_idx=#{q_idx} and userid=#{userid}
+	</delete>
+	<!--조회수 증가 -->
+	<update id="addviewcount">
+	 update qna set view_count=view_count+1
+	 where q_idx=#{q_idx}
+	</update> 
+	<!--답변채택 -->
+	<update id="selectcoment">
+	 update qna_comment set choose='y'
+	 where q_idx=#{q_idx} and comment_idx=#{comment_idx}
+	</update>
+	<!--페이징(글갯수)  -->
+	<select id="countqna" resultType="int">
+	select count(*) 
+	from qna a
+	join guest b
+	on a.userid=b.userid
+	<include refid="search" />
+	</select>
+
+	<!-- 첨부파일 레코드 삭제 -->
+	<delete id="deleteFile">
+		delete from qna_attach
+		where fullName=#{fullName}
+	</delete>
+	<!-- 글작성 -->
+	<insert id="create">
+  	 insert into qna (q_idx,subject,contents,userid,category,passwd) values
+ 	 (Qna_seq.nextval,#{subject},#{contents},#{userid},#{category},#{passwd})
+ 	</insert>
+	<!-- 첨부파일 정보 저장 -->
+	<insert id="addAttach">
+		insert into qna_attach (fullName, q_idx) values
+		(#{name}, Qna_seq.currval)
+	</insert>
+	<!-- 첨부파일 목록 불러오기 -->
+	<select id="getAttach" resultType="String">
+	 select fullName from qna_attach
+	 where q_idx=#{q_idx}
+	 order by regdate desc
+	</select>
+	<!-- 글 수정 -->
+	<update id="update">
+	update qna set subject=#{subject}, contents=#{contents},
+	passwd=#{passwd}, category=#{category}
+	where q_idx=#{q_idx}
+	</update>
+	<!-- 새로운 첨부파일 추가 -->
+	<insert id="updateAttach">
+		insert into qna_attach (fullName, q_idx) values
+		(#{fullName}, #{q_idx})
+	</insert>
+	<!-- 게시물 삭제 -->
+	<delete id="delete">
+		update qna set show='n' where q_idx=#{q_idx}
+	</delete>
+	<!--첨부파일 존재여부 확인  -->
+	<select id="checkattach" resultType="int">
+	select count(*) from qna_attach
+	where q_idx=#{q_idx} and fullName=#{fullName}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
