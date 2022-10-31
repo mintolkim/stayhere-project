@@ -96,6 +96,7 @@ public class RoomsDAOImpl implements RoomsDAO {
 		return sqlSession.selectList("rooms.getRoomOptionList", map);
 	}
 
+
 	
 
 }

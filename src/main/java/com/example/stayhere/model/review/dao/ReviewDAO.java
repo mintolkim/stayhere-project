@@ -17,4 +17,7 @@ public interface ReviewDAO {
 	public void increaseViewcnt(int review_idx) throws Exception; //조회수 증가 처리
 	public int countArticle() throws Exception;//레코드 갯수 계산
 	public ReviewDTO read(int review_idx) throws Exception; //레코드 조회
+	public List<ReviewDTO> reviewsByRoom(int room_idx);//숙소 별 리뷰 목록
+	public int countByRoom(int room_idx);//숙소 별 후기 개수
+	public double starByRoom(int room_idx);//숙소 별 별점 평균
 }

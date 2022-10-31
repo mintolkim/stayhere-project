@@ -51,4 +51,5 @@ public class ReviewController {
 		return "redirect:/reviews/list.do";
 		
 	}
+	
 }

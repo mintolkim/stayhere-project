@@ -80,4 +80,19 @@ public class ReviewServiceImpl implements ReviewService {
 		return null;
 	}
 
+	@Override
+	public List<ReviewDTO> reviewsByRoom(int room_idx) {
+		return reviewDao.reviewsByRoom(room_idx);
+	}
+
+	@Override
+	public int countByRoom(int room_idx) {
+		return reviewDao.countByRoom(room_idx);
+	}
+
+	@Override
+	public double starByRoom(int room_idx) {
+		return reviewDao.starByRoom(room_idx);
+	}
+
 }

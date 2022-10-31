@@ -15,5 +15,6 @@ public interface RoomsService {
 	public int getRoomAllCount(); //전체 룸갯수
 	public int getRoomOptionCount(String city, String check_in, String check_out); //
 	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out);
+
 }
 

@@ -82,4 +82,19 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return null;
 	}
 
+	@Override
+	public List<ReviewDTO> reviewsByRoom(int room_idx) {
+		return sqlSession.selectList("review.reviewsByRoom", room_idx);
+	}
+
+	@Override
+	public int countByRoom(int room_idx) {
+		return sqlSession.selectOne("review.countByRoom", room_idx);
+	}
+
+	@Override
+	public double starByRoom(int room_idx) {
+		return sqlSession.selectOne("review.starByRoom" ,room_idx);
+	}
+
 }

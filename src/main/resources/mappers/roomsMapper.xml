@@ -6,8 +6,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="rooms">
 	<select id="detail_rooms" resultType="RoomsDTO">
-		select * from rooms 
-		where room_idx=#{room_idx}
+    select *
+		from (
+			select 
+				r.room_idx, 
+				r.h_userid, 
+				r.room_name, 
+				r.room_price,
+				r.contents,
+				r.city,
+				r.country,
+				r.address1,
+				r.address2,
+				r.zipcode,
+				r.check_in,
+				r.check_out,
+				r.beds,
+				r.baths,
+				r.room_type,
+				r.lat,
+				r.lng,
+				r.max_people,
+				r.add_people,
+				rp.photo1,
+				rp.photo2,
+				rp.photo3,
+				rp.photo4
+			from rooms r join room_photo rp 
+			on r.room_idx = rp.room_idx
+		) where room_idx=#{room_idx}
 	</select>
 	
 	<!-- 룸정보 불러오기 -->

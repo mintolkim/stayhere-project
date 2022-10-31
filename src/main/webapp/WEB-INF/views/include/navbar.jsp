@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <div id="load">
-	<img src="${path}/resources/images/load_img.gif" alt="loading">
+	<%-- <img src="${path}/resources/images/load_img.gif" alt="loading"> --%>
 </div>
 
 <!-- nav bar -->
@@ -45,7 +45,7 @@
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item"
 									href="${path}/guest/guest_view/${sessionScope.userid}">프로필</a></li>
-								<li><a class="dropdown-item" href="blog-home.html">예약정보</a></li>
+								<li><a class="dropdown-item" href="${path}/reservations/list/guest">예약정보</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">관심스테이</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">결제내역</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">문의하기</a></li>
@@ -72,7 +72,7 @@
 								<li><a class="dropdown-item" href="portfolio-overview.html">숙소관리</a></li>
 								<li><a class="dropdown-item" href="portfolio-overview.html">숙소등록</a></li>
 								<li><a class="dropdown-item" href="portfolio-overview.html">숙소승인현황</a></li>
-								<li><a class="dropdown-item" href="portfolio-overview.html">예약현황</a></li>
+								<li><a class="dropdown-item" href="${path}/reservations/list/host">예약현황</a></li>
 								<li><a class="dropdown-item" href="portfolio-overview.html">매출현황</a></li>
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item" href="${path}/host/logout.do">로그아웃</a></li>

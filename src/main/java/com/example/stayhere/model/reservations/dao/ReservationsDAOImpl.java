@@ -8,40 +8,32 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.example.stayhere.model.reservations.dto.ReservationsDTO;
+import com.example.stayhere.model.reservations.dto.ReservedDTO;
 
 @Repository
 public class ReservationsDAOImpl implements ReservationsDAO {
 
 	@Inject
-	SqlSession SqlSession;
+	SqlSession sqlSession;
+
+	@Override
+	public List<ReservationsDTO> guestResList (String userid) {
+		return sqlSession.selectList("reservations.guestResList", userid);
+	}
 	
 	@Override
-	public List<ReservationsDTO> listRes(String userid) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ReservationsDTO> hostResList(String h_userid) {
+		return sqlSession.selectList("reservations.hostResList", h_userid);
+	}
+	
+	@Override
+	public ReservationsDTO getReserveDetail(int res_idx) {
+		return sqlSession.selectOne("reservations.getReserveDetail", res_idx);
 	}
 
 	@Override
 	public void insert(ReservationsDTO dto) {
-		SqlSession.insert("reservations.insert", dto);
-	}
-
-	@Override
-	public void update(int res_idx) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(int res_idx) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int sumMoney(int room_price, int res_person) {
-		// TODO Auto-generated method stub
-		return 0;
+		sqlSession.insert("reservations.insert", dto);
 	}
 
 	@Override
@@ -51,9 +43,33 @@ public class ReservationsDAOImpl implements ReservationsDAO {
 	}
 
 	@Override
-	public void modifyRes(ReservationsDTO dto) {
-		// TODO Auto-generated method stub
+	public void insertReserved(ReservedDTO r_dto) throws Exception {
+		sqlSession.insert("reservations.insertReserved",r_dto);
+	}
 
+	@Override
+	public void refuseStatus(int res_idx) {
+		sqlSession.update("reservations.refuseStatus", res_idx);
+	}
+
+	@Override
+	public void reserveCancel(ReservationsDTO dto) {
+		sqlSession.delete("reservations.reserveCancel", dto);
+	}
+
+	@Override
+	public void approveStatus(int res_idx) {
+		sqlSession.update("reservations.approveStatus", res_idx);
+	}
+
+	@Override
+	public void checkinStatus(int res_idx) {
+		sqlSession.update("reservations.checkinStatus", res_idx);
+	}
+
+	@Override
+	public void checkoutStatus(int res_idx) {
+		sqlSession.update("reservations.checkoutStatus", res_idx);
 	}
 
 }

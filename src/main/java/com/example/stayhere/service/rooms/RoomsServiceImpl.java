@@ -61,4 +61,5 @@ public class RoomsServiceImpl implements RoomsService {
 		return roomsDao.getRoomOptionList(start, end, city, check_in, check_out);
 	}
 
+
 }
