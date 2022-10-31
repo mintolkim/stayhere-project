@@ -26,15 +26,17 @@ label {
 }
 .col .lead b { font-size: 25px;}
 .box {
-    width: 150px;
-    height: 150px; 
-    border-radius: 30%;
+    width: 250px;
+    height: 250px; 
+    border-radius: 70%;
     overflow: hidden;
 }
 .profile {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    background-color: gray;    
+    background-color: #c3c3c3;
 }
 </style>
 <!-- <script type="text/javascript">
@@ -72,6 +74,7 @@ $(function(){
           <div class="container px-5 my-5">
           <div class="row gx-5">
           <div class="col-lg-4 mb-5 mb-lg-0">
+          <p class="lead" ><a>프로필</a></p>
       	  <p class="lead" ><a href="${path}/guest/update/${sessionScope.userid}">회원정보 수정</a></p>
       	  <p class="lead" ><a>예약정보</a></p>
       	  <p class="lead" ><a>관심스테이</a></p>
@@ -94,24 +97,24 @@ $(function(){
 			      	  <p class="lead"><fmt:formatDate pattern="yyyy년 MM월 dd일" value="${dto.join_date}"/></p>
                   </div>
                 	  <div class="col mb-5 h-100">
-                  		<form action="${path}/guest/guest_img.do" method="post" enctype="multipart/form-data">
                   	 	 <div class="box">
                   	 	 	<c:if test="${dto.profile_img != null}">
-                  	 	 		<div class="idPhoto">
-                  	 	 			<img class="profile" src="${path}/${dto.profile_img}" width="200" height="200">
+                  	 	 		<div class="profile_img">
+                  	 	 			<img class="profile" src="${path}/${dto.profile_img}" >
                   	 	 		</div>
                   	 	 	</c:if>
-                  	 	 	<!-- 로그인유저의 idPhoto가없다면 디폴트 이미지 노출 -->
+                  	 	 	<!-- 로그인유저의 profile_img가없다면 디폴트 이미지 노출 -->
                   	 	 	<c:if test="${dto.profile_img == null}">
-                  	 	 		<div class="idPhotoDefault">
-                  	 	 			<img src="${path}/resources/guest_profile/default_profile.png">
+                  	 	 		<div class="profile_imgDefault">
+                  	 	 			<img class="profile" src="${path}/resources/images/guest.png">
                   	 	 		</div>
-                  	 	 	</c:if>
+                  	 	 	</c:if>                  	 	 	
                   		 </div>
-			      	  	<p class="lead" style="margin-top: 3%; font-size: 13px;"><input type="file" name="file"></p>
-			      	  	<button type="submit">프로필사진 변경하기</button>
-                	   </form>
+			      	  	 
+<!-- 			      	  	<p class="lead" style="margin-top: 3%; font-size: 13px;"><input type="file" name="file"></p>
+ -->                 	 
                  	 </div>
+
               </div>
           </div>
           </div>

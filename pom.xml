@@ -263,7 +263,14 @@
 		    <version>${org.springframework-version}</version>
 		</dependency>			
 
-	<!-- lombok 라이브러리 추가 -->
+		<!-- 이미지  업로드용/jackson-core -->
+		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-core</artifactId>
+    		<version>2.9.8</version>
+		</dependency>
+		
+		<!-- lombok 라이브러리 추가 -->
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -271,6 +278,16 @@
 			<version>1.18.20</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- 메일 api -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.2</version>
+		</dependency>
+	
+
+
 
 
 	</dependencies>

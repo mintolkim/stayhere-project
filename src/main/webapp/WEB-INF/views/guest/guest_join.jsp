@@ -11,9 +11,7 @@
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- Bootstrap icons-->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
-<link href="${path}/resources/css/styles.css" rel="stylesheet" />
 
   <script type="text/javascript">
 	window.onload = function() {
@@ -29,8 +27,6 @@
 		//add
 		console.log("load****");
 		console.log(document.form1.userid.value);
-		
-
 	      	//id 중복 검사
 	      	$("#userid").blur(function() {
 	      		var userid = $("#userid").val();
@@ -106,6 +102,43 @@
 	      			});
 	      		}
 	      	});	      	
+
+	     	//이메일 인증
+            $("#btnMailCheck").click(function() {
+        		var eamil = $("#email").val(); // 이메일 주소값 얻어오기!       		
+        		var checkInput = $(".mail-check-input"); // 인증번호 입력하는곳 
+        		$.ajax({
+        			type : "GET",
+        			url : "${path}/guest/mailCheck?email="+eamil, // GET방식이라 Url 뒤에 email을 뭍힐수있다.
+        			success : function (data) {
+        				console.log("data : " +  data);
+        				checkInput.attr("disabled",false);
+        				code = data;
+        				alert("인증번호가 전송되었습니다.");
+        			},
+        			error: function() {
+  						console.log("이메일 인증 ajax 에러");	
+        			}
+        		}); // end ajax
+        	}); // end btnMailCheck 클릭이벤트
+        	// 인증번호 비교 
+        	$(".mail-check-input").blur(function () {
+        		var inputCode = $(".mail-check-input").val();
+        		var checkResult = $("#mail-check-warn");
+        		if(inputCode === code){
+        			alert("인증번호가 일치합니다.");
+        			checkResult.attr("class","correct");
+        			$("#btmMailCheck").attr("disabled", true);
+        			$("#email").attr("readonly",true);
+        			$("#email").attr("onFocus", "this.initialSelect = this.selectedIndex");
+        	        $("#email").attr("onChange", "this.selectedIndex = this.initialSelect");
+        		}else{
+        			alert("인증번호가 다릅니다. 다시 확인해주세요.");
+        			checkResult.attr("class","correct");
+        		}
+        	});
+        	
+	        //회원가입 버튼 클릭시
 	     	document.getElementById("submit").onclick = function() {
 	            let userid = document.form1.userid.value.trim();
 	            let passwd = document.form1.passwd.value.trim();
@@ -130,26 +163,22 @@
 	                alert('이름을 입력하셔야 합니다.')
 	                document.form1.name.focus();
 	                return false;
-	            }	      	
-          //파일 검사
-          if (document.form1.profile_img.value.trim() != "") {
-              var fileValue = document.form1.profile_img.value.trim().split('\\');
-              var filename = fileValue[fileValue.length-1];
-              var fileEname = filename.substring(filename.length-4, filename.length);
-              if (fileEname == '.jpg' || fileEname == '.png' || fileEname == '.gif' || fileEname == '.GIF' || fileEname == '.PNG' || fileEname == '.JPG') {
-              } else {
-                  alert('사진파일만 첨부해주세요.(jpg, png, gif)');
-                  document.form1.profile_img.value ='';
-                  return false;
-              }
-          } 
-		  //document.form1.action="${path}/guest/insert.do";
-          document.form1.submit(); 
+	            }	  
+	        		  
 	      alert("회원가입되었습니다.");
-	}
+          document.form1.submit(); 
+			}
 	}
 </script>
+<style type="text/css">
 
+.btn {
+	width: 150px;
+	height: 50px;
+	background-color: #ffcd4a;
+	border-color: #ffcd4a;
+}
+</style>
 </head>
 <body class="d-flex flex-column h-100">
  <main class="flex-shrink-0">
@@ -159,7 +188,7 @@
   <section class="py-5" id="features">
 	<div class="container px-5 my-5">
 		<div class="signup-form">
-      <form method="post" name="form1" class="form-horizontal" action="${path}/guest/insert.do" enctype="multipart/form-data">
+      <form method="post" name="form1" class="form-horizontal" action="${path}/guest/insert.do">
           <div class="row">
               <div class="col-8 signuptitle">
                   <h2>회원가입</h2>
@@ -197,11 +226,17 @@
           </div>
 
           <div class="form-group row">
-              <div class="col-8">
+              <div class="col-8" style="">
               <label class="col-form-label col-4">이메일</label>
               <p><input type="email" class="form-control" id="email" name="email" placeholder="stayhere@stayhere.com" ></p>
-              </div>        	 
-              <div id="mail_chk"></div>
+              </div>
+              <div class="input-group-addon">
+                <button type="button" class="btn" id="btnMailCheck">본인인증</button>
+              </div>
+              <div id="mail_chk">
+              	<input type="text" class="form-control mail-check-input" placeholder="인증번호를 입력하세요" disabled="disabled" maxlength="12">
+              </div>
+              <span id="mail-check-warn"></span>
           </div>
           
           <div class="form-group row">
@@ -211,24 +246,14 @@
               </div>   
               <div id="phone_chk"></div>     	
           </div>
-
-          <div class="form-group row">
-              <label class="col-form-label col-4">프로필 사진</label>
-              <p><input type="file" class="form-control" id="profile_img" name="profile_img" ></p>
-          </div> 
-			
 		  <div class="col-8 offset-4">
-                  <button type="submit" id="submit" class="btn btn-primary btn-lg">회원가입</button>
+                  <button type="submit" id="submit" class="btn btn-lg">회원가입</button>
               </div>  
 		      
       </form>
       <div class="text-center">이미 회원이십니까? <a href="${path}/guest/login.do">로그인 하러 가기</a></div>
   </div>
-        <div>
-         <p> -  또는  - </p>
-         <a>카카오톡</a>
-         <a>네이버</a>
-        </div>
+
         
 
 	 <!-- 요기 안에서 코드작성해주시면 됩니다..! -->
