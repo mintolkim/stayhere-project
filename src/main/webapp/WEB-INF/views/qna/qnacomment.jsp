@@ -114,12 +114,12 @@ display:none;}
 							<div class="flex-shrink-0 mt-3">
 							 <c:if test="${co.profile_img != null }">
 								<img class="rounded-circle"
-									src="${path }/resources/images/${co.profile_img}"
+									src="${path}/imgUpload/${co.profile_img}"
 									style="width: 50px; height: 50px;" />
 							 </c:if>
 							 <c:if test="${co.h_profile_img != null }">
 								<img class="rounded-circle"
-									src="${path }/resources/images/${co.h_profile_img}"
+									src="${path}/imgUpload/${co.h_profile_img}"
 									style="width: 50px; height: 50px;" />
 							 </c:if>
 							</div>
@@ -163,12 +163,12 @@ display:none;}
 								<div class="flex-shrink-0">
 									<c:if test="${co.profile_img != null }">
 										<img class="rounded-circle"
-											src="${path }/resources/images/${co.profile_img}"
+											src="${path}/imgUpload/${co.profile_img}"
 											style="width: 50px; height: 50px;" />
 									</c:if>
 									<c:if test="${co.h_profile_img != null }">
 										<img class="rounded-circle"
-											src="${path }/resources/images/${co.h_profile_img}"
+											src="${path}/imgUpload/${co.h_profile_img}"
 											style="width: 50px; height: 50px;" />
 									</c:if>
 								</div>

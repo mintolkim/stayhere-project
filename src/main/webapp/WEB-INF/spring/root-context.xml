@@ -26,7 +26,7 @@
 		<!-- 연결문자열에 log4jdbc가 추가됨 -->
 		<property name="url"
 			value="jdbc:log4jdbc:oracle:thin:@localhost:1521/xe" />
-		<property name="username" value="spring" />
+		<property name="username" value="stayhere" />
 		<property name="password" value="1234" />
 	</bean>
 
@@ -50,24 +50,6 @@
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 	 
-	 <!-- 메일관련 설정 -->
-	 <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-      <property name="host" value="smtp.gmail.com" />
-      <property name="port" value="587" />
-      <!-- 프로젝트 용으로 하나 만들었습니다. -->
-      <property name="username" value="stayhereproject" />
-      <property name="password" value="bvixbojtcqullrmz" />
-      <!-- email 요청시는 SMTP -->
-      <property name="javaMailProperties">
-         <props>
-            <prop key="mail.transport.protocol">smtp</prop>
-            <prop key="mail.smtp.auth">true</prop>
-            <prop key="mail.smtp.starttls.enable">true</prop>
-            <prop key="mail.debug">true</prop>
-         </props>
-      </property>
-  	 </bean>
-	
 	<!-- 트랜잭션 관련 설정 -->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

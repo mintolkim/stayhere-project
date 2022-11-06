@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -22,12 +21,6 @@
 
 <!-- 카카오맵 API -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=52817c98591dad1c8811f3daa6bca00b&libraries=services"></script>
-
-<style type="text/css">
-body, h1, h2, h3, h4, h5, h6, p, span {
- font-family: 'Dongle'!important;, sans-serif;
- font-family: 'Montserrat'!important;, sans-serif;
-
 <script type="text/javascript">
 $(function(){
 	$("#btnReserve").click(function(){
@@ -230,15 +223,13 @@ text-decoration: none;
         line-height: 1.625;
     }
 </style>
-
 </head>
-
 <body class="d-flex flex-column h-100">
  <main class="flex-shrink-0">
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>
   <!-- 본문영역-->
-  <section class="py-5 px-5" id="features">
+  <section class="col-lg-10 mt-3 mb-5 px-5 mx-auto" id="features">
     <!-- 숙소 이름 -->
 	<div class="container px-5">	
 	 <h3>
@@ -272,7 +263,7 @@ text-decoration: none;
 	</div>
 	
 	<!-- 숙소 사진 목록 -->
-	<div class="container px-5 my-4" >
+	<div class="container px-5 my-4">
 	
 		<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
 		  <div class="carousel-indicators">
@@ -280,20 +271,19 @@ text-decoration: none;
 		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
 		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
 		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
 		  </div>
 		  <div class="carousel-inner">
 		    <div class="carousel-item active">
-		      <img src="${path}/resources/images/${room.photo1}" class="d-block w-100" alt="...">
+		      <img src="${path}/imgUpload/${room.photo1}" class="d-block w-100" alt="..."  style="width: 1000px; height: 600px">
 		    </div>
 		    <div class="carousel-item">
-		      <img src="${path}/resources/images/${room.photo2}" class="d-block w-100" alt="...">
+		      <img src="${path}/imgUpload/${room.photo2}" class="d-block w-100" alt="..."  style="width: 1000px; height: 600px">
 		    </div>
 		    <div class="carousel-item">
-		      <img src="${path}/resources/images/${room.photo3}" class="d-block w-100" alt="...">
+		      <img src="${path}/imgUpload/${room.photo3}" class="d-block w-100" alt="..." style="width: 1000px; height: 600px">
 		    </div>
 		    <div class="carousel-item">
-		      <img src="${path}/resources/images/${room.photo4}" class="d-block w-100" alt="...">
+		      <img src="${path}/imgUpload/${room.photo4}" class="d-block w-100" alt="..." style="width: 1000px; height: 600px">
 		    </div>
 		  </div>
 		  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -319,7 +309,7 @@ text-decoration: none;
            <span class="fs-4">${host.h_userid}님이 호스팅하는 게스트용 별채 전체</span>
           </div>
           <div class="d-flex justify-content-end" style="width: 8%; position: relative; float: right;">
-           <img src="${path}/${host.h_profile_img}" width="50px" height="50px" style="border-radius: 50%">
+           <img src="${path}/imgUpload/${host.h_profile_img}" width="50px" height="50px" style="border-radius: 50%">
           </div>
 		  <div style="clear: both; font-size: 16px;">
 		   <span>최대 인원 ${room.max_people}명 · </span>
@@ -393,7 +383,7 @@ text-decoration: none;
       </div>
     </div>
 
-	<hr class="gray_line" style="width: 68%; margin: auto;">
+	<hr class="gray_line mx-auto" style="width: 82%;">
 
 	<!-- 리뷰 목록 ${profile_img} 경로 설정 -->
 	<div class="container px-5 my-3">
@@ -416,7 +406,7 @@ text-decoration: none;
 	  	  <c:forEach var="row"  items="${review}" begin="0" end="3">
 			<div class="card" style="width: 18rem; margin: 3px;">
 			  <div class="card-body">
-			    <h5 class="card-title"><img src="${path}/resources/images/${row.profile_img}" width="30px" height="30px" style="border-radius: 50%">&nbsp;${row.userid}</h5>
+			    <h5 class="card-title"><img src="${path}/imgUpload/${row.profile_img}" width="30px" height="30px" style="border-radius: 50%">&nbsp;${row.userid}</h5>
 			    <h6 class="card-subtitle mb-2 text-muted"><fmt:formatDate value="${row.write_date}" pattern="yyyy.MM.dd hh:mm" /> </h6>
 			    <p class="card-text">${row.r_title}</p>
 			    <a href="#" class="card-link" id="btnReview">더보기 > </a>
@@ -428,7 +418,7 @@ text-decoration: none;
 	 </section>
 	</div>
 	
-	<hr class="gray_line" style="width: 68%; margin: auto;"> 
+	<hr class="gray_line mx-auto" style="width: 82%;">
 	
 	<!-- 숙소 위치 -->
 	<div class="container px-5 my-3">
@@ -441,10 +431,10 @@ text-decoration: none;
 	
 	<!-- 지도 API ${dto.lat} ${dto.lng} ${dto.room_name} ${dto.country} ${dto.city}-->
 	<div class="container px-5 my-3">
-	  <div class="rounded" id="map" style="margin-top: 15px; height: 600px;"></div>
+	  <div class="rounded" id="map" style="margin-top: 15px; height: 500px;"></div>
 	</div>
 	
-	<hr class="gray_line" style="width: 68%; margin: auto;">
+	<hr class="gray_line mx-auto" style="width: 82%;">
 	
 	<!-- 호스트 정보, 이메일 문의  -->
 	<div class="container px-5 my-3">
@@ -453,7 +443,7 @@ text-decoration: none;
 		  <div class="card-body">
 		    <div class="d-flex">
 		     <div class="d-flex">
-		      <img src="${path}/${host.h_profile_img}" width="60px" height="60px" style="border-radius: 50%">
+		      <img src="${path}/imgUpload/${host.h_profile_img}" width="60px" height="60px" style="border-radius: 50%">
 		     </div>
 		     <div style="margin-left: 20px;">
 		      <span class="card-title" style="font-size: 20px; font-weight: bold;">호스트 : ${host.h_userid}님</span>
@@ -558,7 +548,11 @@ var infowindow = new kakao.maps.InfoWindow({
     position : iwPosition, 
     content : iwContent 
 });
+  
 // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
 infowindow.open(map, marker); 
+
 </script>
+
 </body>
+</html>

@@ -100,7 +100,7 @@ $(function(){
                   	 	 <div class="box">
                   	 	 	<c:if test="${dto.profile_img != null}">
                   	 	 		<div class="profile_img">
-                  	 	 			<img class="profile" src="${path}/${dto.profile_img}" >
+                  	 	 			<img class="profile" src="${path}/imgUpload/{dto.profile_img}" >
                   	 	 		</div>
                   	 	 	</c:if>
                   	 	 	<!-- 로그인유저의 profile_img가없다면 디폴트 이미지 노출 -->

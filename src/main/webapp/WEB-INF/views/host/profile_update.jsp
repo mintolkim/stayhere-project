@@ -107,7 +107,7 @@ function fileCheck(el) {
 		
 		<!-- 프로필  -->	
 		<div class="box" >
-		<img class="profile" src="${path}/${dto.h_profile_img}">
+		<img class="profile" src="${path}/imgUpload/${dto.h_profile_img}">
 		</div>
 		<!-- 파일첨부 -->
 		<label class="lead" for="file" style="font-size: 16px;">프로필 사진 변경</label> 

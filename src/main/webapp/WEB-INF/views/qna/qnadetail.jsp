@@ -230,7 +230,7 @@ function dellikey(q_idx,like){
 				<div class="col-9">
 					<div class="d-flex align-items-center">
 						<img class="rounded-circle me-3"
-							src="${path}/resources/images/${dto.profile_img}"
+							src="${path}/imgUpload/${dto.profile_img}"
 							style="width: 50px; height: 50px;" />
 						<div class="small">
 							<div class="fw-bold">${dto.userid }</div>

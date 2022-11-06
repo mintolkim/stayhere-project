@@ -58,8 +58,8 @@ color: #ffc107;
 text-decoration: none;
 }
 .box {
-    width: 160px;
-    height: 160px; 
+    width: 200px;
+    height: 200px; 
     overflow: hidden;
 }
 .profile {
@@ -87,18 +87,17 @@ div #tab-bar li a:hover {
 </style>
 </head>
 <body class="d-flex flex-column h-100">
- <main class="flex-shrink-0">
+ <main class="flex-shrink-0 mx-auto">
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>
   <!-- 본문영역-->
-  <section class="col-lg-12 py-5 mb-3 mx-5 px-5" id="features">
+  <section class="col-lg-12 mt-3 mb-5 mb-3 mx-5 px-5" id="features">
 	<div class="default_width container-fluid mx-5" align="center">
 		<div class="row" align="center">
 			
-			<div class="list-group col-sm-2 mt-3 mx-2 px-2" id="profile-tab">
+			<div class="list-group col-sm-2 mt-4 mx-2 px-2" id="profile-tab">
 				<div class="container" id="box">
-					<%-- ${path}/${guest.profile_img} --%>
-					<img class="profile" src="${path}/resources/images/guest.png">
+					<img class="profile" src="${path}/imgUpload/${guest.profile_img}">
 				</div>
 				<br>
 				<a href="${path}/guest/guest_view/${sessionScope.userid}" class="list-group-item list-group-item-action">프로필</a>
@@ -108,7 +107,7 @@ div #tab-bar li a:hover {
 			</div>
 						     
 			
-			<div class="col-sm-8 mt-3 mx-2" align="center">
+			<div class="col-sm-8 mt-2 mx-2 mb-2" align="center">
 	            <p style="text-align: center; font-size: 26px; font-weight: bold; letter-spacing: 10px;">Reservation status</p>
 				<br>
 				<ul class="nav nav-tabs nav-justified" id="tab-bar">
@@ -130,7 +129,7 @@ div #tab-bar li a:hover {
 				<c:forEach var="res" items="${resList}">
 					<c:if test="${res.res_idx != null && res.res_state == '예약요청'}">
 						<div class="row gx-4 gx-lg-5 align-items-center my-5 mx-1 border border-1" style="border-color: #f2f2f2;">
-				            <div class="col-lg-6 col-sm-6 py-2"><a href="${path}/rooms/detail/${res.room_idx}"><img class="img-fluid rounded mb-4 mb-lg-0" src="${path}/resources/images/${res.photo1}" width="500px" height="400px" /></a></div>
+				            <div class="col-lg-6 col-sm-6 py-2"><a href="${path}/rooms/detail/${res.room_idx}"><img class="d-block w-100" src="${path}/imgUpload/${res.photo1}" width="500px" height="350px" /></a></div>
 				            <div class="col-lg-6 col-sm-6 py-2" style="text-align: center;">
 				            <span class="fs-4"><a href="${path}/rooms/detail/${res.room_idx}">${res.room_name}</a></span>
 				            <hr class="gray_line">
@@ -153,7 +152,7 @@ div #tab-bar li a:hover {
 				<c:forEach var="res" items="${resList}">
 					 <c:if test="${res.res_idx != null && res.res_state == '취소완료'}">
 						<div class="row gx-4 gx-lg-5 align-items-center my-5 mx-1 border border-1" style="border-color: #f2f2f2;">
-				            <div class="col-lg-6 col-sm-6 py-2"><a href="${path}/rooms/detail/${res.room_idx}"><img class="img-fluid rounded mb-4 mb-lg-0" src="${path}/resources/images/${res.photo1}" width="500px" height="400px" /></a></div>
+				            <div class="col-lg-6 col-sm-6 py-2"><a href="${path}/rooms/detail/${res.room_idx}"><img class="d-block w-100" src="${path}/imgUpload/${res.photo1}" width="500px" height="350px" /></a></div>
 				            <div class="col-lg-6 col-sm-6" style="text-align: center;">
 				            <span class="fs-4"><a href="${path}/rooms/detail/${res.room_idx}">${res.room_name}</a></span>
 				            <hr class="gray_line">
@@ -175,7 +174,7 @@ div #tab-bar li a:hover {
 				<c:forEach var="res" items="${resList}">
 					 <c:if test="${res.res_idx != null && res.res_state == '예약완료' || res.res_state == '입실완료' || res.res_state == '이용완료'}">
 						<div class="row gx-4 gx-lg-5 align-items-center my-5 mx-1 border border-1" style="border-color: #f2f2f2;">
-				            <div class="col-lg-6 col-sm-6 py-2"><a href="${path}/rooms/detail/${res.room_idx}"><img class="img-fluid rounded mb-4 mb-lg-0" src="${path}/resources/images/${res.photo1}" width="500px" height="400px" /></a></div>
+				            <div class="col-lg-6 col-sm-6 py-2"><a href="${path}/rooms/detail/${res.room_idx}"><img class="d-block w-100" src="${path}/imgUpload/${res.photo1}" width="500px" height="350px" /></a></div>
 				            <div class="col-lg-6 col-sm-6" style="text-align: center;">
 				            <span class="fs-4"><a href="${path}/rooms/detail/${res.room_idx}">${res.room_name}</a></span>
 				            <hr class="gray_line">

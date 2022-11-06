@@ -59,7 +59,7 @@ label {
 		</div>
 		<hr>
 		</div>
-
+		
 		<!-- content -->
 		<section class="py-5" id="features">
         <div class="container px-5 my-5">
@@ -67,11 +67,11 @@ label {
         <div class="col-lg-4 mb-5 mb-lg-0">
     	  <p class="lead" ><a href="${path}/host/profile/${sessionScope.h_userid}"><b style="font-weight: 700;">프로필</b></a></p>
     	  <p class="lead" ><a href="${path}/host/edit.do">회원정보수정</a></p>
-    	  <p class="lead" ><a href="${path}/host/rooms_List/${sessionScope.h_userid}">숙소관리</a></p>
+    	  <p class="lead" ><a href="${path}/host/rooms_List.do">숙소관리</a></p>
     	  <p class="lead" ><a href="${path}/rooms/write.do">숙소등록</a></p>
-    	  <p class="lead" ><a href="${path}/host/rooms_Confirm/${sessionScope.h_userid}">숙소승인현황</a></p>
+    	  <p class="lead" ><a href="${path}/host/rooms_Confirm.do">숙소승인현황</a></p>
     	  <p class="lead" ><a>예약현황</a></p>
-    	  <p class="lead" ><a>매출현황</a></p>
+    	  <p class="lead" ><a href="${path}/host/rooms_Sales/${sessionScope.h_userid}">매출현황</a></p>
  	      <p class="lead" ><a href="${path}/host/delete.do">회원 탈퇴</a></p>
    	    </div>
       	  
@@ -97,7 +97,7 @@ label {
 	
 		  <!-- 프로필  -->	
 		  <div class="box" >
-		  <img class="profile" src="${path}/${dto.h_profile_img}">
+		  <img class="profile" src="${path}/imgUpload/${dto.h_profile_img}">
 		  </div>
   
                  

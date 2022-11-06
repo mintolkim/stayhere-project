@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.model.guest.dto.GuestDTO;
-import com.example.stayhere.model.host.dto.HostDTO;
 import com.example.stayhere.model.reservations.dto.ReservationsDTO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.service.guest.GuestService;
@@ -113,8 +111,10 @@ public class ReservationsController {
 		try {
 			list = reservationsService.guestResList(userid);
 			logger.info("예약된정보"+list.toString());
+			GuestDTO g_dto=guestService.view_Guest(userid);
 			
 			mav.addObject("resList", list);
+			mav.addObject("guest", g_dto);	
 			mav.setViewName("reservations/list_guest");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -141,7 +141,7 @@ public class ReservationsController {
 		RoomsDTO r_dto=roomsService.detailRooms(res_dto.getRoom_idx());
 		
 		mav.addObject("res", res_dto);
-		mav.addObject("room", r_dto);
+		mav.addObject("room", r_dto);	
 		mav.setViewName("reservations/popupDetail");
 		return mav;
 	}

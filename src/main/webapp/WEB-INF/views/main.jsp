@@ -20,9 +20,52 @@
 <body class="d-flex flex-column">
 <!-- nav_search_bar 는 검색창 노출화면 -->
 <%@ include file="./include/navbar.jsp" %>
-<%@ include file="./include/searchbar.jsp" %>
 
 <!-- 컨텐츠 수정 영역 start -->
+<!-- search-bar -->
+<div class="bg-image-full">
+<div class="py-5 search-bg-wrap" style="background-image: url('${path}/resources/images/main_bg_03.jpg')">
+	<div class="container search-wrap">
+		<div class="search-fixed">
+		<div class="search-bar border px-4">
+			<form method="post" id="searchFrom">
+				<div class="row">
+					<div class="col-lg-5 col-sm-5 col-12 d-flex align-items-center rounded-pill">
+						<div class="form-floating form-group w-100">
+							<input class="form-control border-0 shadow-none" id="cityname"
+								name="cityname" placeholder="여행지를 입력해주세요" value="${map.cityname}"> 
+								<label for="cityname">여행지 입력</label>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3 col-5 d-flex align-items-center">
+						<div class="form-floating form-group w-100">
+							<input class="form-control border-0 shadow-none" id="checkin_date"
+								name="checkin_date" placeholder="체크인" value="${map.checkin_date}"> 
+								<label for="checkin_date">체크인</label>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3 col-5 d-flex align-items-center">
+						<div class="form-floating form-group w-100">
+							<input class="form-control border-0 shadow-none" id="checkout_date"
+								name="checkout_date" placeholder="체크아웃" value="${map.checkout_date}">
+							<label for="checkout_date">체크아웃</label>
+						</div>
+					</div>
+					<div class="col-lg-1 col-sm-1 col-2 d-flex align-items-center">
+						<button class="btn btn-custom rounded-pill" type="button"
+							onclick="submitMainSearch(searchFrom)">
+							<i class="bi-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		</div>
+	</div>
+</div>
+</div>
+
+
 <!-- room-list-->
 <div class="room-list-wrap">
 	<div class="container-fluid p-4">
@@ -30,13 +73,11 @@
 			class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 			<c:forEach var="row" items="${map.list}">
 				<section class="list-item col-xl-2 col-lg-3 col-md-4 col-sm-6">
-					<a href="${path}/rooms/detail/${row.room_idx}"
-						class="text-black text-decoration-none">
+<%-- 					<a href="${path}/rooms/detail/${row.room_idx}" class="text-black text-decoration-none"> --%>
 						<div class="card border-0" style="width: 100%;">
 							<div class="card-img">
 								<!-- 이미지가 여러장 일경우 인디케이터 사용 -->
-								<div id="indicators-${row.room_idx}" class="carousel slide"
-									data-interval="false">
+								<div id="indicators-${row.room_idx}" class="carousel slide indicators">
 									<div class="carousel-indicators">
 										<button type="button"
 											data-bs-target="#indicators-${row.room_idx}"
@@ -54,19 +95,19 @@
 									</div>
 									<div class="img-list carousel-inner rounded-img">
 										<div class="carousel-item active">
-											<img src="resources/images/${row.photo1}"
+											<img src="${path}/imgUpload/${row.photo1}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 										<div class="carousel-item card-img">
-											<img src="resources/images/${row.photo2}"
+											<img src="${path}/imgUpload/${row.photo2}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 										<div class="carousel-item card-img">
-											<img src="resources/images/${row.photo3}"
+											<img src="${path}/imgUpload/${row.photo3}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 										<div class="carousel-item card-img">
-											<img src="resources/images/${row.photo4}"
+											<img src="${path}/imgUpload/${row.photo4}"
 												class="d-block w-100 card-img-size" alt="...">
 										</div>
 									</div>
@@ -84,8 +125,8 @@
 								</div>
 								<div
 									class="btn boder-0 shadow-none card-img-overlay-top text-end">
-									<i class="bi-heart text-danger fw-bold fs-5"
-										onclick="wishListToggle()"></i>
+									<i id="wish-icon-${row.room_idx}" class="bi-heart text-danger fw-bold fs-5"
+										onclick="wishListToggle(event, ${row.room_idx})"></i>
 								</div>
 							</div>
 							<div class=" card-body">
@@ -120,7 +161,7 @@
 								</p>
 							</div>
 						</div>
-					</a>
+<!-- 					</a> -->
 				</section>
 			</c:forEach>
 		</div>
@@ -129,6 +170,18 @@
 <!-- 컨텐츠 수정 영역 end -->
 
 <script type="text/javascript">
+
+	$(function(){
+		$('.indicators').carousel({
+	      // 슬리아딩 자동 순환 지연 시간
+	      // false면 자동 순환하지 않는다.
+	      interval: false,
+	      // hover를 설정하면 마우스를 가져대면 자동 순환이 멈춘다.
+	      pause: "hover",
+	      // 순환 설정, true면 1 -> 2가면 다시 1로 돌아가서 반복
+	      wrap: true
+		});
+	});
 
 	var curPage = 1;
 	var totPage = ${map.pager.totPage};
@@ -171,7 +224,110 @@
 		});
 	}
 	
+	
+	//메인 위시리스트 버튼 클릭
+	function wishListToggle(event, room_idx) {
+	    event.stopPropagation(); //부모태그 이벤트 막기..
+	    
+	    var userid = '${sessionScope.userid}';
+      var off = $("#wish-icon-"+room_idx).hasClass('bi-heart');
+	    var on = $("#wish-icon-"+room_idx).hasClass('bi-heart-fill');
+	    	    
+	    
+	    if(userid != ""){
+	    	if(confirm("위시리스트에 추가하시겠습니까?")){
+	    		$.ajax({
+	    			type: "get",
+	    			url: "${path}/wishlist/duplicate.do",
+	    			data : {
+	    				"room_idx" : room_idx,
+	    				"userid" : userid
+	    			},
+	    			success : function(res){
+	    				console.log(res);
+	    			}
+	    		});
+	    		
+	    	}
+	    	
+	    } else {
+	    	if(confirm("로그인 하셔야 위시리스트 기능이 가능합니다.\n 로그인 페이지로 이동하시겠습니까?")){
+	    		location.href="${path}/guest/login.do";
+	    	}
+	    }
+	   
+	}
+	
 </script>
+
+<script type="text/javascript">
+	
+	 $(function(){
+         var option = {
+             locale: "ko", //한국어로 언어설정
+             dateFormat: "Y-m-d",   //출력 술정
+             allowInput : false, //사용자 정의 입력설정
+             mode : "range",  //범위
+             showMonths : 2, // 2개월 캘린더 표기 
+             minDate : new Date().fp_incr(1), //최소 날짜, 현재시간으로 셋팅 "today"현재날짜
+             plugins: [new rangePlugin({ input: "#checkout_date"})] //플러그인 설정 input-box 2개에 표기
+             
+         }
+
+         $("#checkin_date").flatpickr(option);
+      
+	 });
+	 
+     var searchBar = $(".search-wrap").offset();
+     
+          
+     $(window).on("scroll", function () {
+    	 
+    	 var scrollTop = $(this).scrollTop(); // 위로 스크롤된 길이
+ 			 var windowsHeight = $(this).height(); //웹브라우저의 창의 높이
+ 			 var documentHeight = $(document).height(); // 문서 전체의 높이
+ 		
+         if ($(this).scrollTop() > searchBar.top+300) {
+    	 			console.log(searchBar.top);
+             $(".search-fixed").addClass('fixed');
+             $(".filter-option-wrap").addClass('fixed');
+         } else {
+             $(".search-fixed").removeClass('fixed');
+             $(".filter-option-wrap").removeClass('fixed');
+         }
+    	 
+     });
+
+		//검색창 입력
+		function submitMainSearch(f) {
+		    //입력폼 유효성 검사
+		    var cityname = $("#cityname").val();
+		    var checkIn = $("#checkin_date").val();
+		    var checkOut = $("#checkout_date").val();
+	
+		    if(cityname == ""){
+			     alert("여행지를 입력해주세요.");
+			     $("#cityname").focus();
+			     return false;
+			  }
+		
+			  if(checkIn == ""){
+			     alert("체크인 날짜를 선택해주세요");
+			     $("#checkin_date").focus();
+			     return false;
+			  }
+		
+			  if(checkOut == ""){
+			      alert("체크아웃 날짜를 선택해주세요.");
+			      $("#checkout_date").focus();
+			      return false;
+			  }
+		    
+		    f.action = "${path}/search/"+cityname+"/"+checkIn+"/"+checkOut;
+		    f.submit();
+		}
+	 
+	</script>
 
 <!-- footer -->
 <%@ include file="./include/footer.jsp" %>

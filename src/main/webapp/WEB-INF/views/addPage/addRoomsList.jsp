@@ -8,13 +8,11 @@
 
 <c:forEach var="row" items="${map.list}">
 	<section class="list-item col-xl-2 col-lg-3 col-md-4 col-sm-6">
-		<a href="${path}/rooms/detail/${row.room_idx}"
-			class="text-black text-decoration-none">
+		<a href="${path}/rooms/detail/${row.room_idx}" class="text-black text-decoration-none">
 			<div class="card border-0" style="width: 100%;">
 				<div class="card-img">
 					<!-- 이미지가 여러장 일경우 인디케이터 사용 -->
-					<div id="indicators-${row.room_idx}" class="carousel slide"
-						data-interval="false">
+					<div id="indicators-${row.room_idx}" class="carousel slide indicators">
 						<div class="carousel-indicators">
 							<button type="button"
 								data-bs-target="#indicators-${row.room_idx}"
@@ -32,19 +30,19 @@
 						</div>
 						<div class="img-list carousel-inner rounded-img">
 							<div class="carousel-item active">
-								<img src="resources/images/${row.photo1}"
+								<img src="${path}/imgUpload/${row.photo1}"
 									class="d-block w-100 card-img-size" alt="...">
 							</div>
 							<div class="carousel-item card-img">
-								<img src="resources/images/${row.photo2}"
+								<img src="${path}/imgUpload/${row.photo2}"
 									class="d-block w-100 card-img-size" alt="...">
 							</div>
 							<div class="carousel-item card-img">
-								<img src="resources/images/${row.photo3}"
+								<img src="${path}/imgUpload/${row.photo3}"
 									class="d-block w-100 card-img-size" alt="...">
 							</div>
 							<div class="carousel-item card-img">
-								<img src="resources/images/${row.photo4}"
+								<img src="${path}/imgUpload/${row.photo4}"
 									class="d-block w-100 card-img-size" alt="...">
 							</div>
 						</div>
@@ -54,12 +52,14 @@
 							<span class="visually-hidden">Previous</span>
 						</button>
 						<button class="carousel-control-next" type="button"
-							data-bs-target="#indicators-${row.room_idx}" data-bs-slide="next">
+							data-bs-target="#indicators-${row.room_idx}"
+							data-bs-slide="next">
 							<span class="carousel-control-next-icon" aria-hidden="true"></span>
 							<span class="visually-hidden">Next</span>
 						</button>
 					</div>
-					<div class="btn boder-0 shadow-none card-img-overlay-top text-end">
+					<div
+						class="btn boder-0 shadow-none card-img-overlay-top text-end">
 						<i class="bi-heart text-danger fw-bold fs-5"
 							onclick="wishListToggle()"></i>
 					</div>
@@ -72,24 +72,24 @@
 						<p class="icon mb-0">
 							<c:if test="${row.review_count > 0}">
 								<i class="bi-star-fill"></i>
-								<span> <fmt:formatNumber pattern="#.00"
-										value="${row.review_star}" />
+								<span> <fmt:formatNumber pattern="#.00"	value="${row.review_star}" />
 								</span>
 							</c:if>
 						</p>
 					</div>
-					<p class="card-text text-secondary mb-0 small">침대 ${row.beds} ·
-						화장실 ${row.baths}</p>
+					<p class="card-text text-secondary mb-0 small">
+						침대	${row.beds} · 화장실 ${row.baths}</p>
 					<p class="card-text text-secondary mb-0 small">
 						<fmt:formatDate pattern="MM월 dd일" value="${row.check_in}" />
 						<span>~</span>
 						<fmt:formatDate pattern="MM월 dd일" value="${row.check_out}" />
+					</p>	
 					<p class="card-text mb-0 pt-2">
-						<span class="fw-bold">\ <fmt:formatNumber pattern="#,###"
-								value="${row.room_price}" />
-						</span> <span>/박</span> <span>·</span> <span> <a href="#2"
-							class="text-secondary">총액 \ <fmt:formatNumber pattern="#,###"
-									value="${row.room_price * 2}" />
+						<span class="fw-bold">￦ <fmt:formatNumber
+								pattern="#,###" value="${row.room_price}" />
+						</span> <span>/박</span> <span>·</span> <span> 
+						<a href="#2" class="text-secondary">총액 ￦ 
+						<fmt:formatNumber	pattern="#,###" value="${row.room_price}" />
 						</a>
 						</span>
 					</p>

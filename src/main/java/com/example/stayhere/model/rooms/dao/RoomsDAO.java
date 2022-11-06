@@ -7,24 +7,21 @@ import java.util.Map;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
 
 public interface RoomsDAO {
-	public List<RoomsDTO> listMap(String cityname, int bed, int bath, String reviewStar, int lower, int higher);//숙소검색
-	public int countrooms(String cityname, int bed, int bath, String reviewStar, int lower, int higher);//숙소갯수출력(지도검색)
-	public List<RoomsDTO> address_list(String cityname, int bed, int bath, String reviewStar, int lower, int higher);//주소검색
+	public List<RoomsDTO> listMap(String cityname, RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date);//숙소검색
+	public int countrooms(String cityname, RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date);//숙소갯수출력(지도검색)
+	public List<RoomsDTO> address_list(String cityname, RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date);//주소검색
 	public RoomsDTO detailRooms(int room_idx);//숙소 상세정보
-	public List<RoomsDTO> getRoomAllList(int start, int end);  //메인페이지 룸 리스트 불러오기
-	public List<String> getRoomPhoto(int room_idx); //사진정보 불러오기
-	public int getRoomAllCount();
+	public List<RoomsDTO> getRoomAllList(int start, int end, String today);  //메인페이지 룸 리스트 불러오기
+	public int getRoomAllCount(String today);  
 	public int getRoomDefalutCount(String cityname, String checkin_date, String checkout_date); // 기본 검색 결과 갯수
 	public List<RoomsDTO> getRoomDefalutList(int start, int end, String cityname, String checkin_date, String checkout_date); //기본 검색 결과 리스트
 	public int getRoomOptionCount(Map<String, Object> param); //옵션 검색 결과 갯수
 	public List<RoomsDTO> getRoomOptionList(int start, int end, Map<String, Object> param); //옵션 검색 결과 리스트
 	public int findRoomMaxPrice(); // 방가격 최대값
 	public int findRoomMinPrice(); // 방가격 최소값
-	public int getRoomOptionCount(String city, String check_in, String check_out);
-	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out);
-	public void insert(RoomsDTO dto);
-	public RoomsDTO getRoomInfo(int room_idx);
-	public void deleteConfirm(int room_idx);
-	public void updateRoom(RoomsDTO dto);
-	public void updateRoomphoto(RoomsDTO dto);  
+	public void insert(RoomsDTO dto); //룸등록
+	public RoomsDTO getRoomInfo(int room_idx); //룸정보가져오기
+	public void deleteConfirm(int room_idx); //룸삭제요청
+	public void updateRoom(RoomsDTO dto); //룸정보 수정
+	public void updateRoomphoto(RoomsDTO dto); //룸사진 수정
 }

@@ -143,6 +143,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						beds,
 						baths,
 						room_type,
+						check_in,
+						check_out,
 						lat,
 						lng,
 						max_people,
@@ -162,6 +164,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						#{beds},
 						#{baths},
 						#{room_type},
+						#{check_in},
+						#{check_out},
 						#{lat},
 						#{lng},
 						#{max_people},
@@ -210,7 +214,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	add_people=#{add_people},
 	baths=#{baths},
 	beds=#{beds},
-	max_people=#{max_people}
+	max_people=#{max_people},
+	check_in=#{check_in},
+	check_out=#{check_out}
 	where room_idx=#{room_idx}
 	</update>
 	

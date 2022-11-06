@@ -37,14 +37,14 @@ public class GuestDAOImpl implements GuestDAO {
 
 	@Override
 	public void delete_Guest(String userid) {
-		// TODO Auto-generated method stub
-
+		sqlSession.delete("guest.delete_guest", userid);
 	}
 
 	@Override
-	public boolean loginCheck(GuestDTO dto) {
-		String name = sqlSession.selectOne("guest.loginCheck",dto);
-		return (name == null) ? false : true ;
+	public GuestDTO loginCheck(GuestDTO dto) {
+		//String name = sqlSession.selectOne("guest.loginCheck",dto);
+		//return (name == null) ? false : true ;
+		return sqlSession.selectOne("guest.loginCheck", dto);
 	}
 
 	@Override

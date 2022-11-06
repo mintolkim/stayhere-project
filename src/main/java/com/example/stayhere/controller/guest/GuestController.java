@@ -1,5 +1,7 @@
 package com.example.stayhere.controller.guest;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,6 +40,9 @@ public class GuestController {
 	
 	@Inject
 	GuestService guestService;
+	
+	@Inject
+	BCryptPasswordEncoder pwdEncoder;
 	
 	@Resource(name="uploadPath")
 	String uploadPath;
@@ -54,9 +62,15 @@ public class GuestController {
 	@RequestMapping("loginCheck")
 	public ModelAndView loginCheck(GuestDTO dto, HttpSession session) {
 		System.out.println("loginCheck 시작!");
-		boolean result = guestService.loginCheck(dto, session);
+		//guestService.loginCheck(dto, session);
+		GuestDTO result = guestService.loginCheck(dto, session);
 		ModelAndView mav = new ModelAndView();
-		if(result) {
+		boolean passcheck = pwdEncoder.matches(dto.getPasswd(), result.getPasswd());
+		
+		System.out.println("result :" + result);
+		System.out.println("passcheck" + passcheck);
+		System.out.println("session"+session.getAttribute("userid"));
+		if(passcheck) {
 			//로그인 성공시 메인페이지로 이동
 			mav.setViewName("redirect:/main");
 		} else {
@@ -70,6 +84,10 @@ public class GuestController {
 	@RequestMapping("insert.do") 
 	public ModelAndView insert(GuestDTO dto, ModelAndView mav) { 
 		logger.info(dto.toString());
+		String inputpasswd = dto.getPasswd();
+		String encodeigpasswd = pwdEncoder.encode(inputpasswd);
+		dto.setPasswd(encodeigpasswd);
+		logger.info(dto.getPasswd());
 		guestService.insert_Guest(dto); 
 		mav.addObject("message","join");
 		mav.setViewName("guest/guest_login");
@@ -127,18 +145,24 @@ public class GuestController {
 		dto.setUserid(userid);
 		System.out.println(dto);
 		String profile_img = dto.getProfile_img();
-		String imgUploadPath = uploadPath + File.separator + "imgUpload";
+		String imgUploadPath = uploadPath;
 		String fileName = null;
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
 		   fileName =  FileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes());   
 		   mav.addObject("message","profile");
-		   dto.setProfile_img(File.separator + "imgUpload" + File.separator + fileName);
+		   dto.setProfile_img(fileName);
 		} else {//null값이면 
 		   //fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
 			fileName=profile_img;
 			System.out.println(fileName);
 			dto.setProfile_img(fileName);
 		}
+		
+		
+		String inputpasswd = dto.getPasswd();
+		String encodeigpasswd = pwdEncoder.encode(inputpasswd);
+		dto.setPasswd(encodeigpasswd);
+		logger.info(dto.getPasswd());
 		guestService.update_Guest(dto);
 		mav.addObject("dto", guestService.view_Guest(userid));
 		mav.setViewName("guest/guest_view");
@@ -302,6 +326,12 @@ public class GuestController {
 //		mav.addObject("kakao_url", kakaoUrl);
 //		return mav;
 //	}// end memberLoginForm()
-
+	@RequestMapping("delete.do")
+	public String delete(GuestDTO dto, HttpSession session) {
+		String userid = (String)session.getAttribute("userid");
+		guestService.delete_Guest(userid);
+		session.invalidate();
+		return "guest/guest_login";
+	}
 
 }

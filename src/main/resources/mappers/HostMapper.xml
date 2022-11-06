@@ -5,9 +5,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="host">
-<select id="logcheck" resultType="String" parameterType="HostDTO">
-  select h_name from Host
-  where h_userid=#{h_userid} and h_passwd=#{h_passwd}
+<select id="loginCheck" resultType="HostDTO" parameterType="HostDTO">
+		select * from host 
+		where h_userid=#{h_userid}
+</select>
+
+<select id="loginOkNick" resultType="HostDTO" parameterType="HostDTO">
+		select * from host 
+		where h_userid like #{h_userid}
 </select>
 
 <select id="viewHost" resultType="HostDTO">
@@ -18,6 +23,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <select id="idCheck" resultType="int">
   	select count(h_userid) from Host where h_userid=#{h_userid}
 </select> 
+
+<select id="emailCheck" resultType="int">
+  	select count(h_email) from Host where h_email=#{h_email}
+</select>
+
+<update id="updatePw" parameterType="HostDTO">
+	update Host
+	set h_passwd = #{h_passwd} 
+	where h_userid = #{h_userid}
+</update>
  
 <insert id="insert" parameterType="HostDTO">
 	insert into Host(h_userid,h_name,h_passwd,h_email,h_phone,h_manager_num) 
@@ -38,15 +53,99 @@ where h_userid=#{h_userid}
 delete from Host where h_userid=#{h_userid}
 </delete>
 
+<select id="rooms_List" resultType="RoomsDTO">
+		select *
+		from (
+		select rownum as rn, A.*
+		from (
+		select
+		r.room_idx,
+		r.h_userid,
+		r.room_name,
+		r.room_price,
+		r.contents,
+		r.city,
+		r.country,
+		r.address1,
+		r.address2,
+		r.zipcode,
+		r.check_in,
+		r.check_out,
+		r.beds,
+		r.baths,
+		r.room_type,
+		r.lat,
+		r.lng,
+		r.admin_confirm,
+		rp.photo1,
+		rp.photo2,
+		rp.photo3,
+		rp.photo4
+		from rooms r join room_photo rp on r.room_idx = rp.room_idx
+		where r.h_userid=#{h_userid}
+		order by check_in desc) A
+		) where rn between #{start} and #{end}
+
+</select>
+
 <select id="rooms_Confirm" resultType="RoomsDTO">
-select * from rooms, room_photo
-where rooms.room_idx = room_photo.room_idx
-and h_userid =#{h_userid}
+		select *
+		from (
+		select rownum as rn, A.*
+		from (
+		select
+		r.room_idx,
+		r.h_userid,
+		r.room_name,
+		r.room_price,
+		r.contents,
+		r.city,
+		r.country,
+		r.address1,
+		r.address2,
+		r.zipcode,
+		r.check_in,
+		r.check_out,
+		r.beds,
+		r.baths,
+		r.room_type,
+		r.lat,
+		r.lng,
+		r.admin_confirm,
+		rp.photo1,
+		rp.photo2,
+		rp.photo3,
+		rp.photo4
+		from rooms r join room_photo rp on r.room_idx = rp.room_idx
+		where r.h_userid=#{h_userid} and admin_confirm=#{select}
+		order by check_in desc) A
+		) where rn between #{start} and #{end} 
 </select>
 
 <select id="delete_check" resultType="String">
 select room_name from Rooms
 where h_userid=#{h_userid} and admin_confirm ='승인'
+</select>
+
+<select id="getRoomCount" resultType="int">
+select count(*) from rooms 
+where h_userid=#{h_userid} 
+and not(admin_confirm = '승인') 
+and admin_confirm=#{select}
+</select>
+
+<select id="getConfirmRoom" resultType="int">
+select count(*) from rooms where h_userid=#{h_userid} and admin_confirm='승인'
+</select>
+
+<select id="rooms_money">
+select r.h_userid, sum(r.room_price)
+from rooms r, reservations rs
+where r.room_idx=rs.room_idx
+and r.check_in between #{check_in} and add_months(#{check_in},1)
+and r.h_userid=#{h_userid} 
+and not(rs.res_state = '취소완료')
+group by r.h_userid
 </select>
 </mapper>
 

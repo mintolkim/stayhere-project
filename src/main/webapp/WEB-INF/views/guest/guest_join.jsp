@@ -67,7 +67,6 @@
 	        //패스워드 유효성 검사
 	      	$("#passwd").blur(function() {
 	      		var passwd = $("#passwd").val();
-	      		var passwd2 = $("#passwd2").val();	      		
 	      		if(!check(val,passwd)) {
 	      			$("#passwd_check").text("패스워드가 형식에 맞지 않습니다.");
 	      			$("#passwd_check").css("margin-left", "155px");
@@ -77,8 +76,9 @@
 	      		} else{
 	      			$("#passwd_check").text("");
 	      			//패스워드 입력확인
-	      			$("#confirm_passwd_check").blur(function() {
+	      			$("#passwd2").blur(function() {
 	      				var passwd = $("#passwd").val();
+	      				var passwd2 = $("#passwd2").val();
 	      				var confirm_passwd_check = $("#confirm_passwd_check").val();
 	      				
 	      				if(passwd !='' && passwd2 !='') {
@@ -200,22 +200,22 @@
               <label class="col-form-label col-4">아이디</label>
               <p><input type="text" class="form-control" id="userid" name="userid" placeholder="3~12, 영어대소문자, 숫자가능" required="required"></p>
               </div>            
-              <div id="userid_check"></div>
+              <div class="col-8" id="userid_check"></div>
           </div>
 
           <div class="form-group row">
               <div class="col-8">
               <label class="col-form-label col-4">비밀번호</label>
-              <p><input type="password" class="form-control" id="passwd" name="passwd" placeholder="4~12, 영어대소문자, 숫자가능" required="required"></p>
+              <p><input type="password" class="form-control" id="passwd" name="passwd" placeholder="3~12, 영어대소문자, 숫자가능" required="required"></p>
               </div>   	
-              <div id="passwd_check"></div>
+              <div class="col-8" id="passwd_check"></div>
           </div>
           <div class="form-group row">
               <div class="col-8">
               <label class="col-form-label col-4">비밀번호 확인</label>
               <p><input type="password" class="form-control" id="passwd2" name="confirm_passwd"></p>
               </div>        	
-              <div id="confirm_passwd_check"></div>
+              <div class="col-8" id="confirm_passwd_check"></div>
           </div>
 
           <div class="form-group row">
@@ -230,13 +230,14 @@
               <label class="col-form-label col-4">이메일</label>
               <p><input type="email" class="form-control" id="email" name="email" placeholder="stayhere@stayhere.com" ></p>
               </div>
-              <div class="input-group-addon">
+              <div class="col-8 input-group-addon">
                 <button type="button" class="btn" id="btnMailCheck">본인인증</button>
               </div>
-              <div id="mail_chk">
-              	<input type="text" class="form-control mail-check-input" placeholder="인증번호를 입력하세요" disabled="disabled" maxlength="12">
+              <br>
+              <div class="col-8" id="mail_chk">
+              	<p><input type="text" class="form-control" placeholder="인증번호를 입력하세요" disabled="disabled" maxlength="12"></p>
               </div>
-              <span id="mail-check-warn"></span>
+              <span class="col-8" id="mail-check-warn"></span>
           </div>
           
           <div class="form-group row">
@@ -244,14 +245,15 @@
               <label class="col-form-label col-4">연락처</label>
               <p><input type="tel" class="form-control" id="phone" name="phone" placeholder="010-1234-5678"></p>
               </div>   
-              <div id="phone_chk"></div>     	
+              <div class="col-8" id="phone_chk"></div>     	
           </div>
 		  <div class="col-8 offset-4">
-                  <button type="submit" id="submit" class="btn btn-lg">회원가입</button>
+                  <button type="submit" id="submit" class="btn btn-lg" disabled="disabled">회원가입</button>
               </div>  
 		      
       </form>
-      <div class="text-center">이미 회원이십니까? <a href="${path}/guest/login.do">로그인 하러 가기</a></div>
+      <br>
+      <h5 style="display: inline;">이미 회원이십니까?</h5>&nbsp;&nbsp;<a href="${path}/guest/login.do">로그인 하러 가기</a>
   </div>
 
         

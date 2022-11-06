@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.service.rooms.RoomsService;
+import com.example.stayhere.util.DateParse;
 import com.example.stayhere.util.Pager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +34,16 @@ public class MainController {
 	public ModelAndView main(
 			@RequestParam(defaultValue = "1") int curPage
 			) throws Exception {
-		int count = roomsService.getRoomAllCount();
+		
+		String today = DateParse.strToDate(DateParse.getTodayPlus(1));
+		log.info("today : " + today + "curPage :" + curPage);
+		
+		int count = roomsService.getRoomAllCount(today);
 		int pageScale = 12; //게시물 표시 갯수
 		Pager pager = new Pager(pageScale, count, curPage);
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
-		List<RoomsDTO> list = roomsService.getRoomAllList(start, end);
+		List<RoomsDTO> list = roomsService.getRoomAllList(start, end, today);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
@@ -54,14 +59,15 @@ public class MainController {
 	public ModelAndView addList(
 			@RequestParam int curPage
 			) throws Exception {
-		log.info("curPage : " + curPage);
-
-		int count = roomsService.getRoomAllCount();
+		
+		String today = DateParse.strToDate(DateParse.getTodayPlus(1));
+		log.info("today : " + today + "curPage :" + curPage);
+		int count = roomsService.getRoomAllCount(today);
 		int pageScale = 12; //게시물 표시 갯수
 		Pager pager = new Pager(pageScale, count, curPage);
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
-		List<RoomsDTO> list = roomsService.getRoomAllList(start, end);
+		List<RoomsDTO> list = roomsService.getRoomAllList(start, end, today);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);

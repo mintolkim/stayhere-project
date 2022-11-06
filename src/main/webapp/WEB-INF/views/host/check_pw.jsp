@@ -45,7 +45,18 @@ $(function(){
 		document.form1.submit();
 	}); 
 }); 
- 
+function enter() {
+	if (window.event.keyCode == 13) {
+		var h_passwd=$("#h_passwd").val();
+		if(h_passwd==""){
+			alert("비밀번호를 입력하세요.");
+			$("#h_passwd").focus();
+			return;
+		}
+		document.form1.action="${path}/host/checkPw";
+		document.form1.submit();
+    }
+}
 </script>
 </head>
 <body class="d-flex flex-column">
@@ -60,7 +71,7 @@ $(function(){
 	<h2>Confirm Password</h2>	
 	<br>
 	<br>
-	<input class="form-control me-2" type="password" placeholder="password" name="h_passwd" id="h_passwd">
+	<input class="form-control me-2" type="password" placeholder="password" name="h_passwd" id="h_passwd" onkeyup="enter()">
 	<br>
 	<input type="button" class="btn btn-warning" id="login" onclick="confirm_pw()" value="확인">
 	</form>

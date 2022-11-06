@@ -85,19 +85,35 @@
 
 
 /* search bar영역*/
-.search-wrap{
-	background-color: #fff;
+
+.search-bg-wrap {
+	height: 600px;
+	background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
 }
 
-.search-wrap.fixed{
+
+.search-wrap{
+	height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-fixed.fixed{
     position: fixed;
     top: 0;
     left: 0;
+    display: flex;
+    justify-content: center;
     width: 100%;
     border-bottom: 1px solid #dee2e6;
     background-color: #fff;
     padding: 8px 0;
     z-index: 3;
+    transition: 0.3s;
 }
 
 
@@ -107,10 +123,11 @@
 
 .filter-option-wrap.fixed{
     position: fixed;
-    bottom:88px;
+    bottom : 88px;
     width: 16.5%;
     background-color: #fff;
-    z-index: 3;
+    z-index: 2;
+    transition: 0.3s;
 }
 
 
@@ -118,7 +135,7 @@
 .search-bar {
     border-radius: 10rem;
     background: #fff;
-    /* box-shadow: 0 0 1rem rgb(0 0 0 / 15%); */
+    box-shadow: 0 0 1rem rgb(0 0 0 / 15%);
 }
 
 .search-bar .form-group::after {

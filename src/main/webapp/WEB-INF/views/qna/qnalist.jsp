@@ -195,7 +195,7 @@ text-align: center;}
 											<div class="d-flex align-items-end justify-content-between">
 												<div class="d-flex align-items-center">
 													<img class="rounded-circle me-3"
-														src="${path }/resources/images/${qna.profile_img}"
+														src="${path}/imgUpload/${qna.profile_img}"
 														style="width: 50px; height: 50px;" />
 													<div class="small">
 														<div class="fw-bold">${qna.userid }</div>
