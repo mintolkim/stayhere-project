@@ -204,4 +204,10 @@ public class ReviewDAOImpl implements ReviewDAO {
 	public List<ReviewDTO> roomreview(int room_idx) {
 		return sqlSession.selectList("review.roomreview",room_idx);
 	}
+
+	@Override
+	public List<ReviewAccuseDTO> getaccuse(String userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

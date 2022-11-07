@@ -1,5 +1,5 @@
 package com.example.stayhere.model.review.dto;
-s
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
