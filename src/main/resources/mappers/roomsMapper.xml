@@ -143,6 +143,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						beds,
 						baths,
 						room_type,
+						check_in,
+						check_out,
 						lat,
 						lng,
 						max_people,
@@ -162,6 +164,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						#{beds},
 						#{baths},
 						#{room_type},
+						#{check_in},
+						#{check_out},
 						#{lat},
 						#{lng},
 						#{max_people},
@@ -210,7 +214,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	add_people=#{add_people},
 	baths=#{baths},
 	beds=#{beds},
-	max_people=#{max_people}
+	max_people=#{max_people},
+	check_in=#{check_in},
+	check_out=#{check_out}
 	where room_idx=#{room_idx}
 	</update>
 	
@@ -223,5 +229,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	photo4=#{photo4}
 	where room_idx=#{room_idx}
 	</update>
+	
+	<!-- 해당숙소의 예약된 날짜 목록 불러오기  -->
+	<select id="matchDetail" resultType="String">
+		select re_date from reserved where room_idx=#{room_idx}
+	</select>
 	
 </mapper>

@@ -17,8 +17,13 @@ public class WishlistServiceImpl implements WishlistService {
 	
 	
 	@Override
-	public List<WishlistDTO> listWish(String userid) {
-		return wishlistDao.listWish(userid);
+	public int wishCount(String userid) {
+		return wishlistDao.wishCount(userid);
+	}
+	
+	@Override
+	public List<WishlistDTO> listWish(String userid, int start, int end) {
+		return wishlistDao.listWish(userid, start, end);
 	}
 
 	@Override
@@ -28,8 +33,8 @@ public class WishlistServiceImpl implements WishlistService {
 	}
 
 	@Override
-	public void deleteWish(int wish_num) {
-		wishlistDao.deleteWish(wish_num);
+	public void deleteWish(WishlistDTO dto) {
+		wishlistDao.deleteWish(dto);
 	}
 
 	@Override
@@ -42,5 +47,22 @@ public class WishlistServiceImpl implements WishlistService {
 	public int checkWish(WishlistDTO dto) {
 		return wishlistDao.checkWish(dto);
 	}
+
+	@Override
+	public int duplicateCehck(WishlistDTO dto) {
+		return wishlistDao.duplicateCehck(dto);
+	}
+
+	@Override
+	public List<WishlistDTO> addCheck(String userid) {
+		return wishlistDao.addCheck(userid);
+	}
+
+	@Override
+	public List<WishlistDTO> addressList(String userid) {
+		return wishlistDao.addressList(userid);
+	}
+
+
 
 }

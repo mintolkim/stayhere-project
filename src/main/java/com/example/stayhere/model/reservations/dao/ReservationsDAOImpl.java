@@ -1,6 +1,8 @@
 package com.example.stayhere.model.reservations.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -71,5 +73,77 @@ public class ReservationsDAOImpl implements ReservationsDAO {
 	public void checkoutStatus(int res_idx) {
 		sqlSession.update("reservations.checkoutStatus", res_idx);
 	}
+
+	@Override
+	public int resdateCheck(String room_idx, String checkin_date, String checkout_date) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("room_idx", room_idx);
+		map.put("checkin_date", checkin_date);
+		map.put("checkout_date", checkout_date);
+		return sqlSession.selectOne("reservations.resdateCheck", map);
+	}
+
+	@Override
+	public int cntRequest(String userid) {
+		return sqlSession.selectOne("reservations.cntRequest",userid);
+	}
+
+	@Override
+	public int cntApprove(String userid) {
+		return sqlSession.selectOne("reservations.cntApprove",userid);
+
+	}
+
+	@Override
+	public int cntCancel(String userid) {
+		return sqlSession.selectOne("reservations.cntCancel",userid);
+
+	}
+
+	@Override
+	public int cntUse(String userid) {
+		return sqlSession.selectOne("reservations.cntUse", userid);
+	}
+
+	@Override
+	public int cntCheckout(String userid) {
+		return sqlSession.selectOne("reservations.cntCheckout",userid);
+
+	}
+
+	@Override
+	public int h_cntRequest(String h_userid) {
+		return sqlSession.selectOne("reservations.h_cntRequest", h_userid);
+	}
+
+	@Override
+	public int h_cntApprove(String h_userid) {
+		return sqlSession.selectOne("reservations.h_cntApprove", h_userid);
+	}
+
+	@Override
+	public int h_cntCancel(String h_userid) {
+		return sqlSession.selectOne("reservations.h_cntCancel", h_userid);
+	}
+
+	@Override
+	public int h_cntCheckout(String h_userid) {
+		return sqlSession.selectOne("reservations.h_cntCheckout", h_userid);
+	}
+
+	@Override
+	public int h_cntUse(String h_userid) {
+		return sqlSession.selectOne("reservations.h_cntUse", h_userid);
+	}
+
+	@Override
+	public ReservationsDTO mailReserve(int room_idx, String checkin_date, String checkout_date) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("room_idx", room_idx);
+		map.put("checkin_date", checkin_date);
+		map.put("checkout_date", checkout_date);
+		return sqlSession.selectOne("reservations.mailReserve", map);
+	}
+
 
 }
