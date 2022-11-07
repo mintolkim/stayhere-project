@@ -267,15 +267,15 @@ public class ReviewController {
 	}
 
 	// 게스트리뷰리스트
-	@RequestMapping("view.do")
-	public ModelAndView view(int review_idx, HttpSession session) throws Exception {
-		//조회수 증가 처리(session 처리 확인)
-		reviewService.increaseViewcnt(review_idx, session);
-		ModelAndView mav=new ModelAndView();
-		mav.setViewName("reviews/view");
-		mav.addObject("dto", reviewService.read(review_idx));
-		return mav;
-	}
+	//@RequestMapping("view.do")
+	//public ModelAndView view(int review_idx, HttpSession session) throws Exception {
+	//	//조회수 증가 처리(session 처리 확인)
+	//	reviewService.increaseViewcnt(review_idx, session);
+	//	ModelAndView mav=new ModelAndView();
+	//	mav.setViewName("reviews/view");
+	//	mav.addObject("dto", reviewService.read(review_idx));
+	//	return mav;
+	//}
 
 	//첨부파일 목록을 리턴(참고용 board 컨트롤러)
 	//ArrayList를 json 배열로 변환하여 리턴
@@ -297,7 +297,8 @@ public class ReviewController {
 		//상세 화면으로 되돌아갈때
 		return "redirect:/reviews/detail.do?review_idx="+dto.getReview_idx();
 	}
-	//qna글 수정페이지이동
+	
+	//리뷰수정페이지이동
 	@RequestMapping("edit.do")
 	public ModelAndView edit(int review_idx) 
 			throws Exception {
@@ -307,7 +308,6 @@ public class ReviewController {
 		//게시물 목록으로 이동
 		return mav;
 	}
-
 
 	//리뷰삭제
 	@RequestMapping("delete.do")
