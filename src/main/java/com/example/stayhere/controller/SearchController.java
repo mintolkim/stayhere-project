@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import com.example.stayhere.util.Pager;
 
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
+import oracle.net.ns.DataPacket;
 
 
 @Controller
@@ -97,6 +99,7 @@ public class SearchController {
 		mav.addObject("map", map);//보낼 데이터*/
 		return mav;
 	}
+	
 	/*
 	 * 기본 검색화면 (FindStay버튼 클릭시 이동됨)
 	 */
@@ -117,6 +120,10 @@ public class SearchController {
 			@PathVariable String checkout_date, 
 			@RequestParam(defaultValue = "1") int page,
 			ModelAndView mav) throws Exception {
+		
+		//날짜 차이
+		int dateDif = DateParse.dateDif(checkin_date, checkout_date);
+		log.info("날짜 차이 : " + dateDif);
 
 		// 검색갯수
 		int count = roomsService.getRoomDefalutCount(cityname, checkin_date, checkout_date);
@@ -135,6 +142,7 @@ public class SearchController {
 		map.put("cityname", cityname);
 		map.put("checkin_date", checkin_date);
 		map.put("checkout_date", checkout_date);
+		map.put("dateDif", dateDif);
 		mav.addObject("map", map);
 		mav.setViewName("search/search");
 		return mav;
@@ -173,6 +181,11 @@ public class SearchController {
 			mav.setViewName("search/search");
 			return mav;
 		}
+		
+		//날짜 차이
+		int dateDif = DateParse.dateDif(checkin_date, checkout_date);
+		log.info("날짜 차이 : " + dateDif);
+		
 		// 검색갯수
 		int count = roomsService.getRoomOptionCount(param);
 							
@@ -199,6 +212,7 @@ public class SearchController {
 		map.put("cityname", cityname);
 		map.put("checkin_date", checkin_date);
 		map.put("checkout_date", checkout_date);
+		map.put("date_diff", dateDif);
 		mav.addObject("map", map);
 		mav.setViewName("search/search");
 		return mav;

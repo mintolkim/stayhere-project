@@ -223,6 +223,10 @@ $("#insert").click(function(){
 	}
 	if(date1<date2){
 		console.log("왜 되다 안되다 그러니");
+<<<<<<< HEAD
+=======
+	
+>>>>>>> branch 'knh' of https://github.com/mintolkim/styahere-project.git
 	}else{
 		alert("체크인 날짜와 체크아웃 날짜를 확인해주십시오");
 		return;

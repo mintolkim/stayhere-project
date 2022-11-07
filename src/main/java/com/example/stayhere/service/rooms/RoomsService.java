@@ -11,8 +11,8 @@ public interface RoomsService {
 	public int countrooms(String cityname, RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date);//숙소갯수확인(지도검색)
 	public List<RoomsDTO> address_list(String cityname,RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date);
 	public RoomsDTO detailRooms(int room_idx);//숙소 상세정보
-	public List<RoomsDTO> getRoomAllList(int start, int end, String today);  //메인페이지 룸 리스트 불러오기
-	public int getRoomAllCount(String today); //전체 룸갯수
+	public List<RoomsDTO> getRoomAllList(int start, int end, String today, String tomorrow);  //메인페이지 룸 리스트 불러오기
+	public int getRoomAllCount(String today, String tomorrow); //전체 룸갯수
 	public int getRoomDefalutCount(String cityname, String checkin_date, String checkout_date); //기본검색 갯수
 	public List<RoomsDTO> getRoomDefalutList(int start, int end, String cityname, String checkin_date, String checkout_date); //기본검색 리스트
 	public int getRoomOptionCount(Map<String, Object> param); // 옵션검색 갯수

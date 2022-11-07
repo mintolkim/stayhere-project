@@ -5,7 +5,9 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
@@ -52,12 +54,26 @@
 	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\styahere-project\resources\imgUpload" />
 	</beans:bean>
 	
+	
+	<!-- 채팅관련 설정 시작 -->
+	<!-- 웹소켄 활성화 및 bean동록 -->
+	<websocket:handlers>
+		<websocket:mapping handler="MyTextWebSocketHandler" path="/_chat"/>
+		<websocket:sockjs></websocket:sockjs>
+	</websocket:handlers>
+	
+	<beans:bean id="MyTextWebSocketHandler" class="com.example.stayhere.service.chat.MyTextWebSocketHandler"/> 
+	
+	<!-- 채팅 텍스트를 위한 업로드 패스 설정 -->
+	<beans:bean id="fileUploadPath" class="java.lang.String">
+	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\styahere-project\resources\chat\" />
+	</beans:bean>
+	
 	<!-- aop의 설정으로 Proxy 객체를 자동으로 생성 -->
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	
 	<!--인터셉터 빈 등록  -->
-	<beans:bean id="loginInterceptor" 
-	 class="com.example.stayhere.interceptor.LoginInterceptor">
+	<beans:bean id="loginInterceptor" class="com.example.stayhere.interceptor.LoginInterceptor">
 	</beans:bean>
 	<!-- 인터셉터 호출을 위한 url mapping -->
 	<interceptors>
@@ -67,6 +83,11 @@
 	  <mapping path="/rooms/write.do" />
 	  <mapping path="/host/edit.do" />
 	  <mapping path="/host/delete.do" />
+	  <mapping path="/wishlist/list.do" />
+	  <mapping path="/wishlist/insert.do" />
+	  <mapping path="/chat" />
+	  <mapping path="/chatlist" />
+	  <mapping path="/chatroom/{room_idx}/{userid}" />
 	  <beans:ref bean="loginInterceptor" />
 	 </interceptor> 
 	 </interceptors>

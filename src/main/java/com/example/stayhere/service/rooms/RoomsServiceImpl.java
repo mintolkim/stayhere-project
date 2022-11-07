@@ -49,13 +49,13 @@ public class RoomsServiceImpl implements RoomsService {
 	}
 
 	@Override
-	public List<RoomsDTO> getRoomAllList(int start, int end, String today) {
-		return roomsDao.getRoomAllList(start, end, today);
+	public List<RoomsDTO> getRoomAllList(int start, int end, String today, String tomorrow) {
+		return roomsDao.getRoomAllList(start, end, today, tomorrow);
 	}
 
 	@Override
-	public int getRoomAllCount(String today) {
-		return roomsDao.getRoomAllCount(today);
+	public int getRoomAllCount(String today, String tomorrow) {
+		return roomsDao.getRoomAllCount(today, tomorrow);
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package com.example.stayhere.service.wishlist;
 
 import java.util.List;
 
+import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.model.wishlist.dto.WishlistDTO;
 
 public interface WishlistService {

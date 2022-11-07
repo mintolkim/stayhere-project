@@ -87,12 +87,19 @@
 /* search bar영역*/
 
 .search-bg-wrap {
-	height: 600px;
+	height : 600px;
 	background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
   background-size: cover;
 }
+
+@media (max-width: 767px){
+	.search-bg-wrap {
+		height: 400px;
+	}
+}
+
 
 
 .search-wrap{

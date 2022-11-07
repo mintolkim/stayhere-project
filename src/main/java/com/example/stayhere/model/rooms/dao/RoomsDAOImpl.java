@@ -68,18 +68,22 @@ public class RoomsDAOImpl implements RoomsDAO {
 	}
   	
 	@Override
-	public List<RoomsDTO> getRoomAllList(int start, int end, String today) {
+	public List<RoomsDTO> getRoomAllList(int start, int end, String today, String tomorrow) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("start", start);
 		map.put("end", end);
-		map.put("today", today);
+		map.put("today", DateParse.dateToStr(today));
+		map.put("tomorrow", DateParse.dateToStr(tomorrow));
 		return sqlSession.selectList("rooms.getRoomAllList", map);
 	}
 
 
 	@Override
-	public int getRoomAllCount(String today) {
-		return sqlSession.selectOne("rooms.getRoomAllCount", today);
+	public int getRoomAllCount(String today, String tomorrow) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("today", DateParse.dateToStr(today));
+		map.put("tomorrow", DateParse.dateToStr(tomorrow));
+		return sqlSession.selectOne("rooms.getRoomAllCount", map);
 	}
 	
 	@Override
@@ -195,6 +199,11 @@ public class RoomsDAOImpl implements RoomsDAO {
 	@Override
 	public List<String> matchDetail(int room_idx) {
 		return sqlSession.selectList("rooms.matchDetail", room_idx);
+	}
+
+	@Override
+	public int getRoomAllCount(String today) {
+		return sqlSession.selectOne("rooms.getRoomallCount",today);
 	}	
 	
 }

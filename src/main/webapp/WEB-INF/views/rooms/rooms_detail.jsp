@@ -36,7 +36,6 @@ ul li {
 table tr td{
  width: 50%;
 }
-
 /*채팅 아이콘 css*/
 .btn-chatting-icon {
 	position: fixed;
@@ -313,12 +312,14 @@ table tr td{
  			<input type="hidden" name="room_name" value="${room.room_name}">
  			<input type="hidden" name="h_userid" value="${host.h_userid}">
  			<input type="hidden" name="h_name" value="${host.h_name}">
+ 			<input type="hidden" name="photo1" value="${room.photo1}">
  			<button type="button" class="btn btn-custom rounded-circle py-1" onclick="chatFormSubmit(chatForm)">
  				<i class="bi bi-chat-dots-fill fs-1"></i>
  			</button>
  	</form>
 </div>
   
+ 
 <script type="text/javascript">
 	$(function(){
 		wishListCheck();

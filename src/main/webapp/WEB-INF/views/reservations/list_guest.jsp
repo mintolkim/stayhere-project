@@ -44,6 +44,37 @@ a {
 }
 
 #profile-tab a {
+color: black;
+text-decoration: none;
+}
+#profile-tab a:hover {
+color: #ffc107;
+text-decoration: none;
+}
+div #tab-bar li a:hover {
+color: #ffc107;
+text-decoration: none;
+}
+.box {
+    width: 200px;
+    height: 200px; 
+    overflow: hidden;
+}
+.profile {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+div #tab-bar li a{
+ color: black;
+ text-decoration: none;
+}
+div #tab-bar li a:hover {
+ color: #ffc107;
+ text-decoration: none;
+}
+#status_1 a, #status_2 a, #status_3 a {
 	color: black;
 	text-decoration: none;
 }

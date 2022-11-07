@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="chat">
+	
+	
+	<insert id="addChatRoom">
+		insert into chatroom(c_idx, room_idx, h_userid, userid, 
+		create_date, h_name, user_name, chat_read_user, chat_read_host)
+		values (chat_room_seq.nextval, #{room_idx}, #{h_userid},#{userid}, 
+		#{create_date}, #{h_name}, #{user_name}, 1, 1)
+	</insert>
+	
+	
+	<update id="updateFileName">
+		update chatroom
+		set filename = #{fileName}
+		where c_idx = ${c_idx}
+	</update>
+	
+	<select id="countByChatId" resultType="int">
+		select count(*)
+		from chatroom
+		where room_idx = #{room_idx} and userid=#{userid}
+	</select>
+	
+	<select id="getChatRoomIdx" resultType="int">
+		select c_idx 
+		from chatroom
+		where room_idx = #{room_idx} and userid=#{userid}
+	</select>
+	
+	<select id="findByChatId" resultType="ChatRoomDTO">
+		select * 
+		from chatroom c join room_photo rp on c.room_idx = rp.room_idx
+		where c.room_idx = #{room_idx} and
+		userid = #{userid}
+	</select>
+	
+	<update id="updateChatReadUser">
+		update chatroom
+		set chat_read_user = #{chat_read_user}
+		where c_idx= #{c_idx}
+	</update>
+	
+	<update id="updateChatReadHost">
+		update chatroom
+		set chat_read_host = #{chat_read_host}
+		where c_idx= #{c_idx}
+	</update>
+	
+	<select id="getUnreadMessages" resultType="int">
+		select count(c_idx)
+		from chatroom
+		where (userid=#{userid} and chat_read_user=0) or 
+		(h_userid=#{userid} and chat_read_host=0)
+	</select>
+	
+	<select id="findByUserId" resultType="ChatListDTO">
+		select * from chatroom c 
+		join room_photo rp on c.room_idx = rp.room_idx
+		where userid = #{userid} or h_userid = #{userid}
+	</select>
+	
+	<select id="getUnreadChatRoom" resultType="int">
+		select c_idx
+		from chatroom
+		where (userid=#{userid} and chat_read_user=0) or 
+		(h_userid=#{userid} and chat_read_host=0)
+	</select>
+	
+	<select id="findByReadCheck" resultType="ChatRoomDTO">
+		select chat_read_user, chat_read_host 
+		from chatroom 
+		where c_idx=#{c_idx}
+	</select>
+	
+	
+	
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

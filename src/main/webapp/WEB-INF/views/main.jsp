@@ -68,16 +68,14 @@
 
 <!-- room-list-->
 <div class="room-list-wrap">
-	<div class="container-fluid p-4">
-		<div id="room-list"
-			class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+	<div class="container-fluid p-4 mt-3">
+		<div id="room-list"	class="row g-3">
 			<c:forEach var="row" items="${map.list}">
-				<section class="list-item col-xl-2 col-lg-3 col-md-4 col-sm-6">
-<%-- 					<a href="${path}/rooms/detail/${row.room_idx}" class="text-black text-decoration-none"> --%>
-						<div class="card border-0" style="width: 100%;">
+				<section class="list-item col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6">
+						<div class="card border-0" style="width: 100%; cursor: pointer;" onclick="goToDetail(${row.room_idx})">
 							<div class="card-img">
 								<!-- 이미지가 여러장 일경우 인디케이터 사용 -->
-								<div id="indicators-${row.room_idx}" class="carousel slide indicators">
+								<div id="indicators-${row.room_idx}" class="carousel slide indicators stop-action">
 									<div class="carousel-indicators">
 										<button type="button"
 											data-bs-target="#indicators-${row.room_idx}"
@@ -123,8 +121,7 @@
 										<span class="visually-hidden">Next</span>
 									</button>
 								</div>
-								<div
-									class="btn boder-0 shadow-none card-img-overlay-top text-end">
+								<div class="btn boder-0 shadow-none card-img-overlay-top text-end">
 									<i id="wish-icon-${row.room_idx}" class="bi-heart text-danger fw-bold fs-5"
 										onclick="wishListToggle(event, ${row.room_idx})"></i>
 								</div>
@@ -153,15 +150,14 @@
 								<p class="card-text mb-0 pt-2">
 									<span class="fw-bold">￦ <fmt:formatNumber
 											pattern="#,###" value="${row.room_price}" />
-									</span> <span>/박</span> <span>·</span> <span> 
-									<a href="#2" class="text-secondary">총액 ￦ 
-									<fmt:formatNumber	pattern="#,###" value="${row.room_price}" />
-									</a>
-									</span>
+									</span> <span>/박</span> 
+<!-- 									<span>·</span> <span>  -->
+<!-- 									<a href="#2" class="text-secondary">총액 ￦  -->
+<%-- 									<fmt:formatNumber	pattern="#,###" value="${row.room_price}" /> --%>
+<!-- 									</a></span> -->
 								</p>
 							</div>
 						</div>
-<!-- 					</a> -->
 				</section>
 			</c:forEach>
 		</div>
@@ -172,6 +168,13 @@
 <script type="text/javascript">
 
 	$(function(){
+		wishListCheck();
+		
+		//상위 링크 이동 맊기 () 이미지 위 버튼 클릭 
+		$(".stop-action button").on("click", function(e){
+			e.stopPropagation();
+		});
+				
 		$('.indicators').carousel({
 	      // 슬리아딩 자동 순환 지연 시간
 	      // false면 자동 순환하지 않는다.
@@ -217,7 +220,8 @@
 
 			success : function(data) {
 // 			console.log(data);
-				$("#room-list").append(data);
+				$("#room-list").append(data); //불러온 데이터 추가
+				wishListCheck(); // 위시리스트 체크 여부 확인
 				isLoading = false;
 				$("#load").hide(); //로딩바 숨기기
 			}
@@ -225,37 +229,99 @@
 	}
 	
 	
-	//메인 위시리스트 버튼 클릭
+	//디테일 페이지로 이동하기
+	function goToDetail(room_idx){
+		if(room_idx != ""){
+			location.href= "${path}/rooms/detail/"+room_idx;
+		} else {
+			alert("에러.....");
+		}
+	}
+	
+	
+	//페이지 로드시 위시리스트 체크여부 확인
+	function wishListCheck(){
+		var userid = '${sessionScope.userid}';
+		
+		if(userid != ""){
+			$.ajax({
+				type: "get",
+				url : "${path}/wishlist/addCheck.do",
+				data : { "userid" : userid },
+				dataType : "json",
+				contentType:"application/json",
+				success : function(data){
+					console.log(data);
+						$(data).each(function(){
+							$("#wish-icon-"+this.room_idx).addClass('bi-heart-fill');
+							$("#wish-icon-"+this.room_idx).removeClass('bi-heart');
+						});			
+				}
+				
+			})
+		}
+		
+	}
+	
+	//위시리스트 버튼 클릭
 	function wishListToggle(event, room_idx) {
-	    event.stopPropagation(); //부모태그 이벤트 막기..
-	    
+	    event.stopPropagation(); //부모태그 이벤트 막기..적용안됨..
 	    var userid = '${sessionScope.userid}';
-      var off = $("#wish-icon-"+room_idx).hasClass('bi-heart');
-	    var on = $("#wish-icon-"+room_idx).hasClass('bi-heart-fill');
-	    	    
+	    var add = $("#wish-icon-"+room_idx).hasClass('bi-heart');
+	    var del = $("#wish-icon-"+room_idx).hasClass('bi-heart-fill');
 	    
-	    if(userid != ""){
+	    console.log("꽉찬 하트 라면 : " + del);
+	    console.log("빈 하트라면 : " + add);
+	    
+	    var date = {
+	    		"room_idx" : room_idx,
+					"userid" : userid
+	    }
+	    	    
+	    if(userid != "" && add){
 	    	if(confirm("위시리스트에 추가하시겠습니까?")){
 	    		$.ajax({
 	    			type: "get",
-	    			url: "${path}/wishlist/duplicate.do",
-	    			data : {
-	    				"room_idx" : room_idx,
-	    				"userid" : userid
-	    			},
-	    			success : function(res){
-	    				console.log(res);
+	    			url: "${path}/wishlist/insert.do",
+	    			data : date,
+	    			success : function(data){
+	    				if(data == 'true'){
+	    					if(confirm("위시리스트에 추가되었습니다! 위시리스트로 이동하시겠습니까?")){
+	    						location.href="${path}/wishlist/list.do";
+	    					}
+	    					$("#wish-icon-"+room_idx).toggleClass('bi-heart bi-heart-fill');
+	    				} else {
+	    					alert("이미 추가된 방입니다!");
+	    					return false;
+	    				}
 	    			}
 	    		});
-	    		
 	    	}
-	    	
-	    } else {
+	    } else if(userid != "" && del) {
+	    	if(confirm("위시리스트에 삭제하시겠습니까?")){
+	    		$.ajax({
+	    			type: "get",
+	    			url: "${path}/wishlist/delete.do",
+	    			data : date,
+	    			success : function(data){
+	    				if(data == 'true'){
+	    					alert("위시리스트에서 삭제되었습니다");
+	    					$("#wish-icon-"+room_idx).toggleClass('bi-heart bi-heart-fill');
+	    				} else {
+	    					alert("위시리스트에 추가되지 않았습니다.");
+	    					return false;
+	    				}
+	    			}
+	    		});
+	    	}
+	    }
+	    
+	    
+	    else {
 	    	if(confirm("로그인 하셔야 위시리스트 기능이 가능합니다.\n 로그인 페이지로 이동하시겠습니까?")){
 	    		location.href="${path}/guest/login.do";
 	    	}
 	    }
-	   
 	}
 	
 </script>

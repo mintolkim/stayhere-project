@@ -36,14 +36,15 @@ public class MainController {
 			) throws Exception {
 		
 		String today = DateParse.strToDate(DateParse.getTodayPlus(1));
-		log.info("today : " + today + "curPage :" + curPage);
+		String tomorrow = DateParse.strToDate(DateParse.getTodayPlus(2));
+		log.info("today : " + today + "tomorrow : " + tomorrow +  "curPage :" + curPage);
 		
-		int count = roomsService.getRoomAllCount(today);
+		int count = roomsService.getRoomAllCount(today, tomorrow);
 		int pageScale = 12; //게시물 표시 갯수
 		Pager pager = new Pager(pageScale, count, curPage);
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
-		List<RoomsDTO> list = roomsService.getRoomAllList(start, end, today);
+		List<RoomsDTO> list = roomsService.getRoomAllList(start, end, today, tomorrow);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
@@ -61,13 +62,14 @@ public class MainController {
 			) throws Exception {
 		
 		String today = DateParse.strToDate(DateParse.getTodayPlus(1));
-		log.info("today : " + today + "curPage :" + curPage);
-		int count = roomsService.getRoomAllCount(today);
+		String tomorrow = DateParse.strToDate(DateParse.getTodayPlus(2));
+		log.info("today : " + today + "tomorrow : " + tomorrow +  "curPage :" + curPage);
+		int count = roomsService.getRoomAllCount(today, tomorrow);
 		int pageScale = 12; //게시물 표시 갯수
 		Pager pager = new Pager(pageScale, count, curPage);
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
-		List<RoomsDTO> list = roomsService.getRoomAllList(start, end, today);
+		List<RoomsDTO> list = roomsService.getRoomAllList(start, end, today, tomorrow);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
@@ -77,7 +79,7 @@ public class MainController {
 		mav.setViewName("addPage/addRoomsList");
 		return mav;
 	}
-
+	
 //	// json 형태로 내려보내기
 //	@ResponseBody
 //	@GetMapping("/api/addRoomsList")

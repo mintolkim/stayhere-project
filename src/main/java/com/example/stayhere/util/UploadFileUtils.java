@@ -45,4 +45,19 @@ public class UploadFileUtils {
 		return iconName.substring(uploadPath.length()).replace(
 				File.separatorChar, '/');
 	}
+	
+	
+	// 20221002 형식의 날짜 이름 생성
+	public static String calcName() {
+		Calendar cal = Calendar.getInstance();
+		String yearPath = Integer.toString(cal.get(Calendar.YEAR));
+		String monthPath = yearPath + new DecimalFormat("00").format(cal.get(Calendar.MONTH)+1);
+		String datePath = monthPath + new DecimalFormat("00").format(cal.get(Calendar.DATE));
+		logger.info("datePath : " + datePath);
+		return datePath;
+	}
+	
+	
+	
+
 }

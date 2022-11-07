@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.model.wishlist.dto.WishlistDTO;
 
 @Repository
@@ -53,16 +52,6 @@ public class WishlistDAOImpl implements WishlistDAO {
 	@Override
 	public int checkWish(WishlistDTO dto) {
 		return sqlSession.selectOne("wishlist.checkWish",dto);
-	}
-
-	@Override
-	public int wishcheck(WishlistDTO dto) {
-		return sqlSession.selectOne("wishlist.wishcheck",dto);
-	}
-
-	@Override
-	public void deleteWishlist(WishlistDTO dto) {
-		sqlSession.delete("wishlist.deleteWishlist",dto);
 	}
 
 	@Override

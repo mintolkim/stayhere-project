@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.model.guest.dto.GuestDTO;
-import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.model.wishlist.dto.WishlistDTO;
 import com.example.stayhere.service.guest.GuestService;
 import com.example.stayhere.service.rooms.RoomsService;
@@ -122,7 +121,7 @@ public class WishlistController {
 	
 	
 	@RequestMapping("deleteAll.do")
-	public String deleteAll(HttpSession session) {
+	public String deleteAll(HttpSession session) throws Exception {
 		String userid = (String)session.getAttribute("userid");
 		if(userid != null) {
 			wishlistService.deleteAllWish(userid);

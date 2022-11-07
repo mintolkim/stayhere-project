@@ -186,8 +186,9 @@
 										<select class="form-select" name="people" id="people"
 											onchange="filterFormSubmit(filterFrom)">
 											<option value="" disabled selected>선택</option>
-											<option value="1">1명</option>
 											<option value="2">2명</option>
+											<option value="3">3명</option>
+											<option value="4">4명이상</option>
 										</select>
 									</div>
 								</div>
@@ -221,6 +222,23 @@
 										</select>
 									</div>
 								</div>
+								
+								<!-- 방타입 -->
+								<div class="type-filter row mb-1">
+									<label for="type" class="col-sm-6 col-form-label">방타입</label>
+									<div class="col-sm-6">
+										<select class="form-select" name="type" id="type"
+											onchange="filterFormSubmit(filterFrom)">
+											<option value="" disabled selected>선택</option>
+											<option value="주택">주택</option>
+											<option value="레지던스">레지던스</option>
+											<option value="아파트">아파트</option>
+											<option value="호텔">호텔</option>
+											<option value="펜션">펜션</option>
+										</select>
+									</div>
+								</div>
+								
 							</div>
 						</div>
 					</form>
@@ -235,6 +253,11 @@
 				<!-- 우측 검색 결과 -->
 				<div class="col-lg-9">
 					<c:choose>
+						<c:when test="${map.count == null }">
+							<div class="search-count p-2">
+								<span></span>
+							</div>
+						</c:when>
 						<c:when test="${map.count > 0 }">
 							<div class="search-count p-2">
 								<span><b>${map.count}개</b>의 데이터가 검색되었습니다.</span>
@@ -251,12 +274,10 @@
 						<div class="list-item">
 							<c:forEach var="row" items="${map.list}">
 								<section class="result-rooms-list my-3">
-										<a href="${path}/rooms/detail/${row.room_idx}" class="text-black text-decoration-none">
-										<div class="card my-2 border rounded-5" style="max-width: 100%;">
+										<div class="card my-2 border rounded-5" style="max-width: 100%; cursor: pointer;" onclick="goToDetail(${row.room_idx})">
 											<div class="row g-0">
 												<div class="col-md-4">
-													<div id="indicators-${row.room_idx}" class="carousel slide indicators"
-														data-interval="false">
+													<div id="indicators-${row.room_idx}" class="carousel slide indicators stop-action">
 														<div class="carousel-indicators">
 															<button type="button"
 																data-bs-target="#indicators-${row.room_idx}"
@@ -302,6 +323,10 @@
 															<span class="carousel-control-next-icon"
 																aria-hidden="true"></span> <span class="visually-hidden">Next</span>
 														</button>
+														<div class="btn boder-0 shadow-none card-img-overlay-top text-end">
+															<i id="wish-icon-${row.room_idx}" class="bi-heart text-danger fw-bold fs-5"
+																onclick="wishListToggle(event, ${row.room_idx})"></i>
+														</div>
 													</div>
 												</div>
 												<div class="col-md-8">
@@ -341,7 +366,15 @@
 														<p class="card-text mt-3 text-end">
 															<span class="fw-bold fs-4"> ￦ <fmt:formatNumber
 																	pattern="#,###" value="${row.room_price}" />
-															</span> /박
+															</span> /박  
+															
+															${map.date_diff}
+															<c:if test="${map.date_diff > 1}">
+															<span>·</span>
+															<span class="text-secondary">총액 ￦ 
+															<fmt:formatNumber	pattern="#,###" value="${row.room_price * map.date_diff}" />
+															</span>
+															</c:if>
 														</p>
 													</div>
 												</div>
@@ -407,13 +440,20 @@
 		</div>
 	</div>
 
-	<script>
+	<script type="text/javascript">
 	
 		$(function(){
 			optionChecked(); 
 			multiRangeHandler(); 
+			wishListCheck();
 			
-			$('.indicators').carousel({
+			//상위 링크 이동 맊기 () 이미지 위 버튼 클릭 
+			$(".stop-action button").on("click", function(e){
+				e.stopPropagation();
+			});
+			
+			
+			$(".indicators").carousel({
 		        // 슬리아딩 자동 순환 지연 시간
 		        // false면 자동 순환하지 않는다.
 		        interval: false,
@@ -621,9 +661,7 @@
     	}
     	
     }
-    
-     
-   
+        
     //옵션전체초기화
     function resetOption(){
     	var cityname = $("#cityname").val();
@@ -633,12 +671,106 @@
 			location.href = "${path}/search/" + cityname +"/" + checkIn + "/" + checkOut;
     }
     
+	//디테일 페이지로 이동하기
+	function goToDetail(room_idx){
+		if(room_idx != ""){
+			location.href= "${path}/rooms/detail/"+room_idx;
+		} else {
+			alert("에러.....");
+		}
+	}
+	
+	
+	//페이지 로드시 위시리스트 체크여부 확인
+	function wishListCheck(){
+		var userid = '${sessionScope.userid}';
+		
+		if(userid != ""){
+			$.ajax({
+				type: "get",
+				url : "${path}/wishlist/addCheck.do",
+				data : { "userid" : userid },
+				dataType : "json",
+				contentType:"application/json",
+				success : function(data){
+					console.log(data);
+						$(data).each(function(){
+							$("#wish-icon-"+this.room_idx).addClass('bi-heart-fill');
+							$("#wish-icon-"+this.room_idx).removeClass('bi-heart');
+						});			
+				}
+				
+			})
+		}
+		
+	}
+	
+	//위시리스트 버튼 클릭
+	function wishListToggle(event, room_idx) {
+	    event.stopPropagation(); //부모태그 이벤트 막기..적용안됨..
+	    var userid = '${sessionScope.userid}';
+	    var add = $("#wish-icon-"+room_idx).hasClass('bi-heart');
+	    var del = $("#wish-icon-"+room_idx).hasClass('bi-heart-fill');
+	    
+	    console.log("꽉찬 하트 라면 : " + del);
+	    console.log("빈 하트라면 : " + add);
+	    
+	    var date = {
+	    		"room_idx" : room_idx,
+					"userid" : userid
+	    }
+	    	    
+	    if(userid != "" && add){
+	    	if(confirm("위시리스트에 추가하시겠습니까?")){
+	    		$.ajax({
+	    			type: "get",
+	    			url: "${path}/wishlist/insert.do",
+	    			data : date,
+	    			success : function(data){
+	    				if(data == 'true'){
+	    					if(confirm("위시리스트에 추가되었습니다! 위시리스트로 이동하시겠습니까?")){
+	    						location.href="${path}/wishlist/list.do";
+	    					}
+	    					$("#wish-icon-"+room_idx).toggleClass('bi-heart bi-heart-fill');
+	    				} else {
+	    					alert("이미 추가된 방입니다!");
+	    					return false;
+	    				}
+	    			}
+	    		});
+	    	}
+	    } else if(userid != "" && del) {
+	    	if(confirm("위시리스트에 삭제하시겠습니까?")){
+	    		$.ajax({
+	    			type: "get",
+	    			url: "${path}/wishlist/delete.do",
+	    			data : date,
+	    			success : function(data){
+	    				if(data == 'true'){
+	    					alert("위시리스트에서 삭제되었습니다");
+	    					$("#wish-icon-"+room_idx).toggleClass('bi-heart bi-heart-fill');
+	    				} else {
+	    					alert("위시리스트에 추가되지 않았습니다.");
+	    					return false;
+	    				}
+	    			}
+	    		});
+	    	}
+	    }
+	    
+	    
+	    else {
+	    	if(confirm("로그인 하셔야 위시리스트 기능이 가능합니다.\n 로그인 페이지로 이동하시겠습니까?")){
+	    		location.href="${path}/guest/login.do";
+	    	}
+	    }
+	}
+    
    </script>
    
-   
-   <script type="text/javascript">
-	
-	 $(function(){
+  
+  <script type="text/javascript">
+		 $(function(){
          var option = {
              locale: "ko", //한국어로 언어설정
              dateFormat: "Y-m-d",   //출력 술정
@@ -667,7 +799,7 @@
  			 console.log("documentHeight : " + documentHeight);
  		
  			 if(windowsHeight > 730){
-         if ($(this).scrollTop() > searchBar.top+300) {
+         if ($(this).scrollTop() > searchBar.top + 400) {
     	 			console.log(searchBar.top);
              $(".search-fixed").addClass('fixed');
              $(".search-fixed").removeClass('search-wrap');
@@ -713,11 +845,11 @@
 		}
 	 
 	</script>
+	
 
 	<!-- 컨텐츠 수정 영역 end -->
 
 	<!-- footer -->
 	<%@ include file="../include/footer.jsp"%>
 </body>
->>>>>>> branch 'commit(jys)' of https://github.com/mintolkim/styahere-project.git
 </html>
