@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
+import com.example.stayhere.model.review_comment.dto.ReCommentDTO;
 
 @Repository
 public class ReviewDAOImpl implements ReviewDAO {
@@ -26,13 +29,13 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 	@Override
 	public void update(ReviewDTO dto) throws Exception {
-		// TODO Auto-generated method stub
+		sqlSession.update("review.update",dto);
 
 	}
 
 	@Override
 	public void delete(int review_idx) throws Exception {
-		// TODO Auto-generated method stu
+		sqlSession.delete("review.delete", review_idx);
 
 	}
 
@@ -47,7 +50,7 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 	@Override
 	public void increaseViewcnt(int review_idx) throws Exception {
-		// TODO Auto-generated method stub
+		sqlSession.update("review.increaseViewcnt",review_idx);
 
 	}
 
@@ -58,8 +61,7 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 	@Override
 	public ReviewDTO read(int review_idx) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectOne("review.read",review_idx);
 	}
 	
 	@Override
@@ -84,27 +86,28 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 	
 	@Override
-	public void deleteFile(String fullName) {
-		// TODO Auto-generated method stub
+	public void deleteFile(String fileName) {
+		sqlSession.delete("review.deleteFile",fileName);
 
 	}
 
 	@Override
 	public List<String> getAttach(int review_idx) {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList("review.getAttach",review_idx);
 	}
 
 	@Override
 	public void addAttach(String fullName) {
-		// TODO Auto-generated method stub
+		sqlSession.insert("review.addAttach", fullName);
 
 	}
 
 	@Override
 	public void updateAttach(String fullName, int review_idx) {
-		// TODO Auto-generated method stub
-
+		Map<String, Object> map = new HashMap<>();
+		map.put("fullName", fullName);
+		map.put("review_idx", review_idx);
+		sqlSession.insert("review.updateAttach",map);
 	}
 
 	@Override
@@ -112,4 +115,104 @@ public class ReviewDAOImpl implements ReviewDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public ReviewDTO detail(int review_idx) {
+		return sqlSession.selectOne("review.detail", review_idx);
+	}
+
+	@Override
+	public void addlikey(int review_idx, String userid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int likeycheck(int review_idx, String userid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void dellikey(int review_idx, String userid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<ReCommentDTO> comment(int review_idx) {
+		return sqlSession.selectList("review.comment",review_idx);
+	}
+
+	@Override
+	public void addComment(int review_idx, String writer, String contents) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("review_idx", review_idx);
+		map.put("writer", writer);
+		map.put("contents", contents);
+		sqlSession.insert("review.addComment", map);
+	}
+
+	@Override
+	public void delComment(int review_idx, int comment_idx) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("review_idx", review_idx);
+		map.put("comment_idx", comment_idx);
+		sqlSession.delete("reivew.delComment",map);
+		
+	}
+
+	
+	@Override
+	public int checkAttach(String fullName, int review_idx) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("fullName", fullName);
+		map.put("review_idx", review_idx);
+		return sqlSession.selectOne("review.checkattach",map);
+	}
+
+	/*
+	 * @Override public List<ReviewAccuseDTO> acclist(int start, int end) throws
+	 * Exception { // TODO Auto-generated method stub return null; }
+	 */
+	
+	/* 인트로 하려다 접음.
+	 * @Override public int accuseCheck(String user, int review_idx) { Map<String,
+	 * Object> map = new HashMap<>(); map.put("userid", user); map.put("review_idx",
+	 * review_idx); return sqlSession.selectOne("review.accuseCheck", map);
+	 * 
+	 * }
+	 * 
+	 * @Override public void accuseCancel(int review_idx) {
+	 * sqlSession.update("review.accuseCancel", review_idx);
+	 * 
+	 * }
+	 */
+	
+	@Override
+	public void checkAcc(String review_idx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void cancelAcc(String review_idx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int countByAcc(int review_idx) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ReviewAccuseDTO accDetail(int acc_idx) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
 }

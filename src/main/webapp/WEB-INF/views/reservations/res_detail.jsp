@@ -161,8 +161,8 @@ a {
 <script>
 $(function(){
 	$("#btnPay").click(function () {
-		request_pay(); //결제 API연결 완료
-		//$("#pay_form").submit();//결제 API 건너뛰고 테스트
+		//request_pay(); //결제 API연결 완료 . 임시 주석처리*/
+		$("#pay_form").submit();//결제 API 건너뛰고 테스트
 	});
 });
 //정보이용 동의 확인용
