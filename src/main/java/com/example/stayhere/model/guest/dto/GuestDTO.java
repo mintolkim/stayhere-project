@@ -17,6 +17,10 @@ public class GuestDTO {
     private String phone; //게스트 연락처
     private String profile_img; //게스트 프로필사진
     private Date join_date; //게스트 가입일자
+    private int total_price;//전체 구매금액(admin)
+    private int review_count;//리뷰글갯수(admin)
+    private int accuse_count;//신고글갯수
+    private String blacklist;//블랙리스트여부
 
 	public GuestDTO(String userid, String name, String passwd, String email, String phone, String profile_img,
 			Date join_date) {

@@ -15,5 +15,7 @@ public interface ReservationsService {
 	public void reserveApprove(int res_idx);//예약 승인
 	public void reserveCheckin(int res_idx);//입실 완료 
 	public void reserveCheckout(int res_idx);//퇴실 완료
+	public List<ReservationsDTO> resTotalMoney();//월별 매출집계
+	public List<ReservationsDTO> resCateTotalMoney();//카테고리별 매출집계
 
 }

@@ -20,8 +20,9 @@ public class RoomsServiceImpl implements RoomsService {
 	RoomsDAO roomsDao;
 
 	@Override
-	public List<RoomsDTO> listMap(String cityname, RoomsDTO roomdto,int lower, int higher,String checkin_date, String checkout_date) {
-		return roomsDao.listMap(cityname,roomdto, lower, higher, checkin_date, checkout_date);
+	public List<RoomsDTO> listMap(String cityname, RoomsDTO roomdto,
+			int lower, int higher,String checkin_date, String checkout_date,String align,String userid) {
+		return roomsDao.listMap(cityname,roomdto, lower, higher, checkin_date, checkout_date,align,userid);
 	}
 
 	@Override
@@ -130,5 +131,10 @@ public class RoomsServiceImpl implements RoomsService {
 	@Override
 	public void updateRoomphoto(RoomsDTO dto) {
 		roomsDao.updateRoomphoto(dto);
+	}
+
+	@Override
+	public List<String> search_list() {
+		return roomsDao.search_list();
 	}	
 }

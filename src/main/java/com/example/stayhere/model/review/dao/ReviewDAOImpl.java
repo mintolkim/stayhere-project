@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
 
 @Repository
@@ -111,5 +112,20 @@ public class ReviewDAOImpl implements ReviewDAO {
 	public List<ReviewDTO> reviewsCategory(int review_idx, Date write_date, int view_count, int review_star) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<ReviewDTO> getreview(String userid) {
+		return sqlSession.selectList("review.getreview",userid);
+	}
+
+	@Override
+	public List<ReviewAccuseDTO> getaccuse(String userid) {
+		return sqlSession.selectList("review.getaccuse",userid);
+	}
+
+	@Override
+	public List<ReviewDTO> roomreview(int room_idx) {
+		return sqlSession.selectList("review.roomreview",room_idx);
 	}
 }

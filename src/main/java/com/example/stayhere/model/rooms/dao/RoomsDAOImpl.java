@@ -1,4 +1,3 @@
-
 package com.example.stayhere.model.rooms.dao;
 
 import java.util.HashMap;
@@ -19,7 +18,8 @@ public class RoomsDAOImpl implements RoomsDAO {
 	SqlSession sqlSession;
 	
 	@Override
-	public List<RoomsDTO> listMap(String cityname,RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date) {
+	public List<RoomsDTO> listMap(String cityname,RoomsDTO roomdto,
+			int lower, int higher,String checkin_date, String checkout_date,String align,String userid) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("cityname", "%"+cityname+"%");
 		map.put("bed",roomdto.getBeds());
@@ -27,6 +27,8 @@ public class RoomsDAOImpl implements RoomsDAO {
 		map.put("reviewStar", roomdto.getReview_star());
 		map.put("lower", lower);
 		map.put("higher",higher);
+		map.put("align",align);
+		map.put("userid",userid);
 		map.put("checkin_date",DateParse.dateToStr(checkin_date));
 		map.put("checkout_date",DateParse.dateToStr(checkout_date));
 		return sqlSession.selectList("search.listMap",map);
@@ -146,6 +148,49 @@ public class RoomsDAOImpl implements RoomsDAO {
 	@Override
 	public void updateRoomphoto(RoomsDTO dto) {
 		sqlSession.update("rooms.updateRoomphoto",dto);
-	}	
+	}
+
+	@Override
+	public List<RoomsDTO> allroom_admin(int start, int end, String select) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("select", select);
+		return sqlSession.selectList("rooms.allroom_admin",map);
+	}
+
+	@Override
+	public void changestate(int room_idx, String state) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("room_idx", room_idx);
+		map.put("state", state);
+		sqlSession.update("rooms.changestate",map);
+	}
+
+	@Override
+	public List<RoomsDTO> getconfirm() {
+		return sqlSession.selectList("rooms.getconfirm");
+	}
+
+	@Override
+	public List<RoomsDTO> getdelay() {
+		return sqlSession.selectList("rooms.getdelay");
+	}
+
+	@Override
+	public List<RoomsDTO> getreject() {
+		return sqlSession.selectList("rooms.getreject");
+	}
+
+	@Override
+	public List<RoomsDTO> getpopular(String today) {
+		return sqlSession.selectList("rooms.getpopular",today);
+	}
+
+	@Override
+	public List<String> search_list() {
+		return sqlSession.selectList("search.search_list");
+	}
+	
 }
 

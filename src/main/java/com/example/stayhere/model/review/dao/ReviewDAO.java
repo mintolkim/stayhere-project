@@ -3,6 +3,7 @@ package com.example.stayhere.model.review.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
 
 public interface ReviewDAO {
@@ -24,4 +25,7 @@ public interface ReviewDAO {
 	public void addAttach(String fullName); //첨부파일저장
 	public void updateAttach(String fullName, int review_idx); //첨부파일 수정
 	//public List<ReviewDTO> reviewsSearch(int room_idx, String r_title, String review_content);//리뷰검색기능(가능하면)
+	public List<ReviewDTO> getreview(String userid);//게스트별 리뷰가져오기
+	public List<ReviewAccuseDTO> getaccuse(String userid);//게스트 신고 가져오기
+	public List<ReviewDTO> roomreview(int room_idx);//룸리뷰 불러오기
 }

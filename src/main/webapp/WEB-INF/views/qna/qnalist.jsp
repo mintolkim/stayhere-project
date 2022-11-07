@@ -118,17 +118,26 @@ text-align: center;}
  <main class="flex-shrink-0">
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>
+		
+		<!-- 리뷰작성 안내 -->
+		<header class="py-5 bg-image-full"
+			style="background-image: url('${path}/resources/images/qnaimg1.jpg'); background-size:100% 100%;">
+			<div class="text-center my-5">
+				<h1 class="text-white fs-3 fw-bolder">궁금하신 내용은 QnA게시판을 통해 답변 받아보세요!</h1>
+				<button type="button" style="display:inline-block;font-weight: bold;" 
+				onclick="location.href='${path}/qna/qnawrite.do'"class="btn btn-warning mt-3">작성하기</button>
+			</div>
+		</header>
 		<!-- 본문영역-->
 		<section class="py-5" id="features">
 			<div class="container px-5 my-3 ">
-			<div class="justify-content-center flex-sm-column d-sm-flex align-items-center mb-5">
+			<!-- <div class="justify-content-center flex-sm-column d-sm-flex align-items-center mb-5">
 				<h2 class="fw-bold" style="font-size: 40px;">Q&A</h2>
-			</div>
+			</div> -->
 				<!--글작성하기  -->
 				 <div class="row">
 				 <div class="col-2">
-				<button type="button" style="display:inline-block;font-weight: bold;" 
-				onclick="location.href='${path}/qna/qnawrite.do'"class="btn btn-warning">작성하기</button>
+				
 				</div>
 				<div class="col-8" style="display: flex;  justify-content: center;">
 				<!-- 카테고리 선택 -->
@@ -178,11 +187,11 @@ text-align: center;}
 											<div class="col-3">
 												<c:if test="${qna.choose > 0 }">
 													<span
-														style="font-size: 18px; font-weight: bold; color: #ffca2c">채택완료</span>
+														style="font-size: 18px; font-weight: bold; color: #ffca2c;">채택완료</span>
 												</c:if>
 												<c:if test="${qna.choose == 0 }">
 													<span
-														style="font-size: 18px; font-weight: bold; color: #8d8d8d">답변대기</span>
+														style="font-size: 18px; font-weight: bold; color: #8d8d8d;">답변대기</span>
 												</c:if>
 											</div>
 										</div>
@@ -194,9 +203,15 @@ text-align: center;}
 										<div class="card-footer p-4 pt-0 bg-transparent border-top-0">
 											<div class="d-flex align-items-end justify-content-between">
 												<div class="d-flex align-items-center">
-													<img class="rounded-circle me-3"
-														src="${path}/imgUpload/${qna.profile_img}"
+												<c:if test="${qna.profile_img == null}">
+												 <img class="rounded-circle me-3" 
+														src="${path }/resources/images/guest.png"
 														style="width: 50px; height: 50px;" />
+												</c:if>
+												<c:if test="${qna.profile_img != null}">
+													<img class="rounded-circle me-3" 
+														src="${path }/imgUpload/${qna.profile_img}"
+														style="width: 50px; height: 50px;" /></c:if>
 													<div class="small">
 														<div class="fw-bold">${qna.userid }</div>
 														<div class="text-muted">

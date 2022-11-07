@@ -719,4 +719,5 @@
 	<!-- footer -->
 	<%@ include file="../include/footer.jsp"%>
 </body>
+>>>>>>> branch 'commit(jys)' of https://github.com/mintolkim/styahere-project.git
 </html>

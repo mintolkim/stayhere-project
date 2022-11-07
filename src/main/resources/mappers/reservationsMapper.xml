@@ -137,6 +137,82 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by re.checkin_date
 	</select>
 	
+	<!-- ADMIN 매출 총집계 -->
+	<select id="totalmoney"
+	resultType="com.example.stayhere.model.reservations.dto.ReservationsDTO">
+	select TO_CHAR(res_date,'MM"월"') month, nvl(sum(total_price),0) monthlymoney
+	from reservations
+	where res_date between '2021-01-01' and '2022-12-30'
+	and res_state !='취소완료' 
+	group by TO_CHAR(res_date,'MM"월"')
+	order by month
+</select>
+
+	<!--ADMIN 카테고리 매출집계  -->
+	<select id="catetotalmoney"
+	resultType="com.example.stayhere.model.reservations.dto.ReservationsDTO">
+	select b.room_type, nvl(sum(a.total_price),0) as yearmoney
+	from reservations a
+	inner join rooms b
+	on a.room_idx=b.room_idx
+	where a.res_date between '2021-01-01' and '2022-12-30'
+	and a.res_state !='취소완료'
+	group by b.room_type
+</select>
+
+<!--룸예약내역  -->
+<select id="roomreservation" resultType="com.example.stayhere.model.reservations.dto.ReservationsDTO">
+ select 
+		    re.res_idx,
+		    re.userid,
+		    re.name,
+		    re.phone,
+		    re.room_idx,
+		    re.h_userid,
+		    re.checkin_date,
+		    re.checkout_date,
+		    re.res_state,
+		    re.res_date,
+		    re.total_price,
+		    re.res_person,
+		    re.night,
+		    ro.room_name,
+		    ro.room_price,
+		    ro.contents,
+		    ro.city,
+		    ro.country,
+		    ro.address1,
+		    ro.address2,
+		    ro.zipcode,
+		    ro.beds,
+		    ro.baths,
+		    ro.room_type,
+		    ro.lat,
+		    ro.lng,
+		    ro.max_people,
+		    ro.add_people,
+		    rp.photo1,
+		    rp.photo2,
+		    rp.photo3,
+		    rp.photo4
+		from Reservations re
+		join Rooms ro on re.room_idx=ro.room_idx
+		join Room_photo rp on ro.room_idx=rp.room_idx
+		where re.room_idx=#{room_idx} 
+		order by re.checkin_date
+</select>
+<!-- 이번달 매출 -->
+<select id="getThismonth" resultType="int">
+ select sum(total_price) from reservations
+where res_state !='예약취소' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'MONTH')
+=TO_CHAR(to_date(#{today},'yy-MM-dd'),'MONTH')
+</select>
+<!-- 이번년도 매출 -->
+<select id="getThisyear" resultType="int">
+ select sum(total_price) from reservations
+where res_state !='예약취소' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'YEAR')
+=TO_CHAR(to_date(#{today},'yy-MM-dd'),'YEAR')
+</select>
 
 </mapper>
 

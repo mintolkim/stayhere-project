@@ -126,7 +126,6 @@ delete from Host where h_userid=#{h_userid}
 select room_name from Rooms
 where h_userid=#{h_userid} and admin_confirm ='승인'
 </select>
-
 <select id="getRoomCount" resultType="int">
 select count(*) from rooms 
 where h_userid=#{h_userid} 
@@ -147,6 +146,83 @@ and r.h_userid=#{h_userid}
 and not(rs.res_state = '취소완료')
 group by r.h_userid
 </select>
+<select id="hostcount" resultType="int">
+select count(*) from host
+</select>
+
+<select id="gethost" resultType="HostDTO">
+ select *
+			from (
+			   select rownum as rn, A.*
+			    from (
+	select 
+	a.h_userid, 
+	a.h_name,
+	a.h_email, 
+	a.h_phone,
+	a.h_profile_img,
+	a.h_join_date,
+	a.h_blacklist,
+	nvl(sum(b.total_price),0) total_price,
+	(select count(*) from rooms where h_userid=a.h_userid) as room_count
+	from host a
+	left join reservations b
+	on a.h_userid=b.h_userid
+	group by a.h_userid, a.h_name, a.h_email, a.h_phone,a.h_profile_img,a.h_join_date,a.h_blacklist 
+	order by a.h_userid desc)A    
+	) where rn between #{start} and #{end}
+</select>
+
+<update id="goh_normal">
+ update host set h_blacklist = 'n'
+ where h_userid=#{h_userid}
+</update>
+
+<update id="goh_black">
+ update host set h_blacklist = 'y'
+ where h_userid=#{h_userid}
+</update>
+
+<select id="blackhostcount" resultType="int">
+ select count(*) from host
+ where h_blacklist = 'y'
+</select>
+
+<select id="getblackhost" resultType="HostDTO">
+ select *
+			from (
+			   select rownum as rn, A.*
+			    from (
+	select 
+	a.h_userid, 
+	a.h_name,
+	a.h_email, 
+	a.h_phone,
+	a.h_profile_img,
+	a.h_join_date,
+	a.h_blacklist,
+	nvl(sum(b.total_price),0) total_price,
+	(select count(*) from rooms where h_userid=a.h_userid) as room_count
+	from host a
+	left join reservations b
+	on a.h_userid=b.h_userid
+	group by a.h_userid, a.h_name, a.h_email, a.h_phone,a.h_profile_img,a.h_join_date,a.h_blacklist
+	having h_blacklist = 'y' 
+	order by a.h_userid desc)A    
+	) where rn between #{start} and #{end}
+</select>
+
+<select id="getroom" resultType="RoomsDTO">
+ select * from rooms
+ where h_userid=#{h_userid}
+</select>
+
+<select id="roomsConfirm" resultType="RoomsDTO">
+ select * from rooms, room_photo
+ where rooms.room_idx = room_photo.room_idx
+ and h_userid=#{h_userid}
+</select>
+
 </mapper>
 
 

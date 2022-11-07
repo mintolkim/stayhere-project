@@ -47,6 +47,7 @@ public class RoomsController {
 	@Resource(name="uploadPath")
 	String uploadPath;
 
+
 	// 숙소 상세 정보
 	@RequestMapping("detail/{room_idx}")
 	public ModelAndView detail(@PathVariable int room_idx, ModelAndView mav) {
@@ -75,8 +76,6 @@ public class RoomsController {
 		mav.setViewName("rooms/rooms_detail");
 		return mav;
 	}
-
-
 	@RequestMapping("write.do")
 	public String write() {
 		return "host/host_Room_write";
@@ -101,7 +100,7 @@ public class RoomsController {
 		
 		for(int i=0; i<photo.size(); i++) {
 		fileName[i] =  FileUtils.fileUpload(imgUploadPath,photo.get(i).getOriginalFilename(),photo.get(i).getBytes());   
-		newName[i] = fileName[i];
+		newName[i] = File.separator + fileName[i];
 		}
 		
 		dto.setPhoto1(newName[0]);
@@ -171,7 +170,7 @@ public class RoomsController {
 		mav.setViewName("host/rooms_Edit");
 		
 		return mav;
-	}
+	}	
 	
 
 }

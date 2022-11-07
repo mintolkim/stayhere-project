@@ -42,7 +42,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</choose>
 	</sql>
 	
-	
 	<!-- 비밀글 확인 -->
 	<select id="passwdch" resultType="String">
 	 select passwd from qna
@@ -194,6 +193,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="checkattach" resultType="int">
 	select count(*) from qna_attach
 	where q_idx=#{q_idx} and fullName=#{fullName}
+	</select>
+	<!--qna목록 불러오기(답변대기)  -->
+	<select id="getqnalist" resultType="com.example.stayhere.model.qna.dto.QnaDTO">
+	select *
+	from (
+	select rownum as rn, A.*
+	from (
+	select
+	a.q_idx,
+	a.userid,
+	a.subject,
+	a.contents,
+	a.category,
+	a.passwd,
+	a.view_count, 
+	a.write_date, 
+	a.show,
+	b.profile_img, 
+	(select count(*) from qna_scrap where a.q_idx=q_idx) as scrap,
+	(select count(*) from qna_likey where a.q_idx=q_idx )as likey,
+	(select count(*) from qna_comment where a.q_idx=q_idx) as comment_count,
+	(select count(choose) from qna_comment where choose='y'and a.q_idx=q_idx) as choose
+	from qna a
+	join guest b
+	on a.userid=b.userid
+	where show='y'
+	order by q_idx desc
+	) A
+	) where rn between 1 and 10 and choose=0
 	</select>
 </mapper>
 

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,5 +83,15 @@ public class WishlistController {
 		int using_room = wishlistService.checkWish(dto);
 		String result = "" + using_room;
 		return result;
+	}
+	@RequestMapping("wishplus")
+	public ResponseEntity<Integer> wishplus(@ModelAttribute WishlistDTO dto) {
+		wishlistService.insertWish(dto);
+		return new ResponseEntity<Integer>(1,HttpStatus.OK);
+	}
+	@RequestMapping("deleteWish")
+	public ResponseEntity<Integer> deleteWish(@ModelAttribute WishlistDTO dto) {
+		wishlistService.deleteWishlist(dto);
+		return new ResponseEntity<Integer>(1,HttpStatus.OK);
 	}
 }

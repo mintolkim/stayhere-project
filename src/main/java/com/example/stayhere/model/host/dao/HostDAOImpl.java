@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.example.stayhere.model.guest.dto.GuestDTO;
 import com.example.stayhere.model.host.dto.HostDTO;
 import com.example.stayhere.model.reservations.dto.ReservationsDTO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
@@ -115,4 +116,52 @@ public class HostDAOImpl implements HostDAO {
 		map.put("h_userid", h_userid);
 		return sqlSession.selectList("host.rooms_money",map);
 	}
+
+	@Override
+	public int hostcount() {
+		return sqlSession.selectOne("host.hostcount");
+	}
+
+	@Override
+	public List<HostDTO> gethost(int start, int end) {
+		Map<String,Integer> map = new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		return sqlSession.selectList("host.gethost",map);
+	}
+
+	@Override
+	public void goh_normal(String h_userid) {
+		sqlSession.update("host.goh_normal",h_userid);
+	}
+
+	@Override
+	public void goh_black(String h_userid) {
+		sqlSession.update("host.goh_black",h_userid);
+	}
+
+	@Override
+	public List<HostDTO> getblackhost(int start, int end) {
+		Map<String,Integer> map = new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		return sqlSession.selectList("host.getblackhost",map);
+	}
+
+	@Override
+	public int blackhostcount() {
+		return sqlSession.selectOne("host.blackhostcount");
+	}
+
+	@Override
+	public List<RoomsDTO> getroom(String h_userid) {
+		return sqlSession.selectList("host.getroom",h_userid);
+	}
+
+	@Override
+	public List<RoomsDTO> rooms_Confirm(String h_userid) {
+		return sqlSession.selectList("host.roomsConfirm",h_userid);
+	}
+
+
 }

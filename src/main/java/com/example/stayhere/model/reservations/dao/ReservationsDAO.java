@@ -18,6 +18,10 @@ public interface ReservationsDAO {
 	public void approveStatus(int res_idx);//예약 승인
 	public void checkinStatus(int res_idx);//입실 완료
 	public void checkoutStatus(int res_idx);//퇴실 완료
-
+	public List<ReservationsDTO> resTotalMoney();//월별매출집계
+	public List<ReservationsDTO> resCateTotalMoney();//카테고리별 매출집계
+	public List<ReservationsDTO> roomreservation(int room_idx);//룸예약정보
+	public int getThismonth(String today);//이번달 매출
+	public int getThisyear(String today);//이번년도 매출
 
 }

@@ -43,4 +43,15 @@ public class WishlistServiceImpl implements WishlistService {
 		return wishlistDao.checkWish(dto);
 	}
 
+	@Override
+	public int wishcheck(WishlistDTO dto) {
+		return wishlistDao.wishcheck(dto);
+	}
+
+	@Override
+	public void deleteWishlist(WishlistDTO dto) {
+		wishlistDao.deleteWishlist(dto);
+	}
+
+
 }

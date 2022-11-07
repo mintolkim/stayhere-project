@@ -8,22 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.mail.HtmlEmail;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.stayhere.model.guest.dao.GuestDAO;
 import com.example.stayhere.model.guest.dto.GuestDTO;
-
-import ch.qos.logback.classic.Logger;
 
 @Service
 public class GuestServiceImpl implements GuestService {
 
 	@Inject
 	GuestDAO guestDao;
-	
-	@Inject
-	BCryptPasswordEncoder pwdEncoder;
 	
 	@Override
 	public List<GuestDTO> list_guest() {
@@ -43,7 +37,7 @@ public class GuestServiceImpl implements GuestService {
 
 	@Override
 	public void delete_Guest(String userid) {
-		guestDao.delete_Guest(userid);
+
 	}
 
 	@Override
@@ -162,16 +156,11 @@ public class GuestServiceImpl implements GuestService {
 			for(int i = 0; i < 10; i++) {
 				pwd+=(char)((Math.random()*26)+97);
 			}
-			
-			dto.setPasswd(pwd);
+			dto.setPasswd("pwd");
 			// 비밀번호 변경
 			guestDao.updatePw(dto);
 			// 비밀번호 변경 메일 발송
 			sendEmail(dto, "findpw", num);
-			
-			String encodeigpasswd = pwdEncoder.encode(pwd);
-			dto.setPasswd(encodeigpasswd);
-			guestDao.updatePw(dto);
 			out.print("이메일로 임시 비밀번호를 발송하였습니다.");
 			out.close();
 		}
@@ -312,8 +301,5 @@ public class GuestServiceImpl implements GuestService {
 	public String findId(String email) {
 		return guestDao.findId(email);
 	}
-	
-	
-	
 
 }

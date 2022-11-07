@@ -150,7 +150,7 @@ public class GuestController {
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
 		   fileName =  FileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes());   
 		   mav.addObject("message","profile");
-		   dto.setProfile_img(fileName);
+		   dto.setProfile_img(File.separator + fileName);
 		} else {//null값이면 
 		   //fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
 			fileName=profile_img;
