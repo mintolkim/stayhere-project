@@ -37,8 +37,7 @@ public class GuestDAOImpl implements GuestDAO {
 
 	@Override
 	public void delete_Guest(String userid) {
-		// TODO Auto-generated method stub
-
+		sqlSession.delete("guest.delete_guest", userid);
 	}
 
 	@Override

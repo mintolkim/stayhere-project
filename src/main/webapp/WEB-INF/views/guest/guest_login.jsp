@@ -76,9 +76,7 @@ function loginKakao() {
       
     },
     fail: function(err) {
-    	alert(
-    	           '로그인 실패, 잠시 후 다시 시도해주세요'
-    	         );
+    	alert('로그인 실패, 잠시 후 다시 시도해주세요');
     },
   })
 }
@@ -91,8 +89,7 @@ function loginKakao() {
   <!-- 본문영역-->
   <section class="py-5" id="features">
 	<div class="container px-5 my-5" align="center">
-<!-- <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script> -->	
-<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+	<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 	<form name="form1">
 	<h2>GUEST LOGIN</h2>
@@ -114,9 +111,8 @@ function loginKakao() {
 	</form>
 
 	<br>
-	<a href="#">Forgot Password?</a> <a href="${path}/guest/join.do">Signup</a>
-	<br>
-	<br>
+	<a href="${path}/guest/join.do">아이디가 있으십니까?</a>
+	<a href="${path}/guest/findpw.do">비밀번호를 잊어버리셨나요?</a>
 	<!-- LoginInterceptor message -->
 	<c:if test="${param.msg == 'nologin' }">
 	 <script> 
@@ -124,14 +120,7 @@ function loginKakao() {
 	 </script>
 	</c:if>
 
-
     <br>
-<%--     <div id="naver_id_login" style="text-align: center">
-    	<a href="${url}"><img width="296" height="45" src="${path}/resources/images/naver_login.png" /></a>
-	</div> --%>
-		<%-- <a href="${naverAuthUrl}">
-        	<img width="296" height="45" src="${path}/resources/images/naver_login.png" />
-        </a> --%> 
 
 	<c:if test="${message == 'join' }"><div style="color:blue; font-size: 10px;">로그인 하신 후 사용하세요.</div></c:if>
 	<c:if test="${message == 'error' }">
@@ -149,8 +138,6 @@ function loginKakao() {
 	 out.println("alert('첫 소셜 로그인에 한해 회원가입을 진행합니다.');"); 
 	 out.println("</script>");%>
 	 </c:if>
-	<br>
-	<a href="${path}/guest/findpw.do">비밀번호를 잊어버리셨나요?</a>
 	
 	</div>
   </section>

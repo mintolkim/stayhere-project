@@ -65,8 +65,10 @@ public class GuestController {
 		//guestService.loginCheck(dto, session);
 		GuestDTO result = guestService.loginCheck(dto, session);
 		ModelAndView mav = new ModelAndView();
+		//boolean passcheck = equals(dto.getPasswd(), result.getPasswd());
 		boolean passcheck = pwdEncoder.matches(dto.getPasswd(), result.getPasswd());
-		
+		System.out.println("dto :" + dto);		
+
 		System.out.println("result :" + result);
 		System.out.println("passcheck" + passcheck);
 		System.out.println("session"+session.getAttribute("userid"));
@@ -150,15 +152,13 @@ public class GuestController {
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
 		   fileName =  FileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes());   
 		   mav.addObject("message","profile");
-		   dto.setProfile_img(File.separator + fileName);
+		   dto.setProfile_img(fileName);
 		} else {//null값이면 
 		   //fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
 			fileName=profile_img;
 			System.out.println(fileName);
 			dto.setProfile_img(fileName);
 		}
-		
-		
 		String inputpasswd = dto.getPasswd();
 		String encodeigpasswd = pwdEncoder.encode(inputpasswd);
 		dto.setPasswd(encodeigpasswd);

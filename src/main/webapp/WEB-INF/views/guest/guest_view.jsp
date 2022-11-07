@@ -39,16 +39,6 @@ label {
     background-color: #c3c3c3;
 }
 </style>
-<!-- <script type="text/javascript">
-$(function(){
-	$("#edit").click(function(){
-		confirm("프로필 수정하시겠습니까?")
-		if(confirm){
-			
-		}
-	});
-});
-</script> -->
 </head>
 <body class="d-flex flex-column h-100">
  <main class="flex-shrink-0">
@@ -57,9 +47,6 @@ $(function(){
   <!-- 본문영역-->
   <section class="py-5" id="features">
 	<div class="container px-5 my-5" align="center">
-		
-		<!-- Hi! -->
-		
 		<div class="row justify-content-center">
 		<div class="col-lg-6">
 		<h2 class="fw-bolder mb-0">M　Y　P　A　G　E</h2>
@@ -68,21 +55,21 @@ $(function(){
 		</div>
 		<hr>
 		</div>
-
-		<!-- content -->
 		<section class="py-5" id="features">
           <div class="container px-5 my-5">
           <div class="row gx-5">
           <div class="col-lg-4 mb-5 mb-lg-0">
           <p class="lead" ><a>프로필</a></p>
       	  <p class="lead" ><a href="${path}/guest/update/${sessionScope.userid}">회원정보 수정</a></p>
-      	  <p class="lead" ><a>예약정보</a></p>
-      	  <p class="lead" ><a>관심스테이</a></p>
-      	  <p class="lead" ><a>결제내역</a></p>
+      	  <p class="lead" ><a href="${path}/reservations/list/guest">예약정보</a></p>
+      	  <p class="lead" ><a href="${path}/wishlist/list.do">관심스테이</a></p>
+      	  <p class="lead" ><a href="${path}/guest/delete.do" class="confirmDelete">회원탈퇴</a></p>
       	  </div>
-      	  
-      	  <!-- 프로필 -->
-      	  
+      	  <script type="text/javascript">
+      	  $('.confirmDelete').on('click', function() {
+      		return confirm('회원 탈퇴는 취소할 수 없습니다. 정말 탈퇴하시겠습니까?');
+      		});
+      	  </script>
           <div class="col-lg-8">
               <div class="row gx-5 row-cols-1 row-cols-md-2">
                   <div class="col mb-5 h-100" align="left">
@@ -105,24 +92,15 @@ $(function(){
                   	 	 	</c:if>
                   	 	 	<!-- 로그인유저의 profile_img가없다면 디폴트 이미지 노출 -->
                   	 	 	<c:if test="${dto.profile_img == null}">
-                  	 	 		<div class="profile_imgDefault">
-                  	 	 			<img class="profile" src="${path}/resources/images/guest.png">
-                  	 	 		</div>
+                  	 	 		<img class="profile" src="${path}/resources/images/guest.png">
                   	 	 	</c:if>                  	 	 	
                   		 </div>
-			      	  	 
-<!-- 			      	  	<p class="lead" style="margin-top: 3%; font-size: 13px;"><input type="file" name="file"></p>
- -->                 	 
                  	 </div>
-
               </div>
           </div>
           </div>
           </div>
          </section>
-		
-
-	
 	</div>
  </section>
  </main>

@@ -15,9 +15,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values (#{userid}, #{name}, #{passwd}, #{email}, #{phone})
 	</insert>
 	
-	<select id="loginCheck" resultType="String">
-		select name from guest 
-		where userid=#{userid} and passwd=#{passwd} 
+	<select id="loginCheck" resultType="GuestDTO">
+		select * from guest 
+		where userid=#{userid} 
+		<!-- and passwd=#{passwd}  -->
 	</select>
 	
 	<select id="view_guest" resultType="GuestDTO">
@@ -33,7 +34,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="checkPw" resultType="int">
 		select count(*) from guest 
-		where userid=#{userid} and passwd=#{passwd} 
+		where userid=#{userid} 
+		<!--  and passwd=#{passwd} --> 
 	</select>
 	
 	<select id="idCheck" resultType="int">
@@ -148,7 +150,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select count(*) from guest
 	where TO_CHAR(to_date(join_date,'yy-MM-dd'),'MONTH')
 	=TO_CHAR(to_date(#{today},'yy-MM-dd'),'MONTH')
-</select>
+	</select>
+	<delete id="delete_guest">
+		delete from guest 
+		where userid=#{userid} 
+	</delete>
 </mapper>
 
 

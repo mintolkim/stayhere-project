@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -34,12 +35,10 @@
 	      					success: function( data ) {
 	      						if( data == "0" ) {
 	      							$("#userid_check" ).text("사용할 수 있는 ID입니다.");
-	      							$("#userid_check" ).css("margin-left", "155px");
 	      							$("#userid_check" ).css("color", "blue");
 	      							$("#submit" ).attr( "disabled", false);
 	      						} else if( data == "1"  ) {
 	      							$("#userid_check").text("사용중인 ID입니다.");
-	      							$("#userid_check").css("margin-left", "155px");
 	      							$("#userid_check").css("color", "red");
 	      							$("#submit").attr("disabled", true);
 	      						}
@@ -50,7 +49,6 @@
 	      				})
 	      			} else {
 	      				$("#userid_check").text("ID가 형식에 맞지않습니다.");
-	      				$("#userid_check").css("margin-left", "155px");
 	      				$("#userid_check").css("color", "red");
 	      				$("#userid").val("");
 	      				$("#submit").attr("disabled", true);
@@ -66,7 +64,6 @@
 	      		var passwd2 = $("#passwd2").val();	      		
 	      		if(!check(val,passwd)) {
 	      			$("#passwd_check").text("패스워드가 형식에 맞지 않습니다.");
-	      			$("#passwd_check").css("margin-left", "155px");
 	      			$("#passwd_check").css("color", "red");
 	      			$("#passwd").val("");
 	      			$("#submit").attr("disabled", true);
@@ -81,12 +78,10 @@
 	      				if(passwd !='' && passwd2 !='') {
 	      					if( passwd == passwd2 ) {
 	      						$("#confirm_passwd_check").text("비밀번호가 같습니다.");
-	      						$("#confirm_passwd_check").css("margin-left", "155px");
 	      						$("#confirm_passwd_check").css("color", "blue");
 	      						$("#submit").attr("disabled", false);
 	      					} else {
 	      						$("#confirm_passwd_check").text("비밀번호가 틀립니다.");
-	      						$("#confirm_passwd_check").css("margin-left", "155px");
 	      						$("#confirm_passwd_check").css("color", "red");
 	      						$("#passwd2" ).val("");
 	      						$("#submit").attr("disabled", true);
@@ -147,9 +142,8 @@
         		success : function(result){
         			if(result == true){
         				alert('이미 가입된 이메일입니다.');
-        			} 
+        				} 
         			}
-        		
         	});
         	
 	        //회원가입 버튼 클릭시
@@ -187,11 +181,20 @@
 
 <style type="text/css">
 
-.btn {
+.signup-form{
+	width: 600px;
+	margin: 0 auto;
+}
+
+#submit {
 	width: 150px;
 	height: 50px;
 	background-color: #ffcd4a;
 	border-color: #ffcd4a;
+}
+
+#btnMailCheck{
+	background-color: #ffcd4a;
 }
 </style>
 </head>
@@ -202,70 +205,56 @@
   <!-- 본문영역-->
   <section class="py-5" id="features">
 	<div class="container px-5 my-5">
-		<div class="signup_form_width">
-        	<div class="row">
-            	<h2>회원가입</h2>
-            </div>	
+		<div class="signup_form">
 			<form name="form1" action="${path}/guest/insert.do" method="post">
-		<!-- <input type="text" name="rand" id="rand"> 인증번호 확인용 -->
+        		<div class="col-8 signuptitle">
+            		<h2>회원가입</h2>
+            	</div>	
 
-          <div class="form-group row">
-              <div class="col-8">
-              <input type="hidden" id = "profile_img" value =""/>
-              <label class="col-form-label col-4">아이디</label>
-              <p><input type="text" class="form-control" id="userid" name="userid" value="${userid}"></p>
-              </div>            
-              <div id="userid_check"></div>
-          </div>
+        		<div class="form-group">
+        			<input type="hidden" id = "profile_img" value =""/>
+        			<label class="col-form-label col-4">아이디</label>
+        			<p><input type="text" class="form-control" id="userid" name="userid" value="${userid}"></p>
+        			<div class="text-start" id="userid_check"></div>
+        		</div>
 
-          <div class="form-group row">
-              <div class="col-8">
-              <label class="col-form-label col-4">비밀번호</label>
-              <p><input type="password" class="form-control" id="passwd" name="passwd" placeholder="3~12, 영어대소문자, 숫자가능" required="required"></p>
-              </div>   	
-              <div class="col-8" id="passwd_check"></div>
-          </div>
-          <div class="form-group row">
-              <div class="col-8">
-              <label class="col-form-label col-4">비밀번호 확인</label>
-              <p><input type="password" class="form-control" id="passwd2" name="confirm_passwd"></p>
-              </div>        	
-              <div class="col-8" id="confirm_passwd_check"></div>
-          </div>
+        		<div class="form-group">
+        			<label class="col-form-label col-4">비밀번호</label>
+        			<p><input type="password" class="form-control" id="passwd" name="passwd" placeholder="3~12, 영어대소문자, 숫자가능" required="required"></p>
+        			<div class="col-8" id="passwd_check"></div>
+        		</div>
+        		<div class="form-group">
+        			<label class="col-form-label col-4">비밀번호 확인</label>
+        			<p><input type="password" class="form-control" id="passwd2" name="confirm_passwd"></p>
+        			<div class="text-start" id="confirm_passwd_check"></div>
+        		</div>
 
-          <div class="form-group row">
-              <div class="col-8">
-              <label class="col-form-label col-4">이름</label>
-              <p><input type="text" class="form-control" name="name" value="${name}" readonly="readonly"></p>
-              </div>        	
-          </div>
+        		<div class="form-group row">
+        			<label class="col-form-label col-4">이름</label>
+        			<p><input type="text" class="form-control" name="name" value="${name}" readonly="readonly"></p>
+        		</div>
 
-          <div class="form-group row">
-              <div class="col-8" style="">
-              <label class="col-form-label col-4">이메일</label>
-              <p><input type="email" class="form-control" id="email" name="email" value="${email }" readonly="readonly"></p>
-              </div>
-              <div class="input-group-addon">
-                <button type="button" class="btn" id="btnMailCheck">본인인증</button>
-              </div>
-              <div class="col-8" id="mail_chk">
-              	<input type="text" class="form-control mail-check-input" placeholder="인증번호를 입력하세요" disabled="disabled" maxlength="12">
-              </div>
-              <span class="col-8" id="mail-check-warn"></span>
-          </div>
+        		<div class="form-group">
+        			<label class="col-form-label col-4">이메일</label>
+        			<p><input type="email" class="form-control" id="email" name="email" placeholder="stayhere@stayhere.com" ></p>
+        			<div class="input-group" id="mail_chk">
+        				<input type="text" class="form-control mail-check-input" placeholder="인증번호를 입력하세요" disabled="disabled" maxlength="12" name="">
+        				<button type="button" class="btn" id="btnMailCheck">본인인증</button>
+        			</div>
+        		<span id="mail-check-warn"></span>
+        		</div>
+          <br>
           
-          <div class="form-group row">
-              <div class="col-8">
-              <label class="col-form-label col-4">연락처</label>
-              <p><input type="tel" class="form-control" id="phone" name="phone" placeholder="010-1234-5678"></p>
-              </div>   
-              <div class="col-8" id="phone_chk"></div>     	
-          </div>
-		  <div class="col-8 offset-4">
-                  <button type="submit" id="submit" class="btn btn-lg" disabled>회원가입</button>
-              </div>  
-	</form>
-</div>
+        		<div class="form-group">
+        			<label class="col-form-label col-4">연락처</label>
+        			<p><input type="tel" class="form-control" id="phone" name="phone" placeholder="010-1234-5678"></p>
+        			<div class="col-8" id="phone_chk"></div>     	
+        		</div>
+        		<div class="col-8 offset-4">
+        			<button type="submit" id="submit" class="btn btn-lg" disabled>회원가입</button>
+        		</div>  
+			</form>
+		</div>
 	</div>
   </section>
  </main>

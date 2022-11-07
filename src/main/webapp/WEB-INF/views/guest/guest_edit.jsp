@@ -27,7 +27,8 @@ a { text-decoration: none;}
   text-align: left;
 } */
 .btn{
-	width: 296px;
+	/*width: 296px;*/
+	width:100%;
 	height: 40px;
 	background-color: #ffcd4a;
     border: solid 2px #ffcd4a; 
@@ -194,13 +195,13 @@ window.onload = function() {
 		<!-- content -->
 
 		<div class="row gx-5">
-        	<div class="col-lg-4 mb-5 mb-lg-0">
-          		<p class="lead" ><a href="${path}/guest/guest_view/${sessionScope.userid}" >프로필</a>
-      	  		<p class="lead" ><a href="${path}/guest/update/${sessionScope.userid}">회원정보 수정</a></p>
-      	  		<p class="lead" ><a>예약정보</a></p>
-      	  		<p class="lead" ><a>관심스테이</a></p>
-      	  		<p class="lead" ><a>결제내역</a></p>
-		</div>
+          <div class="col-lg-4 mb-5 mb-lg-0">
+          <p><a>프로필</a></p>
+      	  <p><a href="${path}/guest/update/${sessionScope.userid}">회원정보 수정</a></p>
+      	  <p><a href="${path}/reservations/list/guest">예약정보</a></p>
+      	  <p><a href="${path}/wishlist/list.do">관심스테이</a></p>
+      	  <p><a href="${path}/guest/delete.do" class="confirmDelete">회원탈퇴</a></p>      	  
+      	  </div>
       	  
       	  <!-- 프로필 -->
       	  
@@ -212,11 +213,12 @@ window.onload = function() {
                     	<input type="hidden" value="${sessionScope.userid}">
                   		<div class="box">
                   	 		<c:if test="${dto.profile_img != null}">
-                  	 	 		<div class="profile_img"><img class="profile" src="${path}/imgUpload/${dto.profile_img}" ></div>
+                  	 	 		<div class="profile_img">
+                  	 	 		<img class="profile" src="${path}/imgUpload/${dto.profile_img}" ></div>
                   	 	 	</c:if>
                   	 	 	<!-- 로그인유저의 profile_img가없다면 디폴트 이미지 노출 -->
                   	 	 	<c:if test="${dto.profile_img == null}">
-                  	 	 		<div class="profile_imgDefault"><img class="profile" src="${path}/resources/images/guest.png"></div>
+                  	 	 		<img class="profile" src="${path}/resources/images/guest.png">
                   	 	 	</c:if>
                   	 	 </div>    
                   	 	<label class="lead" for="file" style="text-align: center;"><i class="bi bi-camera"></i>&nbsp;사진 수정하기</label> 
@@ -262,7 +264,7 @@ $("#file").change(function(){
 			      	    		<input class="form-control me-2" name="phone" id="phone" value="${dto.phone}">
                   			</div>
                   		</div>
-                      	<button class="btn btn-primary mb-0" type="submit" id="btnSave" name="btnSave">수정하기</button>
+                      	<button class="btn btn-block" type="submit" id="btnSave" name="btnSave">수정하기</button>
                     </form>
                   </div>
               </div>
