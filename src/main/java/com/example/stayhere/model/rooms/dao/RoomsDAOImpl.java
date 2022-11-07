@@ -192,5 +192,10 @@ public class RoomsDAOImpl implements RoomsDAO {
 		return sqlSession.selectList("search.search_list");
 	}
 	
+	@Override
+	public List<String> matchDetail(int room_idx) {
+		return sqlSession.selectList("rooms.matchDetail", room_idx);
+	}	
+	
 }
 

@@ -387,4 +387,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			order by total_price desc) A
 		) where rn between 1 and 10
 	</select>
+	
+	<!-- 해당숙소의 예약된 날짜 목록 불러오기  -->
+	<select id="matchDetail" resultType="String">
+		select re_date from reserved where room_idx=#{room_idx}
+	</select>
+	
 </mapper>

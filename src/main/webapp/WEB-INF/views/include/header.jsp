@@ -30,5 +30,17 @@
 <link rel="stylesheet" href="${path}/resources/css/common.css">
 <script src="${path}/resources/js/common.js"></script>
 
+<!-- 구글 폰트  -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Montserrat:wght@300&display=swap" rel="stylesheet">
 
-
+<style type="text/css">
+* {
+ font-family: 'Dongle' !important; sans-serif;
+ font-family: 'Montserrat' !important; sans-serif;
+}
+</style>

@@ -2,19 +2,27 @@
 package com.example.stayhere.service.rooms;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.example.stayhere.controller.MainController;
 import com.example.stayhere.model.rooms.dao.RoomsDAO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
+import com.example.stayhere.util.DateParse;
 
 @Service
 public class RoomsServiceImpl implements RoomsService {
+	
+	private static final Logger logger = 
+			LoggerFactory.getLogger(MainController.class);
 
 	@Inject
 	RoomsDAO roomsDao;
@@ -24,7 +32,7 @@ public class RoomsServiceImpl implements RoomsService {
 			int lower, int higher,String checkin_date, String checkout_date,String align,String userid) {
 		return roomsDao.listMap(cityname,roomdto, lower, higher, checkin_date, checkout_date,align,userid);
 	}
-
+	
 	@Override
 	public int countrooms(String cityname, RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date) {
 		return roomsDao.countrooms(cityname, roomdto,  lower, higher, checkin_date, checkout_date);
@@ -136,5 +144,14 @@ public class RoomsServiceImpl implements RoomsService {
 	@Override
 	public List<String> search_list() {
 		return roomsDao.search_list();
+	}
+	
+	public List<String> matchDetail(int room_idx) {
+		List<String> list=roomsDao.matchDetail(room_idx);
+		for(int i=0; i<list.size(); i++) {
+			Collections.replaceAll(list, list.get(i), DateParse.strToDate(list.get(i)));
+		}
+		logger.info("re_date를 yyyy-MM-dd형태로 변환 : "+list.toString());
+		return list;
 	}	
 }

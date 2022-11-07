@@ -5,37 +5,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="wishlist">
+
+
+	<select id="wishCount" resultType="int">
+		select count(*) from (
+			select * from rooms a 
+			join wishlist b on a.room_idx=b.room_idx
+			join room_photo c on a.room_idx=c.room_idx)
+			where userid = #{userid}
+	</select>
+
 	<select id="listWish" resultType="WishlistDTO">
-		select *
-			from (
-				select A.* , rownum as rn
-				from ( select
-				r.room_idx,
-				r.h_userid,
-				r.room_name,
-				r.room_price,
-				r.contents,
-				r.city,
-				r.country,
-				r.address1,
-				r.address2,
-				r.zipcode,
-				r.check_in,
-				r.check_out,
-				r.beds,
-				r.baths,
-				r.room_type,
-				r.lat,
-				r.lng,
-				rp.photo1,
-				rp.photo2,
-				rp.photo3,
-				rp.photo4,
-				(select count(*) from review where room_idx=r.room_idx)review_count,
-				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
-			from rooms r join room_photo rp on r.room_idx = rp.room_idx
-			order by room_idx) A
-		) where rn between #{start} and #{end}
+		select * from (
+			select A.* , rownum as rn from ( 
+			select 
+			a.room_idx, 
+			a.room_name, 
+			a.room_price, 
+			substr(a.contents, 1, 50) contents, 
+			a.city, 
+			a.country, 
+			a.address1,
+			a.address2, 
+			a.zipcode, 
+			a.check_in, 
+			a.check_out,
+			a.beds,
+			a.baths,
+			a.room_type,
+			a.max_people,
+			a.add_people,
+			a.admin_confirm,
+			nvl(a.lat,0), 
+			nvl(a.lng,0), 
+			b.wish_num,
+			b.wish_date,
+			c.photo1,
+			c.photo2,
+			c.photo3,
+			c.photo4
+			from rooms a 
+			join wishlist b on a.room_idx=b.room_idx
+			join room_photo c on a.room_idx=c.room_idx
+			where userid = #{userid}) A
+			) where rn between #{start} and #{end}
 	</select>
 	
 	<insert id="insertWish">
@@ -45,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<delete id="deleteWish">
 		delete from wishlist 
-		where wish_num = #{wish_num}
+		where room_idx=#{room_idx} and userid=#{userid}
 	</delete>
 	
 	<delete id="deleteAllWish">
@@ -58,15 +71,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where room_idx = #{room_idx}
 	</select>
 	
-	<select id="wishcheck" resultType="int">
-	 select count(room_idx) from wishlist 
-		where room_idx = #{room_idx} and name=#{name}
+	<select id="duplicateCehck" resultType="int">
+		select count(*) from wishlist where room_idx=#{room_idx} and userid=#{userid}
 	</select>
 	
-	<delete id="deleteWishlist">
-	delete from wishlist
-	where userid=#{userid} and room_idx=#{room_idx}
-	</delete>
+	<select id="addCheck" resultType="WishlistDTO">
+		select room_idx from wishlist where userid=#{userid}
+	</select>
+	
+	<select id="addressList" resultType="WishlistDTO">
+		select 
+		w.wish_num,
+		w.wish_date,
+		r.room_name,
+		r.room_price,
+		r.address1,
+		r.address2,
+		r.zipcode,
+		r.lat, 
+		r.lng,
+		rp.photo1	
+		from rooms r 
+		join WishList w on r.room_idx=w.room_idx 
+		join room_photo rp on r.room_idx=rp.room_idx
+		where userid=#{userid}
+	</select>
+	
 </mapper>
 
 

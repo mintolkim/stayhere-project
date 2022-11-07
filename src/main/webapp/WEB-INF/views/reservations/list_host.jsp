@@ -5,21 +5,13 @@
 <head>
 <%@ include file="../include/header.jsp"%>
 <title>STAYHERE</title>
-
-<!-- 구글 폰트  -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Montserrat:wght@300&display=swap" rel="stylesheet">
 <script type="text/javascript">
 
 /* 예약 승인 */
 function approve(res_idx) {
 	var flag=confirm("예약을 승인하시겠습니까?");
 	if(flag) {
-		location.href="${path}/reservations/approve?res_idx="+res_idx;
+		location.href="${path}/reservations/approve.do?res_idx="+res_idx;
 	}else {
 		return;
 	}
@@ -29,7 +21,7 @@ function approve(res_idx) {
 function refuse(res_idx) {
 	var flag=confirm("예약을 거절하시겠습니까?");
 	if(flag) {
-		location.href="${path}/reservations/refuse?res_idx="+res_idx;
+		location.href="${path}/reservations/refuse.do?res_idx="+res_idx;
 	}else {
 		return;
 	}
@@ -39,7 +31,7 @@ function refuse(res_idx) {
 function checkin(res_idx) {
 	var flag=confirm("입실완료 처리하시겠습니까?");
 	if(flag) {
-		location.href="${path}/reservations/checkin?res_idx="+res_idx;
+		location.href="${path}/reservations/checkin.do?res_idx="+res_idx;
 	}else {
 		return;
 	}
@@ -49,7 +41,7 @@ function checkin(res_idx) {
 function checkout(res_idx) {
 	var flag=confirm("퇴실완료 처리하시겠습니까?");
 	if(flag) {
-		location.href="${path}/reservations/checkout?res_idx="+res_idx;
+		location.href="${path}/reservations/checkout.do?res_idx="+res_idx;
 	}else {
 		return;
 	}
@@ -61,10 +53,6 @@ function checkout(res_idx) {
 <style type="text/css">
 a { 
  text-decoration: none;
-}
-* {
- font-family: 'Dongle' !important; sans-serif;
- font-family: 'Montserrat' !important; sans-serif;
 }
 div #tab-bar li a{
  color: black;
@@ -105,19 +93,19 @@ table thead, table tbody {
 			<div class="col-lg-12 mt-5">
 				<ul class="nav nav-tabs nav-justified" id="tab-bar">
 					<li class="nav-item">
-						<a class="nav-link active" data-bs-toggle="tab" href="#status_1">예약승인</a>
+						<a class="nav-link active" data-bs-toggle="tab" href="#status_1">예약승인(${h_cntRequest}개)</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-bs-toggle="tab" href="#status_2">예약취소</a>
+						<a class="nav-link" data-bs-toggle="tab" href="#status_2">취소완료(${h_cntCancel}개)</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-bs-toggle="tab" href="#status_3">예약완료</a>
+						<a class="nav-link" data-bs-toggle="tab" href="#status_3">예약완료(${h_cntApprove}개)</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-bs-toggle="tab" href="#status_4">입실완료</a>
+						<a class="nav-link" data-bs-toggle="tab" href="#status_4">입실완료(${h_cntUse}개)</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-bs-toggle="tab" href="#status_5">이용완료</a>
+						<a class="nav-link" data-bs-toggle="tab" href="#status_5">이용완료(${h_cntCheckout}개)</a>
 					</li>
 				</ul>
 
@@ -140,6 +128,9 @@ table thead, table tbody {
 					    </tr>
 					  </thead>
 					  <tbody>
+					<c:if test="${h_cntRequest==0}">
+						<tr><td colspan="9">이용내역이 없습니다.</td></tr>
+					</c:if>
 					<c:forEach var="res" items="${resList}">	
 					  <c:if test="${res.res_idx != null && res.res_state == '예약요청'}">			
 					    <tr>
@@ -177,6 +168,9 @@ table thead, table tbody {
 					    </tr>
 					  </thead>
 					  <tbody>
+					<c:if test="${h_cntCancel==0}">
+						<tr><td colspan="8">이용내역이 없습니다.</td></tr>
+					</c:if>
 					<c:forEach var="res" items="${resList}">
 					  <c:if test="${res.res_idx != null && res.res_state == '취소완료'}">			
 					    <tr>
@@ -214,6 +208,9 @@ table thead, table tbody {
 					    </tr>
 					  </thead>
 					  <tbody>
+					<c:if test="${h_cntApprove==0}">
+						<tr><td colspan="9">이용내역이 없습니다.</td></tr>
+					</c:if>
 					<c:forEach var="res" items="${resList}">
 					  <c:if test="${res.res_idx != null && res.res_state == '예약완료'}">			
 					    <tr>
@@ -251,6 +248,9 @@ table thead, table tbody {
 					    </tr>
 					  </thead>
 					  <tbody>
+						<c:if test="${h_cntUse==0}">
+							<tr><td colspan="9">이용내역이 없습니다.</td></tr>
+						</c:if>	
 					<c:forEach var="res" items="${resList}">
 					  <c:if test="${res.res_idx != null && res.res_state == '입실완료'}">			
 					    <tr>
@@ -265,7 +265,7 @@ table thead, table tbody {
 					      <td><button class="btn btn-outline-warning btn-sm" onclick="checkout('${res.res_idx}')" style="font-size: 14px;">체크아웃</button></td>
 					    </tr>
 					  </c:if>
-					</c:forEach>			
+					</c:forEach>	
 					  </tbody>
 					</table>
 				</div>
@@ -288,8 +288,11 @@ table thead, table tbody {
 					    </tr>
 					  </thead>
 					  <tbody>
+						<c:if test="${h_cntCheckout==0}">
+							<tr><td colspan="9">이용내역이 없습니다.</td></tr>
+						</c:if>
 					<c:forEach var="res" items="${resList}">
-					  <c:if test="${res.res_idx != null && res.res_state == '퇴실완료'}">			
+					  <c:if test="${res.res_idx != null && res.res_state == '이용완료'}">			
 					    <tr>
 					      <td><a href="${path}/rooms/detail/${res.room_idx}">${res.room_name}</a></td>
 					      <td>${res.checkin_date}</td>
@@ -307,21 +310,11 @@ table thead, table tbody {
 					</table>
 				</div>
 				<!-- 이용완료 끝 -->
-
-				
+	
 				</div>
 			</div>
 		</div>
 	</div>
- 
- 
- 
- 
- 
- 
- 
- 
- 
  
   </section>
  </main>
