@@ -285,7 +285,7 @@ function uncomma(str) {
     	  <p class="lead" ><a href="${path}/host/rooms_List.do">숙소관리</a></p>
     	  <p class="lead" ><a href="${path}/rooms/write.do"><b style="font-weight: 700;">숙소등록</b></a></p>
     	  <p class="lead" ><a href="${path}/host/rooms_Confirm.do">숙소승인현황</a></p>
-    	  <p class="lead" ><a>예약현황</a></p>
+    	  <p class="lead" ><a href="${path}/reservations/list/host">예약현황</a></p>
     	  <p class="lead" ><a href="${path}/host/rooms_Sales/${sessionScope.h_userid}">매출현황</a></p>
  	      <p class="lead" ><a href="${path}/host/delete.do">회원 탈퇴</a></p>
    	     </div>
