@@ -114,9 +114,8 @@ function loginKakao() {
 	</form>
 
 	<br>
-	<a href="#">Forgot Password?</a> <a href="${path}/guest/join.do">Signup</a>
-	<br>
-	<br>
+	<a href="${path}/guest/join.do">아이디가 있으십니까?</a>
+	<a href="${path}/guest/findpw.do">비밀번호를 잊어버리셨나요?</a>
 	<!-- LoginInterceptor message -->
 	<c:if test="${param.msg == 'nologin' }">
 	 <script> 
@@ -149,8 +148,6 @@ function loginKakao() {
 	 out.println("alert('첫 소셜 로그인에 한해 회원가입을 진행합니다.');"); 
 	 out.println("</script>");%>
 	 </c:if>
-	<br>
-	<a href="${path}/guest/findpw.do">비밀번호를 잊어버리셨나요?</a>
 	
 	</div>
   </section>

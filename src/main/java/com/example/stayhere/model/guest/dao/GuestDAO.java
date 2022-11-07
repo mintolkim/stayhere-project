@@ -11,7 +11,7 @@ public interface GuestDAO {
 	public void insert_Guest(GuestDTO dto); //회원 가입
 	public void update_Guest(GuestDTO dto); //회원 수정
 	public void delete_Guest(String userid); //회원 삭제
-	public boolean loginCheck(GuestDTO dto); //로그인 체크
+	public GuestDTO loginCheck(GuestDTO dto); //로그인 체크
 	public GuestDTO view_Guest(String userid); //회원 상세보기
 	public boolean checkPw(String userid, String passwd); //비밀번호확인
 	public int idCheck(String userid) throws Exception; //중복 아이디 체크

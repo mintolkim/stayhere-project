@@ -76,10 +76,15 @@ $(function(){
           <div class="col-lg-4 mb-5 mb-lg-0">
           <p class="lead" ><a>프로필</a></p>
       	  <p class="lead" ><a href="${path}/guest/update/${sessionScope.userid}">회원정보 수정</a></p>
-      	  <p class="lead" ><a>예약정보</a></p>
-      	  <p class="lead" ><a>관심스테이</a></p>
-      	  <p class="lead" ><a>결제내역</a></p>
+      	  <p class="lead" ><a href="${path}/reservations/list/guest">예약정보</a></p>
+      	  <p class="lead" ><a href="${path}/wishlist/list.do">관심스테이</a></p>
+      	  <p class="lead" ><a href="${path}/guest/delete.do" class="confirmDelete">회원탈퇴</a></p>
       	  </div>
+      	  <script type="text/javascript">
+      	  $('.confirmDelete').on('click', function() {
+      		return confirm('회원 탈퇴는 취소할 수 없습니다. 정말 탈퇴하시겠습니까?');
+      		});
+      	  </script>
       	  
       	  <!-- 프로필 -->
       	  
@@ -99,15 +104,11 @@ $(function(){
                 	  <div class="col mb-5 h-100">
                   	 	 <div class="box">
                   	 	 	<c:if test="${dto.profile_img != null}">
-                  	 	 		<div class="profile_img">
-                  	 	 			<img class="profile" src="${path}/${dto.profile_img}" >
-                  	 	 		</div>
+                  	 	 		<img class="profile" src="${path}/imgUpload/${dto.profile_img}" >
                   	 	 	</c:if>
                   	 	 	<!-- 로그인유저의 profile_img가없다면 디폴트 이미지 노출 -->
                   	 	 	<c:if test="${dto.profile_img == null}">
-                  	 	 		<div class="profile_imgDefault">
-                  	 	 			<img class="profile" src="${path}/resources/images/guest.png">
-                  	 	 		</div>
+                  	 	 		<img class="profile" src="${path}/resources/images/guest.png">
                   	 	 	</c:if>                  	 	 	
                   		 </div>
 			      	  	 
