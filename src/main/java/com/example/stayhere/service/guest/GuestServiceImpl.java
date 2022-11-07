@@ -41,12 +41,16 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public boolean loginCheck(GuestDTO dto, HttpSession session) {
-		boolean result = guestDao.loginCheck(dto);
-		if(result) { //로그인 성공시 세션에 저장
-			GuestDTO dto2 = view_Guest(dto.getUserid());
-			session.setAttribute("userid", dto.getUserid());
-			session.setAttribute("name", dto2.getName());
+	public GuestDTO loginCheck(GuestDTO dto, HttpSession session) {
+		String name = loginOkNick(dto).getName();
+		System.out.println("dto이름"+name);
+		GuestDTO result = guestDao.loginCheck(dto);
+		String result2 = result.getName();
+		System.out.println("result이름"+result.getName());
+		if(result2.equals(name)) { //로그인 성공시 세션에 저장
+			//GuestDTO dto2 = view_Guest(dto.getUserid());
+			session.setAttribute("userid", result.getUserid());
+			session.setAttribute("name", result.getName());
 			System.out.println(session.getAttribute("userid"));
 			System.out.println(session.getAttribute("name"));
 		}
@@ -113,11 +117,13 @@ public class GuestServiceImpl implements GuestService {
 			HtmlEmail email = new HtmlEmail();
 			email.setDebug(true);
 			email.setCharset(charSet);
-			email.setSSL(true);
+			//email.setSSL(true);
+			email.setSSLOnConnect(true);
 			email.setHostName(hostSMTP);
 			email.setSmtpPort(465); //구글 이용시 465
 			email.setAuthentication(hostSMTPid, hostSMTPpwd);
-			email.setTLS(true);
+			//email.setTLS(true);
+			email.setStartTLSEnabled(true);
 			email.addTo(mail, charSet);
 			email.setFrom(fromEmail, fromName, charSet);
 			email.setSubject(subject);
@@ -295,8 +301,5 @@ public class GuestServiceImpl implements GuestService {
 	public String findId(String email) {
 		return guestDao.findId(email);
 	}
-	
-	
-	
 
 }

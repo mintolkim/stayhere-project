@@ -109,8 +109,8 @@ $("#update").click(function(){
 	room_type=$("#room_type").val();
 	address1=$("#address1").val();
 	address2=$("#address2").val(); 
-	room_price=$("#room_price").val();
-	add_people=$("#add_people").val();
+	room_price=$("#room_price_result").val();
+	add_people=$("#add_people_result").val();
 	baths=$("#baths").val();
 	beds=$("#beds").val();
 	max_people=$("#max_people").val();
@@ -118,6 +118,8 @@ $("#update").click(function(){
 	photo2=$("#photo2").val();
 	photo3=$("#photo3").val();
 	photo4=$("#photo4").val();
+	check_in=$("#check_in").val();
+	check_out=$("#check_out").val();	
 	
 	if(room_name==""){
 		alert("숙소 이름을 입력하세요");
@@ -169,9 +171,52 @@ $("#update").click(function(){
 		$("#max_people").focus(); //입력 포커스 이동
 		return; //함수 종료
 	}
+	if(check_in==""){
+		alert("체크인 날짜를 등록해주세요 ");
+		$("#check_in").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	if(check_out==""){
+		alert("체크아웃 날짜를 등록해주세요");
+		$("#check_out").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	today = new Date();
+	date1 = new Date(check_in);
+	date2 = new Date(check_out);
+	
+	days = date1.getTime() - date2.getTime() ;
+	btDays = days / (1000*60*60*24) ;
+	
+	checkin = date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate();
+	checkout = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
+	
+	rToday = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
 
-	confirm("수정 하시겠습니까?");
-	if(confirm){
+	if(date1<today){
+		alert("체크인 날짜를 확인해주십시오");
+		return;
+	}
+	if(date2<today){
+		alert("체크아웃 날짜를 확인해주십시오");
+		return;
+	}
+
+	if(rToday==checkin){
+		 alret("당일은 체크인으로 설정할 수 없습니다. \n다시 선택해주십시오.");
+	}
+	if(rToday==checkout){
+		 alret("당일은 체크아웃으로 설정할 수 없습니다. \n다시 선택해주십시오.");
+	}
+	if(date1<date2){
+		console.log(checkin+"~"+checkout+"\n"+btDays+"일 입니다.");
+	}else{
+		alert("체크인 날짜와 체크아웃 날짜를 확인해주십시오");
+		return;
+	}
+	
+	var result= confirm("수정 하시겠습니까?");
+	if(result){
 	document.form1.action="${path}/rooms/update/${dto.room_idx}";
 	document.form1.submit();
 	}
@@ -179,8 +224,8 @@ $("#update").click(function(){
 	});
 	
 $("#deleteRoom").click(function(){
-	confirm("삭제하시겠습니까?")
-	if(confirm){
+	var result= confirm("삭제요청하시겠습니까?")
+	if(result){
 		alert("삭제요청이 되었습니다.")
 		document.form1.action="${path}/rooms/delete/${dto.room_idx}";
 		document.form1.submit();
@@ -195,6 +240,22 @@ function fileCheck(el) {
     el.focus(); 
    }
  }
+ 
+
+function inputPrice(obj) {
+    obj.value = comma(uncomma(obj.value));
+}
+
+function comma(str) {
+    str = String(str);
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+
+function uncomma(str) {
+    str = String(str);
+    return str.replace(/[^\d]+/g, '');
+}
+
 </script>
 </head>
 <body class="d-flex flex-column">
@@ -219,13 +280,13 @@ function fileCheck(el) {
         <div class="container px-5 my-5">
         <div class="row gx-5">
         <div class="col-lg-4 mb-5 mb-lg-0">
-          <p class="lead" ><a href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></p>
+    	  <p class="lead" ><a href="${path}/host/profile/${sessionScope.h_userid}"><b style="font-weight: 700;">프로필</b></a></p>
     	  <p class="lead" ><a href="${path}/host/edit.do">회원정보수정</a></p>
-    	  <p class="lead" ><a href="${path}/host/rooms_List/${sessionScope.h_userid}">숙소관리</a></p>
+    	  <p class="lead" ><a href="${path}/host/rooms_List.do">숙소관리</a></p>
     	  <p class="lead" ><a href="${path}/rooms/write.do">숙소등록</a></p>
-    	  <p class="lead" ><a href="${path}/host/rooms_Confirm/${sessionScope.h_userid}">숙소승인현황</a></p>
+    	  <p class="lead" ><a href="${path}/host/rooms_Confirm.do">숙소승인현황</a></p>
     	  <p class="lead" ><a>예약현황</a></p>
-    	  <p class="lead" ><a>매출현황</a></p>
+    	  <p class="lead" ><a href="${path}/host/rooms_Sales/${sessionScope.h_userid}">매출현황</a></p>
  	      <p class="lead" ><a href="${path}/host/delete.do">회원 탈퇴</a></p>
    	     </div>
       	  
@@ -247,7 +308,7 @@ function fileCheck(el) {
             <h4 class="card-title">숙소 수정</h4>
             <div align="left" id="room_write">
             <label>숙소 이름</label>
-            <input class="form-control me-2" type="text" placeholder="Room's name" name="room_name" id="room_name" value="${dto.room_name}">
+            <input class="form-control me-2" type="text" placeholder="Room's name" name="room_name" id="room_name" value="${dto.room_name}" maxlength="65">
             <br>
             <label>소개글</label>
             <%pageContext.setAttribute("n", "\n"); pageContext.setAttribute("br", "<br>");%> 
@@ -279,20 +340,28 @@ function fileCheck(el) {
 	        <label>숙소 가격</label>
 			<div class="input-group mb-3">
 			<button class="btn-warning" id="minus1" type="button">-</button>
-			<input type="text" class="form-control" style="text-align: center;" id="room_price" name="room_price" value="${dto.room_price}">
+			<input type="text" class="form-control" value="<fmt:formatNumber type="number" maxFractionDigits="3" value="${dto.room_price}" />" style="text-align: center;" id="room_price_result" onkeyup="inputPrice(this)">
+			<input type="hidden" name="room_price" id="room_price" value="${dto.room_price}">
 			<button class="btn-warning" id="plus1" type="button">+</button>
 			</div>
-			 
 			 <script>
 			  $("#plus1").click(function(){
-			   var num = $("#room_price").val();
+			   var price = $("#room_price_result").val();
+			   num = price.replace(/[^\d]+/g, '');
 			   var plusNum = Number(num) + 1000;
+		       str = String(plusNum);
+ 			   result = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+			   $("#room_price_result").val(result);
 			   $("#room_price").val(plusNum);
 			  });
 			  
 			  $("#minus1").click(function(){
-			   var num = $("#room_price").val();
+			   var price = $("#room_price_result").val();
+			   num = price.replace(/[^\d]+/g, '');
 			   var minusNum = Number(num) - 1000;
+		       str = String(minusNum);
+ 			   result = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');		   
+			   $("#room_price_result").val(result);  
 			   $("#room_price").val(minusNum);
 			  });
 			 </script>
@@ -302,20 +371,29 @@ function fileCheck(el) {
             <label>1인당 추가금액</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus2" type="button">-</button>
-			  <input type="text" class="form-control" style="text-align: center;" id="add_people" name="add_people" value="${dto.add_people}">
+			  <input type="text" class="form-control" style="text-align: center;" id="add_people_result" value="<fmt:formatNumber type="number" maxFractionDigits="3" value="${dto.add_people}" />" onkeyup="inputPrice(this)">
+			  <input type="hidden" id="add_people" name="add_people" value="${dto.add_people}">
 			  <button class="btn-warning" id="plus2" type="button">+</button>
 			</div>
 			 <script>
 			  $("#plus2").click(function(){
-			   var num = $("#add_people").val();
+			   var price = $("#add_people_result").val();
+			   num = price.replace(/[^\d]+/g, '');
 			   var plusNum = Number(num) + 1000;
-			   $("#add_people").val(plusNum);
+		       str = String(plusNum);
+ 			   result = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+			   $("#add_people_result").val(result);
+			   $("#add_people").val(plusNum);			   
 			  });
 			  
 			  $("#minus2").click(function(){
-			   var num = $("#add_people").val();
+			   var price = $("#add_people_result").val();
+			   num = price.replace(/[^\d]+/g, '');
 			   var minusNum = Number(num) - 1000;
-			   $("#add_people").val(minusNum);
+		       str = String(minusNum);
+ 			   result = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');		   
+			   $("#add_people_result").val(result);  
+			   $("#add_people").val(minusNum);			   
 			  });
 			 </script>
 			
@@ -323,7 +401,7 @@ function fileCheck(el) {
             <label>화장실 갯수</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus3" type="button">-</button>
-			  <input type="text" class="form-control" style="text-align: center;" id="baths" name="baths" value="${dto.baths}">
+			  <input type="text" class="form-control" style="text-align: center;" id="baths" name="baths" value="${dto.baths}" onkeyup="inputPrice(this)">
 			  <button class="btn-warning" id="plus3" type="button">+</button>
 			</div>
 			
@@ -345,7 +423,7 @@ function fileCheck(el) {
             <label>침대 갯수</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus4" type="button">-</button>
-			  <input type="text" class="form-control" style="text-align: center;" id="beds" name="beds" value="${dto.beds}">
+			  <input type="text" class="form-control" style="text-align: center;" id="beds" name="beds" value="${dto.beds}" onkeyup="inputPrice(this)">
 			  <button class="btn-warning" id="plus4" type="button">+</button>
 			</div>
 			
@@ -369,7 +447,7 @@ function fileCheck(el) {
             <label>최대 인원</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus5" type="button"> - </button>
-			  <input type="text" class="form-control" style="text-align: center;" id="max_people" name="max_people" value="${dto.max_people}">
+			  <input type="text" class="form-control" style="text-align: center;" id="max_people" name="max_people" value="${dto.max_people}" onkeyup="inputPrice(this)">
 			  <button class="btn-warning" id="plus5" type="button"> + </button>
 			</div>
 			 <script>
@@ -385,6 +463,16 @@ function fileCheck(el) {
 			   $("#max_people").val(minusNum);
 			  });
 			 </script>
+			 
+			<br>
+			<label for="floatingInput">체크인</label>
+			<div class="form-floating mb-3">
+			<input type="date" class="form-control"  value="${dto.check_in}" name="check_in" id="check_in" required>
+			</div>
+			<label for="floatingInput">체크아웃</label>
+			<div class="form-floating mb-3">
+			<input type="date" class="form-control"  value="${dto.check_out}" name="check_out" id="check_out" required>
+			</div>
 			<br>
 			<br>
  			<div class="row gx-4">
@@ -392,7 +480,7 @@ function fileCheck(el) {
             <p class="lead" style="text-align: center; font-size: 12px;">대표 이미지 설정</p>
             <div id="box1">
            <label for="photo1">
-            <img class="card-img-top mb-5 mb-md-0" src="${path}/${dto.photo1}" id="photo_1" style="height: 300px;">
+            <img class="card-img-top mb-5 mb-md-0" src="${path}/imgUpload/${dto.photo1}" id="photo_1" style="height: 300px;">
             </label>
             <input type="file" id="photo1" name="photo" style="display: none;" onchange="fileCheck(this)">
        		<script>
@@ -414,7 +502,7 @@ function fileCheck(el) {
             <div class="small mb-1">
             <div id="box2">
             <label for="photo2">
-            <img class="card-img-top mb-5 mb-md-0" src="${path}/${dto.photo2}" id="photo_2" style="height: 100px; width: 300px;">
+            <img class="card-img-top mb-5 mb-md-0" src="${path}/imgUpload/${dto.photo2}" id="photo_2" style="height: 100px; width: 300px;">
             </label>
             <input type="file" id="photo2" name="photo"  style="display: none;" onchange="fileCheck(this)">
        		<script>
@@ -434,7 +522,7 @@ function fileCheck(el) {
             <div class="small mb-1">
             <div id="box3">
             <label for="photo3">
-            <img class="card-img-top mb-5 mb-md-0" src="${path}/${dto.photo3}" id="photo_3" style="height: 100px; width: 300px;">
+            <img class="card-img-top mb-5 mb-md-0" src="${path}/imgUpload/${dto.photo3}" id="photo_3" style="height: 100px; width: 300px;">
             </label>
             <input type="file" id="photo3" name="photo"  style="display: none;" onchange="fileCheck(this)">
        		<script>
@@ -455,7 +543,7 @@ function fileCheck(el) {
             <div class="small mb-1">
             <div id="box4">
             <label for="photo4">
-            <img class="card-img-top mb-5 mb-md-0" src="${path}/${dto.photo4}" id="photo_4" style="height: 100px; width: 300px;">
+            <img class="card-img-top mb-5 mb-md-0" src="${path}/imgUpload/${dto.photo4}" id="photo_4" style="height: 100px; width: 300px;">
             </label>
             <input type="file" id="photo4" name="photo"  style="display: none;" onchange="fileCheck(this)">
        		<script>

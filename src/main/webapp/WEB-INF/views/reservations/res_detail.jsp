@@ -6,20 +6,7 @@
 <%@ include file="../include/header.jsp"%>
 <title>STAYHERE</title>
 
-<!-- 구글 폰트  -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Montserrat:wght@300&display=swap" rel="stylesheet">
-
-
 <style type="text/css">
-* {
-font-family: 'Dongle' !important;, sans-serif;
-font-family: 'Montserrat' !important;, sans-serif;
-}
 a { 
  text-decoration: none;
 }
@@ -55,10 +42,11 @@ a {
 		      ${requestScope.checkin_date} ~ ${requestScope.checkout_date} | ${requestScope.night}박
 		      <input type="hidden" name="checkin_date" id="checkin_date" value="${requestScope.checkin_date}">
 		      <input type="hidden" name="checkout_date" id="checkout_date" value="${requestScope.checkout_date}">		      
-		      <input type="hidden" name="res_person" id="res_person" value="${requestScope.res_person}">		      
 		      <input type="hidden" name="room_idx" id="room_idx" value="${room.room_idx}">		      
-		      <input type="hidden" name="h_userid" id="h_userid" value="${room.h_userid}">
 		      <input type="hidden" name="night" id="night" value="${requestScope.night}">
+		      <input type="hidden" name="res_person" id="res_person" value="${requestScope.res_person}">		      
+		      <input type="hidden" name="room_name" id="room_name" value="${room.room_name}">
+		      <input type="hidden" name="h_userid" id="h_userid" value="${room.h_userid}">
 		      </td>
 		    </tr>
 		    <tr>
@@ -161,7 +149,8 @@ a {
 <script>
 $(function(){
 	$("#btnPay").click(function () {
-		//request_pay(); //결제 API연결 완료 . 임시 주석처리*/
+
+		//request_pay(); //결제 API연결해서 테스트
 		$("#pay_form").submit();//결제 API 건너뛰고 테스트
 	});
 });
@@ -221,10 +210,9 @@ function request_pay() {
 	        console.log(rsp);
  
 	        if (rsp.success) {
-	        	var msg = '결제 및 예약 요청이 완료되었습니다.\n';
-	            msg += '결제 금액  : ' + rsp.paid_amount+'\n';
-	            msg += '결제 수단 : ' + rsp.paid_method+'\n';
-                msg += '상점 거래ID : ' + rsp.merchant_uid;
+	        	var msg = '결제가 완료되었습니다.\n';
+	            msg += '결제 금액  : ' + rsp.paid_amount;
+                //msg += '상점 거래ID : ' + rsp.merchant_uid;
 	            //msg += '고유ID : ' + rsp.imp_uid;
 	            //msg += '카드 승인번호 : ' + rsp.apply_num;
 	            //예약 테이블에 데이터 등록 

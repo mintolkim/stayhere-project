@@ -2,36 +2,45 @@
 package com.example.stayhere.service.rooms;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.example.stayhere.controller.MainController;
 import com.example.stayhere.model.rooms.dao.RoomsDAO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
+import com.example.stayhere.util.DateParse;
 
 @Service
 public class RoomsServiceImpl implements RoomsService {
+	
+	private static final Logger logger = 
+			LoggerFactory.getLogger(MainController.class);
 
 	@Inject
 	RoomsDAO roomsDao;
 
 	@Override
-	public List<RoomsDTO> listMap(String cityname, int bed, int bath, String reviewStar, int lower, int higher) {
-		return roomsDao.listMap(cityname, bed, bath, reviewStar, lower, higher);
+	public List<RoomsDTO> listMap(String cityname, RoomsDTO roomdto,
+			int lower, int higher,String checkin_date, String checkout_date,String align,String userid) {
+		return roomsDao.listMap(cityname,roomdto, lower, higher, checkin_date, checkout_date,align,userid);
+	}
+	
+	@Override
+	public int countrooms(String cityname, RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date) {
+		return roomsDao.countrooms(cityname, roomdto,  lower, higher, checkin_date, checkout_date);
 	}
 
 	@Override
-	public int countrooms(String cityname, int bed, int bath, String reviewStar, int lower, int higher) {
-		return roomsDao.countrooms(cityname, bed, bath, reviewStar, lower, higher);
-	}
-
-	@Override
-	public List<RoomsDTO> address_list(String cityname, int bed, int bath, String reviewStar, int lower, int higher) {
-		return roomsDao.address_list(cityname, bed, bath, reviewStar, lower, higher);
+	public List<RoomsDTO> address_list(String cityname, RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date) {
+		return roomsDao.address_list(cityname, roomdto,  lower, higher,checkin_date,checkout_date);
 	}
 
 	@Override
@@ -40,18 +49,13 @@ public class RoomsServiceImpl implements RoomsService {
 	}
 
 	@Override
-	public List<RoomsDTO> getRoomAllList(int start, int end) {
-		return roomsDao.getRoomAllList(start, end);
+	public List<RoomsDTO> getRoomAllList(int start, int end, String today) {
+		return roomsDao.getRoomAllList(start, end, today);
 	}
 
 	@Override
-	public List<String> getRoomPhoto(int room_idx) {
-		return roomsDao.getRoomPhoto(room_idx);
-	}
-
-	@Override
-	public int getRoomAllCount() {
-		return roomsDao.getRoomAllCount();
+	public int getRoomAllCount(String today) {
+		return roomsDao.getRoomAllCount(today);
 	}
 	
 	@Override
@@ -62,7 +66,14 @@ public class RoomsServiceImpl implements RoomsService {
 	@Override
 	public List<RoomsDTO> getRoomDefalutList(int start, int end, String cityname, 
 			String checkin_date, String checkout_date) {
-		return roomsDao.getRoomDefalutList(start, end, cityname, checkin_date, checkout_date);
+		
+		List<RoomsDTO> list = roomsDao.getRoomDefalutList(start, end, cityname, checkin_date, checkout_date);
+		for(RoomsDTO dto : list) {
+			String contents = dto.getContents();
+			contents = contents.replace("<p>", "").replace("</p>", "").replace("<br>","");
+			dto.setContents(contents);
+		}
+		return list;
 	}
 
 	@Override
@@ -72,7 +83,13 @@ public class RoomsServiceImpl implements RoomsService {
 
 	@Override
 	public List<RoomsDTO> getRoomOptionList(int start, int end, Map<String, Object> param) {
-		return roomsDao.getRoomOptionList(start, end, param);
+		List<RoomsDTO> list = roomsDao.getRoomOptionList(start, end, param);
+		for(RoomsDTO dto : list) {
+			String contents = dto.getContents();
+			contents = contents.replace("<p>", "").replace("</p>", "").replace("<br>","");
+			dto.setContents(contents);
+		}
+		return list;
 	}
 
 	@Override
@@ -100,18 +117,6 @@ public class RoomsServiceImpl implements RoomsService {
 	}
 	
 	@Override
-	public int getRoomOptionCount(String city, String check_in, String check_out) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public void insert(RoomsDTO dto) {
 		roomsDao.insert(dto);
 	}
@@ -134,8 +139,19 @@ public class RoomsServiceImpl implements RoomsService {
 	@Override
 	public void updateRoomphoto(RoomsDTO dto) {
 		roomsDao.updateRoomphoto(dto);
-	}	
-	
-	
+	}
 
+	@Override
+	public List<String> search_list() {
+		return roomsDao.search_list();
+	}
+	
+	public List<String> matchDetail(int room_idx) {
+		List<String> list=roomsDao.matchDetail(room_idx);
+		for(int i=0; i<list.size(); i++) {
+			Collections.replaceAll(list, list.get(i), DateParse.strToDate(list.get(i)));
+		}
+		logger.info("re_date를 yyyy-MM-dd형태로 변환 : "+list.toString());
+		return list;
+	}	
 }

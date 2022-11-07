@@ -229,9 +229,15 @@ function dellikey(q_idx,like){
 			<div class="row mt-3 mb-4">
 				<div class="col-9">
 					<div class="d-flex align-items-center">
+					<c:if test="${dto.profile_img == null }">
 						<img class="rounded-circle me-3"
-							src="${path}/resources/images/${dto.profile_img}"
+							src="${path}/resources/images/guest.png"
+							style="width: 50px; height: 50px;" /></c:if>
+						<c:if test="${dto.profile_img != null }">
+						 <img class="rounded-circle me-3"
+							src="${path}/imgUpload/${dto.profile_img}"
 							style="width: 50px; height: 50px;" />
+						</c:if>
 						<div class="small">
 							<div class="fw-bold">${dto.userid }</div>
 							<div class="text-muted ">

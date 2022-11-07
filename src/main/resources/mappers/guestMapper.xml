@@ -72,6 +72,83 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select userid from guest
 		where email=#{email}
 	</select>
+	
+	<!-- admin 전체 회원목록 출력 -->
+	<select id="getguest" resultType="GuestDTO">
+	select *
+			from (
+			    select rownum as rn, A.*
+			    from (
+	select 
+	a.userid, 
+	a.name,
+	a.email, 
+	a.phone,
+	a.profile_img,
+	a.join_date,
+	a.blacklist,
+	nvl(sum(b.total_price),0) total_price,
+	(select count(*) from review where a.userid=userid) as review_count,
+	(select count(*) from review_accuse where a.userid=writer) as accuse_count
+	from guest a
+	left join reservations b
+	on a.userid=b.userid
+	group by a.userid, a.name, a.email, a.phone,a.profile_img,a.join_date,a.blacklist,a.join_date
+	order by a.userid desc) A    
+			) where rn between #{start} and #{end} 
+   </select>
+	
+	<select id="guestcount" resultType="int">
+	select count(*) from guest
+	</select>
+	
+	<update id="goblack">
+	 update guest set blacklist = 'y'
+	 where userid =#{userid}
+	</update>
+	
+	<update id="gonormal">
+	 update guest set blacklist = 'n'
+	 where userid =#{userid}
+	</update>
+	
+	<select id="getblackguest" resultType="GuestDTO">
+	 select *
+			from (
+			    select rownum as rn, A.*
+			    from (
+	select 
+	a.userid, 
+	a.name,
+	a.email, 
+	a.phone,
+	a.profile_img,
+	a.join_date,
+	a.blacklist,
+	nvl(sum(b.total_price),0) total_price,
+	(select count(*) from review where a.userid=userid) as review_count,
+	(select count(*) from review_accuse where a.userid=writer) as accuse_count
+	from guest a
+	left join reservations b
+	on a.userid=b.userid
+	group by a.userid, a.name, a.email, a.phone,a.profile_img,a.join_date,a.blacklist,a.join_date
+	having a.blacklist = 'y'
+	order by a.userid desc) A    
+			)  where rn between #{start} and #{end}
+	
+	</select>
+	
+	<select id="blackguestcount" resultType="int">
+	select count(*) from guest
+	where blacklist='y'
+	</select>
+	
+	<!--이번달 가입 회원수  -->
+	<select id="getmonthguest" resultType="int">
+	select count(*) from guest
+	where TO_CHAR(to_date(join_date,'yy-MM-dd'),'MONTH')
+	=TO_CHAR(to_date(#{today},'yy-MM-dd'),'MONTH')
+</select>
 </mapper>
 
 

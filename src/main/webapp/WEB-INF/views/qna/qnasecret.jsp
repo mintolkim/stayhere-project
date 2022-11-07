@@ -9,8 +9,8 @@
 $(function(){
 	$("#passwordcheck").click(function(){
 	var q_idx = $("#q_idx").val();
-	var h_userid = $("#h_userid").val();
-	if(h_userid == 'admin'){
+	var userid = $("#userid").val();
+	if(userid == 'admin'){
 		location.href="${path}/qna/qnadetail.do?q_idx="+q_idx;
 	}else{
 		var passwd = $("#passwd").val();
@@ -61,7 +61,7 @@ padding: 10px;}
 					<tr>
 						<td>비밀번호 <input type="password" name="passwd" id="passwd">
 							<input type="hidden" value="${q_idx}" id="q_idx" name="q_idx">
-							<input type="hidden" value="${sessionScope.h_userid }" id="h_userid">
+							<input type="hidden" value="${sessionScope.userid }" id="userid">
 						</td>
 					</tr>
 					<tr>

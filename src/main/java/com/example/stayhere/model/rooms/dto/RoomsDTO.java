@@ -42,5 +42,13 @@ public class RoomsDTO {
 	private double review_star;//리뷰별점평균(review테이블)
 	private int review_count;//리뷰갯수(review테이블)
 	private int res_count; //예약갯수
+	private int total_price;//총매출(admin페이지)
+	private String h_name;
+	private String h_profile_img;
+	private String h_email;
+	private Date h_join_date;
+	private String h_phone;
+	private int wishcheck;//접속게스트 찜목록 확인
+	
 
 }

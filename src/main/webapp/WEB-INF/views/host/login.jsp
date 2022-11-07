@@ -90,12 +90,24 @@ function enter() {
 	<input type="button" class="btn btn-warning" id="login" value="login" >
 	</form>
 	<br>
-	<a href="#">Forgot Password?</a> <a href="${path}/host/join.do">Sign up</a>
+	<a href="${path}/host/findPw.do">Forgot Password?</a> <a href="${path}/host/join.do">Sign up</a>
 	<br>
 	<br> 
-	<c:if test="${message == 'join' }"><div style="color:blue; font-size: 10px;">로그인 하신 후 사용하세요.</div></c:if>
-	<c:if test="${message == 'error' }"><div style="color:red; font-size: 10px;">아이디 또는 비밀번호가 일치하지 않습니다.</div></c:if>
-	<c:if test="${message == 'logout' }"><div style="color:blue; font-size: 10px;">로그아웃 처리되었습니다.</div></c:if>
+	<c:if test="${message == 'join' }">
+	<script type="text/javascript">
+	alert("로그인 하신 후 사용하세요.")
+	</script>
+	</c:if>
+	<c:if test="${message == 'error' }">
+	<script type="text/javascript">
+	alert("아이디 또는 비밀번호가 일치하지 않습니다.")
+	</script>
+	</c:if>
+	<c:if test="${message == 'logout' }">
+	<script type="text/javascript">
+	alert("로그아웃 처리되었습니다.")
+	</script>
+	</c:if>
 		 
 	</div>
   </section>

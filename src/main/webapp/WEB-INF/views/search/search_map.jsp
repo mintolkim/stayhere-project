@@ -6,22 +6,17 @@
 <head>
 <%@ include file="../include/header.jsp"%>
 <title>STAYHERE</title>
-<!-- font awesome 아이콘 -->
-<script src="https://kit.fontawesome.com/fdfee59c02.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- datepicker bootstrap -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
+<!-- flatpickr  -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/plugins/rangePlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 <!-- 이미지슬라이딩 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
   <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <!-- 지도api -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6013ab79a6af6749ee495db13ec37e86"></script>
-<!-- Core theme CSS (includes Bootstrap)-->
-<link href="${path }/resources/css/datepicker.css" rel="stylesheet" />
 <style type="text/css">
 .mapcontainer{
 padding: 10px;
@@ -154,9 +149,55 @@ text-shadow: 0 0 0 #FFA726;}
 #reviewstar input[type=radio]:checked ~ label{
 text-shadow: 0 0 0 #FFA726;
 }
+/* 검색 자동완성 */
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #e9e9e9;
+}
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
+
+
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
+	//검색바
+	 var option = {
+             locale: "ko", //한국어로 언어설정
+             dateFormat: "Y-m-d",   //출력 술정
+             allowInput : false, //사용자 정의 입력설정
+             mode : "range",  //범위
+             showMonths : 2, // 2개월 캘린더 표기 
+             minDate : new Date().fp_incr(1), //최소 날짜, 현재시간으로 셋팅 "today"현재날짜
+             plugins: [new rangePlugin({ input: "#checkout_date"})] //플러그인 설정 input-box 2개에 표기
+         }
+     $("#checkin_date").flatpickr(option);
+	
 	//옵션선택바 고정
 	var topBar = $("#topBar").offset();
 	$(window).scroll(function(){
@@ -215,11 +256,12 @@ $(document).ready(function(){
 		document.getElementById("higher_price").innerHTML = priceToString(this.value);
     }
 //검색 옵션
-	var star = "${map.reviewStar}";
+	var star = Math.floor("${map.reviewStar}");
 	var bed = "${map.bed}";
 	var bath = "${map.bath}";
 	var lower = Number("${map.lower}");
 	var higher = Number("${map.higher}");
+	var align = "${map.align}";
 if(star!=""){
 	$("#rate"+star).prop("checked",true);
 }
@@ -229,18 +271,15 @@ if(bed!=""){
 if(bath!=""){
 	$("#bathoption").val(bath).prop("selected",true);
 }
+if(align!=""){
+	$("#alignoption").val(align).prop("selected",true);
+}
 if(lower!="100000"||higher!="900000"){
 	$("#rangebar").css("left",(lower/1000000)*100+"%");
 	$("#rangebar").css("right",((1000000-higher)/1000000)*100+"%");
 	$("#leftbar").css("left",(lower/1000000)*100+"%");
 	$("#rightbar").css("right",((1000000-higher)/1000000)*100+"%");
 }
-//날짜 선택설정
-$('.input-daterange').datepicker({
-	format : 'yyyy-mm-dd',
-	todayHighlight : true,
-	startDate : '0d'
-});
 //지도출력
 var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 var options = { //지도를 생성할 때 필요한 기본 옵션
@@ -248,7 +287,7 @@ var options = { //지도를 생성할 때 필요한 기본 옵션
 	level: 8 //지도의 레벨(확대, 축소 정도)
 };
 var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-
+$("#hiddenmap").val(map);
 
 //일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성
 var mapTypeControl = new kakao.maps.MapTypeControl();
@@ -267,7 +306,7 @@ for(var k in adrList){
     var $obj = adrList[k];
     adrArray.push({
     	content : '<div style="height:155px;padding:5px;">'+
-    	'<img src="${path}/resources/images/'+$obj.photo1+'"style="width:100%;height:100px;"><br>'+
+    	'<img src="${path}/imgUpload/'+$obj.photo1+'"style="width:100%;height:100px;"><br>'+
     	'<span style="font-size:12px;"><b>'+$obj.room_name+'</b></span><br>'+
     	'<span style="font-size:12px;">'+$obj.room_price.toLocaleString()+'원</span></div>',
     	latlng: new kakao.maps.LatLng($obj.lat,$obj.lng),
@@ -280,11 +319,13 @@ for (var i = 0; i < adrArray.length; i ++) {
         map: map, // 마커를 표시할 지도
         position: adrArray[i].latlng // 마커의 위치
     });
+    $("#marker"+i).val(marker);
     map.setCenter(adrArray[i].latlng);
     // 마커에 표시할 인포윈도우를 생성합니다 
     var infowindow = new kakao.maps.InfoWindow({
         content: adrArray[i].content // 인포윈도우에 표시할 내용
     });
+    $("#infowindow"+i).val(infowindow);
     var mLabel = new daum.maps.InfoWindow({
         position: adrArray[i].latlng,
         content: '<span class="info-title">'+adrArray[i].price.toLocaleString()+'원</span>' // 인포윈도우 내부에 들어갈 컨텐츠 
@@ -294,18 +335,8 @@ for (var i = 0; i < adrArray.length; i ++) {
     kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
     kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 }
-// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
-function makeOverListener(map, marker, infowindow) {
-    return function() {
-        infowindow.open(map, marker);
-    };
-}
-// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
-function makeOutListener(infowindow) {
-    return function() {
-        infowindow.close();
-    };
-}
+
+
 var infoTitle = document.querySelectorAll('.info-title');
 infoTitle.forEach(function(e) {
     var w = e.offsetWidth + 10;
@@ -318,17 +349,182 @@ infoTitle.forEach(function(e) {
     e.parentElement.parentElement.style.border = "0px";
     e.parentElement.parentElement.style.background = "unset";
 	});
+//모달창 닫기
+$(".btn-close").click(function(){
+	$(".modal").fadeOut();
 });
+});
+//인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
 //옵션변경
 function changeoption(){
 	var cityname = $("#cityname").val();
+	var checkin_date = $("#checkin_date").val();
+	var checkout_date = $("#checkout_date").val();
 	if(cityname == ""){
 		alert("지역명을 먼저 입력해주세요."); $("#cityname").focus(); return;
 	}
+	if(checkin_date == ""){
+		alert("출발일을 먼저 설정해주세요."); $("#checkin_date").focus(); return;
+	}
+	if(checkout_date == ""){
+		alert("도착일을 먼저 설정해주세요."); $("#checkout_date").focus(); return;
+	}
+	$("#optionform").attr("action","${path}/search/map/"+cityname+"/"+checkin_date+"/"+checkout_date);
 	$("#optionform").submit();
 }
 function priceToString(price) {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+//리스트 페이지로 이동하기
+function goTolist(){
+	const param = location.search; //현재 주소URL에 있는 파라미터 값 가져오기 
+	location.href = "${path}/search/${map.cityname}/${map.checkin_date}/${map.checkout_date}" + param;
+}
+//리뷰모달 열기
+function reviewDetail(room_idx,index){
+	$.ajax({
+		type: 'POST',
+		url: "${path }/admin/roomreview",
+		data:{"room_idx":room_idx},
+		success: function(result){
+			if(result!=null)
+			$("#reviewbody"+index).html(result);
+		},
+		error: function(result){
+			alert("오류");
+		}
+	});
+	var y = index;
+	$("#reviewmodal"+y).fadeIn();
+}
+$(function(){
+/* 검색 자동완성 */
+ function autocomplete(inp, arr) {
+	  var currentFocus;
+	  inp.addEventListener("input", function(e) {
+	      var a, b, i, val = this.value;
+	      closeAllLists();
+	      if (!val) { return false;}
+	      currentFocus = -1;
+	      a = document.createElement("DIV");
+	      a.setAttribute("id", this.id + "autocomplete-list");
+	      a.setAttribute("class", "autocomplete-items");
+	      this.parentNode.appendChild(a);
+	      for (i = 0; i < arr.length; i++) {
+	        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+	          b = document.createElement("DIV");
+	          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+	          b.innerHTML += arr[i].substr(val.length);
+	          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+	              b.addEventListener("click", function(e) {
+	              inp.value = this.getElementsByTagName("input")[0].value;
+	              closeAllLists();
+	          });
+	          a.appendChild(b);
+	        }
+	      }
+	  });
+	  inp.addEventListener("keydown", function(e) {
+	      var x = document.getElementById(this.id + "autocomplete-list");
+	      if (x) x = x.getElementsByTagName("div");
+	      if (e.keyCode == 40) {
+	        currentFocus++;
+	        addActive(x);
+	      } else if (e.keyCode == 38) { //up
+	        currentFocus--;
+	        addActive(x);
+	      } else if (e.keyCode == 13) {
+	        e.preventDefault();
+	        if (currentFocus > -1) {
+	          if (x) x[currentFocus].click();
+	        }
+	      }
+	  });
+	  function addActive(x) {
+	    if (!x) return false;
+	    removeActive(x);
+	    if (currentFocus >= x.length) currentFocus = 0;
+	    if (currentFocus < 0) currentFocus = (x.length - 1);
+	    x[currentFocus].classList.add("autocomplete-active");
+	  }
+	  function removeActive(x) {
+	    for (var i = 0; i < x.length; i++) {
+	      x[i].classList.remove("autocomplete-active");
+	    }
+	  }
+	  function closeAllLists(elmnt) {
+	    var x = document.getElementsByClassName("autocomplete-items");
+	    for (var i = 0; i < x.length; i++) {
+	      if (elmnt != x[i] && elmnt != inp) {
+	      x[i].parentNode.removeChild(x[i]);
+	    }
+	  }
+	}
+	document.addEventListener("click", function (e) {
+	    closeAllLists(e.target);
+	});
+	}
+ var searchList =JSON.parse('${map.searchlist}');
+ 
+ autocomplete(document.getElementById("cityname"), searchList);
+
+});
+function wishList(index,room_idx){
+	var userid = '${sessionScope.userid}';
+	 if(userid != ""){
+	    	if(confirm("위시리스트에 추가하시겠습니까?")){
+	    		$.ajax({
+	    			type: "get",
+	    			url: "${path}/wishlist/wishplus",
+	    			data : {
+	    				"room_idx" : room_idx,
+	    				"userid" : userid
+	    			},
+	    			success : function(res){
+	    				if(res=1){
+	    				$("#wishlist"+index).html("");
+	    				$("#wishlist"+index).html("<i class='bi-heart-fill text-danger fw-bold fs-5'></i>");
+	    				}
+	    			}
+	    		});
+	    	}
+	    } else {
+	    	if(confirm("로그인 하셔야 위시리스트 기능이 가능합니다.\n 로그인 페이지로 이동하시겠습니까?")){
+	    		location.href="${path}/guest/login.do";
+	    	}
+	    }
+}
+function deleteWish(index,room_idx){
+	var userid = '${sessionScope.userid}';
+	 if(userid != ""){
+	    	if(confirm("위시리스트에서 삭제하시겠습니까?")){
+	    		$.ajax({
+	    			type: "get",
+	    			url: "${path}/wishlist/deleteWish",
+	    			data : {
+	    				"room_idx" : room_idx,
+	    				"userid" : userid
+	    			},
+	    			success : function(res){
+	    				if(res=1){
+	    				$("#deleteWish"+index).html("");
+	    				$("#deleteWish"+index).html("<i class='bi-heart text-danger fw-bold fs-5'></i>");
+	    				}
+	    			}
+	    		});
+	    	}
+	    } 
 }
 </script>
 </head>
@@ -339,45 +535,63 @@ function priceToString(price) {
 	<!-- 본문영역 -->
 <section class="py-4" id="features"> 
 <div class="mapcontainer">
-	<!--검색바  -->
-	<form autocomplete="off" id="optionform" name="form1" method="get"	action="${path}/search/listMap.do">
-    <div class="flex-sm-row flex-column d-flex">
-      <div class="form-floating">
-      <input type="text" class="form-control" name="cityname" id="cityname" value="${map.cityname }" placeholder="지역명을 입력하세요" size="60"
-      style="text-align: center;">
-      <label for="cityname">지역명을 입력하세요</label>
-     </div>
-     <div class="input-group input-daterange">
-        <div class="form-floating">
-          <input type="text" class="form-control" id="checkin_date"name="checkin_date" value="${map.checkin_date }"placeholder="체크인" readonly style="text-align: right;">
-          <label for="floatingInput">체크인</label>
-          </div>
-          <div class="form-floating">
-          <input type="text" class="form-control" id="checkout_date" name="checkout_date" value="${map.checkout_date }"placeholder="체크아웃" readonly style="text-align: right;">
-          <label for="floatingInput">체크아웃</label>
-          </div>
-        <button type="submit" class="btn" style="background:#FFA726; width:60px;"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
-    </div>
+    <!-- search-bar -->
+	<div class="search-wrap search-fixed">
+		<div class="search-bar border px-4">
+				<div class="row">
+					<div class="col-lg-5 col-sm-5 col-12 d-flex align-items-center rounded-pill">
+						<form autocomplete="off" >
+						<div class="form-floating form-group w-100 autocomplete">
+							<input class="form-control border-0 shadow-none " id="cityname"
+								name="cityname" placeholder="여행지를 입력해주세요" value="${map.cityname}"> 
+								<label for="cityname">여행지 입력</label>
+						</div>
+						</form>
+					</div>
+					<div class="col-lg-3 col-sm-3 col-5 d-flex align-items-center">
+						<div class="form-floating form-group w-100">
+							<input class="form-control border-0 shadow-none" id="checkin_date"
+								name="checkin_date" placeholder="체크인" value="${map.checkin_date}"> 
+								<label for="checkin_date">체크인</label>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3 col-5 d-flex align-items-center">
+						<div class="form-floating form-group w-100">
+							<input class="form-control border-0 shadow-none" id="checkout_date"
+								name="checkout_date" placeholder="체크아웃" value="${map.checkout_date}">
+							<label for="checkout_date">체크아웃</label>
+						</div>
+					</div>
+					<div class="col-lg-1 col-sm-1 col-2 d-flex align-items-center">
+						<button class="btn btn-custom rounded-pill" type="button"
+							onclick="changeoption()">
+							<i class="bi-search"></i>
+						</button>
+					</div>
+				</div>
+		</div>
+		</div>
   <div class="top_fix_zone" id="topBar">
+  <form autocomplete="off" id="optionform" name="form1" method="get">
   <table id="optiontable">
    <tr>
     <td rowspan="2">
- 	 <button type="button" id="optionList" class="btn btn-lg" >리스트로 이동</button>
+ 	 <button type="button" id="optionList" onclick="goTolist()" class="btn btn-lg" >리스트로 이동</button>
     </td>
     <td>후기 평점</td>
     <td>가격 검색(원) </td>
     <td>침대 수</td>
     <td>욕실 수</td>
+    <td>정렬선택</td>
    </tr>
    <tr>
    <td>
     <div id="reviewstar">
-     <input type="radio" name="reviewStar" value="5" id="rate5" onclick="changeoption()"><label	for="rate5" class="fa fa-star"></label>
-	 <input type="radio" name="reviewStar" value="4" id="rate4" onclick="changeoption()"><label for="rate4" class="fa fa-star"></label>
-	 <input type="radio" name="reviewStar" value="3" id="rate3" onclick="changeoption()"><label for="rate3" class="fa fa-star"></label>
-	 <input type="radio" name="reviewStar" value="2" id="rate2" onclick="changeoption()"><label for="rate2" class="fa fa-star"></label>
-	 <input type="radio" name="reviewStar" value="1" id="rate1" onclick="changeoption()"><label for="rate1" class="fa fa-star"></label>
+     <input type="radio" name="reviewStar" value="5" id="rate5" onclick="changeoption()"><label	for="rate5" class="bi bi-star-fill"></label>
+	 <input type="radio" name="reviewStar" value="4" id="rate4" onclick="changeoption()"><label for="rate4" class="bi bi-star-fill"></label>
+	 <input type="radio" name="reviewStar" value="3" id="rate3" onclick="changeoption()"><label for="rate3" class="bi bi-star-fill"></label>
+	 <input type="radio" name="reviewStar" value="2" id="rate2" onclick="changeoption()"><label for="rate2" class="bi bi-star-fill"></label>
+	 <input type="radio" name="reviewStar" value="1" id="rate1" onclick="changeoption()"><label for="rate1" class="bi bi-star-fill"></label>
     </div>
    </td>
    <td style="width: 300px;">
@@ -414,24 +628,37 @@ function priceToString(price) {
     <option value="4">4개이상</option>
    </select>
    </td>
-   </tr>
+	<td>
+	<select class="form-select form-select-sm" id="alignoption" name="align" onchange="changeoption()">
+	 <option value="room_idx">최신순</option>
+	 <option value="review_count">리뷰순</option>
+	 <option value="res_count">예약순</option>
+	 <option value="room_price">가격순</option>
+	</select>
+	</td>
+	</tr>
   </table>
-  </div>
  </form>
+  </div>
   <!--리스트 영역  -->
 	<div class="row" id="fixNextTag">
 		<div class="col-3" style="background: #f9fafb;">
 		  총 <b style="color:#FFA726;">${map.count }개</b>의 숙소가 검색되었습니다.
-		   <c:forEach var="room" items="${map.list }"> 
+		   <c:forEach var="room" items="${map.list }" varStatus="vs"> 
 		     <div class="col mt-2 mb-2" style="background: #f9fafb;">
-                        <div class="card h-100">
+                        <div class="card h-100" >
                             <!-- Product image-->
+								<a href="${path}/rooms/detail/${room.room_idx}">
 								<div class="bxslider">
-									<div><img class="card-img-top" src="${path }/resources/images/${room.photo1}" title="${room.address1 }"></div>
-									<div><img class="card-img-top" src="${path }/resources/images/${room.photo2}" title="${room.address1 }"></div>
-									<div><img class="card-img-top" src="${path }/resources/images/${room.photo3}" title="${room.address1 }"></div>
-									<div><img class="card-img-top" src="${path }/resources/images/${room.photo4}" title="${room.address1 }"></div>
-								</div>
+									<div><img class="card-img-top" src="${path }/imgUpload/${room.photo1}" 
+									title="${room.address1 }" style="height: 280px;"></div>
+									<div><img class="card-img-top" src="${path }/imgUpload/${room.photo2}" 
+									title="${room.address1 }" style="height: 280px;"></div>
+									<div><img class="card-img-top" src="${path }/imgUpload/${room.photo3}" 
+									title="${room.address1 }" style="height: 280px;"></div>
+									<div><img class="card-img-top" src="${path }/imgUpload/${room.photo4}" 
+									title="${room.address1 }" style="height: 280px;"></div>
+								</div></a>
 								<script type="text/javascript">
 									$('.bxslider').bxSlider({
 										mode : 'horizontal',
@@ -440,13 +667,31 @@ function priceToString(price) {
 										caption:true
 									});
 								</script>
+								<c:if test="${room.wishcheck == 0 }">
+								 <div class="btn boder-0 shadow-none card-img-overlay-top text-end"
+								onclick="wishList(${vs.index }, ${room.room_idx})" id="wishlist${vs.index }">
+									<i class="bi-heart text-danger fw-bold fs-5" ></i>
+								   </div>
+								</c:if>
+								<c:if test="${room.wishcheck > 0 }">
+								  <div class="btn boder-0 shadow-none card-img-overlay-top text-end"
+								  onclick="deleteWish(${vs.index }, ${room.room_idx})" id="deleteWish${vs.index }">
+									<i class="bi-heart-fill text-danger fw-bold fs-5" ></i>
+								   </div>
+								</c:if>
+								
 								<!-- Product details-->
                             <div class="card-body p-1">
                                 <div class="text-center">
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">${room.room_name }</h5>
-                                    <div class="d-flex justify-content-center small fw-bolder mb-2" style="color:#848484;">
-                                    (최소인원: ${room.max_people}명 / 침대수: ${room.beds }개 / 욕실수: ${room.baths }개)</div>
+                                    <div class="d-flex justify-content-center small mb-2" style="color:#848484;">
+                                    <i class="bi bi-check-square-fill pe-1"> 침대	${room.beds} · 욕실 ${room.baths} · 최대인원 ${room.max_people}</i></div>
+                                     <div class="d-flex justify-content-center small mb-2" style="color:#848484;">
+                                    <i class="bi bi-calendar-check pe-1"> 
+                                     <fmt:formatDate pattern="MM월 dd일" value="${room.check_in}" /> <span>~</span>
+									 <fmt:formatDate pattern="MM월 dd일" value="${room.check_out}" /></i></div>
+											
                                     <!-- Product reviews-->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
                                      <c:forEach var="i" begin="1" end="${room.review_star }">
@@ -455,7 +700,29 @@ function priceToString(price) {
                                      <c:forEach var="i" begin="${room.review_star +1}" end="5">
                                         <div class="bi-star"></div>
                                      </c:forEach> 
-                                     <span style="color:black;">(후기: ${room.review_count }개)</span>
+                                    <c:if test="${room.review_count == 0 }">
+									 <span style="color:black;">(후기: ${room.review_count }개 </span>
+									  <span style="color:black;"> / 예약: ${room.res_count }개)</span>
+									</c:if>
+									<c:if test="${room.review_count > 0 }">
+									<a href="#" onclick="reviewDetail('${room.room_idx}','${vs.index }');">
+									 <span style="color:black;">(후기: ${room.review_count }개</span></a>
+									 <span style="color:black;"> / 예약: ${room.res_count }개)</span>
+									  </c:if>
+									<!--모달창  -->
+											<div id="reviewmodal${vs.index }" class="modal" tabindex="-1" style="color:black;">
+												<div class="modal-dialog modal-dialog-scrollable">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h5 class="modal-title">${room.room_name } 리뷰</h5>
+															<button type="button" class="btn-close"
+																aria-label="Close"></button>
+														</div>
+														<div class="modal-body" style="width:100%;"id="reviewbody${vs.index }"></div>
+													</div>
+												</div>
+											</div>
+                                    
                                     </div>
                                     <!-- Product price-->
                                     <span class="text-muted" style="font-weight:bold;">

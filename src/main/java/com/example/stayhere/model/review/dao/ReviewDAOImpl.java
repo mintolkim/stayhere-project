@@ -170,24 +170,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 		map.put("review_idx", review_idx);
 		return sqlSession.selectOne("review.checkattach",map);
 	}
-
-	/*
-	 * @Override public List<ReviewAccuseDTO> acclist(int start, int end) throws
-	 * Exception { // TODO Auto-generated method stub return null; }
-	 */
-	
-	/* 인트로 하려다 접음.
-	 * @Override public int accuseCheck(String user, int review_idx) { Map<String,
-	 * Object> map = new HashMap<>(); map.put("userid", user); map.put("review_idx",
-	 * review_idx); return sqlSession.selectOne("review.accuseCheck", map);
-	 * 
-	 * }
-	 * 
-	 * @Override public void accuseCancel(int review_idx) {
-	 * sqlSession.update("review.accuseCancel", review_idx);
-	 * 
-	 * }
-	 */
 	
 	@Override
 	public void checkAcc(String review_idx) {
@@ -213,6 +195,13 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return null;
 	}
 
+	@Override
+	public List<ReviewDTO> getreview(String userid) {
+		return sqlSession.selectList("review.getreview",userid);
+	}
 
-	
+	@Override
+	public List<ReviewDTO> roomreview(int room_idx) {
+		return sqlSession.selectList("review.roomreview",room_idx);
+	}
 }

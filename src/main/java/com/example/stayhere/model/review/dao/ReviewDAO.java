@@ -3,6 +3,7 @@ package com.example.stayhere.model.review.dao;
 import java.util.Date;
 import java.util.List;
 
+
 import javax.servlet.http.HttpSession;
 
 import com.example.stayhere.model.qna_comment.dto.QnaCommentDTO;
@@ -46,4 +47,8 @@ public interface ReviewDAO {
 	public void cancelAcc(String review_idx);//신고체크취소
 	public ReviewAccuseDTO accDetail(int acc_idx);//신고상세보기(신고의견)
 	public int countByAcc(int review_idx);//신고 갯수
+	public List<ReviewDTO> getreview(String userid);//게스트별 리뷰가져오기
+	public List<ReviewAccuseDTO> getaccuse(String userid);//게스트 신고 가져오기
+	public List<ReviewDTO> roomreview(int room_idx);//룸리뷰 불러오기
 }
+

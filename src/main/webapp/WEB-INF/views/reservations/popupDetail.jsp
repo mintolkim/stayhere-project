@@ -23,13 +23,12 @@
 </style>
 </head>
 <body style="width: 400px;">
-
 	<div style="margin: 0 auto; margin-left: 40px; margin-top: 30px; text-align: center;">
 		<c:choose>
 			<c:when test="${res.res_state == '예약요청'}">
 				<h3 class="badge bg-warning">예약요청</h3>
 			</c:when>
-			<c:when test="${res.res_state == '예약취소'}">
+			<c:when test="${res.res_state == '취소완료'}">
 				<h3 class="badge bg-danger">취소완료</h3>
 			</c:when>
 			<c:otherwise>
@@ -49,13 +48,13 @@
 					<td>
 						<strong>체크인</strong>
 					</td>
-					<td>${res.checkin_date}</td>
+					<td>${res.checkin_date}&nbsp;&nbsp;오후 3:00</td>
 				</tr>
 				<tr>
 					<td>
 						<strong>체크아웃</strong>
 					</td>
-					<td>${res.checkout_date}</td>
+					<td>${res.checkout_date}&nbsp;&nbsp;오전 11:00</td>
 				</tr>
 				<tr>
 					<td>
@@ -106,7 +105,7 @@
 				</tr>
 
 				<c:choose>
-					<c:when test="${res.res_state == '예약취소' }">
+					<c:when test="${res.res_state == '취소완료' }">
 						<tr>
 							<td>
 								<strong>결제 금액</strong>
@@ -131,7 +130,7 @@
 					</c:otherwise>
 				</c:choose>
 			</table>
-			<div class="mb-5"></div>
+			<div class="mb-5 py-3"></div>
 		</div>
 	</div>
 	
@@ -162,7 +161,7 @@ marker.setMap(map);
 // marker.setMap(null); 
 
 // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-var iwContent = '<a href="https://map.kakao.com/link/to/${room.country},38.1808,128.6121" style="color:blue" target="_blank">길찾기</a>',
+var iwContent = '<div style="padding: 5px; font-size: 14px;"><a href="https://map.kakao.com/link/to/${room.address1},${room.lat},${room.lng}" style="color:blue;" target="_blank">🚗길찾기 click!🚗</a></div>',
     iwPosition = new kakao.maps.LatLng("${room.lat}", "${room.lng}"); //인포윈도우 표시 위치입니다
 
 // 인포윈도우를 생성합니다

@@ -270,22 +270,6 @@
 			<version>21.5.0.0</version>
 		</dependency>
 
-
-		<!-- 메일 보내기 라이브러리 -->
-		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
-		</dependency>
-		<!-- 메일 편하게 사용하는 라이브러리 -->
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
-
 		<!-- 이미지  업로드용/jackson-core -->
 		<dependency>
     		<groupId>com.fasterxml.jackson.core</groupId>
@@ -312,7 +296,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-email</artifactId>
-			<version>1.2</version>
+			<version>1.5</version>
 		</dependency> 
 	
          <!--  스프링 타임서버 라이브러리 추가 -->
@@ -322,7 +306,61 @@
              <version>3.6</version>
          </dependency>
 
+		<!-- 비밀번호 암호화 설정 -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>5.0.8.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-web</artifactId>
+		    <version>5.0.8.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-config</artifactId>
+		    <version>5.0.8.RELEASE</version>
+		</dependency>
+		
+		<!-- websocket for chatting -->
+                        <!-- 스프링 웹소켓 -->
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-websocket</artifactId>
+                    <version>${org.springframework-version}</version>
+                </dependency>
+                
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-messaging</artifactId>
+                    <version>${org.springframework-version}</version>
+                </dependency>
+                
 
+                <!-- STOMP websocket -->
+                <dependency>
+                    <groupId>org.webjars</groupId>
+                    <artifactId>stomp-websocket</artifactId>
+                    <version>2.3.3-1</version>
+                </dependency>
+                
+                <!-- SockJS -->
+                <dependency>
+                    <groupId>org.webjars</groupId>
+                    <artifactId>sockjs-client</artifactId>
+                    <version>1.1.2</version>
+                </dependency>                
+                
+                <!-- https://mvnrepository.com/artifact/org.json/json -->
+                <dependency>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                    <version>20180813</version>
+                </dependency>
+			<!-- websocket for chatting -->       
 
 	</dependencies>
 	<build>

@@ -21,10 +21,10 @@ public class ReservationsDTO {
     private int total_price;//예약 총 금액(숙소가격+(추가인원*1인당 추가금액))
     private int res_person;//예약인원(2인 기준이며 2인 초과시 1인당 금액 추가/숙소별 상이)
     private int night;//숙박일수
-    private String phone;//회원 이메일(guest테이블)
-    private String name;//회원이름(guest테이블)
-    //rooms테이블
+    private String phone;//회원 연락처
+    private String name;//회원이름
     private String room_name;//숙소 이름
+    //rooms테이블
     private int room_price;//숙소 가격
     private String contenst;//숙소 소개글
     private String city;//도시
@@ -44,4 +44,8 @@ public class ReservationsDTO {
 	private String photo2;//room_photo 테이블
 	private String photo3;//room_photo 테이블
 	private String photo4;//room_photo 테이블
+	//admin-매출집계
+	private String month;
+	private int monthlymoney;
+	private int yearmoney;
 }

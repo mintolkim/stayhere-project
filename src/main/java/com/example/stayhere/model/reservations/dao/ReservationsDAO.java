@@ -18,6 +18,22 @@ public interface ReservationsDAO {
 	public void approveStatus(int res_idx);//예약 승인
 	public void checkinStatus(int res_idx);//입실 완료
 	public void checkoutStatus(int res_idx);//퇴실 완료
-
+	public List<ReservationsDTO> resTotalMoney();//월별매출집계
+	public List<ReservationsDTO> resCateTotalMoney();//카테고리별 매출집계
+	public List<ReservationsDTO> roomreservation(int room_idx);//룸예약정보
+	public int getThismonth(String today);//이번달 매출
+	public int getThisyear(String today);//이번년도 매출
+	public int resdateCheck(String room_idx, String checkin_date, String checkout_date);//예약 중복날짜 확인
+	public int cntRequest(String userid);//게스트의 예약요청 개수
+	public int cntApprove(String userid);//게스트의 예약완료 개수
+	public int cntCancel(String userid);//게스트의 취소완료 개수
+	public int cntUse(String userid);//게스트의 이용중 개수
+	public int cntCheckout(String userid);//게스트의 이용완료 개수
+	public int h_cntRequest(String h_userid);//호스트의 예약승인 개수
+	public int h_cntApprove(String h_userid);//호스트의 예약완료 개수
+	public int h_cntCancel(String h_userid);//호스트의 취소완료 개수
+	public int h_cntCheckout(String h_userid);//호스트의 입실완료 개수
+	public int h_cntUse(String h_userid);//호스트의 이용완료 개수
+	public ReservationsDTO mailReserve(int room_idx, String checkin_date, String checkout_date);//메일전송용 예약정보
 
 }
