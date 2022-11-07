@@ -10,9 +10,8 @@
 
 <!-- nav bar -->
 <header>
-	<nav class=" navbar navbar-expand-lg navbar-light bg-white">
-		<div
-			class="container-fluid flex-wrap flex-lg-nowrap gx-5 py-2 border-bottom">
+	<nav class=" navbar navbar-expand-lg navbar-light bg-white border-bottom">
+		<div class="container-fluid flex-wrap flex-lg-nowrap gx-5 py-2">
 			<!--logo-->
 			<div class="logo-wrap">
 				<a class="navbar-logo" href="${path}/main">STAYHERE</a>
@@ -29,6 +28,7 @@
 					<li class="nav-item"><a class="nav-link" href="about.html">PROMOTION</a></li>
 					<li class="nav-item"><a class="nav-link" href="${path}/reviews/list.do">REVIEW</a></li>
 					<li class="nav-item"><a class="nav-link" href="${path }/qna/qnalist.do">QNA</a></li>
+					<c:if test="${sessionScope.h_userid == null}">	
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#"
 						role="button" data-bs-toggle="dropdown" aria-expanded="false">GUEST</a>
@@ -44,12 +44,15 @@
 								<li><a class="dropdown-item"
 									href="${path}/guest/guest_view/${sessionScope.userid}">프로필</a></li>
 								<li><a class="dropdown-item" href="${path}/reservations/list/guest">예약정보</a></li>
-								<li><a class="dropdown-item" href="blog-home.html">관심스테이</a></li>
+								<li><a class="dropdown-item" href="${path}/wishlist/list.do">관심스테이</a></li>
+								<li><a class="dropdown-item" href="${path}/chatlist">내 채팅목록</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">문의하기</a></li>
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item" href="${path}/guest/logout.do">로그아웃</a></li>
 							</c:if>
 						</ul></li>
+					</c:if>
+					<c:if test="${sessionScope.userid == null}">	
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" id="navbarDropdownPortfolio"
 						href="#" role="button" data-bs-toggle="dropdown"
@@ -66,15 +69,17 @@
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item"
 									href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></li>
-								<li><a class="dropdown-item" href="portfolio-overview.html">숙소관리</a></li>
-								<li><a class="dropdown-item" href="portfolio-overview.html">숙소등록</a></li>
-								<li><a class="dropdown-item" href="portfolio-overview.html">숙소승인현황</a></li>
+								<li><a class="dropdown-item" href="${path}/chatlist">내 채팅목록</a></li>
+								<li><a class="dropdown-item" href="${path}/host/rooms_List/${sessionScope.h_userid}">숙소관리</a></li>
+								<li><a class="dropdown-item" href="${path}/rooms/write.do">숙소등록</a></li>
+								<li><a class="dropdown-item" href="${path}/host/roomsConfirm/${sessionScope.h_userid}">숙소승인현황</a></li>
 								<li><a class="dropdown-item" href="${path}/reservations/list/host">예약현황</a></li>
 								<li><a class="dropdown-item" href="portfolio-overview.html">매출현황</a></li>
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item" href="${path}/host/logout.do">로그아웃</a></li>
 							</c:if>
 						</ul></li>
+					</c:if>
 				</ul>
 			</div>
 		</div>

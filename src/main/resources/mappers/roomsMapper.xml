@@ -39,15 +39,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 메인페이지 룸정보 불러오기 -->
 	<select id="getRoomAllList" resultType="RoomsDTO">
-		select *
-			from (
-				select A.* , rownum as rn
-				from ( select
+		select * from (
+			select A.* , rownum as rn from ( select
 				r.room_idx,
-				r.h_userid,
 				r.room_name,
 				r.room_price,
-				r.contents,
+				substr(r.contents, 1, 200)contents,
 				r.city,
 				r.country,
 				r.address1,
@@ -58,73 +55,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				r.beds,
 				r.baths,
 				r.room_type,
-				r.lat,
-				r.lng,
-				rp.photo1,
-				rp.photo2,
-				rp.photo3,
-				rp.photo4,
-				(select count(*) from reservations where room_idx=r.room_idx) res_count,
-				(select count(*) from review where room_idx=r.room_idx) review_count,
-				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
-			from rooms r join room_photo rp on r.room_idx = rp.room_idx
-			order by review_star desc) A
-		) where rn between #{start} and #{end}
-	</select>
-
-	<!-- 메인페이지 룸 갯수 불러오기 -->
-	<select id="getRoomAllCount" resultType="int">
-		select count(*) from rooms
-	</select>
-	
-	<!-- 룸사진 불러오기 -->
-	<select id="getRoomPhoto" resultType="String">
-		select photo from
-		room_photo
-		where room_idx=#{room_idx}
-		order by p_idx asc
-	</select>
-	
-	<!-- 검색 옵션 룸 갯수 -->
-	<select id="getRoomOptionCount" resultType="int">
-		select count(*) from rooms
-		where check_in=#{check_in} and check_out = #{check_out}
-		or city=#{city}
-	</select>
-	
-	<!-- 룸 옵션 리스트 불러오기 -->
-	<select id="getRoomOptionList" resultType="RoomsDTO">
-		select *
-			from (
-				select A.* , rownum as rn
-				from ( select
-				r.room_idx,
-				r.h_userid,
-				r.room_name,
-				r.room_price,
-				r.contents,
-				r.city,
-				r.country,
-				r.address1,
-				r.address2,
-				r.zipcode,
-				r.check_in,
-				r.check_out,
-				r.beds,
-				r.baths,
-				r.room_type,
-				r.lat,
-				r.lng,
+				r.max_people,
+				r.add_people,
+				r.admin_confirm,
+				nvl(r.lat,0),
+				nvl(r.lng,0),
 				rp.photo1,
 				rp.photo2,
 				rp.photo3,
 				rp.photo4,
 				(select count(*) from review where room_idx=r.room_idx)review_count,
-				(select avg(review_star) from review where room_idx=r.room_idx) review_star
-			from rooms r join room_photo rp on r.room_idx = rp.room_idx
-			where check_in=#{check_in} and check_out=#{check_out}	or city=#{city}
-			order by room_idx) A
-		) where rn between #{start} and #{end}
+				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star,
+        (select count(*) from reserved where re_date not between #{today} and #{tomorrow} and room_idx= r.room_idx) re_date,
+        (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
+				from rooms r join	room_photo rp on r.room_idx = rp.room_idx
+				where to_char(check_in, 'yyyyMMdd') >= #{today} and admin_confirm='승인'
+				order by review_star desc) A
+		) where rn between #{start} and #{end} and (re_date !=0 or reserved_room is null)
+	</select>
+
+	<!-- 메인페이지 룸 갯수 불러오기 -->
+	<select id="getRoomAllCount" resultType="int">
+		select count(*) from (
+			select A.* , rownum as rn from ( select
+				(select count(*) from review where room_idx=r.room_idx)review_count,
+				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star,
+        (select count(*) from reserved where re_date not between #{today} and #{tomorrow} and room_idx= r.room_idx) re_date,
+        (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
+				from rooms r join	room_photo rp on r.room_idx = rp.room_idx
+				where to_char(check_in, 'yyyyMMdd') >= #{today} and admin_confirm='승인') A
+		) where (re_date !=0 or reserved_room is null)
 	</select>
 	
 	<!-- 룸등록 -->
@@ -143,6 +103,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						beds,
 						baths,
 						room_type,
+						check_in,
+						check_out,
 						lat,
 						lng,
 						max_people,
@@ -162,6 +124,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						#{beds},
 						#{baths},
 						#{room_type},
+						#{check_in},
+						#{check_out},
 						#{lat},
 						#{lng},
 						#{max_people},
@@ -210,7 +174,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	add_people=#{add_people},
 	baths=#{baths},
 	beds=#{beds},
-	max_people=#{max_people}
+	max_people=#{max_people},
+	check_in=#{check_in},
+	check_out=#{check_out}
 	where room_idx=#{room_idx}
 	</update>
 	
@@ -223,5 +189,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	photo4=#{photo4}
 	where room_idx=#{room_idx}
 	</update>
+	
 	
 </mapper>

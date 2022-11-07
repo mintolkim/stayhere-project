@@ -5,6 +5,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!--search bar start -->
+
+
+
 	<div class="search-wrap d-flex justify-content-center">
 		<div class="search-bar border px-4">
 			<form method="post" id="searchFrom">
@@ -52,28 +55,37 @@
              mode : "range",  //범위
              showMonths : 2, // 2개월 캘린더 표기 
              minDate : new Date().fp_incr(1), //최소 날짜, 현재시간으로 셋팅 "today"현재날짜
-             maxDate: new Date().fp_incr(90), // 최대날짜 mindate에서 90일 이후로 설정
              plugins: [new rangePlugin({ input: "#checkout_date"})] //플러그인 설정 input-box 2개에 표기
              
          }
 
          $("#checkin_date").flatpickr(option);
-     
-         var searchBar = $(".search-wrap").offset();
-         $(window).scroll(function () {
-//         	 	console.log("윈도우 스크롤 : " + $(this).scrollTop());
-             if ($(this).scrollTop() > searchBar.top + 70) {
-                 $(".search-wrap").addClass('fixed');
-                 $(".filter-option-wrap").addClass('fixed');
-             } else {
-                 $(".search-wrap").removeClass('fixed');
-                 $(".filter-option-wrap").removeClass('fixed');
-             }
-         });
-	 
+      
 	 });
 	 
-	 	
+     var searchBar = $(".search-wrap").offset();
+     
+          
+     $(window).on("scroll", function () {
+    	 
+    	 var scrollTop = $(this).scrollTop(); // 위로 스크롤된 길이
+ 			 var windowsHeight = $(this).height(); //웹브라우저의 창의 높이
+ 			 var documentHeight = $(document).height(); // 문서 전체의 높이
+    	 
+ 			 console.log("scrollTop : " + scrollTop);
+ 			 console.log("windowsHeight : " + windowsHeight);
+ 			 console.log("documentHeight : " + documentHeight);
+ 		
+         if ($(this).scrollTop() > searchBar.top+300) {
+    	 			console.log(searchBar.top);
+             $(".search-wrap").addClass('fixed');
+             $(".filter-option-wrap").addClass('fixed');
+         } else {
+             $(".search-wrap").removeClass('fixed');
+             $(".filter-option-wrap").removeClass('fixed');
+         }
+    	 
+     });
 
 		//검색창 입력
 		function submitMainSearch(f) {

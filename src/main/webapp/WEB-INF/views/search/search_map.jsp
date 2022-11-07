@@ -267,7 +267,7 @@ for(var k in adrList){
     var $obj = adrList[k];
     adrArray.push({
     	content : '<div style="height:155px;padding:5px;">'+
-    	'<img src="${path}/resources/images/'+$obj.photo1+'"style="width:100%;height:100px;"><br>'+
+    	'<img src="${path}/imgUpload/'+$obj.photo1+'"style="width:100%;height:100px;"><br>'+
     	'<span style="font-size:12px;"><b>'+$obj.room_name+'</b></span><br>'+
     	'<span style="font-size:12px;">'+$obj.room_price.toLocaleString()+'원</span></div>',
     	latlng: new kakao.maps.LatLng($obj.lat,$obj.lng),
@@ -322,14 +322,31 @@ infoTitle.forEach(function(e) {
 //옵션변경
 function changeoption(){
 	var cityname = $("#cityname").val();
+	var checkin_date = $("#checkin_date").val();
+	var checkout_date = $("#checkout_date").val();
 	if(cityname == ""){
 		alert("지역명을 먼저 입력해주세요."); $("#cityname").focus(); return;
 	}
+	if(checkin_date == ""){
+		alert("출발일을 먼저 설정해주세요."); $("#checkin_date").focus(); return;
+	}
+	if(checkout_date == ""){
+		alert("도착일을 먼저 설정해주세요."); $("#checkout_date").focus(); return;
+	}
+	$("#optionform").attr("action","${path}/search/map/"+cityname+"/"+checkin_date+"/"+checkout_date);
 	$("#optionform").submit();
 }
 function priceToString(price) {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
+
+//리스트 페이지로 이동하기
+function goTolist(){
+	const param = location.search; //현재 주소URL에 있는 파라미터 값 가져오기 
+	location.href = "${path}/search/${map.cityname}/${map.checkin_date}/${map.checkout_date}" + param;
+}
+
+
 </script>
 </head>
 <body class="d-flex flex-column h-100">
@@ -340,7 +357,6 @@ function priceToString(price) {
 <section class="py-4" id="features"> 
 <div class="mapcontainer">
 	<!--검색바  -->
-	<form autocomplete="off" id="optionform" name="form1" method="get"	action="${path}/search/listMap.do">
     <div class="flex-sm-row flex-column d-flex">
       <div class="form-floating">
       <input type="text" class="form-control" name="cityname" id="cityname" value="${map.cityname }" placeholder="지역명을 입력하세요" size="60"
@@ -356,14 +372,15 @@ function priceToString(price) {
           <input type="text" class="form-control" id="checkout_date" name="checkout_date" value="${map.checkout_date }"placeholder="체크아웃" readonly style="text-align: right;">
           <label for="floatingInput">체크아웃</label>
           </div>
-        <button type="submit" class="btn" style="background:#FFA726; width:60px;"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button onclick="changeoption()" class="btn" style="background:#FFA726; width:60px;"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
     </div>
   <div class="top_fix_zone" id="topBar">
+  <form autocomplete="off" id="optionform" name="form1" method="get">
   <table id="optiontable">
    <tr>
     <td rowspan="2">
- 	 <button type="button" id="optionList" class="btn btn-lg" >리스트로 이동</button>
+ 	 <button type="button" id="optionList" class="btn btn-lg" onclick="goTolist()" >리스트로 이동</button>
     </td>
     <td>후기 평점</td>
     <td>가격 검색(원) </td>
@@ -416,8 +433,8 @@ function priceToString(price) {
    </td>
    </tr>
   </table>
-  </div>
  </form>
+  </div>
   <!--리스트 영역  -->
 	<div class="row" id="fixNextTag">
 		<div class="col-3" style="background: #f9fafb;">
@@ -427,10 +444,14 @@ function priceToString(price) {
                         <div class="card h-100">
                             <!-- Product image-->
 								<div class="bxslider">
-									<div><img class="card-img-top" src="${path }/resources/images/${room.photo1}" title="${room.address1 }"></div>
-									<div><img class="card-img-top" src="${path }/resources/images/${room.photo2}" title="${room.address1 }"></div>
-									<div><img class="card-img-top" src="${path }/resources/images/${room.photo3}" title="${room.address1 }"></div>
-									<div><img class="card-img-top" src="${path }/resources/images/${room.photo4}" title="${room.address1 }"></div>
+									<div><img class="card-img-top" src="${path }/imgUpload/${room.photo1}" 
+									title="${room.address1 }" style="height: 280px;"></div>
+									<div><img class="card-img-top" src="${path }/imgUpload/${room.photo2}" 
+									title="${room.address1 }" style="height: 280px;"></div>
+									<div><img class="card-img-top" src="${path }/imgUpload/${room.photo3}" 
+									title="${room.address1 }" style="height: 280px;"></div>
+									<div><img class="card-img-top" src="${path }/imgUpload/${room.photo4}" 
+									title="${room.address1 }" style="height: 280px;"></div>
 								</div>
 								<script type="text/javascript">
 									$('.bxslider').bxSlider({
@@ -446,7 +467,12 @@ function priceToString(price) {
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">${room.room_name }</h5>
                                     <div class="d-flex justify-content-center small fw-bolder mb-2" style="color:#848484;">
-                                    (최소인원: ${room.max_people}명 / 침대수: ${room.beds }개 / 욕실수: ${room.baths }개)</div>
+                                    <i class="bi bi-check-square-fill pe-1"> 침대	${room.beds} · 욕실 ${room.baths} · 최대인원 ${room.max_people}</i></div>
+                                     <div class="d-flex justify-content-center small fw-bolder mb-2" style="color:#848484;">
+                                    <i class="bi bi-calendar-check pe-1"> 
+                                     <fmt:formatDate pattern="MM월 dd일" value="${room.check_in}" /> <span>~</span>
+									 <fmt:formatDate pattern="MM월 dd일" value="${room.check_out}" /></i></div>
+											
                                     <!-- Product reviews-->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
                                      <c:forEach var="i" begin="1" end="${room.review_star }">

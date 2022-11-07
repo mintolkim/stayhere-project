@@ -51,7 +51,7 @@ label {
         <div class="container px-5 my-5">
         <div class="row gx-5">
         <div class="col-lg-4 mb-5 mb-lg-0">
-          <p class="lead" ><a href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></p>
+        <p class="lead" ><a href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></p>
     	  <p class="lead" ><a href="${path}/host/edit.do">회원정보수정</a></p>
     	  <p class="lead" ><a href="${path}/host/rooms_List/${sessionScope.h_userid}">숙소관리</a></p>
     	  <p class="lead" ><a href="${path}/rooms/write.do">숙소등록</a></p>

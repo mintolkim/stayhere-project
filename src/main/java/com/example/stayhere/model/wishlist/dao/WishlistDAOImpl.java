@@ -1,12 +1,15 @@
 package com.example.stayhere.model.wishlist.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.model.wishlist.dto.WishlistDTO;
 
 @Repository
@@ -16,9 +19,19 @@ public class WishlistDAOImpl implements WishlistDAO {
 	SqlSession sqlSession;
 	
 	@Override
-	public List<WishlistDTO> listWish(String userid) {
-		return sqlSession.selectList("wishlist.listWish", userid);
+	public int wishCount(String userid) {
+		return sqlSession.selectOne("wishCount", userid);
 	}
+	
+	@Override
+	public List<RoomsDTO> listWish(String userid, int start, int end) {
+		Map<String, Object>map = new HashMap<>();
+		map.put("userid", userid);
+		map.put("start", start);
+		map.put("end", end);
+		return sqlSession.selectList("listWish", map);
+	}
+	
 
 	@Override
 	public void insertWish(WishlistDTO dto) {
@@ -26,8 +39,8 @@ public class WishlistDAOImpl implements WishlistDAO {
 	}
 
 	@Override
-	public void deleteWish(int wish_num) {
-		sqlSession.delete("wishlist.deleteWish", wish_num);
+	public void deleteWish(WishlistDTO dto) {
+		sqlSession.delete("wishlist.deleteWish", dto);
 		
 	}
 
@@ -42,6 +55,15 @@ public class WishlistDAOImpl implements WishlistDAO {
 		return sqlSession.selectOne("wishlist.checkWish",dto);
 	}
 
+	@Override
+	public int duplicateCehck(WishlistDTO dto) {
+		return sqlSession.selectOne("wishlist.duplicateCehck", dto);
+	}
+
+	@Override
+	public List<WishlistDTO> addCheck(String userid) {
+		return sqlSession.selectList("addCheck", userid);
+	}
 
 
 }

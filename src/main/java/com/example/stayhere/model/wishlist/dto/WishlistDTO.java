@@ -1,7 +1,6 @@
 package com.example.stayhere.model.wishlist.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;

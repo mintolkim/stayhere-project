@@ -113,11 +113,11 @@ public class GuestServiceImpl implements GuestService {
 			HtmlEmail email = new HtmlEmail();
 			email.setDebug(true);
 			email.setCharset(charSet);
-			email.setSSL(true);
 			email.setHostName(hostSMTP);
 			email.setSmtpPort(465); //구글 이용시 465
 			email.setAuthentication(hostSMTPid, hostSMTPpwd);
-			email.setTLS(true);
+			email.setSSLOnConnect(true);
+			email.setStartTLSEnabled(true);
 			email.addTo(mail, charSet);
 			email.setFrom(fromEmail, fromName, charSet);
 			email.setSubject(subject);

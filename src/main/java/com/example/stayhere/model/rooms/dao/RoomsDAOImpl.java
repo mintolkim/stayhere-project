@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
+import com.example.stayhere.util.DateParse;
 @Repository
 public class RoomsDAOImpl implements RoomsDAO {
 
@@ -18,70 +19,77 @@ public class RoomsDAOImpl implements RoomsDAO {
 	SqlSession sqlSession;
 	
 	@Override
-	public List<RoomsDTO> listMap(String cityname,int bed, int bath, String reviewStar, int lower, int higher) {
+	public List<RoomsDTO> listMap(String cityname,RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("cityname", "%"+cityname+"%");
-		map.put("bed",bed );
-		map.put("bath", bath);
-		map.put("reviewStar", reviewStar);
+		map.put("bed",roomdto.getBeds());
+		map.put("bath", roomdto.getBaths());
+		map.put("reviewStar", roomdto.getReview_star());
 		map.put("lower", lower);
 		map.put("higher",higher);
+		map.put("checkin_date",DateParse.dateToStr(checkin_date));
+		map.put("checkout_date",DateParse.dateToStr(checkout_date));
 		return sqlSession.selectList("search.listMap",map);
 	}
 
 	@Override
-	public int countrooms(String cityname,int bed, int bath, String reviewStar, int lower, int higher) {
+	public int countrooms(String cityname,RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("cityname", "%"+cityname+"%");
-		map.put("bed",bed );
-		map.put("bath", bath);
-		map.put("reviewStar", reviewStar);
+		map.put("bed",roomdto.getBeds());
+		map.put("bath", roomdto.getBaths());
+		map.put("reviewStar", roomdto.getReview_star());
 		map.put("lower", lower);
 		map.put("higher",higher);
+		map.put("checkin_date",DateParse.dateToStr(checkin_date));
+		map.put("checkout_date",DateParse.dateToStr(checkout_date));
 		return sqlSession.selectOne("search.countrooms",map);
 	}
 
 	@Override
-	public List<RoomsDTO> address_list(String cityname,int bed, int bath, String reviewStar, int lower, int higher) {
+	public List<RoomsDTO> address_list(String cityname,RoomsDTO roomdto, int lower, int higher,String checkin_date, String checkout_date) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("cityname", "%"+cityname+"%");
-		map.put("bed",bed );
-		map.put("bath", bath);
-		map.put("reviewStar", reviewStar);
+		map.put("bed",roomdto.getBeds());
+		map.put("bath", roomdto.getBaths());
+		map.put("reviewStar", roomdto.getReview_star());
 		map.put("lower", lower);
 		map.put("higher",higher);
+		map.put("checkin_date",DateParse.dateToStr(checkin_date));
+		map.put("checkout_date",DateParse.dateToStr(checkout_date));
 		return sqlSession.selectList("search.address_list",map);
 	}
   
-  	@Override
+	@Override
 	public RoomsDTO detailRooms(int room_idx) {
 		return sqlSession.selectOne("rooms.detail_rooms", room_idx);
 	}
   	
 	@Override
-	public List<RoomsDTO> getRoomAllList(int start, int end) {
+	public List<RoomsDTO> getRoomAllList(int start, int end, String today, String tomorrow) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("start", start);
 		map.put("end", end);
+		map.put("today", DateParse.dateToStr(today));
+		map.put("tomorrow", DateParse.dateToStr(tomorrow));
 		return sqlSession.selectList("rooms.getRoomAllList", map);
 	}
 
-	@Override
-	public List<String> getRoomPhoto(int room_idx) {
-		return sqlSession.selectList("rooms.getRoomPhoto", room_idx);
-	}
 
 	@Override
-	public int getRoomAllCount() {
-		return sqlSession.selectOne("rooms.getRoomAllCount");
+	public int getRoomAllCount(String today, String tomorrow) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("today", DateParse.dateToStr(today));
+		map.put("tomorrow", DateParse.dateToStr(tomorrow));
+		return sqlSession.selectOne("rooms.getRoomAllCount", map);
 	}
 	
 	@Override
 	public int getRoomDefalutCount(String cityname, String checkin_date, String checkout_date) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("cityname", "%"+cityname+"%");
-		map.put("checkin_date", checkin_date);
-		map.put("checkout_date", checkout_date);
+		map.put("checkin_date", DateParse.dateToStr(checkin_date));
+		map.put("checkout_date", DateParse.dateToStr(checkout_date));
 		return sqlSession.selectOne("search.getRoomDefalutCount", map);
 	}
 
@@ -92,16 +100,13 @@ public class RoomsDAOImpl implements RoomsDAO {
 		map.put("start", start);
 		map.put("end", end);
 		map.put("cityname", "%"+cityname+"%");
-		map.put("checkin_date", checkin_date);
-		map.put("checkout_date", checkout_date);
+		map.put("checkin_date", DateParse.dateToStr(checkin_date));
+		map.put("checkout_date", DateParse.dateToStr(checkout_date));
 		return sqlSession.selectList("search.getRoomDefalutList", map);
 	}
-	
 
 	@Override
 	public int getRoomOptionCount(Map<String, Object> param) {
-		String cityname = (String)param.get("cityname");
-		param.put("cityname", "%"+cityname+"%");
 		return sqlSession.selectOne("search.getRoomOptionCount", param);
 	}
 
@@ -120,18 +125,6 @@ public class RoomsDAOImpl implements RoomsDAO {
 	@Override
 	public int findRoomMinPrice() {
 		return sqlSession.selectOne("search.findRoomMinPrice");
-	}
-	
-	@Override
-	public int getRoomOptionCount(String city, String check_in, String check_out) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public List<RoomsDTO> getRoomOptionList(int start, int end, String city, String check_in, String check_out) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override
