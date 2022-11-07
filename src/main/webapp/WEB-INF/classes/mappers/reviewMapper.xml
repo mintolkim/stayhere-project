@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="review">
+	<!-- 기본리뷰화면. -->
+	<select id="listAll" resultType="ReviewDTO">
+		select * 
+			from (
+				select rownum as rn, A.*
+				from(
+					select review_idx, r.userid, r_title, review_star, review_content,
+					g.name, write_date, view_count
+					from review r join guest g
+					on r.userid = g.userid
+					order by review_idx desc
+				) A
+		) where rn between #{start} and #{end}
+	</select>
+	
+	<!-- 숙소 상세 페이지 내의 해당 숙소 리뷰 목록 -->
+	<select id="reviewsByRoom" resultType="com.example.stayhere.model.review.dto.ReviewDTO">
+    select *
+		from (
+			select 
+                room_idx, 
+                review_idx, 
+                r.userid, 
+                write_date, 
+                r_title, 
+                review_content, 
+                review_star,
+                g.profile_img
+			from review r join guest g 
+			on r.userid = g.userid
+		) where room_idx=#{room_idx} order by review_idx desc
+	</select>
+	
+	<!-- 숙소 별 리뷰 개수 -->
+	<select id="countByRoom" resultType="int">
+		select count(*) from review
+		where room_idx=#{room_idx}
+	</select>
+	
+	<!-- 숙소 별 별점 평균 -->
+	<select id="starByRoom" resultType="double">
+		select nvl(round(avg(review_star), 2),0.0) from review
+		where room_idx=#{room_idx}
+	</select>
+
+	<!-- 리뷰작성 -->
+	<select id="insert" resultType="ReviewDTO">
+		INSERT INTO Review(review_idx, userid, room_idx, r_title, review_content, review_star) 
+		VALUES (Review_seq.nextval,#{userid}, #{room_idx}, #{r_title}, #{review_content},#{review_star)
+	</select>
+	
+	<!-- 리뷰레코드 갯수 계산 -->
+	<select id="countArticle" resultType="int">
+		SELECT COUNT(*) 
+		FROM Review
+	</select>
+	
+	<select id="accuseCheck">
+		ALTER TABLE Review ADD reviewAcc char(1) default 'y';
+	</select>
+	
+	<select id="accuseCancel">
+		ALTER TABLE Review ADD reviewAcc char(1) default 'n';
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -28,43 +28,59 @@ function reserveDetail(res_idx) {
 }
 
 /* 해당 예약 리뷰 작성 페이지 */
+function review(room_idx) {
+	var flag=confirm("숙박 후기를 작성하시겠습니까?");
+	if(flag) {
+		location.href="${path}/reviews/write.do?room_idx="+room_idx;
+	}else {
+		return;
+	}
+}
 
 </script>
 <style type="text/css">
-a { 
- text-decoration: none;
+a {
+	text-decoration: none;
 }
+
 #profile-tab a {
-color: black;
-text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
+
 #profile-tab a:hover {
-color: #ffc107;
-text-decoration: none;
+	color: #ffc107;
+	text-decoration: none;
 }
+
 div #tab-bar li a:hover {
-color: #ffc107;
-text-decoration: none;
+	color: #ffc107;
+	text-decoration: none;
 }
+
 .box {
     width: 260px;
     height: 260px; 
     overflow: hidden;
 }
+
 .profile {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
 }
-div #tab-bar li a{
- color: black;
- text-decoration: none;
+
+div #tab-bar li a {
+	color: black;
+	text-decoration: none;
 }
+
 div #tab-bar li a:hover {
- color: #ffc107;
- text-decoration: none;
+	color: #ffc107;
+	text-decoration: none;
 }
+
 #status_1 a, #status_2 a, #status_3 a, #status_4 a,#status_5 a {
 	color: black;
 	text-decoration: none;
@@ -439,12 +455,10 @@ div #tab-bar li a:hover {
 				
 				</div>
 			</div>
-		</div>
-	</div>
-  </section>
- </main>
- <!--footer -->
- <%@ include file="../include/footer.jsp" %>
+		</section>
+	</main>
+	<!--footer -->
+	<%@ include file="../include/footer.jsp"%>
 
 </body>
 </html>

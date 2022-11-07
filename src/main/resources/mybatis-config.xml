@@ -11,6 +11,7 @@
 		<typeAlias type="com.example.stayhere.model.reservations.dto.ReservationsDTO" alias="ReservationsDTO" />
 		<typeAlias type="com.example.stayhere.model.wishlist.dto.WishlistDTO" alias="WishlistDTO" />
 		<typeAlias type="com.example.stayhere.model.review.dto.ReviewDTO" alias="ReviewDTO" />
+		<typeAlias type="com.example.stayhere.model.review_comment.dto.ReCommentDTO" alias="ReCommentDTO"/>
 	</typeAliases>
  
 </configuration>

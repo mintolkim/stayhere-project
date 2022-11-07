@@ -149,6 +149,7 @@ a {
 <script>
 $(function(){
 	$("#btnPay").click(function () {
+
 		//request_pay(); //결제 API연결해서 테스트
 		$("#pay_form").submit();//결제 API 건너뛰고 테스트
 	});

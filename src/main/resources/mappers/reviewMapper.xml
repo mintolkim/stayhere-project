@@ -11,27 +11,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			from (
 				select rownum as rn, A.*
 				from(
-					select review_idx, r_title, review_star, review_content,
-					g.name, write_date, view_count
-					from review r, guest g
+					select 
+					a.review_idx, a.userid, a.room_idx, c.room_name, a.r_title,
+					a.review_star, a.review_content, b.name, a.write_date,
+					a.show, a.view_count, b.profile_img,
+					(select count(*) from review_comment where a.review_idx=review_idx) as comment_count
+					from review a
+					join guest b 
+					on a.userid = b.userid
+					join rooms c
+					on a.room_idx = c.room_idx
+					where show='y'
 					order by review_idx desc
 				) A
 		) where rn between #{start} and #{end}
 	</select>
 	
 	<!-- 숙소 상세 페이지 내의 해당 숙소 리뷰 목록 -->
-	<select id="reviewsByRoom" resultType="com.example.stayhere.model.review.dto.ReviewDTO">
+	<select id="reviewsByRoom" resultType="ReviewDTO">
     select *
 		from (
-			select 
-                room_idx, 
-                review_idx, 
-                r.userid, 
-                write_date, 
-                r_title, 
-                review_content, 
-                review_star,
-                g.profile_img
+				select 
+             room_idx, 
+             review_idx, 
+             r.userid, 
+             write_date, 
+             r_title, 
+             review_content, 
+             review_star,
+             g.profile_img
 			from review r join guest g 
 			on r.userid = g.userid
 		) where room_idx=#{room_idx} order by review_idx desc
@@ -50,16 +58,83 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 리뷰작성 -->
-	<select id="insert" resultType="ReviewDTO">
-		INSERT INTO Review(review_idx, room_idx, r_title, review_content) 
-		VALUES (Review_seq.nextval, 3, #{r_title}, #{review_content})
-	</select>
+	<insert id="insert">
+		INSERT INTO Review(review_idx, room_idx, userid, r_title, review_content, review_star) 
+		VALUES (Review_seq.nextval, #{room_idx}, #{userid}, #{r_title}, #{review_content}, #{review_star})
+	</insert>
 	
 	<!-- 리뷰레코드 갯수 계산 -->
 	<select id="countArticle" resultType="int">
-		SELECT COUNT(*) 
-		FROM Review
+		SELECT COUNT(show) 
+		FROM review
+		WHERE show = 'y'
 	</select>
+	
+	<!-- 페이징용 갯수 계산 
+	<select id="countReviewCo" resultType="int">
+		select count(*) 	
+		from review a	join review_comment b
+		on a.review_idx = b.review_idx
+	</select>-->
+	
+	<select id="detail" resultType="ReviewDTO">
+		SELECT
+			review_idx, 
+			c.room_idx, 
+			b.name, 
+			b.userid, 
+			r_title, 
+			review_star, 
+			review_content,
+			view_count, 
+			write_date, 
+			show, 
+			reviewAcc, 
+			b.profile_img,
+			(select count(*) from review_comment where a.review_idx=review_idx) as comment_count
+		from review a
+		join guest b
+		on a.userid = b.userid
+		join rooms c
+		on a.room_idx = c.room_idx
+		where review_idx=#{review_idx}
+	</select>
+	
+	<!-- 임시.입력된 아이디의 숙소이용 내역 중. 숙소이용완료인 룸번호(리뷰작성가능 룸번호) -->
+	<select id="reviewReady" resultType="int">
+		select room_idx from reservations where res_state = '이용완료'
+	</select>
+	
+	<!--  신고하기체크 
+	<select id="accuseCheck" resultType="int">
+		update review set accuse = 'y'
+		where review_idx = #{review_idx}
+	</select>
+	
+	신고하기취소
+	<select id="accuseCancel">
+		update review set accuse = 'n'
+		where review_idx = #{review_idx}
+	</select> -->
+	
+	<insert id="addAttach">
+		insert into review_attach (fullName, review_idx) values
+		(#{fullName}, review_seq.currval)
+	</insert>
+	
+	<!-- 첨부파일 삭제 -->
+	<delete id="deleteFile">
+		delete from review_attach
+		where fullName=#{fullName}
+	</delete>
+	
+	<!-- 첨부파일 목록 불러오기 -->
+	<select id="getAttach" resultType="String">
+		select fullName from review_attach
+		where review_idx = #{review_idx}
+		order by regdate desc
+	</select>
+  
 	<!--(admin page) 게스트 리뷰글 가져오기  -->
 	<select id="getreview" resultType="ReviewDTO">
 	select *
@@ -78,6 +153,64 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			on r.userid = g.userid
 		) where userid=#{userid} order by review_idx desc	
 	</select>
+	
+	<!-- 첨부파일 확인(기존에 있는 파일인지)-->
+	<select id="checkattach">
+		select count(*) from review_attach
+		where review_idx=#{review_idx} and fullName=#{fullName}
+	</select> 
+	
+	<!-- 첨부파일수정 -->
+	<insert id="updateAttach">
+		insert into review_attach (fullName, review_idx)
+		values (#{fullName}, #{review_idx})
+	</insert>
+	
+	<!-- 리뷰수정 -->
+	<update id="update">
+		update review set r_title=#{r_title}, review_star=#{review_star},
+		review_content=#{review_content}
+		where review_idx=#{review_idx}
+	</update>
+	
+	<!-- 리뷰삭제 -->
+	<delete id="delete">
+		update review set show='n' where review_idx=#{review_idx}
+	</delete>
+	
+	<!-- 댓글 리스트 -->
+	<select id="comment" resultType="ReCommentDTO">
+		select comment_idx, review_idx, writer, contents, write_date,
+		b.profile_img, c.h_profile_img
+		,(select userid from review where review_idx=a.review_idx) as userid
+		from review_comment a
+		full outer join guest b
+		on a.writer=b.userid
+		full outer join host c
+		on a.writer=c.h_userid
+		where review_idx=#{review_idx}
+		order by a.write_date asc
+	</select>
+	
+	<!-- 댓글작성 -->
+	<insert id="addComment">
+		insert into review_comment
+		(comment_idx, review_idx, writer, contents)
+		values((select nvl(max(comment_idx)+1,1) from review_comment), 
+		#{review_idx}, #{writer}, #{contents})
+	</insert>
+	
+	<!-- 댓글삭제 -->
+	<delete id="delComment">
+		delete from review_comment
+		where review_idx=#{review_idx} and comment_idx=#{comment_idx} 
+	</delete>
+	
+	<!-- 조회수증가 -->
+	<update id="increaseViewcnt">
+		update review set view_count = view_count+1
+	 	where review_idx = #{review_idx}
+	</update>
 	
 	<select id="getaccuse"
 	resultType="com.example.stayhere.model.review.dto.ReviewAccuseDTO">
