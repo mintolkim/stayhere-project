@@ -103,6 +103,47 @@ public class GuestDAOImpl implements GuestDAO {
 		return sqlSession.selectOne("guest.findId", email);
 	}
 
+	@Override
+	public List<GuestDTO> getguest(int start, int end) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		return sqlSession.selectList("guest.getguest",map);
+	}
+
+	@Override
+	public int guestcount() {
+		return sqlSession.selectOne("guest.guestcount");
+	}
+
+	@Override
+	public void goblack(String userid) {
+		sqlSession.update("guest.goblack",userid);
+	}
+
+	@Override
+	public void gonormal(String userid) {
+		sqlSession.update("guest.gonormal",userid);
+	}
+
+	@Override
+	public List<GuestDTO> getblackguest(int start, int end) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		return sqlSession.selectList("guest.getblackguest",map);
+	}
+
+	@Override
+	public int blackguestcount() {
+		return sqlSession.selectOne("guest.blackguestcount");
+	}
+
+	@Override
+	public int getmonthguest(String today) {
+		return sqlSession.selectOne("guest.getmonthguest",today);
+	}
+
 
 
 }

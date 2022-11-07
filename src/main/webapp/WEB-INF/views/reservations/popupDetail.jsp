@@ -23,7 +23,6 @@
 </style>
 </head>
 <body style="width: 400px;">
-
 	<div style="margin: 0 auto; margin-left: 40px; margin-top: 30px; text-align: center;">
 		<c:choose>
 			<c:when test="${res.res_state == '예약요청'}">

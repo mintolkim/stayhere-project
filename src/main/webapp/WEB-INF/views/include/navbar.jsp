@@ -29,52 +29,73 @@
 					<li class="nav-item"><a class="nav-link" href="about.html">PROMOTION</a></li>
 					<li class="nav-item"><a class="nav-link" href="${path}/reviews/list.do">REVIEW</a></li>
 					<li class="nav-item"><a class="nav-link" href="${path }/qna/qnalist.do">QNA</a></li>
+					<c:if test="${sessionScope.userid == null && sessionScope.h_userid == null}">
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#"
 						role="button" data-bs-toggle="dropdown" aria-expanded="false">GUEST</a>
 						<ul class="dropdown-menu dropdown-menu-end"
 							aria-labelledby="navbarDropdownBlog">
-							<c:if test="${sessionScope.userid == null}">
 								<li><a class="dropdown-item" href="${path}/guest/login.do">로그인</a></li>
 								<li><a class="dropdown-item" href="${path}/guest/join.do">회원가입</a></li>
+								</ul>
 							</c:if>
-							<c:if test="${sessionScope.userid != null}">
+							<c:if test="${sessionScope.userid != null && sessionScope.h_userid == null && sessionScope.userid != 'admin'}">
+							<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#"
+						role="button" data-bs-toggle="dropdown" aria-expanded="false">GUEST</a>
+						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
 								<li><b class="dropdown-item">${sessionScope.userid} 님</b></li>
 								<li><hr class="dropdown-divider" /></li>
-								<li><a class="dropdown-item"
-									href="${path}/guest/guest_view/${sessionScope.userid}">프로필</a></li>
+								<li><a class="dropdown-item" href="${path}/guest/guest_view/${sessionScope.userid}">프로필</a></li>
 								<li><a class="dropdown-item" href="${path}/reservations/list/guest">예약정보</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">관심스테이</a></li>
 								<li><a class="dropdown-item" href="blog-home.html">문의하기</a></li>
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item" href="${path}/guest/logout.do">로그아웃</a></li>
-							</c:if>
 						</ul></li>
+							</c:if>
+				   <c:if test="${sessionScope.h_userid == null && sessionScope.userid == null }">
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" id="navbarDropdownPortfolio"
 						href="#" role="button" data-bs-toggle="dropdown"
 						aria-expanded="false">HOST</a>
-						<ul class="dropdown-menu dropdown-menu-end"
-							aria-labelledby="navbarDropdownPortfolio">
-							<c:if test="${sessionScope.h_userid == null}">
+						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
 								<li><a class="dropdown-item" href="${path}/host/login.do">로그인</a></li>
 								<li><a class="dropdown-item" href="${path}/host/join.do">호스트가입</a></li>
-
+								</ul>
 							</c:if>
-							<c:if test="${sessionScope.h_userid != null}">
+							<c:if test="${sessionScope.h_userid != null && sessionScope.userid == null}">
+							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio"
+						href="#" role="button" data-bs-toggle="dropdown"
+						aria-expanded="false">HOST</a>
+						<ul class="dropdown-menu dropdown-menu-end"
+							aria-labelledby="navbarDropdownPortfolio">
 								<li><b class="dropdown-item">${sessionScope.h_name} 님</b></li>
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item"
 									href="${path}/host/profile/${sessionScope.h_userid}">프로필</a></li>
 								<li><a class="dropdown-item" href="portfolio-overview.html">숙소관리</a></li>
-								<li><a class="dropdown-item" href="portfolio-overview.html">숙소등록</a></li>
+								<li><a class="dropdown-item" href="${path }/rooms/write.do">숙소등록</a></li>
 								<li><a class="dropdown-item" href="portfolio-overview.html">숙소승인현황</a></li>
 								<li><a class="dropdown-item" href="${path}/reservations/list/host">예약현황</a></li>
 								<li><a class="dropdown-item" href="portfolio-overview.html">매출현황</a></li>
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item" href="${path}/host/logout.do">로그아웃</a></li>
-							</c:if>
+							
 						</ul></li>
+						</c:if>
+						<c:if test="${sessionScope.h_userid == null && sessionScope.userid == 'admin'}">
+							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio"
+						href="#" role="button" data-bs-toggle="dropdown"
+						aria-expanded="false">ADMIN</a>
+						<ul class="dropdown-menu dropdown-menu-end"
+							aria-labelledby="navbarDropdownPortfolio">
+								<li><b class="dropdown-item">${sessionScope.name} 님</b></li>
+								<li><hr class="dropdown-divider" /></li>
+								<li><a class="dropdown-item" href="${path }/admin/main">관리자페이지</a></li>
+								<li><a class="dropdown-item" href="${path}/guest/logout.do">로그아웃</a></li>
+						</ul></li>
+						</c:if>
 				</ul>
 			</div>
 		</div>

@@ -176,6 +176,10 @@ public class QnaDAOImpl implements QnaDAO {
 	public void delete(int q_idx) throws Exception{
 		sqlSession.delete("qna.delete",q_idx);
 	}
+	@Override
+	public List<QnaDTO> getqnalist() {
+		return sqlSession.selectList("qna.getqnalist");
+	}
 	
 
 }

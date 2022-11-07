@@ -42,6 +42,16 @@ public class WishlistDAOImpl implements WishlistDAO {
 		return sqlSession.selectOne("wishlist.checkWish",dto);
 	}
 
+	@Override
+	public int wishcheck(WishlistDTO dto) {
+		return sqlSession.selectOne("wishlist.wishcheck",dto);
+	}
+
+	@Override
+	public void deleteWishlist(WishlistDTO dto) {
+		sqlSession.delete("wishlist.deleteWishlist",dto);
+	}
+
 
 
 }

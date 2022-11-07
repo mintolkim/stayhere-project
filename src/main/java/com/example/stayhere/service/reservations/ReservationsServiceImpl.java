@@ -96,5 +96,15 @@ public class ReservationsServiceImpl implements ReservationsService {
 		reservationsDao.reserveCancel(dto);
 	}
 
+	@Override
+	public List<ReservationsDTO> resTotalMoney() {
+		return reservationsDao.resTotalMoney();
+	}
+
+	@Override
+	public List<ReservationsDTO> resCateTotalMoney() {
+		return reservationsDao.resCateTotalMoney();
+	}
+
 
 }

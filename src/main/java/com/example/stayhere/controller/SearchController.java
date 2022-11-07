@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
+import com.example.stayhere.model.wishlist.dto.WishlistDTO;
 import com.example.stayhere.service.rooms.RoomsService;
+import com.example.stayhere.service.wishlist.WishlistService;
+import com.example.stayhere.util.DateParse;
 import com.example.stayhere.util.Pager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +36,8 @@ public class SearchController {
 	
 	@Inject
 	RoomsService roomsService;
-	
+	@Inject
+	WishlistService wishService;
 
 	@RequestMapping(value = "search/map/{cityname}/{checkin_date}/{checkout_date}"
 			,method = RequestMethod.GET)
@@ -40,17 +47,37 @@ public class SearchController {
 			@PathVariable String checkout_date,
 			@RequestParam(defaultValue = "0") int bed, 
 			@RequestParam(defaultValue = "0") int bath,
-			@RequestParam(defaultValue = "0") String reviewStar, 
-			@RequestParam(defaultValue = "100000") int lower, 
-			@RequestParam(defaultValue = "900000") int higher) {
+			@RequestParam(defaultValue = "0") double reviewStar, 
+			@RequestParam(defaultValue = "0") int lower, 
+			@RequestParam(defaultValue = "1000000") int higher, 
+			@RequestParam(defaultValue = "room_idx") String align,
+			HttpSession session) {
 		System.out.println("들어온 도시이름 : "+cityname+",체크인날짜 : "+checkin_date+", 체크아웃날짜 : "+checkout_date+
-				", 침대 수: "+bed+", 욕실수 : "+bath+",리뷰평점: "+reviewStar+",최소가격: "+lower+",최대가격: "+higher);	
-		List<RoomsDTO> list=roomsService.listMap(cityname,bed,bath,reviewStar,lower,higher);
+				", 침대 수: "+bed+", 욕실수 : "+bath+",리뷰평점: "+reviewStar+",최소가격: "+lower+",최대가격: "+higher);
+		String city = cityname.replace(",","");
+		RoomsDTO roomdto = new RoomsDTO();
+		roomdto.setBeds(bed);
+		roomdto.setBaths(bath);
+		roomdto.setReview_star(reviewStar);
+		String userid=(String)session.getAttribute("userid");
+		if(userid == null) {
+			userid="";
+		 }
+		List<RoomsDTO> list=roomsService.listMap(city,roomdto,
+				lower,higher,checkin_date,checkout_date,align,userid);
 		//주소리스트
-		List<RoomsDTO> adrlist=roomsService.address_list(cityname,bed,bath,reviewStar,lower,higher);
-		System.out.println("list: "+ list.toString());
+		List<RoomsDTO> adrlist=roomsService.address_list(city,roomdto,
+				lower,higher,checkin_date,checkout_date);
+		System.out.println("list: "+ adrlist.toString());
+		//검색어 리스트
+		List<String> searchlist = roomsService.search_list();
 		//레코드 갯수 계산
-		int count=roomsService.countrooms(cityname,bed,bath,reviewStar,lower,higher);
+		int count=roomsService.countrooms(city,roomdto,lower,higher,checkin_date,checkout_date);
+		//photo1 파일에서 '\' 빼기
+		for(int i=0;i<adrlist.size();i++) {
+			String photo1 = adrlist.get(i).getPhoto1();
+			adrlist.get(i).setPhoto1(photo1.replace("\\",""));
+		}
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map=new HashMap<>();
 		map.put("list", list);//map에 자료 저장
@@ -62,28 +89,20 @@ public class SearchController {
 		map.put("reviewStar", reviewStar);
 		map.put("lower", lower);
 		map.put("higher", higher);
+		map.put("align", align);
 		map.put("count", count); //레코드 갯수 파일
-		map.put("adrlist",JSONArray.fromObject(adrlist) ); //레코드 갯수 파일
+		map.put("searchlist",JSONArray.fromObject(searchlist));
+		map.put("adrlist",JSONArray.fromObject(adrlist)); //레코드 갯수 파일
 		mav.setViewName("search/search_map");//포워딩할 뷰
 		mav.addObject("map", map);//보낼 데이터*/
 		return mav;
 	}
-	
 	/*
 	 * 기본 검색화면 (FindStay버튼 클릭시 이동됨)
 	 */
 	@GetMapping("search")
-	public ModelAndView search(ModelAndView mav) {
-		// 룸가격 최소값 최대값
-		int maxPrice = roomsService.findRoomMaxPrice();
-		int minPrice = roomsService.findRoomMinPrice();
-		
-		Map<String, Object> map = new HashMap<>();
-		map.put("max_price", maxPrice);
-		map.put("min_price", minPrice);
-		mav.addObject("map", map);
-		mav.setViewName("search/search");
-		return mav;
+	public String search() {
+		return "search/search";
 	}
 	
 	/*
@@ -101,16 +120,14 @@ public class SearchController {
 
 		// 검색갯수
 		int count = roomsService.getRoomDefalutCount(cityname, checkin_date, checkout_date);
-		// 룸가격 최소값 최대값
-		int maxPrice = roomsService.findRoomMaxPrice();
-		int minPrice = roomsService.findRoomMinPrice();
-
 		int pageScale = 10; // 게시물 표시 갯수
 		Pager pager = new Pager(pageScale, count, page);
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
 		//검색리스트
 		List<RoomsDTO> list = roomsService.getRoomDefalutList(start, end, cityname, checkin_date, checkout_date);
+		log.info("list :" + list);
+		
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("count", count);
@@ -118,8 +135,6 @@ public class SearchController {
 		map.put("cityname", cityname);
 		map.put("checkin_date", checkin_date);
 		map.put("checkout_date", checkout_date);
-		map.put("max_price", maxPrice);
-		map.put("min_price", minPrice);
 		mav.addObject("map", map);
 		mav.setViewName("search/search");
 		return mav;
@@ -141,15 +156,11 @@ public class SearchController {
 			throws Exception {
 
 		// PathVariable값 param으로 묶기
-		param.put("cityname", cityname);
-		param.put("checkin_date", checkin_date);
-		param.put("checkout_date", checkout_date);
+		param.put("cityname", "%"+cityname+"%");
+		param.put("checkin_date", DateParse.dateToStr(checkin_date));
+		param.put("checkout_date", DateParse.dateToStr(checkout_date));
 
 		log.info("param : " + param);
-
-		// 룸가격 최소값 최대값
-		int maxPrice = roomsService.findRoomMaxPrice();
-		int minPrice = roomsService.findRoomMinPrice();
 		// 이전날짜를 url로 입력하고 들어왔을때 조건 조회
 		boolean previousDateCheck = roomsService.previousDateCheck(checkin_date);
 
@@ -157,8 +168,6 @@ public class SearchController {
 //			// 이전날짜가 입력되었다면
 			String msg = "이전 날짜를 입력하셨습니다. 날짜를 다시 선택해주세요";
 			Map<String, Object> map = new HashMap<>();
-			map.put("max_price", maxPrice);
-			map.put("min_price", minPrice);
 			map.put("error", msg);
 			mav.addObject("map", map);
 			mav.setViewName("search/search");
@@ -166,8 +175,8 @@ public class SearchController {
 		}
 		// 검색갯수
 		int count = roomsService.getRoomOptionCount(param);
-//							
-//					// 옵션별 검색리스트
+							
+		// 옵션별 검색리스트
 		int pageScale = 10; // 게시물 표시 갯수
 		if (param.get("page") == null) { // 파라미터값 중 page 값이 null이면..
 			param.put("page", 1); // page를 기본 1값으로 저장
@@ -180,6 +189,9 @@ public class SearchController {
 		int end = pager.getPageEnd();
 
 		List<RoomsDTO> list = roomsService.getRoomOptionList(start, end, param);
+		RoomsDTO dto = new RoomsDTO();
+		log.info("getContentsdto :" + dto.getContents());
+		
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("count", count);
@@ -187,8 +199,6 @@ public class SearchController {
 		map.put("cityname", cityname);
 		map.put("checkin_date", checkin_date);
 		map.put("checkout_date", checkout_date);
-		map.put("max_price", maxPrice);
-		map.put("min_price", minPrice);
 		mav.addObject("map", map);
 		mav.setViewName("search/search");
 		return mav;

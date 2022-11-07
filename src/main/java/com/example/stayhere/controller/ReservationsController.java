@@ -113,8 +113,10 @@ public class ReservationsController {
 		try {
 			list = reservationsService.guestResList(userid);
 			logger.info("예약된정보"+list.toString());
+			GuestDTO g_dto=guestService.view_Guest(userid);
 			
 			mav.addObject("resList", list);
+			mav.addObject("guest", g_dto);	
 			mav.setViewName("reservations/list_guest");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -141,7 +143,7 @@ public class ReservationsController {
 		RoomsDTO r_dto=roomsService.detailRooms(res_dto.getRoom_idx());
 		
 		mav.addObject("res", res_dto);
-		mav.addObject("room", r_dto);
+		mav.addObject("room", r_dto);	
 		mav.setViewName("reservations/popupDetail");
 		return mav;
 	}

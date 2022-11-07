@@ -127,12 +127,12 @@ public class GuestController {
 		dto.setUserid(userid);
 		System.out.println(dto);
 		String profile_img = dto.getProfile_img();
-		String imgUploadPath = uploadPath + File.separator + "imgUpload";
+		String imgUploadPath = uploadPath;
 		String fileName = null;
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
 		   fileName =  FileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes());   
 		   mav.addObject("message","profile");
-		   dto.setProfile_img(File.separator + "imgUpload" + File.separator + fileName);
+		   dto.setProfile_img(File.separator + fileName);
 		} else {//null값이면 
 		   //fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
 			fileName=profile_img;

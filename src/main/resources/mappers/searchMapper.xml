@@ -6,20 +6,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="search">
 
 <!-- 숙소검색(지도검색) -->
-	<select id="listMap" resultType="com.example.stayhere.model.rooms.dto.RoomsDTO">
+	<select id="listMap" resultType="RoomsDTO">
 	 select * 
 	from (
     select A.*, rownum as rn
     from (
-	 select a.room_idx,h_userid,room_name,room_price,contents,city,country,
-	 address1,address2,beds,baths,max_people,room_type,lat,lng,photo1,photo2,photo3,photo4,
+	 select 
+	 a.room_idx,
+	 h_userid,
+	 room_name,
+	 room_price,
+	 contents,
+	 city,
+	 country,
+	 check_in,
+	 check_out,
+	 address1,
+	 address2,
+	 beds,
+	 baths,
+	 max_people,
+	 room_type,
+	 lat,
+	 lng,
+	 photo1,
+	 photo2,
+	 photo3,
+	 photo4,
+	 admin_confirm,
 	 (select nvl(round(avg(review_star)),0) from review where a.room_idx=room_idx) as review_star,
-	 (select count(*) from review where a.room_idx=room_idx) as review_count
+	 (select count(*) from reservations where a.room_idx=room_idx ) as res_count,
+	 (select count(*) from review where a.room_idx=room_idx) as review_count,
+	 (select count(*) from wishlist where room_idx=a.room_idx and userid=#{userid}) as wishcheck,
+	 (select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and a.room_idx=room_idx)as re_date,
+	 (select distinct room_idx from reserved where a.room_idx=room_idx) as reserved_room
 	 from rooms a, room_photo b
 	 where a.room_idx=b.room_idx and (room_price between #{lower} and #{higher}) and
-	 (beds<![CDATA[>=]]>#{bed} ) and (baths<![CDATA[>=]]>#{bath} ) and
-	 (city like #{cityname} or country like #{cityname} or address1 like #{cityname} or address2 like #{cityname}))A
-	 ) where review_star <![CDATA[>=]]> #{reviewStar}
+	 (beds<![CDATA[>=]]>#{bed}) and (baths<![CDATA[>=]]>#{bath}) and admin_confirm = '승인' and
+	 (city like #{cityname} or room_name like #{cityname} or country like #{cityname} or address1 like #{cityname} or address2 like #{cityname}))A
+	 ) where review_star <![CDATA[>=]]> #{reviewStar} and TO_CHAR(check_in, 'YYYYMMDD') <![CDATA[<=]]>  #{checkin_date} and
+	 TO_CHAR(check_out, 'YYYYMMDD') >= #{checkout_date}
+	 and (re_date !=0 or reserved_room is null)
+	 order by ${align} desc
 	</select>
 <!-- 숙소갯수 count -->	
 	<select id="countrooms" resultType="int">
@@ -27,40 +55,64 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	from (
     select A.*, rownum as rn
     from (
-	 select a.room_idx,h_userid,room_name,room_price,contents,city,country,
-	 address1,address2,beds,baths,max_people,room_type,lat,lng,photo1,photo2,photo3,photo4,
+	 select a.room_idx,h_userid,room_name,room_price,contents,city,country,check_in,check_out,
+	 address1,address2,beds,baths,max_people,room_type,lat,lng,photo1,photo2,photo3,photo4,admin_confirm,
 	 (select nvl(round(avg(review_star)),0) from review where a.room_idx=room_idx) as review_star,
-	 (select count(*) from review where a.room_idx=room_idx) as review_count
+	 (select count(*) from review where a.room_idx=room_idx) as review_count,
+	 (select count(*) from reservations where a.room_idx=room_idx ) as res_count,
+	 (select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and a.room_idx=room_idx)as re_date,
+	 (select distinct room_idx from reserved where a.room_idx=room_idx) as reserved_room
 	 from rooms a, room_photo b
 	 where a.room_idx=b.room_idx and (room_price between #{lower} and #{higher}) and
-	 (beds<![CDATA[>=]]>#{bed} ) and (baths<![CDATA[>=]]>#{bath} ) and
-	 (city like #{cityname} or country like #{cityname} or address1 like #{cityname} or address2 like #{cityname}))A
-	 ) where review_star <![CDATA[>=]]> #{reviewStar}
+	 (beds<![CDATA[>=]]>#{bed} ) and (baths<![CDATA[>=]]>#{bath} ) and admin_confirm = '승인' and
+	 (city like #{cityname} or room_name like #{cityname} or country like #{cityname} or address1 like #{cityname} or address2 like #{cityname}))A
+	 ) where review_star <![CDATA[>=]]> #{reviewStar} and TO_CHAR(check_in, 'YYYYMMDD') <![CDATA[<=]]>  #{checkin_date} and
+	 TO_CHAR(check_out, 'YYYYMMDD') >= #{checkout_date}
+	 and (re_date !=0 or reserved_room is null)
 	</select>
 	
 <!--검색 주소리스트 -->	
-	<select id="address_list" resultType="com.example.stayhere.model.rooms.dto.RoomsDTO">
+	<select id="address_list" resultType="RoomsDTO">
 	select lat,lng,room_name,room_price,photo1
 	from (
     select A.*, rownum as rn
     from (
-	 select a.room_idx,h_userid,room_name,room_price,contents,city,country,
-	 address1,address2,beds,baths,max_people,room_type,lat,lng,photo1,photo2,photo3,photo4,
+	 select a.room_idx,h_userid,room_name,room_price,contents,city,country,check_in,check_out,
+	 address1,address2,beds,baths,max_people,room_type,lat,lng,photo1,photo2,photo3,photo4,admin_confirm,
 	 (select nvl(round(avg(review_star)),0) from review where a.room_idx=room_idx) as review_star,
-	 (select count(*) from review where a.room_idx=room_idx) as review_count
+	 (select count(*) from review where a.room_idx=room_idx) as review_count,
+	 (select count(*) from reservations where a.room_idx=room_idx ) as res_count,
+	 (select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and a.room_idx=room_idx)as re_date,
+	 (select distinct room_idx from reserved where a.room_idx=room_idx) as reserved_room
 	 from rooms a, room_photo b
 	 where a.room_idx=b.room_idx and (room_price between #{lower} and #{higher}) and
-	 (beds<![CDATA[>=]]>#{bed} ) and (baths<![CDATA[>=]]>#{bath} ) and
-	 (city like #{cityname} or country like #{cityname} or address1 like #{cityname} or address2 like #{cityname}))A
-	 ) where review_star <![CDATA[>=]]> #{reviewStar}
+	 (beds<![CDATA[>=]]>#{bed} ) and (baths<![CDATA[>=]]>#{bath} ) and admin_confirm = '승인' and
+	 (city like #{cityname} or room_name like #{cityname} or country like #{cityname} or address1 like #{cityname} or address2 like #{cityname}))A
+	 ) where review_star <![CDATA[>=]]> #{reviewStar} and TO_CHAR(check_in, 'YYYYMMDD') <![CDATA[<=]]>  #{checkin_date} and
+	 TO_CHAR(check_out, 'YYYYMMDD') >= #{checkout_date}
+	 and (re_date !=0 or reserved_room is null)
 	</select>
 	
+	<!-- 검색어 리스트  -->
+	<select id="search_list" resultType="String">
+	 select CONCAT(city,CONCAT(', ',country)) from rooms
+	</select>
 	
 	<!-- 기본검색 룸 갯수 -->
 	<select id="getRoomDefalutCount" resultType="int">
-		select count(*) from rooms
-		where check_in=#{checkin_date} and check_out=#{checkout_date} and 
-     (city like #{cityname} or country like #{cityname} or address1 like #{cityname})
+		select count(*) from (
+			select A.* from ( select
+				(select count(*) from review where room_idx=r.room_idx)review_count,
+				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star,
+        (select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
+        (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
+				from rooms r 
+				where to_char(check_in, 'yyyyMMdd') <![CDATA[<=]]> #{checkin_date} and
+				to_char(check_out, 'yyyyMMdd') >= #{checkout_date} and
+      	(city like #{cityname} or country like #{cityname} or address1 like #{cityname})
+				order by check_out desc) A
+		) where (re_date !=0 or reserved_room is null)
+		       
 	</select>
 	
 	
@@ -71,7 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				r.room_idx,
 				r.room_name,
 				r.room_price,
-				r.contents,
+				substr(r.contents, 1, 200)contents,
 				r.city,
 				r.country,
 				r.address1,
@@ -90,12 +142,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rp.photo3,
 				rp.photo4,
 				(select count(*) from review where room_idx=r.room_idx)review_count,
-				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
+				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star,
+        (select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
+        (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
 				from rooms r join	room_photo rp on r.room_idx = rp.room_idx
-				where check_in=#{checkin_date} and check_out=#{checkout_date} and 
+				where to_char(check_in, 'yyyyMMdd') <![CDATA[<=]]> #{checkin_date} and
+				to_char(check_out, 'yyyyMMdd') >= #{checkout_date} and
       	(city like #{cityname} or country like #{cityname} or address1 like #{cityname})
-				) A
-		) where rn between #{start} and #{end}
+				order by check_out desc) A
+		) where rn between #{start} and #{end} and (re_date !=0 or reserved_room is null)
 	</select>
 	
 		
@@ -104,15 +159,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getRoomOptionCount" resultType="int">
 		select count(*) from ( 
 		select
-			(select count(*) from reservations where room_idx= r.room_idx)	res_count,
 			(select count(*) from review where room_idx= r.room_idx)review_count,
-			(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
+			(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star,
+			(select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
+      (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
 			from rooms r 
 				<include refid="search_option_where" />
 				<include refid="search_option_order" />
 		) 
 		<if test="reviewStar != null and reviewStar > 0">
-			where review_star<![CDATA[>=]]>#{reviewStar}
+			where review_star<![CDATA[>=]]>#{reviewStar} and (re_date !=0 or reserved_room is null)
 		</if>
 	</select>
 	
@@ -125,7 +181,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				r.room_idx,
 				r.room_name,
 				r.room_price,
-				r.contents,
+				substr(r.contents, 1, 200)contents,
 				r.city,
 				r.country,
 				r.address1,
@@ -143,9 +199,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rp.photo2,
 				rp.photo3,
 				rp.photo4,
-				(select count(*) from reservations where room_idx=r.room_idx)	res_count,
 				(select count(*) from review where room_idx=r.room_idx)review_count,
-				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star
+				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star,
+				(select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
+        (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
 				from rooms r join	room_photo rp on r.room_idx = rp.room_idx
 				<include refid="search_option_where" />
 				<include refid="search_option_order" />
@@ -154,10 +211,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<choose>
 			<when test="reviewStar != null and reviewStar > 0">
 				where review_star<![CDATA[>=]]>#{reviewStar}
-				and rn between #{start} and #{end}
+				and rn between #{start} and #{end} and (re_date !=0 or reserved_room is null)
 			</when>
 			<otherwise>
-				where rn between #{start} and #{end}
+				where rn between #{start} and #{end} and (re_date !=0 or reserved_room is null)
 			</otherwise>
 		</choose>
 	</select>
@@ -183,8 +240,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 검색 옵션 조건 where 절-->
 	<sql id="search_option_where">
-		where check_in=#{checkin_date} and check_out=#{checkout_date} and
-				(city like #{cityname} or country like #{cityname} or address1 like #{cityname})
+		where to_char(check_in, 'yyyyMMdd') <![CDATA[<=]]> #{checkin_date} and
+				to_char(check_out, 'yyyyMMdd') >= #{checkout_date} and
+      	(city like #{cityname} or country like #{cityname} or address1 like #{cityname})
 				
 				<choose>
 					<when test="bed >= 4">
@@ -216,19 +274,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<sql id="search_option_order">
 		<choose>
 					<when test="sort == 'price_desc'">
-						order by room_price desc, baths asc, beds asc 
+						order by room_price desc, baths asc, beds asc, check_out desc
 					</when>
 					<when test="sort == 'price_asc'">
-						order by room_price asc, baths asc, beds asc 
+						order by room_price asc, baths asc, beds asc, check_out desc
 					</when>
 					<when test="sort == 'review_asc'">
-						order by review_count asc, baths asc, beds asc 
+						order by review_count asc, baths asc, beds asc, check_out desc
 					</when>
 					<when test="sort == 'review_desc'">
-						order by review_count desc, baths asc, beds asc 
+						order by review_count desc, baths asc, beds asc, check_out desc 
 					</when>
 					<otherwise>
-						order by res_count desc, baths asc, beds asc
+						order by baths asc, beds asc, check_out desc
 					</otherwise>
 				</choose>
 	</sql>

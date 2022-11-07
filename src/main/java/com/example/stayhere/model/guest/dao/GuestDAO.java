@@ -21,5 +21,13 @@ public interface GuestDAO {
 	public GuestDTO loginOkNick(GuestDTO dto);
 	public String memberOne(String email) throws Exception;
 	public String findId(String email);
+	public List<GuestDTO> getguest(int start, int end);//admin(게스트목록)
+	public int guestcount();//게스트 회원수 
+	public void goblack(String userid);//블랙리스트전환
+	public void gonormal(String userid);//일반회원 전환 
+	public List<GuestDTO> getblackguest(int start, int end);//블랙회원만가져오기
+	public int blackguestcount();//블랙회원수
+	public int getmonthguest(String today);//이번달 신규 가입자
+	
 
 }

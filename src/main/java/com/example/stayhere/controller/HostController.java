@@ -113,13 +113,13 @@ public class HostController {
 		dto.setH_userid(h_userid);
 		String H_profile_img = dto.getH_profile_img();
 		
-		String imgUploadPath = uploadPath + File.separator + "imgUpload";
+		//String imgUploadPath = uploadPath;
 		String fileName = null;
 
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
-		   fileName = FileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes());   
+		   fileName = FileUtils.fileUpload(uploadPath, file.getOriginalFilename(), file.getBytes());   
 		   mav.addObject("message","profile");
-		   dto.setH_profile_img(File.separator + "imgUpload" + File.separator + fileName);
+		   dto.setH_profile_img( File.separator + fileName);
 		} else {//file name dto.get으로 불러와서 저장 null이면
 		   fileName = H_profile_img;
 		   System.out.println(fileName);

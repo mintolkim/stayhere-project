@@ -72,4 +72,29 @@ public class ReservationsDAOImpl implements ReservationsDAO {
 		sqlSession.update("reservations.checkoutStatus", res_idx);
 	}
 
+	@Override
+	public List<ReservationsDTO> resTotalMoney() {
+		return sqlSession.selectList("reservations.totalmoney");
+	}
+
+	@Override
+	public List<ReservationsDTO> resCateTotalMoney() {
+		return sqlSession.selectList("reservations.catetotalmoney");
+	}
+
+	@Override
+	public List<ReservationsDTO> roomreservation(int room_idx) {
+		return sqlSession.selectList("reservations.roomreservation",room_idx);
+	}
+
+	@Override
+	public int getThismonth(String today) {
+		return sqlSession.selectOne("reservations.getThismonth",today);
+	}
+
+	@Override
+	public int getThisyear(String today) {
+		return sqlSession.selectOne("reservations.getThisyear",today);
+	}
+
 }

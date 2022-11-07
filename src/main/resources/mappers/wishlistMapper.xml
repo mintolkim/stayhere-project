@@ -58,6 +58,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where room_idx = #{room_idx}
 	</select>
 	
+	<select id="wishcheck" resultType="int">
+	 select count(room_idx) from wishlist 
+		where room_idx = #{room_idx} and name=#{name}
+	</select>
+	
+	<delete id="deleteWishlist">
+	delete from wishlist
+	where userid=#{userid} and room_idx=#{room_idx}
+	</delete>
 </mapper>
 
 

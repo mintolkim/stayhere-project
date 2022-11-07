@@ -21,13 +21,50 @@
 </head>
 <body class="d-flex flex-column">
 	<%@ include file="../include/navbar.jsp"%>
-	<%@ include file="../include/searchbar.jsp"%>
 
 	<c:if test="${map.error != null }">
 		<script type="text/javascript">
 		 	alert("${map.error}");
 		</script>
 	</c:if>
+	
+	<!-- search-bar -->
+	<div class="search-wrap search-fixed mt-5">
+		<div class="search-bar border px-4">
+			<form method="post" id="searchFrom">
+				<div class="row">
+					<div class="col-lg-5 col-sm-5 col-12 d-flex align-items-center rounded-pill">
+						<div class="form-floating form-group w-100">
+							<input class="form-control border-0 shadow-none" id="cityname"
+								name="cityname" placeholder="여행지를 입력해주세요" value="${map.cityname}"> 
+								<label for="cityname">여행지 입력</label>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3 col-5 d-flex align-items-center">
+						<div class="form-floating form-group w-100">
+							<input class="form-control border-0 shadow-none" id="checkin_date"
+								name="checkin_date" placeholder="체크인" value="${map.checkin_date}"> 
+								<label for="checkin_date">체크인</label>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3 col-5 d-flex align-items-center">
+						<div class="form-floating form-group w-100">
+							<input class="form-control border-0 shadow-none" id="checkout_date"
+								name="checkout_date" placeholder="체크아웃" value="${map.checkout_date}">
+							<label for="checkout_date">체크아웃</label>
+						</div>
+					</div>
+					<div class="col-lg-1 col-sm-1 col-2 d-flex align-items-center">
+						<button class="btn btn-custom rounded-pill" type="button"
+							onclick="submitMainSearch(searchFrom)">
+							<i class="bi-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		</div>
+
 	
 	<!-- 컨텐츠 수정 영역 start -->
 	<div class="container">
@@ -85,26 +122,24 @@
 									<div class="progress"></div>
 								</div>
 								<div class="range-input">
-									<input type="range" class="range-min" name="lower" step="10000"
-									min="${map.min_price}"	max="${map.max_price}"
+									<input type="range" class="range-min" name="lower" step="10000"	min="0"	max="1000000"
 										<c:choose>
 											<c:when test="${param.lower != null}">
 												value="${param.lower}"
 											</c:when>
 											<c:otherwise>
-												value="${map.min_price}"
+												value="0"
 											</c:otherwise>
 										</c:choose>
 										onchange="filterFormSubmit(filterFrom)"> 
 										
-										<input type="range" class="range-max" name="higher" step="10000"
-										min="${map.min_price}"	max="${map.max_price}"
+										<input type="range" class="range-max" name="higher" step="10000" min="0"	max="1000000"
 											<c:choose>
 											<c:when test="${param.higher != null}">
 												value="${param.higher}"
 											</c:when>
 											<c:otherwise>
-												value="${map.max_price}"
+												value="1000000"
 											</c:otherwise>
 										</c:choose>
 										onchange="filterFormSubmit(filterFrom)">
@@ -118,7 +153,7 @@
 														value="${param.lower}"
 													</c:when>
 													<c:otherwise>
-														value="${map.min_price}"
+														value="0"
 													</c:otherwise>
 												</c:choose>
 											readonly>
@@ -132,7 +167,7 @@
 														value="${param.higher}"
 													</c:when>
 													<c:otherwise>
-														value="${map.max_price}"
+														value="1000000"
 													</c:otherwise>
 												</c:choose>
 											readonly>
@@ -215,12 +250,12 @@
 					<div class="list-wrap">
 						<div class="list-item">
 							<c:forEach var="row" items="${map.list}">
-								<section class="result-rooms-list my-3" onclick="goToDetail(${row.room_idx})">
-										<div class="card my-2 border rounded-5"
-											style="max-width: 100%;">
+								<section class="result-rooms-list my-3">
+										<a href="${path}/rooms/detail/${row.room_idx}" class="text-black text-decoration-none">
+										<div class="card my-2 border rounded-5" style="max-width: 100%;">
 											<div class="row g-0">
 												<div class="col-md-4">
-													<div id="indicators-${row.room_idx}" class="carousel slide"
+													<div id="indicators-${row.room_idx}" class="carousel slide indicators"
 														data-interval="false">
 														<div class="carousel-indicators">
 															<button type="button"
@@ -239,19 +274,19 @@
 														</div>
 														<div class="carousel-inner rounded-img-start">
 															<div class="carousel-item active">
-																<img src="${path}/resources/images/${row.photo1}"
+																<img src="${path}/imgUpload/${row.photo1}"
 																	class="d-block w-100 card-img-size-h-300" alt="...">
 															</div>
 															<div class="carousel-item card-img">
-																<img src="${path}/resources/images/${row.photo2}"
+																<img src="${path}/imgUpload/${row.photo2}"
 																	class="d-block w-100 card-img-size-h-300" alt="...">
 															</div>
 															<div class="carousel-item card-img">
-																<img src="${path}/resources/images/${row.photo3}"
+																<img src="${path}/imgUpload/${row.photo3}"
 																	class="d-block w-100 card-img-size-h-300" alt="...">
 															</div>
 															<div class="carousel-item card-img">
-																<img src="${path}/resources/images/${row.photo4}"
+																<img src="${path}/imgUpload/${row.photo4}"
 																	class="d-block w-100 card-img-size-h-300" alt="...">
 															</div>
 														</div>
@@ -290,11 +325,9 @@
 															</p>
 														</div>
 														<p class="card-text text-secondary mt-0 px-2 small">
-															<i class="bi bi-geo-alt-fill pe-1"></i>${row.city}
-															${row.country} ${row.address1}
+															<i class="bi bi-geo-alt-fill pe-1"></i>${row.city}, ${row.country}
 														</p>
-														<p class="card-text text-secondary px-2 mb-4">
-															${row.contents}</p>
+														<p class="card-text text-secondary px-2 mb-4"> ${row.contents}<span>...</span></p>
 														<p class="card-text text-secondary mb-1 px-2 small">
 															<i class="bi bi-calendar-check pe-1"></i>
 															<fmt:formatDate pattern="MM월 dd일" value="${row.check_in}" />
@@ -302,25 +335,26 @@
 															<fmt:formatDate pattern="MM월 dd일" value="${row.check_out}" />
 														</p>
 														<p class="card-text text-secondary mb-1 px-2 small">
-															<i class="bi bi-check-square-fill pe-1"></i> 침대
-															${row.beds} · 화장실 ${row.baths} · 최대인원 ${row.max_people}
+															<i class="bi bi-check-square-fill pe-1"></i> 
+															침대	${row.beds} · 화장실 ${row.baths} · 최대인원 ${row.max_people}
 														</p>
 														<p class="card-text mt-3 text-end">
 															<span class="fw-bold fs-4"> ￦ <fmt:formatNumber
 																	pattern="#,###" value="${row.room_price}" />
-															</span> <span>/박</span>
+															</span> /박
 														</p>
 													</div>
 												</div>
 											</div>
 										</div>
+										</a>
 								</section>
 							</c:forEach>
 						</div>
 					</div>
 					<c:if test="${map.count > 0}">
 						<!-- 페이지네이션 -->
-						<nav class="d-flex justify-content-center"
+						<nav class="d-flex justify-content-center my-2"
 							aria-label="Search results pages">
 							<ul class="pagination">
 								<c:choose>
@@ -368,7 +402,6 @@
 						</nav>
 						<!-- 페이지 네이션 끝 -->
 					</c:if>
-
 				</div>
 			</div>
 		</div>
@@ -379,6 +412,16 @@
 		$(function(){
 			optionChecked(); 
 			multiRangeHandler(); 
+			
+			$('.indicators').carousel({
+		        // 슬리아딩 자동 순환 지연 시간
+		        // false면 자동 순환하지 않는다.
+		        interval: false,
+		        // hover를 설정하면 마우스를 가져대면 자동 순환이 멈춘다.
+		        pause: "hover",
+		        // 순환 설정, true면 1 -> 2가면 다시 1로 돌아가서 반복
+		        wrap: true
+			 });
 		});
 		
 		
@@ -431,13 +474,30 @@
     
     //지도 페이지로 이동하기
     function goToMap(){
+    	var cityname = $("#cityname").val();
+		  var checkIn = $("#checkin_date").val();
+		  var checkOut = $("#checkout_date").val();
+		  
+    	if(cityname == ""){
+		     alert("여행지를 입력해주세요.");
+		     $("#cityname").focus();
+		     return false;
+		  }
+	
+		  if(checkIn == ""){
+		     alert("체크인 날짜를 선택해주세요");
+		     $("#checkin_date").focus();
+		     return false;
+		  }
+	
+		  if(checkOut == ""){
+		      alert("체크아웃 날짜를 선택해주세요.");
+		      $("#checkout_date").focus();
+		      return false;
+		  }
+    	
     	const param = location.search; //현재 주소URL에 있는 파라미터 값 가져오기 
     	location.href = "${path}/search/map/${map.cityname}/${map.checkin_date}/${map.checkout_date}" + param;
-    }
-    
-    //상세화면으로 이동
-    function goToDetail(idx){
-    	location.href = "${path}/rooms/detail/"+idx;
     }
     
     //필터 ajax통신
@@ -574,6 +634,85 @@
     }
     
    </script>
+   
+   
+   <script type="text/javascript">
+	
+	 $(function(){
+         var option = {
+             locale: "ko", //한국어로 언어설정
+             dateFormat: "Y-m-d",   //출력 술정
+             allowInput : false, //사용자 정의 입력설정
+             mode : "range",  //범위
+             showMonths : 2, // 2개월 캘린더 표기 
+             minDate : new Date().fp_incr(1), //최소 날짜, 현재시간으로 셋팅 "today"현재날짜
+             plugins: [new rangePlugin({ input: "#checkout_date"})] //플러그인 설정 input-box 2개에 표기
+             
+         }
+
+         $("#checkin_date").flatpickr(option);
+      
+	 });
+	 
+     var searchBar = $(".search-wrap").offset();
+          
+     $(window).on("scroll", function () {
+    	 
+    	 var scrollTop = $(this).scrollTop(); // 위로 스크롤된 길이
+ 			 var windowsHeight = $(this).height(); //웹브라우저의 창의 높이
+ 			 var documentHeight = $(document).height(); // 문서 전체의 높이
+    	 
+ 			 console.log("scrollTop : " + scrollTop);
+ 			 console.log("windowsHeight : " + windowsHeight);
+ 			 console.log("documentHeight : " + documentHeight);
+ 		
+ 			 if(windowsHeight > 730){
+         if ($(this).scrollTop() > searchBar.top+300) {
+    	 			console.log(searchBar.top);
+             $(".search-fixed").addClass('fixed');
+             $(".search-fixed").removeClass('search-wrap');
+             $(".search-fixed").removeClass('mt-5');
+             $(".filter-option-wrap").addClass('fixed');
+         } else {
+             $(".search-fixed").removeClass('fixed');
+             $(".search-fixed").addClass('search-wrap');
+             $(".search-fixed").addClass('mt-5');
+             $(".filter-option-wrap").removeClass('fixed');
+         }
+ 			 }
+    	 
+     });
+
+		//검색창 입력
+		function submitMainSearch(f) {
+		    //입력폼 유효성 검사
+		    var cityname = $("#cityname").val();
+		    var checkIn = $("#checkin_date").val();
+		    var checkOut = $("#checkout_date").val();
+	
+		    if(cityname == ""){
+			     alert("여행지를 입력해주세요.");
+			     $("#cityname").focus();
+			     return false;
+			  }
+		
+			  if(checkIn == ""){
+			     alert("체크인 날짜를 선택해주세요");
+			     $("#checkin_date").focus();
+			     return false;
+			  }
+		
+			  if(checkOut == ""){
+			      alert("체크아웃 날짜를 선택해주세요.");
+			      $("#checkout_date").focus();
+			      return false;
+			  }
+		    
+		    f.action = "${path}/search/"+cityname+"/"+checkIn+"/"+checkOut;
+		    f.submit();
+		}
+	 
+	</script>
 
 	<!-- 컨텐츠 수정 영역 end -->
 

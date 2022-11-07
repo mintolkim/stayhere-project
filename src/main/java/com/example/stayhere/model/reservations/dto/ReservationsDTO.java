@@ -44,4 +44,8 @@ public class ReservationsDTO {
 	private String photo2;//room_photo 테이블
 	private String photo3;//room_photo 테이블
 	private String photo4;//room_photo 테이블
+	//admin-매출집계
+	private String month;
+	private int monthlymoney;
+	private int yearmoney;
 }
