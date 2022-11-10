@@ -91,7 +91,6 @@ function selectReview() {
 				<p>
 					⭐&nbsp;숙소후기 <b>${map.view_count}</b>개
 				</p>
-				
 				<!-- 정렬 -->
 				<div class="col-2">
 					<!--글 정렬 선택  -->

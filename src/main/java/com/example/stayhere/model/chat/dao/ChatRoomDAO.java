@@ -19,6 +19,7 @@ public interface ChatRoomDAO {
 	public List<ChatListDTO> findByUserId(String userid);
 	public List<Integer> getUnreadChatRoom(String userid);
 	public ChatRoomDTO findByReadCheck(int c_idx);
+	public int countByUser(String userid);//게스트별 채팅 건수
 	public int getChatRoomCount(String sessionId, String keyword);
 	public List<ChatListDTO> getChatRoomList(int start, int end, String sessionId, String keyword);
 	public String findByHostProfile(String h_userid);

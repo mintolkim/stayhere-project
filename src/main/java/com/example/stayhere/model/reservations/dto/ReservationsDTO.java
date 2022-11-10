@@ -24,9 +24,10 @@ public class ReservationsDTO {
     private String phone;//회원 연락처
     private String name;//회원이름
     private String room_name;//숙소 이름
+	private String review_check;//예약별 리뷰 유무 확인용
     //rooms테이블
     private int room_price;//숙소 가격
-    private String contenst;//숙소 소개글
+    private String contents;//숙소 소개글
     private String city;//도시
     private String country;//마을
     private String address1;//기본주소

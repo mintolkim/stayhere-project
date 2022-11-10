@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.stayhere.model.review.dao.ReviewDAO;
-import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
 import com.example.stayhere.model.review_comment.dto.ReCommentDTO;
 
@@ -19,6 +18,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Inject
 	ReviewDAO reviewDao;
+	
 	
 	@Override
 	public void deleteFile(String fileName) {

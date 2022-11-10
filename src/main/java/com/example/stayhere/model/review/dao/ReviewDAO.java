@@ -3,10 +3,6 @@ package com.example.stayhere.model.review.dao;
 import java.util.Date;
 import java.util.List;
 
-
-import javax.servlet.http.HttpSession;
-
-import com.example.stayhere.model.qna_comment.dto.QnaCommentDTO;
 import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
 import com.example.stayhere.model.review_comment.dto.ReCommentDTO;

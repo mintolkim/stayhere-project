@@ -54,7 +54,7 @@
 		<br>
 		<input class="form-control me-2" type="text" placeholder="회원가입한 아이디" name="userid" id="userid">
 		<br>
-		<input class="form-control me-2" type="password" placeholder="회원가입한 이메일" name="email" id="email"
+		<input class="form-control me-2" type="text" placeholder="회원가입한 이메일" name="email" id="email"
 		required="/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)?$/i">
 		<br>
 		<p class="w3-center">

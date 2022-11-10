@@ -168,6 +168,7 @@ public class ReviewController {
 		reviewService.increaseViewcnt(review_idx, session);
 		ReviewDTO reviewDto = reviewService.detail(review_idx);
 		model.addAttribute("dto", reviewDto);
+
 		model.addAttribute("user", user);
 		return "reviews/reviewDetail";
 	}
@@ -379,13 +380,11 @@ public class ReviewController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("review_count", review_count);
-
 		mav.addObject("map", map);
 		mav.addObject("guest", g_dto);
 		mav.setViewName("reviews/reviewUserList");
 		return mav;
 	}
-
 
 	/*
 	 * //신고

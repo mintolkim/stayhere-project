@@ -89,6 +89,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where c_idx=#{c_idx}
 	</select>
 	
+	<!-- 게스트별 채팅 건수  -->
+	<select id="countByUser" resultType="int">
+		select count(*) 
+		from chatroom 
+		where userid=#{userid}
+	</select>
+
 	<!-- 채팅리스트 갯수 -->
 	<select id="getChatRoomCount" resultType="int">
 		select count(*) from chatroom 
@@ -112,7 +119,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		) A
 	) where rn between #{start} and #{end}
 	</select>
-	
 	
 	<!-- 호스트 프로필 사진 경로 찾기 -->
 	<select id="findByHostProfile" resultType="String">

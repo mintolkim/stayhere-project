@@ -39,9 +39,8 @@ public class ReservationsDAOImpl implements ReservationsDAO {
 	}
 
 	@Override
-	public int countRes(String userid, int res_idx) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int countAllRes(String userid) {
+		return sqlSession.selectOne("reservations.countAllRes", userid);
 	}
 
 	@Override
@@ -167,6 +166,11 @@ public class ReservationsDAOImpl implements ReservationsDAO {
 		map.put("checkin_date", checkin_date);
 		map.put("checkout_date", checkout_date);
 		return sqlSession.selectOne("reservations.mailReserve", map);
+	}
+
+	@Override
+	public void reviewCheck(int res_idx) {
+		sqlSession.update("reservations.reviewCheck" ,res_idx);
 	}
 
 

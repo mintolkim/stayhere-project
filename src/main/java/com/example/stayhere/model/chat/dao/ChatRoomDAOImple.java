@@ -98,6 +98,8 @@ public class ChatRoomDAOImple implements ChatRoomDAO {
 	}
 
 	@Override
+	public int countByUser(String userid) {
+		return sqlSession.selectOne("chat.countByUser", userid);
 	public int getChatRoomCount(String sessionId, String keyword) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("sessionId", sessionId);

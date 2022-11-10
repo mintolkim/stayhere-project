@@ -42,20 +42,14 @@ function review(room_idx, res_idx) {
 a {
 	text-decoration: none;
 }
-
 #profile-tab a {
-color: black;
-text-decoration: none;
+ color: black;
+ text-decoration: none;
 }
 #profile-tab a:hover {
-color: #ffc107;
-text-decoration: none;
-}
-
-.box {
-    width: 260px;
-    height: 260px; 
-    overflow: hidden;
+ color: #ffc107;
+ text-decoration: none;
+color: black;
 }
 
 .profile {
@@ -64,7 +58,6 @@ text-decoration: none;
 	border-radius: 50%;
 	object-fit: cover;
 }
-
 div #tab-bar li a {
 	color: black;
 	text-decoration: none;
@@ -88,37 +81,38 @@ div #tab-bar li a:hover {
 <body class="d-flex flex-column h-100">
  <main class="flex-shrink-0 ">
   <!-- nav -->
-	<%@ include file="../include/navbar.jsp" %>
+  <%@ include file="../include/navbar.jsp" %>
   <!-- 본문영역-->
   <section class="mt-3 mb-5" id="features">
 	<div class="container" align="center">
 		<div class="row">
-			
-			<div class="list-group col-lg-3 mt-4 " id="profile-tab">
 				
-				<div style="width: 80%;">
+			<div class="list-group col-lg-3 mt-4 " id="profile-tab">	
+				<div style="width: 80%;" align="center">
+
 					<c:if test="${guest.profile_img != null}">			 
 						<img class="profile" src="${path}/imgUpload/${guest.profile_img}" style="border-radius: 50%; width: 230px; height: 230px;">
 					</c:if>
 					<br>
 					<c:if test="${guest.profile_img == null}">
 						<img class="profile" src="${path}/resources/images/guest.png" style="border-radius: 50%; width: 230px; height: 230px;">
+					<br>
 					</c:if>
+					
 
-			
 					<br>
 					<a href="${path}/guest/guest_view/${sessionScope.userid}" class="list-group-item list-group-item-action">마이 페이지</a>
 					<a href="${path}/reservations/list/guest" class="list-group-item list-group-item-action">예약 정보</a>
 					<a href="${path}/reviews/reviewUserList/${sessionScope.userid}" class="list-group-item list-group-item-action">내가 작성한 리뷰</a>
-					<a href="${path}/wishlist/list.do" class="list-group-item list-group-item-action">관심 스테이</a>
 					<a href="${path}/chatlist" class="list-group-item list-group-item-action">채팅목록</a>
+					<a href="${path}/wishlist/list.do" class="list-group-item list-group-item-action">관심 스테이</a>
 				</div>
 			</div>
-						     
+
 			
 			<div class="col-lg-9 mt-4 mb-5" align="center">
 	            <p style="text-align: center; font-size: 20px; font-weight: bold; letter-spacing: 12px;">Reservation status</p>
-				<p style="text-align: center; font-size: 14px;">예약 정보</p>
+				<p style="text-align: center; font-size: 14px; letter-spacing: 8px;">예약정보</p>
 				<br><br>
 				<ul class="nav nav-tabs nav-justified" id="tab-bar">
 					<li class="nav-item">
@@ -455,8 +449,8 @@ div #tab-bar li a:hover {
 				</c:forEach>
 				</div>
 				<!-- 이용 완료 끝 -->
-				
 				</div>
+			  </div>
 			</div>
 		</div>
 	  </section>

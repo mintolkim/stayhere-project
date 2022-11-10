@@ -25,7 +25,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.controller.FileUtils;
 import com.example.stayhere.model.guest.dto.GuestDTO;
+import com.example.stayhere.service.chat.ChatRoomService;
 import com.example.stayhere.service.guest.GuestService;
+import com.example.stayhere.service.reservations.ReservationsService;
+import com.example.stayhere.service.review.ReviewService;
+import com.example.stayhere.service.wishlist.WishlistService;
 
 @Controller
 @RequestMapping("guest/*")
@@ -37,7 +41,20 @@ public class GuestController {
 	GuestService guestService;
 	
 	@Inject
+	ReservationsService reservationsService;
+	
+	@Inject
+	WishlistService wishlistService;
+	
+	@Inject
+	ReviewService reviewService;
+	
+	@Inject
+	ChatRoomService chatroomService;
+	
+	@Inject
 	BCryptPasswordEncoder pwdEncoder;
+	
 	
 	@Resource(name="uploadPath")
 	String uploadPath;
@@ -106,15 +123,42 @@ public class GuestController {
 
 	@RequestMapping("guest_view/{userid}")
 	public ModelAndView view(@PathVariable String userid, ModelAndView mav) {
-		mav.setViewName("guest/guest_view");
+
+		int cntCheckout=reservationsService.cntCheckout(userid);
+		logger.info("이용완료 건수"+cntCheckout);
+		
+		int res_count=reservationsService.countAllRes(userid);
+		logger.info("이용완료 제외한 예약 총 건수 : " + res_count);
+		
+		int wish_count=wishlistService.wishCount(userid);
+		logger.info("위시리스트 건수 : " + wish_count);
+		
+		int review_count=reviewService.countByUser(userid);
+		logger.info("리뷰 건수 : " + review_count);
+		
+		int chat_count=chatroomService.countByUser(userid);
+		logger.info("채팅 건수 : ");
+		
+		mav.addObject("cntCheckout", cntCheckout);
+		mav.addObject("res_count", res_count);
+		mav.addObject("wish_count", wish_count);
+		mav.addObject("review_count", review_count);
+		mav.addObject("chat_count", chat_count);
+		
 		mav.addObject("dto", guestService.view_Guest(userid));
+		mav.setViewName("guest/guest_view");
 		return mav;
 	}
 	
 	@RequestMapping("update/{userid}")
 	public ModelAndView update(@PathVariable String userid, ModelAndView mav) {
-		mav.setViewName("guest/guest_edit");
+		
+		int cntCheckout=reservationsService.cntCheckout(userid);
+		logger.info("이용완료 개수"+cntCheckout);
+		
+		mav.addObject("cntCheckout", cntCheckout);
 		mav.addObject("dto", guestService.view_Guest(userid));
+		mav.setViewName("guest/guest_edit");
 		return mav;
 	}
 	

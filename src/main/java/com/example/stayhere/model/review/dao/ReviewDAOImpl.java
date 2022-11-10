@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -111,7 +110,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return sqlSession.selectOne("review.detail", review_idx);
 	}
 
-
 	@Override
 	public List<ReCommentDTO> comment(int review_idx) {
 		return sqlSession.selectList("review.comment",review_idx);
@@ -141,8 +139,8 @@ public class ReviewDAOImpl implements ReviewDAO {
 		map.put("review_idx", review_idx);
 		return sqlSession.selectOne("review.checkattach",map);
 	}
-	
-	@Override
+
+@Override
 	public List<ReviewDTO> getreview(String userid) {
 		return sqlSession.selectList("review.getreview",userid);
 	}

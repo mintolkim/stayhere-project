@@ -24,8 +24,14 @@
 	<%@ include file="../include/navbar.jsp" %>
   <!-- 본문영역 시작 -->
   <section class="mt-3 mb-5" id="features">
+  
+  	    <!-- 뒤로가기 버튼 -->
+	  <div>
+	  	<i class="bi bi-arrow-left-circle fs-1 mx-5" onclick="window.history.back();"></i>
+	  </div>
+  
 	    <div class="container px-5 mx-0 mb-4">
-		<h3>관심스테이</h3>
+		<span class="fs-3">관심 스테이</span><br>
 			<c:choose>
 				<c:when test="${wishCount==0}">
 					<span class="fs-6">추가한 관심 스테이가 없습니다.</span><br><br>

@@ -32,5 +32,4 @@ public class ReviewDTO {
 	private String checkout_date;//체크아웃 날짜(reservations 테이블)
 	private String h_userid;//호스트 아이디(host테이블, rooms테이블)
 	private int comment_count;//댓글 갯수(review_comment 테이블)
-
 }

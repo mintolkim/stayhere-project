@@ -87,7 +87,12 @@
 	  <mapping path="/wishlist/insert.do" />
 	  <mapping path="/chat" />
 	  <mapping path="/chatlist" />
+	  <mapping path="/reservations/reserve/{room_idx}" />
+	  <mapping path="/reservations/result.do" />
+	  <mapping path="/reservations/list/guest" />
+	  <mapping path="/reservations/list/host" />
 	  <mapping path="/chatroom/{room_idx}/{h_userid}/{userid}" />
+
 	  <beans:ref bean="loginInterceptor" />
 	 </interceptor> 
 	 </interceptors>

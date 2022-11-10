@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import com.example.stayhere.model.qna.dto.QnaDTO;
-import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
 import com.example.stayhere.model.review_comment.dto.ReCommentDTO;
 
@@ -21,7 +19,7 @@ public interface ReviewService {
 	public ReviewDTO detail(int review_idx);//리뷰상세보기
 	public List<ReviewDTO> reviewsByRoom(int room_idx);//숙소 별 리뷰 목록
 	public int countByRoom(int room_idx);//숙소 별 후기 개수
-	public double starByRoom(int room_idx);//숙소 별 별점 평균..
+	public double starByRoom(int room_idx);//숙소 별 별점 평균
 	//첨부파일 작업
 	public void deleteFile(String fileName); //첨부파일 삭제 
 	public List<String> getAttach(int review_idx); //첨부파일 정보 

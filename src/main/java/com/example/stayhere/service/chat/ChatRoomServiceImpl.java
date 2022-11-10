@@ -199,24 +199,24 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		return unread;
 	}
 
-
 	@Override
 	public ChatRoomDTO findByReadCheck(int c_idx) {
 		return chatRoomDao.findByReadCheck(c_idx);
 	}
 
-
 	@Override
-	public int getChatRoomCount(String sessionId, String keyword) {
+	public int countByUser(String userid) {
+		return chatRoomDao.countByUser(userid);
+	
+  @Override
+  public int getChatRoomCount(String sessionId, String keyword) {
 		return chatRoomDao.getChatRoomCount(sessionId, keyword);
 	}
-
 
 	@Override
 	public List<ChatListDTO> getChatRoomList(int start, int end, String sessionId, String keyword) {
 		return chatRoomDao.getChatRoomList(start, end, sessionId, keyword);
 	}
-
 
 	@Override
 	public String findByHostProfile(String h_userid) {
