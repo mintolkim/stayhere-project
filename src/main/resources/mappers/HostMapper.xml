@@ -5,9 +5,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="host">
-<select id="loginCheck" resultType="HostDTO" parameterType="HostDTO">
-		select * from host 
+<select id="loginCheck" resultType="String" parameterType="HostDTO">
+		select h_name from host 
 		where h_userid=#{h_userid}
+		and h_passwd=#{h_passwd}
 </select>
 
 <select id="loginOkNick" resultType="HostDTO" parameterType="HostDTO">
@@ -17,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <select id="viewHost" resultType="HostDTO">
   select * from Host
-  where h_userid=#{h_userid}
+  where h_userid = #{h_userid}
 </select>
 
 <select id="idCheck" resultType="int">
@@ -111,6 +112,8 @@ delete from Host where h_userid=#{h_userid}
 		r.room_type,
 		r.lat,
 		r.lng,
+		r.max_people,
+		r.add_people,
 		r.admin_confirm,
 		rp.photo1,
 		rp.photo2,
@@ -137,15 +140,51 @@ and admin_confirm=#{select}
 select count(*) from rooms where h_userid=#{h_userid} and admin_confirm='승인'
 </select>
 
-<select id="rooms_money">
-select r.h_userid, sum(r.room_price)
-from rooms r, reservations rs
-where r.room_idx=rs.room_idx
-and r.check_in between #{check_in} and add_months(#{check_in},1)
-and r.h_userid=#{h_userid} 
-and not(rs.res_state = '취소완료')
-group by r.h_userid
+<select id="hostMontlyMoney" resultType="ReservationsDTO">
+select to_char(res_date,'MM"월"') month, nvl(sum(total_price),0) monthlymoney
+from reservations
+where res_date between '2021-01-01' and '2022-12-30'
+and h_userid=#{h_userid}
+and res_state !='취소완료' 
+group by to_char(res_date,'MM"월"')
+order by month
 </select>
+
+<select id="hostWeeklyMoney" resultType="ReservationsDTO">
+select TO_CHAR(res_date,'dd"일"') day, nvl(sum(total_price),0) weeklymoney
+from reservations
+where res_date between #{today} and #{week}
+and h_userid=#{h_userid}
+and res_state !='취소완료' 
+group by TO_CHAR(res_date,'dd"일"')
+order by day
+</select>
+
+<select id="weeklySum" resultType="int">
+select sum(total_price) from reservations
+where res_state !='예약취소' 
+and res_date between #{today} and #{week}
+and h_userid=#{h_userid}
+</select>
+
+<select id="yearSum" resultType="int">
+select sum(total_price) from reservations
+where res_state !='예약취소' 
+and res_date between '2022-01-01' and '2022-12-31'
+and h_userid=#{h_userid}
+</select>
+
+<select id="getRoomData" resultType="ReservationsDTO">
+select room_name, nvl(sum(total_price),0) yearmoney
+from reservations
+where res_date between '2022-01-01' and '2022-12-30'
+and h_userid=#{h_userid}
+and res_state !='취소완료' 
+group by room_name
+order by room_name
+</select>
+
+
 <select id="hostcount" resultType="int">
 select count(*) from host
 </select>
@@ -221,6 +260,18 @@ select count(*) from host
  select * from rooms, room_photo
  where rooms.room_idx = room_photo.room_idx
  and h_userid=#{h_userid}
+</select>
+
+<!-- DB 비밀번호 조회 -->
+<select id="findByPasswd" resultType="String">
+	select h_passwd from host 
+	where h_userid=#{h_userid}
+
+<select id="resCheck" resultType="ReservationsDTO">
+select res_idx
+from reservations
+where  res_state !='예약취소' 
+and h_userid=#{h_userid}
 </select>
 
 </mapper>

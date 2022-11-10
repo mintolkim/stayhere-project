@@ -12,7 +12,7 @@ public interface ChatRoomDAO {
 	public void updateFileName(int c_idx, String fileName);
 	public int countByChatId(int room_idx, String userid);
 	public int getChatRoomIdx(int room_idx, String userid);
-	public ChatRoomDTO findByChatId(int room_idx, String userid);
+	public ChatRoomDTO findByChatInfo(int room_idx, String userid);
 	public void updateChatReadUser(int c_idx, int chat_read_user);
 	public void updateChatReadHost(int c_idx, int chat_read_host);
 	public int getUnreadMessages(String userid);
@@ -20,4 +20,7 @@ public interface ChatRoomDAO {
 	public List<Integer> getUnreadChatRoom(String userid);
 	public ChatRoomDTO findByReadCheck(int c_idx);
 	public int countByUser(String userid);//게스트별 채팅 건수
+	public int getChatRoomCount(String sessionId, String keyword);
+	public List<ChatListDTO> getChatRoomList(int start, int end, String sessionId, String keyword);
+	public String findByHostProfile(String h_userid);
 }

@@ -27,7 +27,9 @@ public class ChatRoomDTO {
 	private String senderName; //작성자이름
 	private String senderId; //작성자아이디
 	private String room_name; //룸이름
-	private String photo1;
+	private String photo1; //방대표사진
+	private String g_profile; //게스트 프로필 이미지경로 
+	private String h_profile; //호스트 프로필 이미지경로
 	
 	
 	public ChatRoomDTO() {

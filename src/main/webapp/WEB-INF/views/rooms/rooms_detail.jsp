@@ -6,29 +6,36 @@
 <%@ include file="../include/header.jsp"%>
 <title>STAYHERE</title>
 <!-- 부트스트랩 아이콘 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
 <!-- flatpickr -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/plugins/rangePlugin.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/plugins/rangePlugin.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
 <!-- 카카오맵 API -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=52817c98591dad1c8811f3daa6bca00b&libraries=services"></script>
 <style type="text/css">
-a { 
- text-decoration: none;
+a {
+	text-decoration: none;
 }
+
 ul li {
- display: inline;
- list-style-type: none;
+	display: inline;
+	list-style-type: none;
 }
+
 #btnReview {
- color: #8c8c8c;
- text-decoration: none;
+	color: #8c8c8c;
+	text-decoration: none;
 }
+
 #btnReview:hover {
  color: #ffc107;
  text-decoration: none;
@@ -44,7 +51,7 @@ table tr td{
 	cursor: pointer;
 	visibility: hidden;
 	z-index: 999;
- }
+}
 </style>
 </head>
 <body class="d-flex flex-column h-100">
@@ -207,41 +214,45 @@ table tr td{
         </div>
 
 
-        <!-- 예약 정보 -->
-        <div class="col-lg-4">
-         <div class="card mb-3">
-          <div class="card-header">예약 정보</div>
-           <form name="res_form" id="res_form" method="post" action="${path}/reservations/reserve/${room.room_idx}">
-           <div class="card-body">
-            <div class="mb-2">
-             <span style="font-size: 24px; font-weight: bold;">￦<fmt:formatNumber value="${room.room_price}" pattern="#,###,###"/>  </span><span style="color: #737373;">/박</span>
-            </div>
-			<div class="form-floating mb-3">
-			  <input class="form-control" value="${checkin_date}" name="checkin_date" id="checkin_date" placeholder="체크인" required>
-			  <label for="floatingInput">체크인</label>
-			</div>
-			<div class="form-floating mb-3">
-			  <input class="form-control" value="${checkout_date}" name="checkout_date" id="checkout_date" placeholder="체크아웃" required>
-			  <label for="floatingInput">체크아웃</label>
-			</div>
-			<div class="form-floating mb-3">
-			  <input type="number" class="form-control" name="res_person" id="res_person" min="2" max="${room.max_people}" value="2" onKeyup="this.value=this.value.replace(/[^0-${room.max_people}]/g,'');"/>
-			  <label for="floatingInput">예약인원</label>
-			</div>
-			
-			<c:if test="${sessionScope.h_userid == null}">
-				<div class="d-grid gap-2">
-				  <button class="btn btn-warning" id="btnReserve" type="button">예약하기</button>
-				</div>
-			</c:if>
-			
-			<c:if test="${sessionScope.h_userid != null}">
-				<div class="d-grid gap-2">
-				  <button class="btn btn-warning" id="btnReserveHost" type="button">예약하기</button>
-				</div>
-			</c:if>
-			
-			
+					<!-- 예약 정보 -->
+					<div class="col-lg-4">
+						<div class="card mb-3">
+							<div class="card-header">예약 정보</div>
+							<form name="res_form" id="res_form" method="post"
+								action="${path}/reservations/reserve/${room.room_idx}">
+								<div class="card-body">
+									<div class="mb-2">
+										<span style="font-size: 24px; font-weight: bold;">￦<fmt:formatNumber
+												value="${room.room_price}" pattern="#,###,###" />
+										</span><span style="color: #737373;">/박</span>
+									</div>
+									<div class="form-floating mb-3">
+										<input class="form-control" value="${checkin_date}"
+											name="checkin_date" id="checkin_date" placeholder="체크인"
+											required> <label for="floatingInput">체크인</label>
+									</div>
+									<div class="form-floating mb-3">
+										<input class="form-control" value="${checkout_date}"
+											name="checkout_date" id="checkout_date" placeholder="체크아웃"
+											required> <label for="floatingInput">체크아웃</label>
+									</div>
+
+                  <div class="form-floating mb-3">
+                    <input type="number" class="form-control" name="res_person" id="res_person" min="2" max="${room.max_people}" value="2" onKeyup="this.value=this.value.replace(/[^0-${room.max_people}]/g,'');"/>
+                    <label for="floatingInput">예약인원</label>
+                  </div>
+
+                  <c:if test="${sessionScope.h_userid == null}">
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-warning" id="btnReserve" type="button">예약하기</button>
+                    </div>
+                  </c:if>
+
+                  <c:if test="${sessionScope.h_userid != null}">
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-warning" id="btnReserveHost" type="button">예약하기</button>
+                    </div>
+                  </c:if>
 			
            </div>
            <input type="hidden" name="room_idx" id="room_idx" value="${room.room_idx}">
@@ -343,12 +354,9 @@ table tr td{
 		      <a href="mailto:﻿${host.h_email}?subject=[${room.room_name}]문의"><button type="button" class="btn btn-warning" style="font-size: 14px;">호스트에게 메일보내기</button></a>
 		 	 </div>
 			</div>
-		  </div>
-		</div>
-	</div>
-	
-  </section>
- <!-- 본문 영역 끝 -->
+
+		</section>
+		<!-- 본문 영역 끝 -->
  
  <!-- 채팅 아이콘  -->
 <c:if test="${sessionScope.h_userid == null && sessionScope.userid != null}">
@@ -387,8 +395,12 @@ table tr td{
 	    });
 	});	
 	
-	//채팅하기 폼 sumbit
-	function chatFormSubmit(f){
+
+	//채팅하기 폼 팝업으로 띄우고 submit()하기
+	function chatFormSubmit(f){	
+		var left = $(document).width()-600; //문서 가로사이즈 - 600;
+		var popup = window.open("","chatPopup","width=550, height=700, left=" + left + ", top=100, scrollbars=no, toollbars=no, location=no,")
+		f.target = "chatPopup";
 		f.action = "${path}/chat";
 		f.submit();
 	}
@@ -480,7 +492,7 @@ table tr td{
 	
 </script>
 
-<script type="text/javascript">
+		<script type="text/javascript">
 	 $(function(){
 		$("#btnReserveHost").click(function(){
 		   alert("호스트는 예약이 불가합니다. \n 게스트로 로그인 후 다시 시도하세요!"); 	
@@ -622,8 +634,8 @@ table tr td{
 	    	location.href="${path}/reviews/detail.do?review_idx="+review_idx;
 	    }
 </script>
-    
-<script type="text/javascript">
+
+		<script type="text/javascript">
 		//지도 스크립트
 		//상세조건의 값을 가져옵니다
 		//지도를 생성합니다    
@@ -672,9 +684,9 @@ table tr td{
 		infowindow.open(map, marker); 
 
 </script>
- 
- </main>
- <!-- footer -->
- <%@ include file="../include/footer.jsp" %>
+
+	</main>
+	<!-- footer -->
+	<%@ include file="../include/footer.jsp"%>
 </body>
 </html>

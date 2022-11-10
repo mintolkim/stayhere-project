@@ -13,8 +13,9 @@ a {
 
 #profile-tab a {
  color: black;
- text-decoration: none;
+	text-decoration: none;
 }
+
 #profile-tab a:hover {
  color: #ffc107;
  text-decoration: none;
@@ -41,17 +42,7 @@ a {
  opacity: 0.5;
 }
 </style>
-<script type="text/javascript">
-//삭제 버튼
-$(function() {
-	$("#btnDelete").click(function(){
-		if(confirm("삭제하시겠습니까?")){
-			document.form1.action="${path}/reviews/delete.do";
-			document.form1.submit();
-		}
-	});
-});
-</script>
+
 </head>
 <body class="d-flex flex-column h-100">
 	<main class="flex-shrink-0">

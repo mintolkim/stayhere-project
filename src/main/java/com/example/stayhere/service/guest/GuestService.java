@@ -15,7 +15,8 @@ public interface GuestService {
 	public void insert_Guest(GuestDTO dto);
 	public void update_Guest(GuestDTO dto);
 	public void delete_Guest(String userid);
-	public GuestDTO loginCheck(GuestDTO dto, HttpSession session);
+	public boolean loginCheck(GuestDTO dto, HttpSession session);
+	public boolean isPasswdMatch(String passwd, String dbpasswd);
 	public void logout(HttpSession session);
 	public GuestDTO view_Guest(String userid);
 	public boolean checkPw(String userid, String passwd);
@@ -28,4 +29,5 @@ public interface GuestService {
 	public GuestDTO loginOkNick(GuestDTO dto);
 	public String memberOne(String email) throws Exception;
 	public String findId(String email);
+	public String findByPasswd(String userid); //패스워드 체크
 }

@@ -10,8 +10,13 @@
 <script type="text/javascript">
 //댓글삭제
 function delComment(review_idx, comment_idx) {
+	if (confirm("댓글삭제는 Q&A로 \n 관리자에게 문의하시기 바랍니다.")) {
+		location.href= "${path}/qna/qnalist.do";
+	}
+	
+	/* 댓글삭제기능 미완 
 	if (confirm("댓글을 삭제하시겠습니까?")) {
-		$.ajax({
+		 $.ajax({
 			type : 'POST',
 			dataType : 'json',
 			url : "${path}/reviews/delComment.do",
@@ -25,7 +30,7 @@ function delComment(review_idx, comment_idx) {
 		});
 	} else {
 		return;
-	}
+	}  */
 }
 </script>
 <style type="text/css">
@@ -70,12 +75,17 @@ function delComment(review_idx, comment_idx) {
 										<div class="fw-lighter" style="font-size: 15px;">
 											<fmt:formatDate value="${co.write_date}"
 												pattern="M월 dd일, yyyy / HH:mm" />
+											 
 											<c:if
 												test="${co.writer == sessionScope.userid || co.writer == sessionScope.h_userid }">
 												<span class="ms-1"
-													onclick="delComment('${co.review_idx}','${co.comment_idx}');"
+													onclick="delComment(${co.review_idx},${co.comment_idx})"
 													style="cursor: pointer; font-size: 13px;">[댓글삭제]</span>
-											</c:if>
+												
+												<%-- <span class="ms-1"
+													onclick="delComment(${co.review_idx},${co.comment_idx});"
+													style="cursor: pointer; font-size: 13px;">[댓글삭제]</span> --%>
+											</c:if> 
 										</div>
 										<div class="mt-3">${co.contents}</div>
 									</div>

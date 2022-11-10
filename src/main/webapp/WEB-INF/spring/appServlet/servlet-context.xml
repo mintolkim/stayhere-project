@@ -58,7 +58,7 @@
 	<!-- 채팅관련 설정 시작 -->
 	<!-- 웹소켄 활성화 및 bean동록 -->
 	<websocket:handlers>
-		<websocket:mapping handler="MyTextWebSocketHandler" path="/_chat"/>
+		<websocket:mapping handler="MyTextWebSocketHandler" path="/chat"/>
 		<websocket:sockjs></websocket:sockjs>
 	</websocket:handlers>
 	
@@ -66,7 +66,7 @@
 	
 	<!-- 채팅 텍스트를 위한 업로드 패스 설정 -->
 	<beans:bean id="fileUploadPath" class="java.lang.String">
-	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\styahere-project\resources\chat\" />
+	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\styahere-project\resources\" />
 	</beans:bean>
 	
 	<!-- aop의 설정으로 Proxy 객체를 자동으로 생성 -->
@@ -87,12 +87,11 @@
 	  <mapping path="/wishlist/insert.do" />
 	  <mapping path="/chat" />
 	  <mapping path="/chatlist" />
-	  <mapping path="/chatroom/{room_idx}/{userid}" />
-	  <mapping path="/reviews/write.do" />
 	  <mapping path="/reservations/reserve/{room_idx}" />
 	  <mapping path="/reservations/result.do" />
 	  <mapping path="/reservations/list/guest" />
 	  <mapping path="/reservations/list/host" />
+	  <mapping path="/chatroom/{room_idx}/{h_userid}/{userid}" />
 
 	  <beans:ref bean="loginInterceptor" />
 	 </interceptor> 

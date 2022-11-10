@@ -40,10 +40,11 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 	//리뷰게시물 목록 리턴
 	@Override
-	public List<ReviewDTO> listAll(int start, int end) throws Exception {
+	public List<ReviewDTO> listAll(int start, int end, String select) throws Exception {
 		Map<String,Object> map = new HashMap<>();
 		map.put("start", start);
 		map.put("end", end);
+		map.put("select", select);
 		return sqlSession.selectList("review.listAll", map);
 	}
 
@@ -56,11 +57,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 	@Override
 	public int countArticle() throws Exception {
 		return sqlSession.selectOne("review.countArticle");
-	}
-
-	@Override
-	public ReviewDTO read(int review_idx) throws Exception {
-		return sqlSession.selectOne("review.read",review_idx);
 	}
 	
 	@Override
@@ -78,11 +74,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return sqlSession.selectOne("review.starByRoom" ,room_idx);
 	}
 
-	/*
-	 * @Override public List<ReviewDTO> userReviews(String userid) { return
-	 * sqlSession.selectOne("review.userReviews"); }
-	 */
-	
 	@Override
 	public void deleteFile(String fileName) {
 		sqlSession.delete("review.deleteFile",fileName);
@@ -138,9 +129,9 @@ public class ReviewDAOImpl implements ReviewDAO {
 		Map<String,Object> map = new HashMap<>();
 		map.put("review_idx", review_idx);
 		map.put("comment_idx", comment_idx);
-		sqlSession.delete("reivew.delComment",map);
+		sqlSession.delete("reivew.delComment", map);		
 	}
-	
+
 	@Override
 	public int checkAttach(String fullName, int review_idx) {
 		Map<String,Object> map = new HashMap<>();
@@ -149,7 +140,7 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return sqlSession.selectOne("review.checkattach",map);
 	}
 
-	@Override
+@Override
 	public List<ReviewDTO> getreview(String userid) {
 		return sqlSession.selectList("review.getreview",userid);
 	}
@@ -165,7 +156,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return null;
 	}
 
-
 	@Override
 	public int countByUser(String userid) {
 		return sqlSession.selectOne("review.countByUser",userid);
@@ -175,4 +165,5 @@ public class ReviewDAOImpl implements ReviewDAO {
 	public int getReviewId(int res_idx) {
 		return sqlSession.selectOne("review.getReviewId",res_idx);
 	}
+
 }

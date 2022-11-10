@@ -49,6 +49,7 @@ a {
 #profile-tab a:hover {
  color: #ffc107;
  text-decoration: none;
+color: black;
 }
 
 .profile {
@@ -88,6 +89,7 @@ div #tab-bar li a:hover {
 				
 			<div class="list-group col-lg-3 mt-4 " id="profile-tab">	
 				<div style="width: 80%;" align="center">
+
 					<c:if test="${guest.profile_img != null}">			 
 						<img class="profile" src="${path}/imgUpload/${guest.profile_img}" style="border-radius: 50%; width: 230px; height: 230px;">
 					</c:if>
@@ -97,6 +99,7 @@ div #tab-bar li a:hover {
 					<br>
 					</c:if>
 					
+
 					<br>
 					<a href="${path}/guest/guest_view/${sessionScope.userid}" class="list-group-item list-group-item-action">마이 페이지</a>
 					<a href="${path}/reservations/list/guest" class="list-group-item list-group-item-action">예약 정보</a>

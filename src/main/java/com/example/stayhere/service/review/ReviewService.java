@@ -14,11 +14,9 @@ public interface ReviewService {
 	public void delete(int review_idx) throws Exception; //삭제
 	public void increaseViewcnt(int review_idx, HttpSession session) throws Exception; //조회수 증가 처리
 	public int countArticle() throws Exception;//레코드 갯수 계산
-	public ReviewDTO read(int review_idx) throws Exception; //레코드 조회
 	public List<ReviewDTO> reviewsCategory(int review_idx, Date write_date, int view_count, int review_star);//조회(최신순, 조회수, 별점순)
-	public List<ReviewDTO> listAll(int start, int end) throws Exception; //전체목록
+	public List<ReviewDTO> listAll(int start, int end, String select) throws Exception; //전체목록
 	public ReviewDTO detail(int review_idx);//리뷰상세보기
-	//public List<ReviewDTO> userReviews(String userid);//유저별 리뷰 목록
 	public List<ReviewDTO> reviewsByRoom(int room_idx);//숙소 별 리뷰 목록
 	public int countByRoom(int room_idx);//숙소 별 후기 개수
 	public double starByRoom(int room_idx);//숙소 별 별점 평균
@@ -26,8 +24,6 @@ public interface ReviewService {
 	public void deleteFile(String fileName); //첨부파일 삭제 
 	public List<String> getAttach(int review_idx); //첨부파일 정보 
 	public void addAttach(String fullName); //첨부파일저장
-	public void updateAttach(String fullname, int review_idx); //첨부파일 수정
-	public int checkAttach(String fullname, int review_idx);//첨부파일 확인
 	//리뷰신고
 	//public int countByAcc(int review_idx);//신고 갯수
 	//public void checkAcc(String review_idx);//신고체크

@@ -33,7 +33,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public void addAttach(String fullName) {
-		//return reviewDao.addAttach(fullName);
 	}
 
 	@Override
@@ -49,9 +48,12 @@ public class ReviewServiceImpl implements ReviewService {
 		String[] files = dto.getFiles();
 		if(files==null) return;
 		for(String fullName: files) { 
-			if(reviewDao.checkAttach(fullName, dto.getReview_idx())==0){
-				reviewDao.updateAttach(fullName, dto.getReview_idx()); 
-			} 
+			reviewDao.updateAttach(fullName, dto.getReview_idx()); 
+			
+			/*
+			 * if(reviewDao.checkAttach(fullName, dto.getReview_idx()) == 0){
+			 * reviewDao.updateAttach(fullName, dto.getReview_idx()); }
+			 */ 
 		}
 	}
 	
@@ -65,8 +67,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewDTO> listAll(int start, int end) throws Exception {
-		return reviewDao.listAll(start, end);
+	public List<ReviewDTO> listAll(int start, int end, String select) throws Exception {
+		return reviewDao.listAll(start, end, select);
 	}
 
 	@Override
@@ -77,8 +79,8 @@ public class ReviewServiceImpl implements ReviewService {
 			update_time=(long)session.getAttribute("update_time_"+review_idx);
 		}
 		long current_time=System.currentTimeMillis();
-		//일정시간값 계산 후 조회수 증가
-		if(current_time - update_time >24*60*60*1000) {//24시간에 한번
+		//일정시간(5초: 5*1000)값 계산 후 조회수 증가_테스트용
+		if(current_time - update_time >24*60*60*1000) {//24시간에 한번(24*60*60*1000)
 			reviewDao.increaseViewcnt(review_idx);//하나만 들어와도됨
 			//조회수 올린시간값 저장처리
 			session.setAttribute("update_time_"+review_idx, current_time);
@@ -89,11 +91,6 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int countArticle() throws Exception {
 		return reviewDao.countArticle();
-	}
-
-	@Override
-	public ReviewDTO read(int review_idx) throws Exception {
-		return reviewDao.read(review_idx);
 	}
 	
 	@Override
@@ -116,11 +113,6 @@ public class ReviewServiceImpl implements ReviewService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	/*
-	 * @Override public List<ReviewDTO> userReviews(String userid) { return
-	 * reviewDao.userReviews(userid); }
-	 */
 
 	@Override
 	public ReviewDTO detail(int review_idx) {
@@ -146,18 +138,6 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public void updateAttach(String fullname, int review_idx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int checkAttach(String fullname, int review_idx) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public List<ReviewDTO> getreview(String userid) {
 		return reviewDao.getreview(userid);
 	}
@@ -171,5 +151,6 @@ public class ReviewServiceImpl implements ReviewService {
 	public int getReviewId(int res_idx) {
 		return reviewDao.getReviewId(res_idx);
 	}
+		
 
 }

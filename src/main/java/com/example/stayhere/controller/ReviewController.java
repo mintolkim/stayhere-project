@@ -64,17 +64,18 @@ public class ReviewController {
 
 	@Inject
 	ReservationsService reservationsService;
-	
+
 	// 업로드 디렉토리
 	@Resource(name = "uploadPath")
 	String uploadPath; // c:/upload
 
-	@RequestMapping("list.do")
+	@RequestMapping(value = "list.do", method = RequestMethod.GET)
 	public ModelAndView list(
 			@RequestParam(defaultValue = "1") int curPage, 
 			@RequestParam(defaultValue="review_idx") String select,
 			ReviewDTO dto, 
-			HttpSession session) throws Exception {
+			HttpSession session
+			) throws Exception {
 		int view_count = reviewService.countArticle();// 레코드 갯수 계산
 
 		// 페이지 설정
@@ -82,17 +83,16 @@ public class ReviewController {
 		Pager pager = new Pager(pageScale, view_count, curPage);// 한 페이지당 6개개
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
-		
-		List<ReviewDTO> list = reviewService.listAll(start, end);
+
+		List<ReviewDTO> list = reviewService.listAll(start, end, select);
 		logger.info(list.toString());
-		//댓글 조회수
-		//List<ReCommentDTO> recntlist = reviewService.comment(review_idx);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("list", list);
 		map.put("view_count", view_count); // 레코드 갯수 파일
 		map.put("pager", pager);
+		map.put("select", select);
 		mav.setViewName("reviews/reviewList");
 		mav.addObject("map", map);
 		return mav;
@@ -119,10 +119,10 @@ public class ReviewController {
 		String userid = (String)session.getAttribute("userid");
 		dto.setUserid(userid);
 		reviewService.create(dto);
-		
+
 		//예약번호를 이용하여 예약테이블의 리뷰 유무 컬럼을 y로 변경
 		reservationsService.reviewCheck(dto.getRes_idx());
-		
+
 		return "redirect:/reviews/list.do";
 	}
 
@@ -142,6 +142,7 @@ public class ReviewController {
 		//조회수증가처리
 		reviewService.increaseViewcnt(review_idx, session);
 		ReviewDTO reviewDto = reviewService.detail(review_idx);
+		
 		model.addAttribute("dto", reviewDto);
 		//model.addAttribute("accuse", accuse);
 		model.addAttribute("user", user);
@@ -159,21 +160,19 @@ public class ReviewController {
 		}else if(h_userid != null) {//접속한 사람이 호스트라면
 			user=h_userid;
 		}
-		//접속자가 신고를 눌렀는지 체크(int로 누적카운트 하려다가,, 그냥 다시 y/n으로)
-		//int accuse = reviewService.accuseCheck(user, review_idx);
-		
+
 		//파라미터로 받은 res_idx&userid로 review_idx를 가져온다.
 		int review_idx=reviewService.getReviewId(res_idx);
-		
+
 		//조회수증가처리
 		reviewService.increaseViewcnt(review_idx, session);
 		ReviewDTO reviewDto = reviewService.detail(review_idx);
 		model.addAttribute("dto", reviewDto);
-		//model.addAttribute("accuse", accuse);
+
 		model.addAttribute("user", user);
 		return "reviews/reviewDetail";
 	}
-	
+
 	// 리뷰이미지파일 업로드
 	@RequestMapping(value = "imageUpload.do")
 	public void imageUpload(HttpServletRequest request, HttpServletResponse response,
@@ -297,16 +296,6 @@ public class ReviewController {
 				,HttpStatus.OK);//uploadAjax.jsp의 if(result=="deleted")와 연결
 	}
 
-	// 게스트리뷰리스트
-	//@RequestMapping("view.do")
-	//public ModelAndView view(int review_idx, HttpSession session) throws Exception {
-	//	//조회수 증가 처리(session 처리 확인)
-	//	reviewService.increaseViewcnt(review_idx, session);
-	//	ModelAndView mav=new ModelAndView();
-	//	mav.setViewName("reviews/view");
-	//	mav.addObject("dto", reviewService.read(review_idx));
-	//	return mav;
-	//}
 
 	//첨부파일 목록을 리턴(참고용 board 컨트롤러)
 	//ArrayList를 json 배열로 변환하여 리턴
@@ -328,7 +317,7 @@ public class ReviewController {
 		//상세 화면으로 되돌아갈때
 		return "redirect:/reviews/detail.do?review_idx="+dto.getReview_idx();
 	}
-	
+
 	//리뷰수정페이지이동
 	@RequestMapping("edit.do")
 	public ModelAndView edit(int review_idx) 
@@ -371,9 +360,10 @@ public class ReviewController {
 		return new ResponseEntity<Integer>(review_idx,HttpStatus.OK);
 	}	
 
-	//리뷰댓글 삭제(들어온 값 확인필요)
+	//리뷰댓글 삭제
 	@RequestMapping("delComment.do")
-	public ResponseEntity<Integer> delComment(int review_idx,int comment_idx){
+	public ResponseEntity<Integer> delComment(int review_idx, int comment_idx) {
+		//null값때문에 Integer로 변환필요
 		System.out.println("들어온 review_idx: "+review_idx+",comment_idx : "+comment_idx);
 		reviewService.delComment(review_idx,comment_idx);
 		return new ResponseEntity<Integer>(review_idx,HttpStatus.OK);
@@ -385,12 +375,11 @@ public class ReviewController {
 		List<ReviewDTO> list = reviewService.getreview(userid);
 		int review_count = reviewService.countByUser(userid);
 		GuestDTO g_dto=guestService.view_Guest(userid);
-		
+
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("review_count", review_count);
-		
 		mav.addObject("map", map);
 		mav.addObject("guest", g_dto);
 		mav.setViewName("reviews/reviewUserList");

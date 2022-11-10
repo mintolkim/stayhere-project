@@ -164,9 +164,11 @@ $(function(){
 			$("#h_email").attr("readonly",true);
 			$("#h_email").attr("onFocus", "this.initialSelect = this.selectedIndex");
 	        $("#h_email").attr("onChange", "this.selectedIndex = this.initialSelect");
+			$("#join").attr("disabled", false);
 		}else{
 			alert("인증번호가 다릅니다. 다시 확인해주세요.");
 			checkResult.attr("class","correct");
+			$("#join").attr("disabled", true);
 		}
 	}); 
 	
@@ -233,7 +235,7 @@ function checkEmail(){
 		<label><span class="id_ok">사용 가능한 아이디입니다.</span><span class="id_already">이미 존재하는 아이디입니다.</span></label>
 		<input class="form-control me-2" type="text" placeholder="ID" name="h_userid" id="h_userid" oninput = "checkId()">
 		<br>
-		<label>비밀번호 8글자 이상 대소문자포함</label>
+		<label>대소문자, 특수문자 포함 6-10글자</label>
 		<input class="form-control me-2" type="password" placeholder="Password" name="h_passwd" id="h_passwd">
 		<br>
 		<br>

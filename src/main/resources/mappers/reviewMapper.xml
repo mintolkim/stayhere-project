@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					join reservations d
 					on a.res_idx = d.res_idx
 					where show='y'
-					order by review_idx desc
+					order by ${select} desc
 				) A
 		) where rn between #{start} and #{end}
 	</select>
@@ -85,18 +85,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="detail" resultType="ReviewDTO">
 		SELECT
-			review_idx, 
-			res_idx,
+			a.review_idx, 
+			a.res_idx,
 			c.room_idx, 
 			b.name, 
 			b.userid, 
-			r_title, 
-			review_star, 
-			review_content,
-			view_count, 
-			write_date, 
-			show, 
-			reviewAcc, 
+			a.r_title, 
+			a.review_star, 
+			a.review_content,
+			a.view_count, 
+			a.write_date,
+			c.room_name,
+			a.show, 
+			a.reviewAcc, 
 			b.profile_img,
 			(select count(*) from review_comment where a.review_idx=review_idx) as comment_count
 		from review a
@@ -105,11 +106,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		join rooms c
 		on a.room_idx = c.room_idx
 		where review_idx=#{review_idx}
-	</select>
-	
-	<!-- 임시.입력된 아이디의 숙소이용 내역 중. 숙소이용완료인 룸번호(리뷰작성가능 룸번호) -->
-	<select id="reviewReady" resultType="int">
-		select room_idx from reservations where res_state = '이용완료'
 	</select>
 	
 	<!--  신고하기체크 
@@ -142,9 +138,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by regdate desc
 	</select>
   
-	<!--(admin page, 예약리스트도-확인중-) 게스트 리뷰글 가져오기  -->
-	<select id="getreview" resultType="ReviewDTO">
-	select    
+	<!--(admin page,reviewUserList 페이지) 게스트 리뷰글 가져오기  -->
+   <select id="getreview" resultType="ReviewDTO">
+   select    
         rev.room_idx, 
         rev.review_idx, 
         rev.userid, 
@@ -163,14 +159,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         (select count(*) from review where rev.userid=userid) as review_count,
         rev.show,
         rp.photo1
-		from review rev
-		join reservations res on rev.res_idx = res.res_idx
-		join rooms ro on rev.room_idx = ro.room_idx
-		join guest g on rev.userid = g.userid
-        join room_photo rp on ro.room_idx=rp.room_idx
-        where rev.userid=#{userid}
-        order by review_idx desc
-	</select>
+      from review rev
+      join reservations res on rev.res_idx = res.res_idx
+      join rooms ro on rev.room_idx = ro.room_idx
+      join guest g on rev.userid = g.userid
+      join room_photo rp on ro.room_idx=rp.room_idx
+      where rev.userid=#{userid}
+      order by review_idx desc
+   </select>
 	
 	<!-- 첨부파일 확인(기존에 있는 파일인지)-->
 	<select id="checkattach">
@@ -198,9 +194,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 댓글 리스트 -->
 	<select id="comment" resultType="ReCommentDTO">
-		select comment_idx, review_idx, writer, contents, write_date,
-		b.profile_img, c.h_profile_img
-		,(select userid from review where review_idx=a.review_idx) as userid
+		select 
+				a.comment_idx, 
+				a.review_idx, 
+				a.writer, 
+				a.contents, 
+				a.write_date,
+				b.profile_img, 
+				c.h_profile_img,
+				(select userid from review where review_idx=a.review_idx) as userid
 		from review_comment a
 		full outer join guest b
 		on a.writer=b.userid
@@ -226,20 +228,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 조회수증가 -->
 	<update id="increaseViewcnt">
-		update review set view_count = view_count+1
-	 	where review_idx = #{review_idx}
+		update review set view_count=view_count+1
+	 	where review_idx=#{review_idx}
 	</update>
 	
-	<select id="getaccuse"
-	resultType="com.example.stayhere.model.review.dto.ReviewAccuseDTO">
+	<select id="getaccuse" resultType="com.example.stayhere.model.review.dto.ReviewAccuseDTO">
 	select
-	acc_idx,
-	review_idx,
-	userid,
-	writer,
-	acc_content,
-	(select room_idx from review where a.review_idx=review_idx) room_idx, 
-	(select r_title from review where review_idx=a.review_idx) r_title
+			acc_idx,
+			review_idx,
+			userid,
+			writer,
+			acc_content,
+			(select room_idx from review where a.review_idx=review_idx) room_idx, 
+			(select r_title from review where review_idx=a.review_idx) r_title
 	from review_accuse a
 	where writer = #{userid}
 </select>
@@ -269,9 +270,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="countByUser" resultType="int">
-	      select count(*) from review
-	      where userid=#{userid} and show ='y'
-	   </select>
+		select count(*) from review
+		where userid=#{userid} and show ='y'
+	</select>
+	
 </mapper>
 
 

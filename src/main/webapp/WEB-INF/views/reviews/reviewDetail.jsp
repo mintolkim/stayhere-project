@@ -5,12 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="../include/header.jsp"%>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<script src="https://kit.fontawesome.com/fdfee59c02.js"
-	crossorigin="anonymous"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>STAYHERE</title>
 <script type="text/javascript">
 $(function() {
@@ -105,17 +99,16 @@ function listReply() {
 		}
 	});
 }
-/* function accuseCheck(review_idx){
-	 var user;
-	 if("${sessionScope.userid != null}"=="true"){
-	 user="${sessionScope.userid}";
-	 }else if("${sessionScope.h_userid != null}"=="true"){
-	 user="${sessionScope.h_userid}";
-	 }else{
-	 if(confirm("로그인이 필요합니다. 로그인페이지로 이동하시겠습니까?")){
-	 location.href="${path}/guest/login.do";
-	 }else return;
-	 }
+/*//신고기능
+function accuseCheck(review_idx){
+	var flag=confirm("해당 리뷰를 신고하시겠습니까?");
+	if(flag) {
+		location.href="${path}/reviews/accuseCheck.do?review_idx="+review_idx;
+	}else {
+		return;
+	}
+	//신고확인 경고창
+	//신고체크 컨트롤러보내기?
 	 $.ajax({
 	 type: 'POST',
 	 dataType:'json',
@@ -132,7 +125,7 @@ function listReply() {
 	 }
 	 });
 	
-	 } */
+	 }*/
 </script>
 <style type="text/css">
 .title {
@@ -170,6 +163,10 @@ function listReply() {
 #reviewStar {
 	margin-bottom: 10px;
 }
+#reviewStar span {
+	font-size: 22px;
+}
+
 </style>
 </head>
 <body class="d-flex flex-column h-100">
@@ -189,26 +186,27 @@ function listReply() {
 				<div class="row">
 					<div class="col-9">
 						<span onclick="location.href='${path}/reviews/list.do'"
-							style="cursor: pointer;"> <i
-							class="fa-solid fa-rotate-left spanA"></i> 목록으로 돌아가기
+							style="cursor: pointer;"> 
+							<i class="bi bi-arrow-left"></i>&nbsp;목록으로
 						</span>
 					</div>
 					<c:if
 						test="${dto.userid == sessionScope.userid || dto.userid == sessionScope.h_userid }">
 						<div class="col-3 spanB" align="right">
-							<span
-								onclick="location.href='${path}/reviews/edit.do?review_idx=${dto.review_idx}'"
-								style="cursor: pointer;">[ 수정 / 삭제 ]</span> <span
-								onclick="location.href='#'" style="cursor: pointer; color: red;">[신고
-								<i class="fa-solid fa-ban"></i> ]
+							<span class="btn btn-outline-warning" style="cursor: pointer;"
+									onclick="location.href='${path}/reviews/edit.do?review_idx=${dto.review_idx}'">수정/삭제</span>
+							<span	class="btn btn-outline-danger" onclick="accuseCheck(${dto.review_idx})"
+									style="cursor: pointer;"> 
+								<i class="bi bi-exclamation-square-fill">신고</i>
 							</span>
 						</div>
 					</c:if>
+					<!-- 비회원 접근시 -->
 					<c:if test="${dto.userid == null }">
 						<div class="col-3 spanB" align="right">
-							<span onclick="location.href='#'"
-								style="cursor: pointer; color: red;">[신고 <i
-								class="fa-solid fa-ban"></i> ]
+							<span	class="btn btn-outline-danger" onclick="accuseCheck(${dto.review_idx})"
+									style="cursor: pointer;"> 
+								<i class="bi bi-exclamation-square-fill">신고</i>
 							</span>
 						</div>
 					</c:if>
@@ -246,18 +244,33 @@ function listReply() {
 					</div>
 					<!-- 조회수 -->
 					<div class="col-3 ms-auto" align="right">
-						<i class="fa-regular fa-eye"> ${dto.view_count}</i> &nbsp;
+						<i class="bi bi-eye"> ${dto.view_count}</i> &nbsp;&nbsp;
+						<%-- <i class="bi bi-chat-right-dots"> ${dto.comment_count}</i> --%>
 					</div>
 				</div>
 				<div class="row mt-3 mb-4">
+					<a href="${path}/rooms/detail/${dto.room_idx}" style="text-decoration-line: none;">
+						<h5 class="fw-bolder mb-1">${dto.room_name} > </h5>
+					</a>
 					<!-- 리뷰별점 -->
 					<div class="tab-pane">
 						<div class="col-sm-6 review_star" id="reviewStar">
-							<c:if test="${dto.review_star == '1' }">⭐ /5</c:if>
-							<c:if test="${dto.review_star == '2' }">⭐ ⭐ /5</c:if>
-							<c:if test="${dto.review_star == '3' }">⭐ ⭐ ⭐/5</c:if>
-							<c:if test="${dto.review_star == '4' }">⭐ ⭐ ⭐ ⭐/5</c:if>
-							<c:if test="${dto.review_star == '5' }">⭐ ⭐ ⭐ ⭐ ⭐/5</c:if>
+							<c:forEach begin="1" end="${dto.review_star}">
+								<span>
+									<svg style="color: rgb(255,167,38);" xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+											fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+  										<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+									</svg>
+								</span>
+							</c:forEach> 
+							<c:forEach begin="1" end="${5-dto.review_star}">
+								<span>
+									<svg style="color: rgb(255,167,38);" xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+									fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+  								<path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+									</svg>
+								</span>
+							</c:forEach> 
 						</div>
 						<hr style="border: 1px solid #dadada; margin: 0 40px 0 40px;">
 						<!-- 리뷰상세 -->

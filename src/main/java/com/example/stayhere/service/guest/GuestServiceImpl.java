@@ -47,20 +47,19 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public GuestDTO loginCheck(GuestDTO dto, HttpSession session) {
-		String name = loginOkNick(dto).getName();
-		System.out.println("dto이름"+name);
-		GuestDTO result = guestDao.loginCheck(dto);
-		String result2 = result.getName();
-		System.out.println("result이름"+result.getName());
-		if(result2.equals(name)) { //로그인 성공시 세션에 저장
+	public boolean loginCheck(GuestDTO dto, HttpSession session) {
+		boolean result = guestDao.loginCheck(dto);
+		if(result) { //로그인 성공시 세션에 저장
 			//GuestDTO dto2 = view_Guest(dto.getUserid());
-			session.setAttribute("userid", result.getUserid());
-			session.setAttribute("name", result.getName());
-			System.out.println(session.getAttribute("userid"));
-			System.out.println(session.getAttribute("name"));
+			session.setAttribute("userid", dto.getUserid());
+			session.setAttribute("name", dto.getName());
 		}
 		return result;
+	}
+	
+	@Override
+	public boolean isPasswdMatch(String passwd, String dbpasswd) {
+		return pwdEncoder.matches(passwd, dbpasswd);
 	}
 
 	@Override
@@ -311,6 +310,11 @@ public class GuestServiceImpl implements GuestService {
 	@Override
 	public String findId(String email) {
 		return guestDao.findId(email);
+	}
+
+	@Override
+	public String findByPasswd(String userid) {
+		return guestDao.findByPasswd(userid);
 	}
 
 }

@@ -11,7 +11,7 @@ public interface GuestDAO {
 	public void insert_Guest(GuestDTO dto); //회원 가입
 	public void update_Guest(GuestDTO dto); //회원 수정
 	public void delete_Guest(String userid); //회원 삭제
-	public GuestDTO loginCheck(GuestDTO dto); //로그인 체크
+	public boolean loginCheck(GuestDTO dto); //로그인 체크
 	public GuestDTO view_Guest(String userid); //회원 상세보기
 	public boolean checkPw(String userid, String passwd); //비밀번호확인
 	public int idCheck(String userid) throws Exception; //중복 아이디 체크
@@ -28,6 +28,7 @@ public interface GuestDAO {
 	public List<GuestDTO> getblackguest(int start, int end);//블랙회원만가져오기
 	public int blackguestcount();//블랙회원수
 	public int getmonthguest(String today);//이번달 신규 가입자
+	public String findByPasswd(String userid); //패스워드 찾기
 	
 
 }

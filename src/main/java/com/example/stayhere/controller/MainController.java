@@ -25,20 +25,28 @@ public class MainController {
 	@Inject
 	RoomsService roomsService;
 
+	
+	//메인페이지로 리다이렉션
 	@GetMapping("/")
 	public String home() {
 		return "redirect:/main";
 	}
 
+	
+	/*
+	 * 메인페이지 영역
+	 * @Param curPage 페이지번호
+	 * @throws Exception
+	 */
 	@GetMapping("/main")
 	public ModelAndView main(
 			@RequestParam(defaultValue = "1") int curPage
 			) throws Exception {
 		
+		// today : 현재날짜+1, tomorrow : 현재날짜 + 2 
 		String today = DateParse.strToDate(DateParse.getTodayPlus(1));
 		String tomorrow = DateParse.strToDate(DateParse.getTodayPlus(2));
-		log.info("today : " + today + "tomorrow : " + tomorrow +  "curPage :" + curPage);
-		
+		log.info("today : " + today + ", tomorrow : " + tomorrow +  ", curPage :" + curPage);
 		int count = roomsService.getRoomAllCount(today, tomorrow);
 		int pageScale = 12; //게시물 표시 갯수
 		Pager pager = new Pager(pageScale, count, curPage);
@@ -50,20 +58,25 @@ public class MainController {
 		map.put("list", list);
 		map.put("count", count);
 		map.put("pager", pager);
+		map.put("today", today);
 		mav.addObject("map", map);
 		mav.setViewName("main");
 		return mav;
 	}
 
-	// 무한스크롤 룸 리스트 불러오기
+	/*
+	 * 무한스크롤 룸 리스트 불러오기
+	 * @Param curPage 페이지번호
+	 * @throws Exception
+	 */ 
 	@GetMapping("addRoomsList")
 	public ModelAndView addList(
 			@RequestParam int curPage
 			) throws Exception {
-		
+		// today : 현재날짜+1, tomorrow : 현재날짜 + 2 
 		String today = DateParse.strToDate(DateParse.getTodayPlus(1));
 		String tomorrow = DateParse.strToDate(DateParse.getTodayPlus(2));
-		log.info("today : " + today + "tomorrow : " + tomorrow +  "curPage :" + curPage);
+		log.info("addList today : " + today + "tomorrow : " + tomorrow +  "curPage :" + curPage);
 		int count = roomsService.getRoomAllCount(today, tomorrow);
 		int pageScale = 12; //게시물 표시 갯수
 		Pager pager = new Pager(pageScale, count, curPage);
@@ -75,6 +88,7 @@ public class MainController {
 		map.put("list", list);
 		map.put("count", count);
 		map.put("pager", pager);
+		map.put("today", today);
 		mav.addObject("map", map);
 		mav.setViewName("addPage/addRoomsList");
 		return mav;
