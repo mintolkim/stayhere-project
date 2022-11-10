@@ -74,7 +74,7 @@ function list(page){
 		  
           <c:forEach var="row" items="${map.list}" varStatus="status">
 		  <c:if test="${row.admin_confirm == '승인'}">
-		  <c:if test="${row.check_in > now}">
+		  <c:if test="${row.check_out > now}">
           <div align="right">
           <a href="${path}/rooms/edit/${row.room_idx}" style="font-size: 13px; font-weight: 650; color: #767bc5;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
   		  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
@@ -93,10 +93,10 @@ function list(page){
           <b class="card-title lead" style="font-size: 20px; font-weight: 650">${row.room_name}</b><br>
           </div>
           <b class="lead" style="font-size: 15px;">${row.address1} ${row.address2}</b><br>
-          <c:if test="${row.check_in < now}">
+          <c:if test="${row.check_out < now}">
           <b class="lead" style="font-size: 15px; font-weight: 450; color: gray;">기간: <fmt:formatDate value="${row.check_in}"/> - <fmt:formatDate value="${row.check_out}"/></b><br>
           </c:if>
-          <c:if test="${row.check_in > now}">
+          <c:if test="${row.check_out > now}">
           <b class="lead" style="font-size: 15px;">기간: <fmt:formatDate value="${row.check_in}"/> - <fmt:formatDate value="${row.check_out}"/></b><br>
           </c:if>
           <b class="lead" style="font-size: 15px;">타입: ${row.room_type}</b><br>
