@@ -40,8 +40,6 @@ a { text-decoration: none;}
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background-color: gray;
-    background-color: #c3c3c3;
 }
 label {
 	font-size: 10px;
@@ -106,9 +104,16 @@ function fileCheck(el) {
 		<br>
 		
 		<!-- 프로필  -->	
-		<div class="box" >
-		<img class="profile" src="${path}/imgUpload/${dto.h_profile_img}">
-		</div>
+	    <c:if test="${dto.h_profile_img!=null}">
+	      <div class="box" >
+		  <img class="profile" src="${path}/imgUpload/${dto.h_profile_img}">
+		  </div>
+	    </c:if>
+	    <c:if test="${dto.h_profile_img==null}">
+	      <div class="box" >
+		  <img class="profile" src="${path}/resources/images/guest.png">
+		  </div>
+	    </c:if>
 		<!-- 파일첨부 -->
 		<label class="lead" for="file" style="font-size: 16px;">프로필 사진 변경</label> 
 		<input type="file" id="file" name="file" style="display: none;" onchange="fileCheck(this)">

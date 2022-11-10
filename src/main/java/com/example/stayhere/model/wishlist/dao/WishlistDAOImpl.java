@@ -19,7 +19,7 @@ public class WishlistDAOImpl implements WishlistDAO {
 	
 	@Override
 	public int wishCount(String userid) {
-		return sqlSession.selectOne("wishCount", userid);
+		return sqlSession.selectOne("wishlist.wishCount", userid);
 	}
 	
 	@Override
@@ -28,7 +28,7 @@ public class WishlistDAOImpl implements WishlistDAO {
 		map.put("userid", userid);
 		map.put("start", start);
 		map.put("end", end);
-		return sqlSession.selectList("listWish", map);
+		return sqlSession.selectList("wishlist.listWish", map);
 	}
 	
 
@@ -61,7 +61,7 @@ public class WishlistDAOImpl implements WishlistDAO {
 
 	@Override
 	public List<WishlistDTO> addCheck(String userid) {
-		return sqlSession.selectList("addCheck", userid);
+		return sqlSession.selectList("wishlist.addCheck", userid);
 	}
 
 	@Override

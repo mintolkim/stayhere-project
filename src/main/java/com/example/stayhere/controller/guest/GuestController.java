@@ -1,8 +1,5 @@
 package com.example.stayhere.controller.guest;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Random;
@@ -16,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,13 +20,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.controller.FileUtils;
 import com.example.stayhere.model.guest.dto.GuestDTO;
+import com.example.stayhere.service.chat.ChatRoomService;
 import com.example.stayhere.service.guest.GuestService;
+import com.example.stayhere.service.reservations.ReservationsService;
+import com.example.stayhere.service.review.ReviewService;
+import com.example.stayhere.service.wishlist.WishlistService;
 
 @Controller
 @RequestMapping("guest/*")
@@ -42,7 +41,20 @@ public class GuestController {
 	GuestService guestService;
 	
 	@Inject
+	ReservationsService reservationsService;
+	
+	@Inject
+	WishlistService wishlistService;
+	
+	@Inject
+	ReviewService reviewService;
+	
+	@Inject
+	ChatRoomService chatroomService;
+	
+	@Inject
 	BCryptPasswordEncoder pwdEncoder;
+	
 	
 	@Resource(name="uploadPath")
 	String uploadPath;
@@ -60,23 +72,22 @@ public class GuestController {
 	}	
 
 	@RequestMapping("loginCheck")
-	public ModelAndView loginCheck(GuestDTO dto, HttpSession session) {
-		System.out.println("loginCheck 시작!");
-		//guestService.loginCheck(dto, session);
-		GuestDTO result = guestService.loginCheck(dto, session);
-		ModelAndView mav = new ModelAndView();
-		//boolean passcheck = equals(dto.getPasswd(), result.getPasswd());
-		boolean passcheck = pwdEncoder.matches(dto.getPasswd(), result.getPasswd());
-		System.out.println("dto :" + dto);		
-
-		System.out.println("result :" + result);
-		System.out.println("passcheck" + passcheck);
-		System.out.println("session"+session.getAttribute("userid"));
-		if(passcheck) {
-			//로그인 성공시 메인페이지로 이동
-			mav.setViewName("redirect:/main");
-		} else {
-			//로그인 실패시 로그인 페이지로 리턴
+	public ModelAndView loginCheck(GuestDTO dto, HttpSession session, ModelAndView mav) {
+		//데이터 베이스의 정보 가져오기
+		GuestDTO DBDto = guestService.view_Guest(dto.getUserid());
+		dto.setName(DBDto.getName()); //데이터베이스 정보를 받아서 이름값 dto에 넣기
+		//입력한 비밀번호와 가져온 db비밀번호 체크
+		boolean passcheck = guestService.isPasswdMatch(dto.getPasswd(), DBDto.getPasswd());
+		if(passcheck) { //패스워드가 일치한다면
+			dto.setPasswd(DBDto.getPasswd()); //db에서 가져온 패스워드를 dto에 저장
+			boolean result = guestService.loginCheck(dto, session);
+			if(result) { //로그인 체크 결과가 참이면 즉, 로그인성공
+				mav.setViewName("redirect:/main");
+			} else { // 로그인 실패
+				mav.setViewName("guest/guest_login");
+				mav.addObject("message", "error");
+			}
+		} else { //패스워드가 일치하지 않으면
 			mav.setViewName("guest/guest_login");
 			mav.addObject("message", "error");
 		}
@@ -112,15 +123,42 @@ public class GuestController {
 
 	@RequestMapping("guest_view/{userid}")
 	public ModelAndView view(@PathVariable String userid, ModelAndView mav) {
-		mav.setViewName("guest/guest_view");
+
+		int cntCheckout=reservationsService.cntCheckout(userid);
+		logger.info("이용완료 건수"+cntCheckout);
+		
+		int res_count=reservationsService.countAllRes(userid);
+		logger.info("이용완료 제외한 예약 총 건수 : " + res_count);
+		
+		int wish_count=wishlistService.wishCount(userid);
+		logger.info("위시리스트 건수 : " + wish_count);
+		
+		int review_count=reviewService.countByUser(userid);
+		logger.info("리뷰 건수 : " + review_count);
+		
+		int chat_count=chatroomService.countByUser(userid);
+		logger.info("채팅 건수 : ");
+		
+		mav.addObject("cntCheckout", cntCheckout);
+		mav.addObject("res_count", res_count);
+		mav.addObject("wish_count", wish_count);
+		mav.addObject("review_count", review_count);
+		mav.addObject("chat_count", chat_count);
+		
 		mav.addObject("dto", guestService.view_Guest(userid));
+		mav.setViewName("guest/guest_view");
 		return mav;
 	}
 	
 	@RequestMapping("update/{userid}")
 	public ModelAndView update(@PathVariable String userid, ModelAndView mav) {
-		mav.setViewName("guest/guest_edit");
+		
+		int cntCheckout=reservationsService.cntCheckout(userid);
+		logger.info("이용완료 개수"+cntCheckout);
+		
+		mav.addObject("cntCheckout", cntCheckout);
 		mav.addObject("dto", guestService.view_Guest(userid));
+		mav.setViewName("guest/guest_edit");
 		return mav;
 	}
 	
@@ -159,10 +197,16 @@ public class GuestController {
 			System.out.println(fileName);
 			dto.setProfile_img(fileName);
 		}
-		String inputpasswd = dto.getPasswd();
-		String encodeigpasswd = pwdEncoder.encode(inputpasswd);
-		dto.setPasswd(encodeigpasswd);
-		logger.info(dto.getPasswd());
+		//입력받은 패스워드 (즉, 패스워드를 수정하지 않았다면)
+		String inputpasswd = dto.getPasswd(); 
+		//데이터 베이스의 비밀번호 가져오기
+		String dbPasswd = guestService.findByPasswd(dto.getUserid());
+		if(!inputpasswd.equals(dbPasswd)) { 
+			//입력한 비밀번호가 기존 비밀번호와 같지 않다면 비밀번호 암호화
+			String encodeigpasswd = pwdEncoder.encode(inputpasswd);
+			dto.setPasswd(encodeigpasswd);
+		}//비밀번호가 일치하면 현재 비밀번호가 변경되지 않고 그대로 업데이트 된다. 
+		
 		guestService.update_Guest(dto);
 		mav.addObject("dto", guestService.view_Guest(userid));
 		mav.setViewName("guest/guest_view");
@@ -326,6 +370,7 @@ public class GuestController {
 //		mav.addObject("kakao_url", kakaoUrl);
 //		return mav;
 //	}// end memberLoginForm()
+	
 	@RequestMapping("delete.do")
 	public String delete(GuestDTO dto, HttpSession session) {
 		String userid = (String)session.getAttribute("userid");

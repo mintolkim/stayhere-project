@@ -10,6 +10,9 @@
 a { 
  text-decoration: none;
 }
+.input_data {
+ width: 40%;
+} 
 </style>
 </head>
 <body class="d-flex flex-column h-100">
@@ -28,7 +31,7 @@ a {
 		<table class="table">
 		  <thead>
 		    <tr>
-		      <th scope="col" colspan="4" style="text-align: center; font-size: 26px; letter-spacing: 10px; padding-bottom: 40px;">Reservations</th>
+		      <td scope="col" colspan="4" style="text-align: center; font-size: 26px; letter-spacing: 10px; padding-bottom: 20px;"><span>Reservations</span><br><span style="font-size: 14px;">예약하기</span></td>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -51,19 +54,19 @@ a {
 		    </tr>
 		    <tr>
 		     <td>예약자명</td>
-		     <td><input value="${guest.name}" name="name" disabled="disabled"></td>
+		     <td><input value="${guest.name}" name="name" class="input_data" disabled="disabled"></td>
 		    </tr>
 		    <tr>
 		     <td>연락처</td>
-		     <td><input value="${guest.phone}" name="phone" disabled="disabled"></td>
+		     <td><input value="${guest.phone}" name="phone" class="input_data" disabled="disabled"></td>
 		    </tr>
 		    <tr>
 		     <td>이메일</td>
-		     <td><input value="${guest.email}" disabled="disabled"></td>
+		     <td><input value="${guest.email}" name="email" class="input_data" disabled="disabled"></td>
 		    </tr>
 		    <tr>
 		     <td>예약 인원</td>
-		     <td><input value="${requestScope.res_person}" disabled="disabled">명</td>
+		     <td><input value="${requestScope.res_person}" name="res_person" class="input_data" disabled="disabled">명</td>
 		    </tr>
 		    <tr>
 		     <td>결제 금액</td>
@@ -149,9 +152,8 @@ a {
 <script>
 $(function(){
 	$("#btnPay").click(function () {
-
-		//request_pay(); //결제 API연결해서 테스트
-		$("#pay_form").submit();//결제 API 건너뛰고 테스트
+		request_pay(); //결제 API연결해서 테스트
+		//$("#pay_form").submit();//결제 API 건너뛰고 테스트
 	});
 });
 //정보이용 동의 확인용
@@ -176,7 +178,7 @@ function request_pay() {
 	    // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
 	    // i'mport 관리자 페이지 -> 내정보 -> 가맹점식별코드
 	    IMP.request_pay({
-	        pg: 'kakaopay', // version 1.1.0부터 지원.
+	        pg: 'html5_inicis', // version 1.1.0부터 지원.
 	        /*
 	        'kakaopay':카카오페이,
 	        'html5_inicis':이니시스(웹표준결제)
@@ -197,10 +199,10 @@ function request_pay() {
 	        'phone':휴대폰소액결제
 	        */
 	        merchant_uid: 'merchant_' + new Date().getTime(),
+	        //결제창에서 보여질 이름 
 	        name: '${room.room_name}',
-	        //결제창에서 보여질 이름 total_price,
-	        amount:100,
-	        //가격
+	        //가격 total_price
+	        amount: 100,
 	        buyer_email: '${guest.email}',
 	        buyer_name: '${guest.name}',
 	        buyer_tel: '${guest.phone}',

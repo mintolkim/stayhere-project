@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.stayhere.model.review.dao.ReviewDAO;
-import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
 import com.example.stayhere.model.review_comment.dto.ReCommentDTO;
 
@@ -19,6 +18,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Inject
 	ReviewDAO reviewDao;
+	
 	
 	@Override
 	public void deleteFile(String fileName) {
@@ -33,7 +33,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public void addAttach(String fullName) {
-		//return reviewDao.addAttach(fullName);
 	}
 
 	@Override
@@ -49,9 +48,12 @@ public class ReviewServiceImpl implements ReviewService {
 		String[] files = dto.getFiles();
 		if(files==null) return;
 		for(String fullName: files) { 
-			if(reviewDao.checkAttach(fullName, dto.getReview_idx())==0){
-				reviewDao.updateAttach(fullName, dto.getReview_idx()); 
-			} 
+			reviewDao.updateAttach(fullName, dto.getReview_idx()); 
+			
+			/*
+			 * if(reviewDao.checkAttach(fullName, dto.getReview_idx()) == 0){
+			 * reviewDao.updateAttach(fullName, dto.getReview_idx()); }
+			 */ 
 		}
 	}
 	
@@ -65,8 +67,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewDTO> listAll(int start, int end) throws Exception {
-		return reviewDao.listAll(start, end);
+	public List<ReviewDTO> listAll(int start, int end, String select) throws Exception {
+		return reviewDao.listAll(start, end, select);
 	}
 
 	@Override
@@ -77,8 +79,8 @@ public class ReviewServiceImpl implements ReviewService {
 			update_time=(long)session.getAttribute("update_time_"+review_idx);
 		}
 		long current_time=System.currentTimeMillis();
-		//일정시간값 계산 후 조회수 증가
-		if(current_time - update_time >24*60*60*1000) {//24시간에 한번
+		//일정시간(5초: 5*1000)값 계산 후 조회수 증가_테스트용
+		if(current_time - update_time >24*60*60*1000) {//24시간에 한번(24*60*60*1000)
 			reviewDao.increaseViewcnt(review_idx);//하나만 들어와도됨
 			//조회수 올린시간값 저장처리
 			session.setAttribute("update_time_"+review_idx, current_time);
@@ -89,11 +91,6 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int countArticle() throws Exception {
 		return reviewDao.countArticle();
-	}
-
-	@Override
-	public ReviewDTO read(int review_idx) throws Exception {
-		return reviewDao.read(review_idx);
 	}
 	
 	@Override
@@ -118,33 +115,10 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewDTO> reviewsByUser(int userid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public ReviewDTO detail(int review_idx) {
 		return reviewDao.detail(review_idx);
 	}
 
-	@Override
-	public void addlikey(int review_idx, String userid) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int likeycheck(int review_idx, String userid) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void dellikey(int review_idx, String userid) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public List<ReCommentDTO> comment(int review_idx) {
@@ -163,52 +137,22 @@ public class ReviewServiceImpl implements ReviewService {
 		
 	}
 
-	/*
-	 * public List<ReviewAccuseDTO> acclist(int start, int end) throws Exception {
-	 * // TODO Auto-generated method stub return null; }
-	 */
-
 	@Override
-	public void checkAcc(String review_idx) {
-		// TODO Auto-generated method stub
-		
+	public List<ReviewDTO> getreview(String userid) {
+		return reviewDao.getreview(userid);
 	}
 
 	@Override
-	public void cancelAcc(String review_idx) {
-		// TODO Auto-generated method stub
-		
+	public int countByUser(String userid) {
+		return reviewDao.countByUser(userid);
 	}
 
 	@Override
-	public int countByAcc(int review_idx) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getReviewId(int res_idx) {
+		return reviewDao.getReviewId(res_idx);
 	}
-
-	@Override
-	public ReviewAccuseDTO accDetail(int acc_idx) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public void insertaccuse(ReviewAccuseDTO radto) {
 		reviewDao.insertaccuse(radto);
 	}
-
-	
-	/*
-	 * @Override public int accuseCheck(String user, int review_idx) { return
-	 * reviewDao.accuseCheck(user, review_idx); }
-	 * 
-	 * @Override public void accuseCancel(int review_idx) {
-	 * reviewDao.accuseCancel(review_idx); }
-	 */
-
-	
-
-
-	
-
 }

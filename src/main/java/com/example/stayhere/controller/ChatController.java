@@ -1,6 +1,7 @@
 package com.example.stayhere.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +21,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.model.chat.dto.ChatListDTO;
 import com.example.stayhere.model.chat.dto.ChatRoomDTO;
 import com.example.stayhere.model.guest.dto.GuestDTO;
+import com.example.stayhere.model.host.dto.HostDTO;
 import com.example.stayhere.service.chat.ChatRoomService;
 import com.example.stayhere.service.guest.GuestService;
+import com.example.stayhere.service.host.HostService;
+import com.example.stayhere.util.Pager;
 import com.example.stayhere.util.TimeUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,15 +49,16 @@ public class ChatController {
 	private ChatRoomService chatRoomService;
 	
 	@Inject
-	GuestService gusetService;
-
+	private GuestService guestService;
 	
+	@Inject 
+	HostService hostService;
+
 	/*
 	 * 채팅으로 문의하기 (roomdetail 화면에서 문의하기 버튼 클릭시 이동화면)
-	 * @Param userid
-	 * @Param room_idx
+	 * @Param ChatRoomDTO (room_idx, room_name, h_userid, h_name, photo1)
+	 * @Param Session은 userid 값 체크
 	 * @throws Exception
-	 * @chatRoom = ChatRoomDTO
 	 */
 	@PostMapping("/chat")
 	public String getWebSocketWithSockJs(Model model, HttpSession session, @ModelAttribute ChatRoomDTO chatRoom)
@@ -62,17 +69,21 @@ public class ChatController {
 		log.info("chatMessage userid : " + userid);
 		log.info("parma DTO : " + chatRoom);
 		//유저 정보 불러오기
-		GuestDTO guest = gusetService.view_Guest(userid);
+		GuestDTO guest = guestService.view_Guest(userid);
 		chatRoom.setUserid(guest.getUserid());
 		chatRoom.setUser_name(guest.getName());
 		model.addAttribute("guest", guest) ;
 		log.info("chatRoomDTO : " + chatRoom); 
 		
+		// 호스트 프로필 이미지 찾기
+		String hostProfile = chatRoomService.findByHostProfile(chatRoom.getH_userid());
+		chatRoom.setH_profile(hostProfile);
+		
 		// 이미 chatRoom이 만들어져있는지 확인
 		if (chatRoomService.countByChatId(chatRoom.getRoom_idx(), chatRoom.getUserid()) > 0) {
 			log.info("채팅 룸이 만들어 졌으면 실행!!!!!!!!");
 			// get ChatRoomInfo
-			ChatRoomDTO chatRoomTemp = chatRoomService.findByChatId(chatRoom.getRoom_idx(), 
+			ChatRoomDTO chatRoomTemp = chatRoomService.findByChatInfo(chatRoom.getRoom_idx(), 
 					chatRoom.getUserid());
 			log.info("chatRoomTemp DTO : " + chatRoomTemp);
 			// load existing chat history
@@ -100,11 +111,15 @@ public class ChatController {
 	}
 	
 	
+	/*
+	 * 프론트에서 메시지 입력시 연결되는 메소드
+	 * 소켓연결 후 입력한 데이터 값들이 넘겨 받은 후 
+	 * json데이터로 메시지를 반환
+	 */
 	@MessageMapping("/broadcast")
 	public void send(ChatRoomDTO chatRoom) throws IOException {
-		log.info("send 실행 !!!!!!!!!!!!!!!!");
+		log.info("send DTO : " + chatRoom);
 		chatRoom.setSendTime(TimeUtils.getCurrentTimeStamp());
-		log.info("send !!!!!!!! dto : " + chatRoom);
 		//append message to txtFile
 		chatRoomService.appendMessage(chatRoom);
 		int c_idx = chatRoom.getC_idx();
@@ -115,9 +130,12 @@ public class ChatController {
 	}
 	
 	
+	/*
+	 * chatroom 페이지에서 글을 읽었을때 호출
+	 * @Param : c_idx, flag(user or host 구분용)
+	 */
 	@PostMapping("/chatread/chatroom/ajax")
 	public void ajaxChatRoomRead(@RequestBody String json) throws IOException {
-		log.info("ajaxChatRoomRead 실행 !!!!!!!!!!!!!!!!");
 		JSONObject jsn = new JSONObject(json);
 		String c_idxStr = (String) jsn.get("c_idx");
 		int c_idx = Integer.parseInt(c_idxStr);
@@ -135,6 +153,11 @@ public class ChatController {
 //		}
 	}
 
+	
+	/*
+	 * room_detail페이지에서 열린 chat화면에서 글을 읽으면 호출
+	 * @RequestBody : c_idx, userid
+	 */
 	@PostMapping("/chatread/product/ajax")
 	@ResponseBody
 	public void ajaxChatProductRead(@RequestBody String json) throws IOException {
@@ -146,23 +169,73 @@ public class ChatController {
 		chatRoomService.updateChatReadUser(c_idx, 1);
 	}
 	
+	
+	/*
+	 * 채팅 리스트 접속시 호출됨.
+	 * 검색 및 페이지 이동시 호출
+	 * @RequestParam : page(페이지), keyword(검색어)
+	 */
 	@GetMapping("/chatlist")
-	public String getChatList(Model model, HttpSession session) {
-		 return "chat/chat_list";
+	public ModelAndView getChatList(Model model, HttpSession session, 
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "") String keyword) throws Exception {
+		
+		//세션값 기준으로 아이디 나누기
+		String sessionId = "";
+		String userid = (String)session.getAttribute("userid");
+		String h_userid = (String)session.getAttribute("h_userid");
+		if(userid != null) { sessionId = userid;}
+		if(h_userid != null) { sessionId = h_userid;}
+				
+		int count = chatRoomService.getChatRoomCount(sessionId, keyword);
+		int pageScale = 5; //게시물 표시 갯수
+		Pager pager = new Pager(pageScale, count, page);
+		int start = pager.getPageBegin();
+		int end = pager.getPageEnd();
+		List<ChatListDTO> chatlist = chatRoomService.getChatRoomList(start, end, sessionId, keyword);
+		
+		//senderid 적용
+		for (ChatListDTO dto : chatlist) {
+			String senderId = "";
+			if(sessionId.equals(dto.getUserid())) {
+				senderId = dto.getH_userid();
+			}else {
+				senderId = dto.getUserid();
+			}
+			dto.setSenderId(senderId);
+		}
+				
+		ModelAndView mav = new ModelAndView();
+		Map<String, Object> map = new HashMap<>();
+		map.put("chatlist", chatlist);
+		map.put("pager", pager);
+		map.put("count", count);
+		mav.addObject("map", map);
+		mav.setViewName("chat/chat_list");
+		return mav;
 	}
 	
-	@GetMapping("/chatroom/{room_idx}/{userid}")
+	
+	/*
+	 * 채팅리스트에서 채팅하기 버튼 클릭시 호출되는 메소드
+	 * 채팅 이력 조회 후 데이터값 리턴해줌
+	 * @PathVariable : 방번호, 호스트아이디, 게스트아이디
+	 */
+	@GetMapping("/chatroom/{room_idx}/{h_userid}/{userid}")
 	public String getChatRoom(@PathVariable Map<String, String> requestVar,
 			Model model) throws IOException {
 		String userid = requestVar.get("userid");
+		String h_userid = requestVar.get("h_userid");
 		int room_idx = Integer.parseInt(requestVar.get("room_idx"));
-		//유저 정보 불러오기
-		GuestDTO guest = gusetService.view_Guest(userid);
+		//유저 정보 불러와서 데이터 전달
+		GuestDTO guest = guestService.view_Guest(userid);
 		model.addAttribute("guest", guest);
-		
-					
+		//호스트 정보 불러와서 데이터 전달
+		HostDTO host = hostService.viewHost(h_userid);
+		model.addAttribute("host", host);
+							
 		//read chatHistory
-		ChatRoomDTO chatRoomRead = chatRoomService.findByChatId(room_idx, userid);
+		ChatRoomDTO chatRoomRead = chatRoomService.findByChatInfo(room_idx, userid);
 		List<ChatRoomDTO> chatHistory = 
 				chatRoomService.readChatHistory(chatRoomRead);
 		log.info("chatHistory room_idx LIST : " + chatHistory);
@@ -180,6 +253,11 @@ public class ChatController {
 	}
 	
 	
+	/*
+	 * 룸디테일 페이지에서 게스트가 채팅버튼 클릭시 호출되는 메소드
+	 * ajax통신으로 읽음 여부를 확인한다.
+	 * json통신시 한글깨짐을 방지하기 위해  produces="application/text; charset=UTF-8" 선언
+	 */
 	@RequestMapping(value="/chatreadCheck/ajax", method=RequestMethod.POST, produces="application/text; charset=UTF-8" )
 	@ResponseBody
 	public String ajaxReadCheck(@RequestBody String json) throws Exception {
@@ -197,20 +275,29 @@ public class ChatController {
 	}
 	
 	
-	
-	@RequestMapping(value="/chatUnreadAlert/ajax", method=RequestMethod.POST, produces="application/text; charset=UTF-8" )
-	@ResponseBody
-	public int chatUnread(@RequestBody String json) {
-		JSONObject jsn = new JSONObject(json);
-		String userid = (String) jsn.get("userid");
-    	int messages = chatRoomService.getUnreadMessages(userid);
-    	
-		return messages;
-	}
+//	/*
+//	 * 채팅방에서 읽음 체크 처리... 
+//	 * 아직 구현 X..
+//	 */
+//	@RequestMapping(value="/chatUnreadAlert/ajax", method=RequestMethod.POST, produces="application/text; charset=UTF-8" )
+//	@ResponseBody
+//	public int chatUnread(@RequestBody String json) {
+//		JSONObject jsn = new JSONObject(json);
+//		String userid = (String) jsn.get("userid");
+//    	int messages = chatRoomService.getUnreadMessages(userid);
+//    	
+//		return messages;
+//	}
 
+	
+	/*
+	 * 채팅 리스트 페이지에서 새로운 메시지 기능여부를 체크하는 메소드
+	 * 새로운 메시지가 있다면 new 메시지 보내는걸 완료했다면 send complete 리턴
+	 * 모두 읽었다면 ""빈값으로 리턴함
+	 */
 	@RequestMapping(value="/chatUnreadMessageInfo/ajax", method=RequestMethod.POST, produces="application/text; charset=UTF-8" )
 	@ResponseBody
-	public String chatListUnread(@RequestBody String json) {
+	public String chatListUnread(@RequestBody String json) throws Exception {
 		//ajax가 전송한 String을 key, value로 분류하기 위해 JSON Object convert
 		JSONObject jsn = new JSONObject(json);
 		//JSON.get([mapped name])으로 value 추출하기
@@ -228,17 +315,7 @@ public class ChatController {
 		 for (ChatListDTO chatList : chatRoomList) {
 			//chatRoom 정보를 JSON Object에 put 해줌, chatRoom이 반복문에서 넘어갈 때마다 객체 초기화 
 			 JSONObject jo = new JSONObject();
-			 jo.put("room_idx", chatList.getRoom_idx());
-			 jo.put("userid", chatList.getUserid());
-			 jo.put("photo1", chatList.getPhoto1());
-		 	//리스트에 출력할 상대방 닉네임 확인
-		 if (chatList.getUserid().equals(userid)) {
-			 jo.put("senderName", chatList.getH_name());
-		 } else {
-			 jo.put("senderName", chatList.getUser_name());
-		 }
-		 
-		 	 jo.put("room_name", chatList.getRoom_name());
+			 jo.put("c_idx", chatList.getC_idx());
 		 //읽지 않은 chatRoom이 0개일때
 		 if (unreadChatId.size() == 0) {
 			 jo.put("messageUnread", "");
@@ -246,7 +323,7 @@ public class ChatController {
 		 		//읽지 않은 chatRoomId들과 현재 chatRoomId 대조 후 처리 
 				 for (int ele : unreadChatId) {
 					 	if (chatList.getC_idx() == ele) {
-					 		jo.put("messageUnread", "새 메세지");
+					 		jo.put("messageUnread", "new message");
 					 		break;
 					 	} else {
 					 		jo.put("messageUnread", "");
@@ -263,32 +340,7 @@ public class ChatController {
 		 
 		 log.info(result);
 		 
-		 
 		 //View로 result를 return해줌
-		 return result;
-	}
-	
-	
-	@PostMapping("/chatList/ajax")
-	@ResponseBody
-	public String chatList(@RequestBody String json) {
-		
-		JSONObject jsn = new JSONObject(json);
-		String userid = (String) jsn.get("userid");
-		List<ChatListDTO> chatRoomList = chatRoomService.findByUserId(userid);	 
-		JSONArray ja = new JSONArray();
-
-		 for (ChatListDTO chatList : chatRoomList) {
-			
-			 JSONObject jo = new JSONObject();
-			 jo.put("photo1", chatList.getPhoto1());
-			 ja.put(jo);
-		}
-		 JSONObject jsnResult = new JSONObject();
-		 jsnResult.put("chatList", ja);
-		 String result = jsnResult.toString();
-		 System.out.println("chatResult toString: " + result);
-		
 		 return result;
 	}
 	

@@ -71,7 +71,7 @@ function enter() {
 	<h2>Confirm Password</h2>	
 	<br>
 	<br>
-	<input class="form-control me-2" type="password" placeholder="password" name="h_passwd" id="h_passwd" onkeyup="enter()">
+	<input class="form-control me-2" type="password" placeholder="password" name="h_passwd" id="h_passwd" onkeydown="enter()">
 	<br>
 	<input type="button" class="btn btn-warning" id="login" onclick="delete_pw()" value="확인">
 	</form>

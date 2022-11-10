@@ -28,6 +28,9 @@
 			<c:when test="${res.res_state == '예약요청'}">
 				<h3 class="badge bg-warning">예약요청</h3>
 			</c:when>
+			<c:when test="${res.res_state == '예약완료'}">
+				<h3 class="badge bg-warning">예약완료</h3>
+			</c:when>
 			<c:when test="${res.res_state == '취소완료'}">
 				<h3 class="badge bg-danger">취소완료</h3>
 			</c:when>

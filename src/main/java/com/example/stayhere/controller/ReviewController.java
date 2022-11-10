@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,9 +37,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
+import com.example.stayhere.model.guest.dto.GuestDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
 import com.example.stayhere.model.review_comment.dto.ReCommentDTO;
+import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.service.guest.GuestService;
+import com.example.stayhere.service.reservations.ReservationsService;
 import com.example.stayhere.service.review.ReviewService;
 import com.example.stayhere.service.rooms.RoomsService;
 import com.example.stayhere.util.MediaUtils;
@@ -59,16 +63,20 @@ public class ReviewController {
 	@Inject
 	ReviewService reviewService;
 
+	@Inject
+	ReservationsService reservationsService;
+
 	// 업로드 디렉토리
 	@Resource(name = "uploadPath")
 	String uploadPath; // c:/upload
 
-	@RequestMapping("list.do")
+	@RequestMapping(value = "list.do", method = RequestMethod.GET)
 	public ModelAndView list(
 			@RequestParam(defaultValue = "1") int curPage, 
 			@RequestParam(defaultValue="review_idx") String select,
 			ReviewDTO dto, 
-			HttpSession session) throws Exception {
+			HttpSession session
+			) throws Exception {
 		int view_count = reviewService.countArticle();// 레코드 갯수 계산
 
 		// 페이지 설정
@@ -76,47 +84,46 @@ public class ReviewController {
 		Pager pager = new Pager(pageScale, view_count, curPage);// 한 페이지당 6개개
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
-		
-		List<ReviewDTO> list = reviewService.listAll(start, end);
+
+		List<ReviewDTO> list = reviewService.listAll(start, end, select);
 		logger.info(list.toString());
-		//댓글 조회수
-		//List<ReCommentDTO> recntlist = reviewService.comment(review_idx);
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("list", list);
 		map.put("view_count", view_count); // 레코드 갯수 파일
 		map.put("pager", pager);
+		map.put("select", select);
 		mav.setViewName("reviews/reviewList");
 		mav.addObject("map", map);
 		return mav;
 	}
 
-	//리뷰작성
-	//게스트 예약정보-이용완료-후기작성에서 바로
-	//room_idx값을 가져와서 작성화면 상단에 room 상세정보를 추가하고 싶은데 404오류 해결을 못해서 우선 단순 작성
-	//@RequestMapping("write.do/{room_idx}")
-	//public ModelAndView write(@PathVariable int room_idx, HttpSession session){
-	//	RoomsDTO room_dto=new RoomsDTO();
-	//	room_dto=roomsService.detailRooms(room_idx);
-	//	mav.addObject("room", room_dto); 
-	//	mav.setViewName("reviews/reviewWrite");
-	//	return mav;
-	//}
 	@RequestMapping("write.do") 
-	public ModelAndView write(HttpSession session, @RequestParam int room_idx) { 
+	public ModelAndView write(
+			HttpSession session, 
+			@RequestParam int room_idx, 
+			@RequestParam int res_idx) { 
+		RoomsDTO r_dto=roomsService.detailRooms(room_idx);
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("reviews/reviewWrite");
 		mav.addObject("room_idx", room_idx);
+		mav.addObject("res_idx",res_idx);
+		mav.addObject("room", r_dto);
 		return mav;
 	}
 
 	// 리뷰글 삽입
+	@Transactional
 	@RequestMapping("insert.do")
 	public String insert(@ModelAttribute ReviewDTO dto, HttpSession session) throws Exception {
 		String userid = (String)session.getAttribute("userid");
 		dto.setUserid(userid);
 		reviewService.create(dto);
+
+		//예약번호를 이용하여 예약테이블의 리뷰 유무 컬럼을 y로 변경
+		reservationsService.reviewCheck(dto.getRes_idx());
+
 		return "redirect:/reviews/list.do";
 	}
 
@@ -136,8 +143,33 @@ public class ReviewController {
 		//조회수증가처리
 		reviewService.increaseViewcnt(review_idx, session);
 		ReviewDTO reviewDto = reviewService.detail(review_idx);
+		
 		model.addAttribute("dto", reviewDto);
 		//model.addAttribute("accuse", accuse);
+		model.addAttribute("user", user);
+		return "reviews/reviewDetail";
+	}
+
+	//예약내역에서 예약번호를 통한=> 리뷰상세페이지
+	@RequestMapping(value = "detailReview.do", method = RequestMethod.GET)
+	public String detailReview(@RequestParam int res_idx, HttpSession session, Model model) throws Exception {
+		String userid=(String)session.getAttribute("userid");
+		String h_userid=(String)session.getAttribute("h_userid");
+		String user="";
+		if(userid != null) {//접속한사람이 게스트라면
+			user=userid;
+		}else if(h_userid != null) {//접속한 사람이 호스트라면
+			user=h_userid;
+		}
+
+		//파라미터로 받은 res_idx&userid로 review_idx를 가져온다.
+		int review_idx=reviewService.getReviewId(res_idx);
+
+		//조회수증가처리
+		reviewService.increaseViewcnt(review_idx, session);
+		ReviewDTO reviewDto = reviewService.detail(review_idx);
+		model.addAttribute("dto", reviewDto);
+
 		model.addAttribute("user", user);
 		return "reviews/reviewDetail";
 	}
@@ -265,16 +297,6 @@ public class ReviewController {
 				,HttpStatus.OK);//uploadAjax.jsp의 if(result=="deleted")와 연결
 	}
 
-	// 게스트리뷰리스트
-	//@RequestMapping("view.do")
-	//public ModelAndView view(int review_idx, HttpSession session) throws Exception {
-	//	//조회수 증가 처리(session 처리 확인)
-	//	reviewService.increaseViewcnt(review_idx, session);
-	//	ModelAndView mav=new ModelAndView();
-	//	mav.setViewName("reviews/view");
-	//	mav.addObject("dto", reviewService.read(review_idx));
-	//	return mav;
-	//}
 
 	//첨부파일 목록을 리턴(참고용 board 컨트롤러)
 	//ArrayList를 json 배열로 변환하여 리턴
@@ -296,7 +318,7 @@ public class ReviewController {
 		//상세 화면으로 되돌아갈때
 		return "redirect:/reviews/detail.do?review_idx="+dto.getReview_idx();
 	}
-	
+
 	//리뷰수정페이지이동
 	@RequestMapping("edit.do")
 	public ModelAndView edit(int review_idx) 
@@ -339,9 +361,10 @@ public class ReviewController {
 		return new ResponseEntity<Integer>(review_idx,HttpStatus.OK);
 	}	
 
-	//리뷰댓글 삭제(들어온 값 확인필요)
+	//리뷰댓글 삭제
 	@RequestMapping("delComment.do")
-	public ResponseEntity<Integer> delComment(int review_idx,int comment_idx){
+	public ResponseEntity<Integer> delComment(int review_idx, int comment_idx) {
+		//null값때문에 Integer로 변환필요
 		System.out.println("들어온 review_idx: "+review_idx+",comment_idx : "+comment_idx);
 		reviewService.delComment(review_idx,comment_idx);
 		return new ResponseEntity<Integer>(review_idx,HttpStatus.OK);
@@ -358,5 +381,20 @@ public class ReviewController {
 			return "reviews/reviewDetail";
 		}
 
-	
+	//게스트의 리뷰내역 페이지
+	@RequestMapping("reviewUserList/{userid}")
+	public ModelAndView userReviewList(@PathVariable String userid) {
+		List<ReviewDTO> list = reviewService.getreview(userid);
+		int review_count = reviewService.countByUser(userid);
+		GuestDTO g_dto=guestService.view_Guest(userid);
+
+		ModelAndView mav = new ModelAndView();
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("review_count", review_count);
+		mav.addObject("map", map);
+		mav.addObject("guest", g_dto);
+		mav.setViewName("reviews/reviewUserList");
+		return mav;
+	}
 }

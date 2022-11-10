@@ -5,15 +5,8 @@
 <head> 
 <meta charset="UTF-8">
 <%@ include file="../include/header.jsp"%>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>Host Room Write</title>
-<!-- Favicon-->
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-<!-- Bootstrap icons-->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-<!-- Core theme CSS (includes Bootstrap)-->
-<link href="${path}/resources/css/styles.css" rel="stylesheet" />
+
 <style type="text/css">
 .display-5 {margin-bottom: 20px;}
 .btn { 
@@ -64,15 +57,34 @@ label {
 	border: none;
 }
 </style>
+<!-- flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/plugins/rangePlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+
 <!-- 다음주소 -->
 <script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <!-- 카카오 맵 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c0403296c83daa74c4b2702e088a2418&libraries=services"></script>
 <script type="text/javascript">
 $(function(){
-var geocoder = new kakao.maps.services.Geocoder();
+	var option = {
+            locale: "ko", //한국어로 언어설정
+            dateFormat: "Y-m-d",   //출력 설정
+            allowInput : false, //사용자 정의 입력설정
+            mode : "range",  //범위
+            showMonths : 2, // 2개월 캘린더 표기 
+            minDate : new Date().fp_incr(1), //최소 날짜, 현재시간으로 셋팅 "today"현재날짜
+            plugins: [new rangePlugin({ input: "#check_out"})] //플러그인 설정 input-box 2개에 표기
+        }
 
+        $("#check_in").flatpickr(option);
+
+var geocoder = new kakao.maps.services.Geocoder();
 $("#address1").click(function(){
     new daum.Postcode({
         oncomplete: function(data) {
@@ -198,14 +210,6 @@ $("#insert").click(function(){
 	today = new Date();
 	date1 = new Date(check_in);
 	date2 = new Date(check_out);
-	
-	days = date1.getTime() - date2.getTime() ;
-	btDays = days / (1000*60*60*24) ;
-	
-	checkin = date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate();
-	checkout = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
-	
-	rToday = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
 
 	if(date1<today){
 		alert("체크인 날짜를 확인해주십시오");
@@ -215,14 +219,9 @@ $("#insert").click(function(){
 		alert("체크아웃 날짜를 확인해주십시오");
 		return;
 	} 
-	if(rToday==checkin){
-		 alret("당일은 체크인으로 설정할 수 없습니다. \n다시 선택해주십시오.");
-	}
-	if(rToday==checkout){
-		 alret("당일은 체크아웃으로 설정할 수 없습니다. \n다시 선택해주십시오.");
-	}
 	if(date1<date2){
-		console.log("왜 되다 안되다 그러니");
+		console.log(date1);
+		console.log(date2);
 	}else{
 		alert("체크인 날짜와 체크아웃 날짜를 확인해주십시오");
 		return;
@@ -238,6 +237,7 @@ $("#insert").click(function(){
 	
 	
 	});
+
 });
 
 function fileCheck(el) { 

@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.example.stayhere.model.guest.dto.GuestDTO;
 import com.example.stayhere.model.host.dto.HostDTO;
 import com.example.stayhere.model.reservations.dto.ReservationsDTO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
@@ -22,8 +21,9 @@ public class HostDAOImpl implements HostDAO {
 	SqlSession sqlSession;
 
 	@Override
-	public HostDTO loginCheck(HostDTO dto) {
-		return sqlSession.selectOne("host.loginCheck", dto);
+	public boolean loginCheck(HostDTO dto) {
+		String name = sqlSession.selectOne("host.loginCheck", dto);
+		return (name == null) ? false : true;
 	}
 	
 	@Override
@@ -163,5 +163,49 @@ public class HostDAOImpl implements HostDAO {
 		return sqlSession.selectList("host.roomsConfirm",h_userid);
 	}
 
-
+	@Override
+	public String findByPasswd(String h_userid) {
+		return sqlSession.selectOne("host.findByPasswd", h_userid);
+	}
+	
+	@Override
+	public List<ReservationsDTO> hostMontlyMoney(String h_userid) {
+		return sqlSession.selectList("host.hostMontlyMoney",h_userid);
+	}
+	
+	@Override
+	public List<ReservationsDTO> hostWeeklyMoney(String h_userid, String today,String week) {
+		Map<String,String> map = new HashMap<>();
+		map.put("h_userid", h_userid);
+		map.put("today", today);
+		map.put("week", week);
+		return sqlSession.selectList("host.hostWeeklyMoney",map);
+	}
+	
+	@Override
+	public List<ReservationsDTO> getRoomData(String h_userid) {
+		return sqlSession.selectList("host.getRoomData",h_userid);
+	}
+	
+	@Override
+	public Integer weeklySum(String h_userid, String today, String week) {
+		Map<String,String> map = new HashMap<>();
+		map.put("h_userid", h_userid);
+		map.put("today", today);
+		map.put("week", week);
+		return sqlSession.selectOne("host.weeklySum",map);
+	}
+	
+	@Override
+	public int yearSum(String h_userid) {
+		return sqlSession.selectOne("host.yearSum",h_userid);
+	}
+	
+	@Override
+	public boolean resCheck(String h_userid) {
+		List<Boolean> res_idx = sqlSession.selectList("host.resCheck",h_userid);
+		System.out.println(res_idx.toString());
+		return (res_idx.toString()=="[]") ? false : true;
+	}
+	
 }

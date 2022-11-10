@@ -100,6 +100,7 @@
 
 .incoming_msg_img img {
 	width: 30px;
+	height: 30px;
 	border-radius: 50%;
 }
 
@@ -199,7 +200,7 @@
 					<div class="chat_info d-flex align-items-center p-2">
 						<img src="${path}/imgUpload/${chatRoomInfo.photo1}">
 						<div class="ps-2">
-							<span class="chat_title">[${chatRoomInfo.room_name}] 채팅방</span>
+							<span class="chat_title">[${chatRoomInfo.room_name}] ${chatRoomInfo.h_userid}님과의 채팅</span>
 						</div>
 					</div>
 				</div>
@@ -207,14 +208,14 @@
 
 			<div class="msg-wrap p-4">
 				<c:forEach var="chatRoom" items="${chatHistory}">
-					<c:set var="uid" value="${guest.getName()}" />
-					<c:set var="cid" value="${chatRoom.senderName}" />
+					<c:set var="uid" value="${guest.getUserid()}" />
+					<c:set var="cid" value="${chatRoom.senderId}" />
 					<c:choose>
 						<c:when test="${uid eq cid}">
 							<div class="outgoing_msg">
 								<div class="sent_msg">
 									<div class="message">
-									<span class="host_read_check">1</span>
+									<span class="host_read_check"></span>
 									<p>${chatRoom.content}</p>
 									</div>
 									<span class="time_date">${chatRoom.sendTime}</span>
@@ -224,16 +225,16 @@
 						<c:otherwise>
 							<div class="incoming_msg">
 								<div class="incoming_msg_img">
-									<img src="${path}/resources/images/guest.png" alt="profile_img">
+									<img src="${path}/imgUpload/${chatRoomInfo.h_profile}" alt="profile_img">
 								</div>
 								<div class="received_msg">
 									<div class="received_name">
-										${chatRoom.senderName}
+										${chatRoom.senderId}
 									</div>
 									<div class="received_withd_msg">
 										<div class="message">
 											<p>${chatRoom.content}</p> 
-											<span class="user_read_check">1</span>
+											<span class="user_read_check"></span>
 										</div>
 										<span class="time_date"> ${chatRoom.sendTime}</span>
 									</div>
@@ -268,14 +269,11 @@
 		ScrollBottom();
 	})
 	
-	
 	//스크롤 하단 고정
 	function ScrollBottom(){
 		$(".msg-wrap").scrollTop($(".msg-wrap")[0].scrollHeight);
 	}
 	</script>
-
-
 
 	<script type="text/javascript">
 
@@ -290,7 +288,7 @@
 		$(function(){
 			connect();
 			ajaxChatRead();
-// 			unreadAlertInfinite();
+			unreadAlertInfinite();
 		});
 		
 		
@@ -347,6 +345,15 @@
 			}
 			
 			if (!event.shiftKey && event.keyCode === 13) {
+				//입력된 값 양끝 공백제거
+				var content = $('#message').val().trim();
+				
+				if(content==''){
+					console.log("이거 실행안되니.....");
+					$('#message').val("");
+					return false;
+				}
+				
 				send();
 			}
 		}
@@ -357,12 +364,14 @@
 		function createTextNode(messageObj) {
 			console.log("createTextNode");
 		 	console.log(messageObj.senderName + "  " + messageObj.senderId);
+		 	//개행값 <br>로 치환하기
 			messageObj.content = messageObj.content.replace(/\n/ig, '<br>');
 			console.log("messageObj: " + messageObj.content);
 			
+			//보낸사람과 접속한 사람의 아이가 같다면..
 			if(messageObj.senderId == userid){
 				return "<div class='outgoing_msg'><div class='sent_msg'>"
-				+ "<div class='message'><span class='host_read_check'>1</span><p>"
+				+ "<div class='message'><span class='host_read_check'></span><p>"
 				+ messageObj.content 
 				+ "</p></div><span class='time_date'>"
 				+ messageObj.sendTime
@@ -370,19 +379,17 @@
 			
 			} else {
 				return "<div class='incoming_msg'><div class='incoming_msg_img'>"
-				+ "<img src='./resources/images/guest.png' alt='profile_img'>"
+				+ "<img src='${path}/imgUpload/${chatRoomInfo.h_profile}' alt='profile_img'>"
 		    + "</div><div class='received_msg'><div class='received_name'>"
-		    + messageObj.senderName
+		    + messageObj.senderId
 		    + "</div><div class='received_withd_msg'>"
 		    + "<div class='message'><p>"
 		    + messageObj.content  
-		    + "</p><span class='user_read_check'>1</span></div>"
+		    + "</p><span class='user_read_check'></span></div>"
 		    + "<span class='time_date'>"
 		    + messageObj.sendTime
 		    + "</span></div></div></div>";
 			}
-			
-			
 			
     }
 		
@@ -443,11 +450,11 @@
 			});
 		}
 		
-// 		function unreadAlertInfinite() {
-// 	 		setInterval(() => {
-// 	 			ajaxReadCheck();				
-// 			}, 1000);
-// 	 	}
+		function unreadAlertInfinite() {
+	 		setInterval(() => {
+	 			ajaxReadCheck();				
+			}, 1000);
+	 	}
 		
 	
 	</script>

@@ -45,9 +45,9 @@
 						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
 								<li><b class="dropdown-item">${sessionScope.userid} 님</b></li>
 								<li><hr class="dropdown-divider" /></li>
-								<li><a class="dropdown-item" href="${path}/guest/guest_view/${sessionScope.userid}">프로필</a></li>
-								<li><a class="dropdown-item" href="${path}/reservations/list/guest">예약정보</a></li>
-								<li><a class="dropdown-item" href="${path}/wishlist/list.do">관심스테이</a></li>
+								<li><a class="dropdown-item" href="${path}/guest/guest_view/${sessionScope.userid}">마이 페이지</a></li>
+								<li><a class="dropdown-item" href="${path}/reservations/list/guest">예약 정보</a></li>
+								<li><a class="dropdown-item" href="${path}/wishlist/list.do">관심 스테이</a></li>
 								<li><a class="dropdown-item" href="${path}/chatlist">내 채팅목록</a></li>
 								<li><a class="dropdown-item" href="${path }/qna/scraplist">나의스크랩</a></li>
 								<li><hr class="dropdown-divider" /></li>

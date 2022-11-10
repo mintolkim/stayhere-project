@@ -42,7 +42,7 @@ function getFileInfo(fullName){
 			getLink: getLink, fullName:fullName };
 }
 $(function() {
-	$("#btnUpdate").click(function() {
+	$("#btnInsert").click(function() {
 		var str = "";
 		//uploadedList 영역에 클래스이름이 file인 히든타입의태그를 각각 반복
 		$(".uploadedList .file").each(function(i) {
@@ -251,10 +251,12 @@ function listAttach(){
 				<h2 class="titleB fw-bolder">리뷰작성</h2>
 				<form id="form1" name="form1" method="post"
 					action="${path}/reviews/insert.do">
-					<p class="lead fw-normal text-muted mb-0">${sessionScope.name}님 숙소는 만족하셨나요?</p>
+					<p class="lead fw-normal text-muted mb-0">${sessionScope.name}님,
+					<br> <strong>${room.room_name}</strong>와/과 함께한 여행에 만족하셨나요?</p>
 					
 					<div>
 						<input type="hidden" name="room_idx" value="${room_idx}" id="room_idx">
+						<input type="hidden" name="res_idx" value="${res_idx}" id="res_idx">
 					</div>
 					<!-- 별점 -->
 					<div class="container star">
