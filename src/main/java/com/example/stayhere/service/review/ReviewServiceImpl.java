@@ -151,6 +151,8 @@ public class ReviewServiceImpl implements ReviewService {
 	public int getReviewId(int res_idx) {
 		return reviewDao.getReviewId(res_idx);
 	}
-		
-
+	@Override
+	public void insertaccuse(ReviewAccuseDTO radto) {
+		reviewDao.insertaccuse(radto);
+	}
 }

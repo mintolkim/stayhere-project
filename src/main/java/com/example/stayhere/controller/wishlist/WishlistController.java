@@ -143,5 +143,15 @@ public class WishlistController {
 		String result = "" + using_room;
 		return result;
 	}
+	@RequestMapping("wishplus")
+	public ResponseEntity<Integer> wishplus(@ModelAttribute WishlistDTO dto) {
+		wishlistService.insertWish(dto);
+		return new ResponseEntity<Integer>(1,HttpStatus.OK);
+	}
+	@RequestMapping("deleteWish")
+	public ResponseEntity<Integer> deleteWish(@ModelAttribute WishlistDTO dto) {
+		wishlistService.deleteWishlist(dto);
+		return new ResponseEntity<Integer>(1,HttpStatus.OK);
+	}
 
 }

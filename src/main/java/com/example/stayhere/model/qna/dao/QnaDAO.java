@@ -36,4 +36,6 @@ public interface QnaDAO {
 	public int checkattach(String name, int q_idx);//첨부파일 확인
 	public void delete(int q_idx) throws Exception;//글삭제
 	public List<QnaDTO> getqnalist();//qna 답변대기 글 불러오기
+	public int countguestQna(String userid);//게스트 qna글 갯수
+	public List<QnaDTO> listguestQna(int start, int end, String userid);//게스트 qna목록
 }

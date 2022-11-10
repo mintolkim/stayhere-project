@@ -142,7 +142,7 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 @Override
 	public List<ReviewDTO> getreview(String userid) {
-		return sqlSession.selectList("review.getreview",userid);
+		return sqlSession.selectList("review.getguestreview",userid);
 	}
 
 	@Override
@@ -152,8 +152,12 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 	@Override
 	public List<ReviewAccuseDTO> getaccuse(String userid) {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList("review.getaccuse",userid);
+	}
+
+	@Override
+	public void insertaccuse(ReviewAccuseDTO radto) {
+		sqlSession.insert("review.insertaccuse",radto);
 	}
 
 	@Override

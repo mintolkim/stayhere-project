@@ -231,8 +231,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update review set view_count=view_count+1
 	 	where review_idx=#{review_idx}
 	</update>
-	
-	<select id="getaccuse" resultType="com.example.stayhere.model.review.dto.ReviewAccuseDTO">
+	<!--(admin page) 게스트 신고글 가져오기  -->
+	<select id="getaccuse"
+	resultType="com.example.stayhere.model.review.dto.ReviewAccuseDTO">
 	select
 			acc_idx,
 			review_idx,
@@ -244,7 +245,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	from review_accuse a
 	where writer = #{userid}
 </select>
-	
+	<!--(admin page) 룸 리뷰글 가져오기  -->
 	<select id="roomreview" resultType="ReviewDTO">
 	 select *
 		from (
@@ -262,6 +263,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			on r.userid = g.userid
 		) where room_idx=#{room_idx} order by review_idx desc	
 	</select>
+	<!--(admin page) 게스트 리뷰글 가져오기  -->
+	<select id="getguestreview" resultType="ReviewDTO">
+	select *
+		from (
+			select 
+                room_idx, 
+                review_idx, 
+                r.userid, 
+                write_date, 
+                r_title, 
+                review_content, 
+                review_star,
+                (select room_name from rooms where r.room_idx=room_idx) as room_name,
+                g.profile_img
+			from review r join guest g 
+			on r.userid = g.userid
+		) where userid=#{userid} order by review_idx desc
+	</select>
+	<!--리뷰 글 신고하기 -->
+	<insert id="insertaccuse">
+	 INSERT INTO review_accuse(acc_idx, review_idx, userid, writer, acc_content) 
+	 VALUES (review_accuse_seq.nextval,#{review_idx},#{userid},#{writer},#{acc_content})
+	</insert>
 	
 	<select id="getReviewId" resultType="int">
 		select nvl(max(review_idx), 0) 

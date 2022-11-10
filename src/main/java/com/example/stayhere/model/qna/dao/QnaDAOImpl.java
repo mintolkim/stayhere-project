@@ -180,6 +180,18 @@ public class QnaDAOImpl implements QnaDAO {
 	public List<QnaDTO> getqnalist() {
 		return sqlSession.selectList("qna.getqnalist");
 	}
+	@Override
+	public int countguestQna(String userid) {
+		return sqlSession.selectOne("qna.countguestQna",userid);
+	}
+	@Override
+	public List<QnaDTO> listguestQna(int start, int end, String userid) {
+		Map<String,Object> map=new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("userid", userid);
+		return sqlSession.selectList("qna.listguestQna",map);
+	}
 	
 
 }

@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
 import com.example.stayhere.model.guest.dto.GuestDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
 import com.example.stayhere.model.review_comment.dto.ReCommentDTO;
@@ -368,6 +369,17 @@ public class ReviewController {
 		reviewService.delComment(review_idx,comment_idx);
 		return new ResponseEntity<Integer>(review_idx,HttpStatus.OK);
 	}	
+	//리뷰 글 신고하기
+		@RequestMapping(value = "insertaccuse", method = RequestMethod.POST)
+		public String guestaccuse(@ModelAttribute ReviewAccuseDTO radto,Model model) throws Exception {
+			System.out.println("신고내용: "+radto.toString());
+			reviewService.insertaccuse(radto);
+			int review_idx = radto.getReview_idx();
+			ReviewDTO reviewDto = reviewService.detail(review_idx);
+			model.addAttribute("dto",reviewDto);
+			model.addAttribute("message","신고처리되었습니다.");
+			return "reviews/reviewDetail";
+		}
 
 	//게스트의 리뷰내역 페이지
 	@RequestMapping("reviewUserList/{userid}")
@@ -385,20 +397,4 @@ public class ReviewController {
 		mav.setViewName("reviews/reviewUserList");
 		return mav;
 	}
-
-	/*
-	 * //신고
-	 * @RequestMapping("accuseCheck.do") 
-	 * public String accuseCheck(@RequestParam int review_idx) { 
-	 * 		reviewService.accuseCheck(review_idx); 
-	 * 		return "redirect:/admin/admin_accuse"; 
-	 * }
-	 * 
-	 * //신고취소
-	 * @RequestMapping("accuseCancel.do") 
-	 * public String accuseCancel(@RequestParam int review_idx) {
-	 * 		reviewService.accuseCheck(review_idx); 
-	 * 		return "redirect:/admin/admin_accuse"; 
-	 * }
-	 */
 }

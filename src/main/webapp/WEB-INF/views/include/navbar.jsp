@@ -49,6 +49,7 @@
 								<li><a class="dropdown-item" href="${path}/reservations/list/guest">예약 정보</a></li>
 								<li><a class="dropdown-item" href="${path}/wishlist/list.do">관심 스테이</a></li>
 								<li><a class="dropdown-item" href="${path}/chatlist">내 채팅목록</a></li>
+								<li><a class="dropdown-item" href="${path }/qna/scraplist">나의스크랩</a></li>
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item" href="${path}/guest/logout.do">로그아웃</a></li>
 						</ul></li>

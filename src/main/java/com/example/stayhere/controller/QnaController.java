@@ -35,8 +35,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.stayhere.model.guest.dto.GuestDTO;
 import com.example.stayhere.model.qna.dto.QnaDTO;
 import com.example.stayhere.model.qna_comment.dto.QnaCommentDTO;
+import com.example.stayhere.service.guest.GuestService;
 import com.example.stayhere.service.qna.QnaService;
 import com.example.stayhere.util.MediaUtils;
 import com.example.stayhere.util.Pager;
@@ -53,6 +55,9 @@ import com.example.stayhere.util.UploadFileUtils;
 	 
 	 @Inject
 		QnaService qnaService;
+	 @Inject
+		GuestService guestService;
+	 
 	 //qna전체글 목록
 	 @RequestMapping(value = "qnalist.do", method = RequestMethod.GET)
 		public ModelAndView list(
@@ -383,10 +388,42 @@ import com.example.stayhere.util.UploadFileUtils;
 			}
 			return "redirect:/qna/qnadetail.do?q_idx="+dto.getQ_idx();
 		}
+	//qna글 삭제
 		@RequestMapping("delete.do")
 		public String delete(int q_idx) throws Exception {
 			qnaService.delete(q_idx);
 			return "redirect:/qna/qnalist.do";
+		}
+	//게스트 스크랩 글목록페이지
+		@RequestMapping("scraplist")
+		public ModelAndView scraplist(HttpSession session,
+				@RequestParam(defaultValue ="1") int curPage) throws Exception{
+			//세션에서 사용자아이디를 가져옴
+			String userid=(String)session.getAttribute("userid");
+			ModelAndView mav=new ModelAndView();
+			if(userid==null) { //로그아웃 상태
+				mav.setViewName("guest/guest_login");
+				return mav;
+			}
+			//레코드 갯수 계산하기
+			 int count = qnaService.countguestQna(userid);
+			//페이지관련 설정
+			 int pageScale = 6;
+			 Pager pager = new Pager(pageScale, count, curPage);
+			 int start = pager.getPageBegin();
+			 int end = pager.getPageEnd();
+			 //리스트작업
+			 List<QnaDTO> list = qnaService.listguestQna(start, end,userid);
+			 //게스트정보
+			 GuestDTO g_dto=guestService.view_Guest(userid);
+			 Map<String, Object> map=new HashMap<>();
+			 map.put("list", list);
+			 map.put("count", count);
+			 map.put("pager", pager);
+			 map.put("guest", g_dto);
+			mav.setViewName("guest/guest_qna");
+			mav.addObject("map", map);
+			return mav;
 		}
 		
  }

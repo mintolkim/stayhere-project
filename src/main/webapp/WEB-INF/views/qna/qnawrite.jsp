@@ -7,9 +7,6 @@
 <title>STAYHERE</title>
 <%@ include file="../include/header.jsp" %>
 <script type="text/javascript" src="${path }/resources/ckeditor/ckeditor.js"></script>
-<!-- font awesome 아이콘 -->
-<script src="https://kit.fontawesome.com/fdfee59c02.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style type="text/css">
 #write{
 margin-top: 30px;
@@ -125,7 +122,7 @@ $(".fileDrop").on("drop",function(e){
 				str+="<a href='${path}/qna/displayFile?fileName="
 					+data+"'>"+getOriginalName(data)+"</a>";
 			}
-				str+="<span data-src="+data+" style='cursor:pointer;'>&nbsp;[<i class='fa-solid fa-trash'>삭제</i>]</span>";
+				str+="<span data-src="+data+" style='cursor:pointer;'>&nbsp;[<i class='bi bi-trash-fill'></i> 삭제]</span>";
 				str+="<input type='hidden' class='file' value='"
 					+fileInfo.fullName+"'></div>";
 					console.log("fileName : "+fileInfo.fullName);
@@ -198,7 +195,7 @@ $(".uploadedList").on("click","span",function(event){//내부적으로 span태�
      <th>첨부파일</th>
      <td>
 		<div class="fileDrop" id="fileDrop">
-			<div id="dragzone" align="center"><i class="fa-solid fa-circle-plus"> 파일을 드래그해서 추가해주세요.</i></div>
+			<div id="dragzone" align="center"><i class="bi bi-plus-circle"></i> 파일을 드래그해서 추가해주세요.</div>
 		<div class="uploadedList"></div>
 		</div>
 	</td>

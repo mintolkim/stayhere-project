@@ -22,7 +22,7 @@
 							<tr >
 							<th scope="row" class="table-light">신고글</th>
 							<td><a class="stretched-link"
-							 href="${path}/rooms/detail/${row.room_idx}">${row.r_title }</a></td>
+							 href="${path}/reviews/detail.do?review_idx=${row.review_idx}">${row.r_title }</a></td>
 							</tr>
 							<tr >
 							<th scope="row" class="table-light">신고아이디</th>

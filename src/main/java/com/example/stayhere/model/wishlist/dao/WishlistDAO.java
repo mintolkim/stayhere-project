@@ -15,4 +15,6 @@ public interface WishlistDAO {
 	public int duplicateCehck(WishlistDTO dto); //위시리스트 중복체크
 	public List<WishlistDTO> addCheck(String userid);
 	public List<WishlistDTO> addressList(String userid);//위시리스트 숙소 주소 목록
+	public int wishcheck(WishlistDTO dto);//게스트 찜확인
+	public void deleteWishlist(WishlistDTO dto);//게스트 위시리트스 삭제
 }
