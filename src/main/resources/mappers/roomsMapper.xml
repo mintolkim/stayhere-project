@@ -69,7 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         (select count(*) from reserved where re_date not between #{today} and #{tomorrow} and room_idx= r.room_idx) re_date,
         (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
 				from rooms r join	room_photo rp on r.room_idx = rp.room_idx
-				where to_char(check_in, 'yyyyMMdd') >= #{today} and admin_confirm='승인'
+				where (to_char(check_in, 'yyyyMMdd') <![CDATA[<=]]> #{today} 
+				or to_char(check_in, 'yyyyMMdd') <![CDATA[>=]]> #{today})
+				and to_char(check_out, 'yyyyMMdd') >= #{tomorrow} and admin_confirm='승인'
 				order by review_star desc) A
 		) where rn between #{start} and #{end} and (re_date !=0 or reserved_room is null)
 	</select>
@@ -83,7 +85,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         (select count(*) from reserved where re_date not between #{today} and #{tomorrow} and room_idx= r.room_idx) re_date,
         (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
 				from rooms r join	room_photo rp on r.room_idx = rp.room_idx
-				where to_char(check_in, 'yyyyMMdd') >= #{today} and admin_confirm='승인') A
+				where (to_char(check_in, 'yyyyMMdd') <![CDATA[<=]]> #{today} 
+				or to_char(check_in, 'yyyyMMdd') <![CDATA[>=]]> #{today})
+				and to_char(check_out, 'yyyyMMdd') >= #{tomorrow} and admin_confirm='승인') A
 		) where (re_date !=0 or reserved_room is null)
 	</select>
 	

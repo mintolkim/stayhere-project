@@ -104,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			select A.* from ( select
 				(select count(*) from review where room_idx=r.room_idx)review_count,
 				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star,
-        (select count(*) from reserved where re_date between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
+        (select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
         (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
 				from rooms r 
 				where to_char(check_in, 'yyyyMMdd') <![CDATA[<=]]> #{checkin_date} and
@@ -145,7 +145,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rp.photo4,
 				(select count(*) from review where room_idx=r.room_idx)review_count,
 				(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star,
-        (select count(*) from reserved where re_date between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
+        (select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
         (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
 				from rooms r join	room_photo rp on r.room_idx = rp.room_idx
 				where to_char(check_in, 'yyyyMMdd') <![CDATA[<=]]> #{checkin_date} and
@@ -164,7 +164,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select
 			(select count(*) from review where room_idx= r.room_idx)review_count,
 			(select nvl(avg(review_star),0) from review where room_idx=r.room_idx) review_star,
-			(select count(*) from reserved where re_date between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
+			(select count(*) from reserved where re_date not between #{checkin_date} and #{checkout_date} and room_idx= r.room_idx) re_date,
       (select distinct room_idx from reserved where room_idx=r.room_idx) reserved_room
 			from rooms r 
 				<include refid="search_option_where" />
@@ -197,6 +197,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				r.baths,
 				r.room_type,
 				r.max_people,
+				r.add_people,
 				nvl(r.lat,0),
 				nvl(r.lng,0),
 				rp.photo1,

@@ -9,9 +9,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="addChatRoom">
 		insert into chatroom(c_idx, room_idx, h_userid, userid, 
-		create_date, h_name, user_name, chat_read_user, chat_read_host)
-		values (chat_room_seq.nextval, #{room_idx}, #{h_userid},#{userid}, 
-		#{create_date}, #{h_name}, #{user_name}, 1, 1)
+		create_date, h_name, user_name, room_name, chat_read_user, chat_read_host)
+		values (chat_room_seq.nextval, #{room_idx}, #{h_userid}, #{userid}, 
+		#{create_date}, #{h_name}, #{user_name}, #{room_name}, 1, 1)
 	</insert>
 	
 	
@@ -33,11 +33,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where room_idx = #{room_idx} and userid=#{userid}
 	</select>
 	
-	<select id="findByChatId" resultType="ChatRoomDTO">
-		select * 
+	<select id="findByChatInfo" resultType="ChatRoomDTO">
+		select 
+        c.c_idx,
+        c.room_idx,
+        c.h_userid,
+        c.userid,
+        c.filename,
+        c.create_date,
+        c.h_name,
+        c.user_name,
+        c.chat_read_user,
+        c.chat_read_host,
+        c.room_name,
+        rp.photo1
 		from chatroom c join room_photo rp on c.room_idx = rp.room_idx
-		where c.room_idx = #{room_idx} and
-		userid = #{userid}
+		where c.room_idx =#{room_idx} and	userid = #{userid}
 	</select>
 	
 	<update id="updateChatReadUser">
@@ -78,10 +89,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where c_idx=#{c_idx}
 	</select>
 	
+	<!-- 채팅리스트 갯수 -->
+	<select id="getChatRoomCount" resultType="int">
+		select count(*) from chatroom 
+		where (h_userid=#{sessionId} or userid=#{sessionId})
+			and (room_name like #{keyword} or userid like #{keyword} 
+			or h_userid like #{keyword} or h_name like #{keyword} 
+			or user_name like #{keyword})
+	</select>
+	
+	<!-- 채팅리스트 -->
+	<select id="getChatRoomList" resultType="ChatListDTO">
+	select * from(
+		select A.*, rownum as rn from(
+			select * from
+			chatroom c join room_photo rp on c.room_idx = rp.room_idx
+			where (h_userid=#{sessionId} or userid=#{sessionId})
+			and (room_name like #{keyword} or userid like #{keyword} 
+			or h_userid like #{keyword} or h_name like #{keyword} 
+			or user_name like #{keyword})
+			order by chat_read_host asc, create_date desc
+		) A
+	) where rn between #{start} and #{end}
+	</select>
 	
 	
-	
-	
+	<!-- 호스트 프로필 사진 경로 찾기 -->
+	<select id="findByHostProfile" resultType="String">
+		select h_profile_img from host 
+		where h_userid=#{h_userid}
+	</select>	
 	
 </mapper>
 
