@@ -6,35 +6,44 @@
 <%@ include file="../include/header.jsp"%>
 <title>STAYHERE</title>
 <!-- 부트스트랩 아이콘 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
 <!-- flatpickr -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/plugins/rangePlugin.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/plugins/rangePlugin.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
 <!-- 카카오맵 API -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=52817c98591dad1c8811f3daa6bca00b&libraries=services"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=52817c98591dad1c8811f3daa6bca00b&libraries=services"></script>
 <style type="text/css">
-a { 
- text-decoration: none;
+a {
+	text-decoration: none;
 }
+
 ul li {
- display: inline;
- list-style-type: none;
+	display: inline;
+	list-style-type: none;
 }
+
 #btnReview {
- color: #8c8c8c;
- text-decoration: none;
+	color: #8c8c8c;
+	text-decoration: none;
 }
+
 #btnReview:hover {
- color: #ffc107;
- text-decoration: none;
+	color: #ffc107;
+	text-decoration: none;
 }
-table tr td{
- width: 50%;
+
+table tr td {
+	width: 50%;
 }
 /*채팅 아이콘 css*/
 .btn-chatting-icon {
@@ -44,283 +53,347 @@ table tr td{
 	cursor: pointer;
 	visibility: hidden;
 	z-index: 999;
- }
+}
 </style>
 </head>
 <body class="d-flex flex-column h-100">
- <main class="flex-shrink-0">
-  <!-- nav -->
-	<%@ include file="../include/navbar.jsp" %>
-  <!-- 본문영역 시작-->
-  <section class="col-lg-10 mt-3 mb-5 px-5 mx-auto" id="features">
-    <div class="container px-5">
-	    <!-- 숙소 이름 -->
-		<div class="container" style="padding: 0;">	
-		 <h3>
-		  <span>${room.room_name}</span>
-		 </h3>
+	<main class="flex-shrink-0">
+		<!-- nav -->
+		<%@ include file="../include/navbar.jsp"%>
+		<!-- 본문영역 시작-->
+		<section class="col-lg-10 mt-3 mb-5 px-5 mx-auto" id="features">
+			<div class="container px-5">
+				<!-- 숙소 이름 -->
+				<div class="container" style="padding: 0;">
+					<h3>
+						<span>${room.room_name}</span>
+					</h3>
+				</div>
+
+				<!-- 별점/후기/찜 하트 -->
+				<div class="d-flex container" style="padding: 0;">
+					<div class="d-flex container" style="padding: 0;">
+						<div class="d-flex justify-content-start"
+							style="width: 50%; position: relative; float: left; vertical-align: middle; padding-top: 10px">
+							<c:choose>
+								<c:when test="${starAvg==0.0 && reviewCount==0}">
+									<span>⭐NEW</span>
+								</c:when>
+								<c:otherwise>
+									<span>⭐${starAvg}/5</span>
+									<span>&nbsp;&nbsp;</span>
+									<span>후기 ${reviewCount}개</span>
+								</c:otherwise>
+							</c:choose>
+							<span>&nbsp;&nbsp;&nbsp;</span> <i class="bi bi-geo-alt-fill"></i>
+							<span>${room.city}&nbsp;&nbsp;</span> <span>${room.country}</span>
+						</div>
+
+						<!-- 찜 하트 -->
+						<div class="d-flex justify-content-end"
+							style="width: 50%; position: relative; float: right;">
+							<i id="wish-icon-${room.room_idx}"
+								class="bi-heart text-danger fw-bold fs-2"
+								onclick="wishListToggle(event, ${room.room_idx})"></i>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!-- 숙소 사진 목록 -->
+			<div class="container px-5 mb-1">
+
+				<div id="carouselExampleIndicators" class="carousel slide"
+					data-bs-ride="carousel">
+					<div class="carousel-indicators">
+						<button type="button" data-bs-target="#carouselExampleIndicators"
+							data-bs-slide-to="0" class="active" aria-current="true"
+							aria-label="Slide 1"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators"
+							data-bs-slide-to="1" aria-label="Slide 2"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators"
+							data-bs-slide-to="2" aria-label="Slide 3"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators"
+							data-bs-slide-to="3" aria-label="Slide 4"></button>
+					</div>
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<img src="${path}/imgUpload/${room.photo1}" class="d-block w-100"
+								alt="..." style="width: 1000px; height: 600px">
+						</div>
+						<div class="carousel-item">
+							<img src="${path}/imgUpload/${room.photo2}" class="d-block w-100"
+								alt="..." style="width: 1000px; height: 600px">
+						</div>
+						<div class="carousel-item">
+							<img src="${path}/imgUpload/${room.photo3}" class="d-block w-100"
+								alt="..." style="width: 1000px; height: 600px">
+						</div>
+						<div class="carousel-item">
+							<img src="${path}/imgUpload/${room.photo4}" class="d-block w-100"
+								alt="..." style="width: 1000px; height: 600px">
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button"
+						data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button"
+						data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+
+			</div>
+
+			<!-- 사진 아래 부터 시작, 리뷰 목록 전까지의  div -->
+			<div class="container px-5 my-3">
+				<div class="row">
+					<div class="col-lg-8">
+
+						<!-- 숙소 소개 타이틀 -->
+						<section>
+							<div class="d-flex justify-content-start"
+								style="width: 80%; position: relative; float: left;">
+								<span class="fs-4">${host.h_userid}님이 호스팅하는 게스트용 별채 전체</span>
+							</div>
+							<div class="d-flex justify-content-end"
+								style="width: 8%; position: relative; float: right;">
+								<img src="${path}/imgUpload/${host.h_profile_img}" width="50px"
+									height="50px" style="border-radius: 50%">
+							</div>
+							<div style="clear: both; font-size: 16px;">
+								<span>최대 인원 ${room.max_people}명 · </span> <span>침대
+									${room.beds}개 · </span> <span>욕실 ${room.baths}개</span>
+							</div>
+						</section>
+
+						<hr class="gray_line">
+
+						<!-- 숙소 소개 문구 -->
+						<div class="container" style="padding: 0;">
+							<p>${room.contents}</p>
+						</div>
+
+						<hr class="gray_line">
+
+						<!-- 숙소 편의시설 및 숙소 이용규칙 표기(체크인 체크아웃 시간, 흡연금지,파티나 이벤트 금지 등)-->
+
+						<div class="container" style="padding: 0;">
+							<table class="table" style="border-color: white;">
+								<tr>
+									<td><i class="bi bi-wifi"></i>&nbsp;&nbsp;무선 인터넷</td>
+									<td><i class="bi bi-car-front"></i>&nbsp;&nbsp;건물 내 무료주차</td>
+								</tr>
+								<tr>
+									<td><i class="bi bi-snow"></i>&nbsp;&nbsp;에어컨</td>
+									<td><i class="bi bi-thermometer-sun"></i>&nbsp;&nbsp;난방</td>
+								</tr>
+								<tr>
+									<td><i class="bi bi-bag-check"></i>&nbsp;&nbsp;여행 가방 보관 가능</td>
+									<td><i class="bi bi-truck-front"></i>&nbsp;&nbsp;대중교통 인접</td>
+								</tr>
+								<tr>
+									<td><i class="bi bi-cup-hot"></i>&nbsp;&nbsp;커피머신</td>
+									<td><i class="bi bi-speaker"></i>&nbsp;&nbsp;블루투스 음향시스템</td>
+								</tr>
+							</table>
+						</div>
+
+						<hr class="gray_line">
+
+						<div class="container" style="padding: 0;">
+							<table class="table" style="border-color: white;">
+								<tr>
+									<td><i class="bi bi-clock-fill"></i>&nbsp;&nbsp;체크인 : 오후
+										3:00 - 오후 8:00</td>
+									<td><i class="bi bi-stars"></i>&nbsp;&nbsp;코로나19 방역 수칙을
+										준수하셔야 합니다.</td>
+								</tr>
+								<tr>
+									<td><i class="bi bi-clock-fill"></i>&nbsp;&nbsp;체크아웃 : 오전
+										11:00</td>
+									<td><i class="bi bi-check-circle-fill"></i>&nbsp;&nbsp;화재경보기
+										있음</td>
+								</tr>
+							</table>
+						</div>
+
+					</div>
+
+
+					<!-- 예약 정보 -->
+					<div class="col-lg-4">
+						<div class="card mb-3">
+							<div class="card-header">예약 정보</div>
+							<form name="res_form" id="res_form" method="post"
+								action="${path}/reservations/reserve/${room.room_idx}">
+								<div class="card-body">
+									<div class="mb-2">
+										<span style="font-size: 24px; font-weight: bold;">￦<fmt:formatNumber
+												value="${room.room_price}" pattern="#,###,###" />
+										</span><span style="color: #737373;">/박</span>
+									</div>
+									<div class="form-floating mb-3">
+										<input class="form-control" value="${checkin_date}"
+											name="checkin_date" id="checkin_date" placeholder="체크인"
+											required> <label for="floatingInput">체크인</label>
+									</div>
+									<div class="form-floating mb-3">
+										<input class="form-control" value="${checkout_date}"
+											name="checkout_date" id="checkout_date" placeholder="체크아웃"
+											required> <label for="floatingInput">체크아웃</label>
+									</div>
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" name="res_person"
+											id="res_person" min="2" max="${room.max_people}" value="2">
+										<label for="floatingInput">예약인원</label>
+									</div>
+									<div class="d-grid gap-2">
+										<button class="btn btn-warning" id="btnReserve" type="button">예약하기</button>
+									</div>
+								</div>
+								<input type="hidden" name="room_idx" id="room_idx"
+									value="${room.room_idx}"> <input type="hidden"
+									name="check_in" id="check_in"
+									value="<fmt:formatDate value="${room.check_in}" pattern="yyyy-MM-dd" />">
+								<input type="hidden" name="check_out" id="check_out"
+									value="<fmt:formatDate value="${room.check_out}" pattern="yyyy-MM-dd" />">
+								<input type="hidden" name="night" id="night">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<hr class="gray_line mx-auto" style="width: 82%;">
+
+			<!-- 리뷰 목록 ${profile_img} 경로 설정 -->
+			<div class="container px-5 my-3">
+				<section>
+					<div>
+						<c:choose>
+							<c:when test="${starAvg==0.0 && reviewCount==0}">
+								<span class="fs-4">리뷰(아직)없음</span>
+								<br>
+								<span>⭐NEW</span>
+							</c:when>
+							<c:otherwise>
+								<span class="fs-4">리뷰</span>
+								<br>
+								<span>⭐${starAvg}/5 · 후기 ${reviewCount}개</span>
+							</c:otherwise>
+						</c:choose>
+					</div>
+
+					<div class="container mx-auto">
+						<div class="row row-cols-4 mx-auto my-3">
+							<c:forEach var="row" items="${review}" begin="0" end="3">
+								<div class="card" style="width: 18rem; margin: 3px;">
+									<div class="card-body">
+										<h5 class="card-title">
+											<!-- 유저프로필이미지 -->
+											<div class="rounded-circle me-3">
+												<!-- 로그인 유저 프로필 이미지 -->
+												<c:if test="${row.profile_img != null}">
+													<div class="profile_img">
+														<img class="profile img-fluid rounded-circle" width="30px"
+															height="30px" style="border-radius: 50%"
+															src="${path}/imgUpload/${row.profile_img}">&nbsp;${row.userid}
+													</div>
+												</c:if>
+												<!-- 로그인유저의 profile_img가없다면 디폴트 이미지 노출 -->
+												<c:if test="${row.profile_img == null}">
+													<div class="profile_imgDefault">
+														<img class="profile img-fluid rounded-circle" width="30px"
+															height="30px" style="border-radius: 50%"
+															src="${path}/resources/images/guest.png">&nbsp;${row.userid}
+													</div>
+												</c:if>
+											</div>
+
+										</h5>
+										<h6 class="card-subtitle mb-2 text-muted">
+											<fmt:formatDate value="${row.write_date}"
+												pattern="yyyy.MM.dd hh:mm" />
+										</h6>
+										<p class="card-text">${row.r_title}</p>
+										<a href="${path}/reviews/detail.do?review_idx=${row.review_idx}" 
+												class="card-link" id="btnReview">더보기 > </a>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
+				</section>
+			</div>
+
+			<hr class="gray_line mx-auto" style="width: 82%;">
+
+			<!-- 숙소 위치 -->
+			<div class="container px-5 my-3">
+				<span class="fs-4">호스팅 지역</span>
+			</div>
+			<div class="container px-5">
+				<i class="bi bi-geo-alt-fill"></i> <span>${room.city}&nbsp;${room.country}</span>
+			</div>
+
+			<!-- 지도 API ${dto.lat} ${dto.lng} ${dto.room_name} ${dto.country} ${dto.city}-->
+			<div class="container px-5 my-3">
+				<div class="rounded" id="map"
+					style="margin-top: 15px; height: 500px;"></div>
+			</div>
+
+			<hr class="gray_line mx-auto" style="width: 82%;">
+
+			<!-- 호스트 정보, 이메일 문의  -->
+			<div class="container px-5 my-3">
+				<div class="card">
+					<div class="card-header">Host</div>
+					<div class="card-body">
+						<div class="d-flex">
+							<div class="d-flex">
+								<img src="${path}/imgUpload/${host.h_profile_img}" width="60px"
+									height="60px" style="border-radius: 50%">
+							</div>
+							<div style="margin-left: 20px;">
+								<span class="card-title fs-5">호스트 : ${host.h_userid}님</span>
+								<p class="card-text" style="font-size: 14px;">
+									회원 가입일 :
+									<fmt:formatDate value="${host.h_join_date}"
+										pattern="yyyy.MM.dd" />
+								</p>
+								<a href="mailto:﻿${host.h_email}?subject=[${room.room_name}]문의"><button
+										type="button" class="btn btn-warning" style="font-size: 14px;">호스트에게
+										메일보내기</button></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</section>
+		<!-- 본문 영역 끝 -->
+
+		<!-- 채팅 아이콘  -->
+		<div class="btn-chatting-icon">
+			<form method="post" id="chatForm">
+				<input type="hidden" name="room_idx" value="${room.room_idx}">
+				<input type="hidden" name="room_name" value="${room.room_name}">
+				<input type="hidden" name="h_userid" value="${host.h_userid}">
+				<input type="hidden" name="h_name" value="${host.h_name}"> <input
+					type="hidden" name="photo1" value="${room.photo1}">
+				<button type="button" class="btn btn-custom rounded-circle py-1"
+					onclick="chatFormSubmit(chatForm)">
+					<i class="bi bi-chat-dots-fill fs-1"></i>
+				</button>
+			</form>
 		</div>
-		
-		<!-- 별점/후기/찜 하트 -->
-		<div class="d-flex container" style="padding: 0;">
-		 <div class="d-flex container" style="padding: 0;">
-			  <div class="d-flex justify-content-start" style="width: 50%; position: relative; float: left; vertical-align: middle; padding-top: 10px">
-			  <c:choose>
-			   <c:when test="${starAvg==0.0 && reviewCount==0}">
-			    <span>⭐NEW</span>
-			   </c:when>
-			  <c:otherwise>
-			   <span>⭐${starAvg}/5</span>
-			   <span>&nbsp;&nbsp;</span>
-			   <span>후기 ${reviewCount}개</span>
-			  </c:otherwise>
-			  </c:choose>
-			  <span>&nbsp;&nbsp;&nbsp;</span>
-			  <i class="bi bi-geo-alt-fill"></i>
-			  <span>${room.city}&nbsp;&nbsp;</span>
-			  <span>${room.country}</span>
-			  </div>
-
-		 <!-- 찜 하트 -->
-		 <div class="d-flex justify-content-end" style="width: 50%; position: relative; float: right;">
-	      <i id="wish-icon-${room.room_idx}" class="bi-heart text-danger fw-bold fs-2" onclick="wishListToggle(event, ${room.room_idx})"></i>
-		 </div>
-		 </div>
-		 
-		</div>
-	</div>
-	<!-- 숙소 사진 목록 -->
-	<div class="container px-5 mb-1">
-	
-		<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-		  <div class="carousel-indicators">
-		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-		  </div>
-		  <div class="carousel-inner">
-		    <div class="carousel-item active">
-		      <img src="${path}/imgUpload/${room.photo1}" class="d-block w-100" alt="..."  style="width: 1000px; height: 600px">
-		    </div>
-		    <div class="carousel-item">
-		      <img src="${path}/imgUpload/${room.photo2}" class="d-block w-100" alt="..."  style="width: 1000px; height: 600px">
-		    </div>
-		    <div class="carousel-item">
-		      <img src="${path}/imgUpload/${room.photo3}" class="d-block w-100" alt="..." style="width: 1000px; height: 600px">
-		    </div>
-		    <div class="carousel-item">
-		      <img src="${path}/imgUpload/${room.photo4}" class="d-block w-100" alt="..." style="width: 1000px; height: 600px">
-		    </div>
-		  </div>
-		  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-		    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		    <span class="visually-hidden">Previous</span>
-		  </button>
-		  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-		    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		    <span class="visually-hidden">Next</span>
-		  </button>
-		</div>
-	 
-	</div>
-	
-    <!-- 사진 아래 부터 시작, 리뷰 목록 전까지의  div -->	
-    <div class="container px-5 my-3">
-      <div class="row">
-        <div class="col-lg-8">	
-
-         <!-- 숙소 소개 타이틀 -->
-         <section>
-          <div class="d-flex justify-content-start" style="width: 80%; position: relative; float: left;">
-           <span class="fs-4">${host.h_userid}님이 호스팅하는 게스트용 별채 전체</span>
-          </div>
-          <div class="d-flex justify-content-end" style="width: 8%; position: relative; float: right;">
-           <img src="${path}/imgUpload/${host.h_profile_img}" width="50px" height="50px" style="border-radius: 50%">
-          </div>
-		  <div style="clear: both; font-size: 16px;">
-		   <span>최대 인원 ${room.max_people}명 · </span>
-		   <span>침대 ${room.beds}개 · </span>
-		   <span>욕실 ${room.baths}개</span>
-		  </div>          
-         </section>
-         
-         <hr class="gray_line">
-         
-         <!-- 숙소 소개 문구 -->
-         <div class="container" style="padding: 0;">
-          <p>${room.contents}</p>
-         </div>		
-        
-         <hr class="gray_line">
-        
-         <!-- 숙소 편의시설 및 숙소 이용규칙 표기(체크인 체크아웃 시간, 흡연금지,파티나 이벤트 금지 등)-->
-                           
-         <div class="container" style="padding: 0;">
-			<table class="table" style="border-color: white;">
-			    <tr>
-			      <td><i class="bi bi-wifi"></i>&nbsp;&nbsp;무선 인터넷</td>
-			      <td><i class="bi bi-car-front"></i>&nbsp;&nbsp;건물 내 무료주차</td>
-			    </tr>
-			    <tr>
-			      <td><i class="bi bi-snow"></i>&nbsp;&nbsp;에어컨</td>
-			      <td><i class="bi bi-thermometer-sun"></i>&nbsp;&nbsp;난방</td>
-			    </tr>
-			    <tr>
-			      <td><i class="bi bi-bag-check"></i>&nbsp;&nbsp;여행 가방 보관 가능</td>
-			      <td><i class="bi bi-truck-front"></i>&nbsp;&nbsp;대중교통 인접</td>
-			    </tr>
-			    <tr>
-			      <td><i class="bi bi-cup-hot"></i>&nbsp;&nbsp;커피머신</td>
-			      <td><i class="bi bi-speaker"></i>&nbsp;&nbsp;블루투스 음향시스템 </td>
-			    </tr>
-			</table>
-         </div>
-
-		 <hr class="gray_line">
-
-         <div class="container" style="padding: 0;">
-			<table class="table" style="border-color: white;">
-			    <tr>
-			      <td><i class="bi bi-clock-fill"></i>&nbsp;&nbsp;체크인 : 오후 3:00 - 오후 8:00</td>
-			      <td><i class="bi bi-stars"></i>&nbsp;&nbsp;코로나19 방역 수칙을 준수하셔야 합니다.</td>
-			    </tr>
-			    <tr>
-			      <td><i class="bi bi-clock-fill"></i>&nbsp;&nbsp;체크아웃 : 오전 11:00</td>
-			      <td><i class="bi bi-check-circle-fill"></i>&nbsp;&nbsp;화재경보기 있음</td>
-			    </tr>
-			</table>
-         </div>
-         
-        </div>
 
 
-        <!-- 예약 정보 -->
-        <div class="col-lg-4">
-         <div class="card mb-3">
-          <div class="card-header">예약 정보</div>
-           <form name="res_form" id="res_form" method="post" action="${path}/reservations/reserve/${room.room_idx}">
-           <div class="card-body">
-            <div class="mb-2">
-             <span style="font-size: 24px; font-weight: bold;">￦<fmt:formatNumber value="${room.room_price}" pattern="#,###,###"/>  </span><span style="color: #737373;">/박</span>
-            </div>
-			<div class="form-floating mb-3">
-			  <input class="form-control" value="${checkin_date}" name="checkin_date" id="checkin_date" placeholder="체크인" required>
-			  <label for="floatingInput">체크인</label>
-			</div>
-			<div class="form-floating mb-3">
-			  <input class="form-control" value="${checkout_date}" name="checkout_date" id="checkout_date" placeholder="체크아웃" required>
-			  <label for="floatingInput">체크아웃</label>
-			</div>
-			<div class="form-floating mb-3">
-			  <input type="number" class="form-control" name="res_person" id="res_person" min="2" max="${room.max_people}" value="2">
-			  <label for="floatingInput">예약인원</label>
-			</div>
-			<div class="d-grid gap-2">
-			  <button class="btn btn-warning" id="btnReserve" type="button">예약하기</button>
-			</div>
-           </div>
-           <input type="hidden" name="room_idx" id="room_idx" value="${room.room_idx}">
-           <input type="hidden" name="check_in" id="check_in" value="<fmt:formatDate value="${room.check_in}" pattern="yyyy-MM-dd" />">
-           <input type="hidden" name="check_out" id="check_out" value="<fmt:formatDate value="${room.check_out}" pattern="yyyy-MM-dd" />">
-           <input type="hidden" name="night" id="night">
-          </form>
-         </div>
-        </div>
-      </div>
-    </div>
-
-	<hr class="gray_line mx-auto" style="width: 82%;">
-
-	<!-- 리뷰 목록 ${profile_img} 경로 설정 -->
-	<div class="container px-5 my-3">
-	 <section>
-	  <div>
-	   <c:choose>
-	    <c:when test="${starAvg==0.0 && reviewCount==0}">
-         <span class="fs-4">리뷰(아직)없음</span><br>
-	     <span>⭐NEW</span>
-	    </c:when>
-	    <c:otherwise>
-	     <span class="fs-4">리뷰</span><br>
-	     <span>⭐${starAvg}/5 · 후기 ${reviewCount}개</span>
-	    </c:otherwise>
-	   </c:choose>
-	  </div>
-	  
-	  <div class="container mx-auto">
-		<div class="row row-cols-4 mx-auto my-3">
-	  	  <c:forEach var="row"  items="${review}" begin="0" end="3">
-			<div class="card" style="width: 18rem; margin: 3px;">
-			  <div class="card-body">
-			    <h5 class="card-title"><img src="${path}/imgUpload/${row.profile_img}" width="30px" height="30px" style="border-radius: 50%">&nbsp;${row.userid}</h5>
-			    <h6 class="card-subtitle mb-2 text-muted"><fmt:formatDate value="${row.write_date}" pattern="yyyy.MM.dd hh:mm" /> </h6>
-			    <p class="card-text">${row.r_title}</p>
-			    <a href="#" class="card-link" id="btnReview">더보기 > </a>
-			  </div>
-			</div>
-	      </c:forEach>
-	    </div>
-	  </div>
-	 </section>
-	</div>
-	
-	<hr class="gray_line mx-auto" style="width: 82%;">
-	
-	<!-- 숙소 위치 -->
-	<div class="container px-5 my-3">
-	 <span class="fs-4">호스팅 지역</span>
-	</div>
-	<div class="container px-5">
-	 <i class="bi bi-geo-alt-fill"></i>
-	 <span>${room.city}&nbsp;${room.country}</span>
-	</div>
-	
-	<!-- 지도 API ${dto.lat} ${dto.lng} ${dto.room_name} ${dto.country} ${dto.city}-->
-	<div class="container px-5 my-3">
-	  <div class="rounded" id="map" style="margin-top: 15px; height: 500px;"></div>
-	</div>
-	
-	<hr class="gray_line mx-auto" style="width: 82%;">
-	
-	<!-- 호스트 정보, 이메일 문의  -->
-	<div class="container px-5 my-3">
-		<div class="card">
-		  <div class="card-header">Host</div>
-		  <div class="card-body">
-		    <div class="d-flex">
-		     <div class="d-flex">
-		      <img src="${path}/imgUpload/${host.h_profile_img}" width="60px" height="60px" style="border-radius: 50%">
-		     </div>
-		     <div style="margin-left: 20px;">
-		      <span class="card-title fs-5">호스트 : ${host.h_userid}님</span>
-		      <p class="card-text" style="font-size: 14px;">회원 가입일 : <fmt:formatDate value="${host.h_join_date}" pattern="yyyy.MM.dd" /> </p>
-		      <a href="mailto:﻿${host.h_email}?subject=[${room.room_name}]문의"><button type="button" class="btn btn-warning" style="font-size: 14px;">호스트에게 메일보내기</button></a>
-		 	 </div>
-			</div>
-		  </div>
-		</div>
-	</div>
-	
-  </section>
- <!-- 본문 영역 끝 -->
- 
- <!-- 채팅 아이콘  -->
- <div class="btn-chatting-icon">
- 	<form method="post" id="chatForm">
- 			<input type="hidden" name="room_idx" value="${room.room_idx}">
- 			<input type="hidden" name="room_name" value="${room.room_name}">
- 			<input type="hidden" name="h_userid" value="${host.h_userid}">
- 			<input type="hidden" name="h_name" value="${host.h_name}">
- 			<input type="hidden" name="photo1" value="${room.photo1}">
- 			<button type="button" class="btn btn-custom rounded-circle py-1" onclick="chatFormSubmit(chatForm)">
- 				<i class="bi bi-chat-dots-fill fs-1"></i>
- 			</button>
- 	</form>
-</div>
-  
- 
-<script type="text/javascript">
+		<script type="text/javascript">
 	$(function(){
 		wishListCheck();
 		
@@ -429,7 +502,7 @@ table tr td{
 	
 </script>
 
-<script type="text/javascript">
+		<script type="text/javascript">
 	 $(function(){
 	    $("#btnReserve").click(function(){
 	    	dateCal();
@@ -537,8 +610,8 @@ table tr td{
 	     });
 	    };
 </script>
-    
-<script type="text/javascript">
+
+		<script type="text/javascript">
 		//지도 스크립트
 		//상세조건의 값을 가져옵니다
 		//지도를 생성합니다    
@@ -587,9 +660,9 @@ table tr td{
 		infowindow.open(map, marker); 
 
 </script>
- 
- </main>
- <!-- footer -->
- <%@ include file="../include/footer.jsp" %>
+
+	</main>
+	<!-- footer -->
+	<%@ include file="../include/footer.jsp"%>
 </body>
 </html>
