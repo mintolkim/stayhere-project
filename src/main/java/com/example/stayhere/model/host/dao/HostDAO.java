@@ -9,7 +9,7 @@ import com.example.stayhere.model.host.dto.HostDTO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
 
 public interface HostDAO { 
-	 public HostDTO loginCheck(HostDTO dto);
+	 public boolean loginCheck(HostDTO dto);
 	 public HostDTO loginOkNick(HostDTO dto);
 	 public HostDTO viewHost(String h_userid);
 	 public void insert(HostDTO host);
@@ -32,4 +32,5 @@ public interface HostDAO {
 	public int blackhostcount();//블랙호스트수
 	public List<HostDTO> getblackhost(int start, int end);//블랙호스트만
 	public List<RoomsDTO> getroom(String h_userid);//호스트숙소불러오기
+	public String findByPasswd(String h_userid);
 }

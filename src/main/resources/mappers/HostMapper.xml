@@ -5,9 +5,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="host">
-<select id="loginCheck" resultType="HostDTO" parameterType="HostDTO">
-		select * from host 
+<select id="loginCheck" resultType="String" parameterType="HostDTO">
+		select h_name from host 
 		where h_userid=#{h_userid}
+		and h_passwd=#{h_passwd}
 </select>
 
 <select id="loginOkNick" resultType="HostDTO" parameterType="HostDTO">
@@ -17,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <select id="viewHost" resultType="HostDTO">
   select * from Host
-  where h_userid=#{h_userid}
+  where h_userid = #{h_userid}
 </select>
 
 <select id="idCheck" resultType="int">
@@ -111,6 +112,8 @@ delete from Host where h_userid=#{h_userid}
 		r.room_type,
 		r.lat,
 		r.lng,
+		r.max_people,
+		r.add_people,
 		r.admin_confirm,
 		rp.photo1,
 		rp.photo2,
@@ -221,6 +224,12 @@ select count(*) from host
  select * from rooms, room_photo
  where rooms.room_idx = room_photo.room_idx
  and h_userid=#{h_userid}
+</select>
+
+<!-- DB 비밀번호 조회 -->
+<select id="findByPasswd" resultType="String">
+	select h_passwd from host 
+	where h_userid=#{h_userid}
 </select>
 
 </mapper>

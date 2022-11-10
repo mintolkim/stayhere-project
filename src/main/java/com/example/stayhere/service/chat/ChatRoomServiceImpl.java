@@ -48,7 +48,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	@Override
 	public List<ChatRoomDTO> readChatHistory(ChatRoomDTO dto) throws IOException {
 		
-		String pathName = fileUploadPath + dto.getFilename();
+		String path = "chat" + File.separator;
+		String savedPath = fileUploadPath + path;
+		String pathName = savedPath + dto.getFilename();
 		
 		//DB에 저장된 chat.txt 파일 읽기
 		BufferedReader br = new BufferedReader(new FileReader(pathName));
@@ -59,12 +61,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		int idx = 1;
 		
 		while ((chatLine = br.readLine()) != null ) {
-			//1개 메시지는 3줄(보낸사람, 메시지 내용, 보낸시간)로 구성
+			//1개 메시지는 4줄(보낸사람ID, 보낸사람, 메시지 내용, 보낸시간)로 구성
 			int answer = idx % 3;
 			
-			if (answer == 1) {
-				//보낸사람
-				chatRoomLines.setSenderName(chatLine);
+			if(answer == 1) {
+				//보낸사람 아이디
+				chatRoomLines.setSenderId(chatLine);
 				idx++;
 			} else if (answer == 2) {
 				//메시지내용 저장할때 개행처리를 치환한 문자를 <br>로 변경
@@ -94,19 +96,21 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 	@Override
 	public void createFile(int room_idx, int c_idx) throws Exception {
-			
+		
+		//파일이름 생성 (생성일자_룸고유번호_채팅고유번호.txt)
 		String calcName = UploadFileUtils.calcName();
-		log.info("calcName : " + calcName);
-		
 		String fileName = calcName + "_" + room_idx + "_" + c_idx + ".txt";
-		log.info("filename : " + fileName);
-		
-		String pathName = fileUploadPath + fileName;
-		log.info("pathName : " + pathName);
-		
+		//파일 경로 설정
+		String path = "chat" + File.separator;
+		String savedPath = fileUploadPath + path;
+		File dirPath = new File(savedPath); 
+		if(!dirPath.exists()) { //파일 경로가 존재하지 않으면...
+			dirPath.mkdir(); //디렉토리 생성
+		}
+		//생성파일 경로 및 이름 설정
+		String pathName = savedPath + fileName;
 		//File 클래스에 pathName 할당
 		File txtFile = new File(pathName);
-		
 		//로컬경로에 파일 생성
 		txtFile.createNewFile();
 		chatRoomDao.updateFileName(c_idx, fileName);
@@ -119,8 +123,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	}
 
 	@Override
-	public ChatRoomDTO findByChatId(int room_idx, String userid) {
-		return chatRoomDao.findByChatId(room_idx, userid);
+	public ChatRoomDTO findByChatInfo(int room_idx, String userid) {
+		return chatRoomDao.findByChatInfo(room_idx, userid);
 	}
 
 	@Override
@@ -135,13 +139,15 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		int room_idx = chatRoom.getRoom_idx();
 		String userid = chatRoom.getUserid();
 		
-		ChatRoomDTO chatRoomAppend = chatRoomDao.findByChatId(room_idx, userid);
+		ChatRoomDTO chatRoomAppend = chatRoomDao.findByChatInfo(room_idx, userid);
 				
-		String pathName = fileUploadPath + chatRoomAppend.getFilename();
+		String path = "chat" + File.separator;
+		String savedPath = fileUploadPath + path;
+		String pathName = savedPath + chatRoomAppend.getFilename();
 		
 		FileOutputStream fos = new FileOutputStream(pathName, true);
 		String content = chatRoom.getContent();
-		String senderName = chatRoom.getSenderName();
+//		String senderName = chatRoom.getSenderName();
 		String senderId = chatRoom.getSenderId();
 		String sendTime = chatRoom.getSendTime();
 		log.info("print:" + content);
@@ -149,7 +155,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		content = content.trim();
 		content = content.replace("\n", "&&").replace("\r", "");
 		log.info("print replace:" + content);
-		String writeContent = senderName + "\n" + content + "\n" + sendTime  + "\n";
+		String writeContent = senderId + "\n" + content + "\n" + sendTime  + "\n";
 		
 		byte[] b = writeContent.getBytes();
 		
@@ -197,6 +203,24 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	@Override
 	public ChatRoomDTO findByReadCheck(int c_idx) {
 		return chatRoomDao.findByReadCheck(c_idx);
+	}
+
+
+	@Override
+	public int getChatRoomCount(String sessionId, String keyword) {
+		return chatRoomDao.getChatRoomCount(sessionId, keyword);
+	}
+
+
+	@Override
+	public List<ChatListDTO> getChatRoomList(int start, int end, String sessionId, String keyword) {
+		return chatRoomDao.getChatRoomList(start, end, sessionId, keyword);
+	}
+
+
+	@Override
+	public String findByHostProfile(String h_userid) {
+		return chatRoomDao.findByHostProfile(h_userid);
 	}
 
 }

@@ -98,6 +98,7 @@
 
 .incoming_msg_img img {
 	width: 30px;
+	height: 30px;
 	border-radius: 50%;
 }
 
@@ -190,7 +191,9 @@
 </style>
 
 <body>
-
+	<!-- 세션값 변수로 담기 -->
+	<c:set var="host_in" value="${sessionScope.h_userid}"/>
+	<c:set var="geust_in" value="${sessionScope.userid}"/>
 
 	<div class="container-fuild wrap">
 		<div class="chating-wrap border">
@@ -199,25 +202,26 @@
 					<div class="chat_info d-flex align-items-center p-2">
 						<img src="${path}/imgUpload/${photo1}">
 						<div class="ps-2">
-							<span class="chat_title">[${room_name}] 채팅방</span>
+							<c:if test="${host_in != null}">
+								<span class="chat_title">[${room_name}] ${userid}님과의 채팅</span>
+							</c:if>
+							<c:if test="${geust_in != null}">
+								<span class="chat_title">[${room_name}] ${h_userid}님과의 채팅</span>
+							</c:if>
 						</div>
 					</div>
 				</div>
-			</div>
-			
-			
+			</div>		
 
 			<div class="msg-wrap p-4">
 				<c:forEach var="chatRoom" items="${chatHistory}">
-					<c:set var="host_in" value="${sessionScope.h_name}"/>
-					<c:set var="geust_in" value="${sessionScope.name}"/>
-					<c:set var="cid" value="${chatRoom.senderName}" />
+					<c:set var="cid" value="${chatRoom.senderId}" />
 					<c:choose>
 						<c:when test="${host_in eq cid || geust_in eq cid}">
 							<div class="outgoing_msg">
 								<div class="sent_msg">
 									<div class="message">
-									<span class="host_read_check">1</span>
+									<span class="host_read_check"></span>
 									<p>${chatRoom.content}</p>
 									</div>
 									<span class="time_date">${chatRoom.sendTime}</span>
@@ -227,16 +231,35 @@
 						<c:otherwise>
 							<div class="incoming_msg">
 								<div class="incoming_msg_img">
-									<img src="${path}/resources/images/guest.png" alt="profile_img">
+									<c:if test="${host_in eq host.h_userid}">
+										<c:choose>
+											<c:when test="${guest.profile_img != null}">
+												<img src="${path}/imgUpload/${guest.profile_img}" alt="profile_img">
+											</c:when>
+											<c:otherwise>
+												<img src="${path}/resources/images/guest.png" alt="profile_img">
+											</c:otherwise>
+										</c:choose>
+									</c:if>
+									<c:if test="${geust_in eq guest.userid}">
+										<c:choose>
+											<c:when test="${host.h_profile_img != null}">
+												<img src="${path}/imgUpload/${host.h_profile_img}" alt="profile_img">
+											</c:when>
+											<c:otherwise>
+												<img src="${path}/resources/images/guest.png" alt="profile_img">
+											</c:otherwise>
+										</c:choose>
+									</c:if>
 								</div>
 								<div class="received_msg">
 									<div class="received_name">
-										${chatRoom.senderName}
+										${chatRoom.senderId}
 									</div>
 									<div class="received_withd_msg">
 										<div class="message">
 											<p>${chatRoom.content}</p> 
-											<span class="user_read_check">1</span>
+											<span class="user_read_check"></span>
 										</div>
 										<span class="time_date"> ${chatRoom.sendTime}</span>
 									</div>
@@ -245,7 +268,6 @@
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-				
 				
 			</div>
 			<div class="send-wrap">
@@ -343,14 +365,12 @@
 			}
 		}
 */
-		
-		
-		
+		//WebSocket broker 경로로 JSON형태 String 타입 메시지 데이터를 전송함 
 		function sendBroadcast(json) {
-			
 			stompClient.send("/app/broadcast", {}, JSON.stringify(json));
 		}
 		
+		//보내기 버튼 클릭시 실행되는 메서드
 		function send() {
 			//ajaxChatRoom();
 			var content = $('#message').val().trim();
@@ -375,12 +395,10 @@
 			}
 			
 			if (!event.shiftKey && event.keyCode === 13) {
-				
+				//입력된 값 양끝 공백제거
 				var content = $('#message').val().trim();
-				console.log(content=='');
 				
 				if(content==''){
-					console.log("이거 실행안되니.....");
 					$('#message').val("");
 					return false;
 				}
@@ -389,6 +407,7 @@
 			}
 		});
 		
+		//입력한 메시지를 HTML 형태로 가공
 		function createTextNode(messageObj) {
 			console.log("createTextNode");
 			console.log("messageObj: " + messageObj.content);
@@ -398,28 +417,50 @@
 			
 			if(messageObj.senderId == guest_in || messageObj.senderId == host_in){
 				return "<div class='outgoing_msg'><div class='sent_msg'>"
-				+ "<div class='message'><span class='host_read_check'>1</span><p>"
+				+ "<div class='message'><span class='host_read_check'></span><p>"
 				+ messageObj.content 
 				+ "</p></div><span class='time_date'>"
 				+ messageObj.sendTime
 	    	+ "</span></div></div>";
 			
-			} else {
+			} else if (guest_in == "") { //호스트가 입장했다면...프로필 이미지 때문 나누기..
 				return "<div class='incoming_msg'><div class='incoming_msg_img'>"
+				+ "<c:choose><c:when test='${guest.profile_img != null}'>"
+				+ "<img src='${path}/imgUpload/${guest.profile_img}' alt='profile_img'>"
+				+ "</c:when><c:otherwise>"
 				+ "<img src='${path}/resources/images/guest.png' alt='profile_img'>"
+				+ "</c:otherwise></c:choose>"
 		    + "</div><div class='received_msg'><div class='received_name'>"
-		    + messageObj.senderName
+		    + messageObj.senderId
 		    + "</div><div class='received_withd_msg'>"
 		    + "<div class='message'><p>"
 		    + messageObj.content  
-		    + "</p><span class='user_read_check'>1</span></div>"
+		    + "</p><span class='user_read_check'></span></div>"
+		    + "<span class='time_date'>"
+		    + messageObj.sendTime
+		    + "</span></div></div></div>";
+			} else { //게스트가 입장했다면..
+				return "<div class='incoming_msg'><div class='incoming_msg_img'>"
+				+ "<c:choose><c:when test='${host.h_profile_img != null}'>"
+				+ "<img src='${path}/imgUpload/${host.h_profile_img}' alt='profile_img'>"
+				+ "</c:when><c:otherwise>"
+				+ "<img src='${path}/resources/images/guest.png' alt='profile_img'>"
+				+ "</c:otherwise></c:choose>"
+		    + "</div><div class='received_msg'><div class='received_name'>"
+		    + messageObj.senderId
+		    + "</div><div class='received_withd_msg'>"
+		    + "<div class='message'><p>"
+		    + messageObj.content  
+		    + "</p><span class='user_read_check'></span></div>"
 		    + "<span class='time_date'>"
 		    + messageObj.sendTime
 		    + "</span></div></div></div>";
 			}
         }
 		
-		
+		//HTML 형태의 메시지를 화면에 출력해줌 
+		//해당되는 id 태그의 모든 하위 내용들을 message가 추가된 내용으로 추가.
+		//추가 후 스크롤은 하단으로 이동됨
 		function showBroadcastMessage(message) {
 			$(".msg-wrap").append(message);
             $(".msg-wrap").animate({
@@ -427,12 +468,12 @@
             }, 1000);
         }
 		
+		
 		function clearBroadcast() {
 			$('.msg-wrap').html("");
 		}
 		
-		
-		<%-- 읽음처리 --%>
+		//읽음처리
 		function ajaxChatRead(c_idx, reader) {
 			console.log("ajaxChatread");
 			var flag = "";

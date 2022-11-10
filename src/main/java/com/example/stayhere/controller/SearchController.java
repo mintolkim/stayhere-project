@@ -8,10 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
-import com.example.stayhere.model.wishlist.dto.WishlistDTO;
 import com.example.stayhere.service.rooms.RoomsService;
 import com.example.stayhere.service.wishlist.WishlistService;
 import com.example.stayhere.util.DateParse;
@@ -29,7 +25,6 @@ import com.example.stayhere.util.Pager;
 
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
-import oracle.net.ns.DataPacket;
 
 
 @Controller
@@ -142,7 +137,7 @@ public class SearchController {
 		map.put("cityname", cityname);
 		map.put("checkin_date", checkin_date);
 		map.put("checkout_date", checkout_date);
-		map.put("dateDif", dateDif);
+		map.put("date_diff", dateDif);
 		mav.addObject("map", map);
 		mav.setViewName("search/search");
 		return mav;

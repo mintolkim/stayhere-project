@@ -1,6 +1,5 @@
 package com.example.stayhere.controller;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,16 +22,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.stayhere.model.guest.dto.GuestDTO;
 import com.example.stayhere.model.host.dto.HostDTO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.service.host.HostService;
 import com.example.stayhere.service.rooms.RoomsService;
 import com.example.stayhere.util.Pager;
-import com.example.stayhere.util.UploadFileUtils;
 
-@RequestMapping("host/*")
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@RequestMapping("host/*")
 public class HostController {
 	
 	@Resource(name="uploadPath")
@@ -54,11 +53,22 @@ public class HostController {
 	
 	@RequestMapping("login_check")
 	public ModelAndView login_check(HostDTO dto, HttpSession session, ModelAndView mav) {
-		HostDTO result = hostService.loginCheck(dto, session);
-		boolean passcheck = pwdEncoder.matches(dto.getH_passwd(), result.getH_passwd());
-		if(passcheck) {
-			mav.setViewName("redirect:/main");
-		}else {
+		//데이터베이스의 정보 가져오기
+		HostDTO DBdto = hostService.viewHost(dto.getH_userid());
+		dto.setH_name(DBdto.getH_name()); //가져온 데이터베이스 정보를 받아서 이름값 dto에 넣기
+		//입력한 비밀번호와 db에 저장된 패스워드가 일치하는지 체크
+		//pwdEncoder.matches(파라미터로 받은 패스워드값, DB에 저장되어 있는 패스워드값)
+		boolean passcheck = pwdEncoder.matches(dto.getH_passwd(), DBdto.getH_passwd());
+		if(passcheck) { //패스워드가 일치한다면 true
+			dto.setH_passwd(DBdto.getH_passwd()); //db에서 가져온 패스워드를 dto에 저장
+			boolean result = hostService.loginCheck(dto, session);
+			if(result) { //로그인 체크 결과가 참이면 즉, 로그인 성공시
+				mav.setViewName("redirect:/main");
+			} else {
+				mav.setViewName("host/login");
+				mav.addObject("message", "error");
+			}
+		} else { //패스워드가 일치하지 않으면
 			mav.setViewName("host/login");
 			mav.addObject("message", "error");
 		}
@@ -150,10 +160,11 @@ public class HostController {
 	public ModelAndView update(HostDTO dto, HttpSession session, ModelAndView mav) {
 		String h_userid=(String)session.getAttribute("h_userid");
 		dto.setH_userid(h_userid);
-		HostDTO result = hostService.loginCheck(dto, session);
-		boolean passcheck = pwdEncoder.matches(dto.getH_passwd(), result.getH_passwd());
+		//저장된 아이디값으로 DB값 조회, 
+		HostDTO DBdto = hostService.viewHost(dto.getH_userid());
+		boolean passcheck = pwdEncoder.matches(dto.getH_passwd(), DBdto.getH_passwd());
 		if(passcheck) {
-			mav.addObject("dto", result);
+			mav.addObject("dto", DBdto);
 			mav.setViewName("host/profile_update");
 		}else {
 			mav.addObject("message", "confirmPw");
@@ -175,18 +186,26 @@ public class HostController {
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
 		   fileName = FileUtils.fileUpload(uploadPath, file.getOriginalFilename(), file.getBytes());   
 		   mav.addObject("message","profile");
-		   dto.setH_profile_img( File.separator + fileName);
+		   dto.setH_profile_img(fileName);
 		} else {//file name dto.get으로 불러와서 저장 null이면
 		   fileName = H_profile_img;
 		   System.out.println(fileName);
 		   dto.setH_profile_img(fileName);
 		}
 		
+		//입력받은 패스워드 (즉, 패스워드를 수정하지 않았다면)
+		String inputPasswd = dto.getH_passwd();
+		//현재 데이터베이스에 저장된 패스워드
+		String dbPasswd = hostService.findByPasswd(dto.getH_userid());
+		if(!inputPasswd.equals(dbPasswd)) { //두개의 값이 같지 않다면...
+			//비밀번호 암호화 후 dto에 저장
+			String encodePasswd = pwdEncoder.encode(inputPasswd);
+			dto.setH_passwd(encodePasswd);
+		} //만약 비밀번호가 일치한다면 암호화 없이 그대로 저장.
+		
 		hostService.update(dto);
-
 		mav.addObject("dto", hostService.viewHost(h_userid));
 		mav.setViewName("host/profile");
-		
 		return mav;
 	}
 	
@@ -199,11 +218,11 @@ public class HostController {
 	public ModelAndView delete(HostDTO dto, HttpSession session, ModelAndView mav) {
 		String h_userid=(String)session.getAttribute("h_userid");
 		dto.setH_userid(h_userid);
-		HostDTO result = hostService.loginCheck(dto, session);
-		boolean passcheck = pwdEncoder.matches(dto.getH_passwd(), result.getH_passwd());
+		HostDTO DBdto = hostService.viewHost(dto.getH_userid());
+		boolean passcheck = pwdEncoder.matches(dto.getH_passwd(), DBdto.getH_passwd());
 		session.setAttribute("h_userid", dto.getH_userid());
 		if(passcheck) {
-			mav.addObject("dto", result);
+			mav.addObject("dto", DBdto);
 			mav.setViewName("host/delete");
 		}else {
 			mav.addObject("message", "confirmPw");
@@ -214,8 +233,6 @@ public class HostController {
 	
 	@RequestMapping("delete/{h_userid}")
 	public ModelAndView delete_host(@PathVariable String h_userid,ModelAndView mav,HttpSession session,RoomsDTO dto) {
-		
-		
 			boolean result = hostService.delete_check(dto);
 			
 			if(result) {

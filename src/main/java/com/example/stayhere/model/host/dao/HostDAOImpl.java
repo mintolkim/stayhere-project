@@ -10,9 +10,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.example.stayhere.model.guest.dto.GuestDTO;
 import com.example.stayhere.model.host.dto.HostDTO;
-import com.example.stayhere.model.reservations.dto.ReservationsDTO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
 
 @Repository
@@ -22,8 +20,9 @@ public class HostDAOImpl implements HostDAO {
 	SqlSession sqlSession;
 
 	@Override
-	public HostDTO loginCheck(HostDTO dto) {
-		return sqlSession.selectOne("host.loginCheck", dto);
+	public boolean loginCheck(HostDTO dto) {
+		String name = sqlSession.selectOne("host.loginCheck", dto);
+		return (name == null) ? false : true;
 	}
 	
 	@Override
@@ -161,6 +160,11 @@ public class HostDAOImpl implements HostDAO {
 	@Override
 	public List<RoomsDTO> rooms_Confirm(String h_userid) {
 		return sqlSession.selectList("host.roomsConfirm",h_userid);
+	}
+
+	@Override
+	public String findByPasswd(String h_userid) {
+		return sqlSession.selectOne("host.findByPasswd", h_userid);
 	}
 
 

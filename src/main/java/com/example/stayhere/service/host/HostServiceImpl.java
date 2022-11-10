@@ -17,7 +17,10 @@ import com.example.stayhere.model.host.dao.HostDAO;
 import com.example.stayhere.model.host.dto.HostDTO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class HostServiceImpl implements HostService {
 
 	@Inject
@@ -27,13 +30,11 @@ public class HostServiceImpl implements HostService {
 	BCryptPasswordEncoder pwdEncoder;
 	
 	@Override
-	public HostDTO loginCheck(HostDTO dto, HttpSession session) {
-		String name = loginOkNick(dto).getH_name();
-		HostDTO result = hostDao.loginCheck(dto);
-		String result2 = result.getH_name();
-		if(result2.equals(name)) { //로그인 성공시 세션에 저장
-			session.setAttribute("h_userid", result.getH_userid());
-			session.setAttribute("h_name", result.getH_name());
+	public boolean loginCheck(HostDTO dto, HttpSession session) {
+		boolean result = hostDao.loginCheck(dto);
+		if(result) { //로그인 성공시 세션에 저장
+			session.setAttribute("h_userid", dto.getH_userid());
+			session.setAttribute("h_name", dto.getH_name());
 		}
 		return result;
 	}
@@ -132,11 +133,16 @@ public class HostServiceImpl implements HostService {
 			for(int i = 0; i < 10; i++) {
 				pwd+=(char)((Math.random()*26)+97);
 			}
+			log.info(" 임시 비밀번호  : " + pwd);
 			dto.setH_passwd(pwd);
-			// 비밀번호 변경
-			hostDao.updatePw(dto);
 			// 비밀번호 변경 메일 발송
 			sendEmail(dto, "findpw", num);
+			//패스워드 암호화
+			String encodePasswd = pwdEncoder.encode(pwd);
+			//암호화한 패스워드를 dto에 저장
+			dto.setH_passwd(encodePasswd); 
+			// 비밀번호 변경
+			hostDao.updatePw(dto);
 			out.print("이메일로 임시 비밀번호를 발송하였습니다.");
 			out.close();
 		}
@@ -191,5 +197,10 @@ public class HostServiceImpl implements HostService {
 	@Override
 	public int getConfirmRoom(String h_userid) {
 		return hostDao.getConfirmRoom(h_userid);
+	}
+
+	@Override
+	public String findByPasswd(String h_userid) {
+		return hostDao.findByPasswd(h_userid);
 	}
 }

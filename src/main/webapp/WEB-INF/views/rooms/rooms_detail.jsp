@@ -336,8 +336,12 @@ table tr td{
 	    });
 	});	
 	
-	//채팅하기 폼 sumbit
-	function chatFormSubmit(f){
+
+	//채팅하기 폼 팝업으로 띄우고 submit()하기
+	function chatFormSubmit(f){	
+		var left = $(document).width()-600; //문서 가로사이즈 - 600;
+		var popup = window.open("","chatPopup","width=550, height=700, left=" + left + ", top=100, scrollbars=no, toollbars=no, location=no,")
+		f.target = "chatPopup";
 		f.action = "${path}/chat";
 		f.submit();
 	}
