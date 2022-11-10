@@ -74,33 +74,34 @@ public class AdminController {
 		map.put("guestlist", guestlist);//map에 자료 저장
 		map.put("count", count); //레코드 갯수 파일
 		map.put("pager", pager); //페이지 네비게이션을 위한 변수
+		map.put("page", page); //페이지 네비게이션을 위한 변수
 		mav.setViewName("admin/admin_userlist");//포워딩할 뷰
 		mav.addObject("map", map);//보낼 데이터
 		return mav;
 	}
 	//블랙리스트전환
 	@RequestMapping("goblack")
-	public String goblack(@RequestParam String userid) {
+	public String goblack(@RequestParam String userid,@RequestParam(defaultValue = "1") int page) {
 			adminService.goblack(userid);
-		return "redirect:/admin/guest";
+		return "redirect:/admin/guest?page="+page;
 	}
 	//블랙호스트전환
 		@RequestMapping("goh_black")
-		public String goh_black(@RequestParam String h_userid) {
+		public String goh_black(@RequestParam String h_userid,@RequestParam(defaultValue = "1") int page) {
 				adminService.goh_black(h_userid);
-			return "redirect:/admin/host";
+			return "redirect:/admin/host?page="+page;
 		}
 	//일반회원전환
 	@RequestMapping("gonormal")
-	public String gonormal(@RequestParam String userid) {
+	public String gonormal(@RequestParam String userid,@RequestParam(defaultValue = "1") int page) {
 			adminService.gonormal(userid);
-			return "redirect:/admin/guest";
+			return "redirect:/admin/guest?page="+page;
 	}
 	//일반호스트 전환
 		@RequestMapping("goh_normal")
-		public String goh_normal(@RequestParam String h_userid) {
+		public String goh_normal(@RequestParam String h_userid,@RequestParam(defaultValue = "1") int page) {
 				adminService.goh_normal(h_userid);
-				return "redirect:/admin/host";
+				return "redirect:/admin/host?page"+page;
 		}
 	//전체 호스트목록
 	@RequestMapping("host")
@@ -116,6 +117,7 @@ public class AdminController {
 		map.put("hostlist", hostlist);//map에 자료 저장
 		map.put("count", count); //레코드 갯수 파일
 		map.put("pager", pager); //페이지 네비게이션을 위한 변수
+		map.put("page", page); //페이지 네비게이션을 위한 변수
 		mav.setViewName("admin/admin_hostlist");//포워딩할 뷰
 		mav.addObject("map", map);//보낼 데이터
 		return mav;
@@ -134,6 +136,7 @@ public class AdminController {
 		map.put("blackguest", blackguest);//map에 자료 저장
 		map.put("count", count); //레코드 갯수 파일
 		map.put("pager", pager); //페이지 네비게이션을 위한 변수
+		map.put("page", page); //페이지 네비게이션을 위한 변수
 		mav.setViewName("admin/admin_userlist");//포워딩할 뷰
 		mav.addObject("map", map);//보낼 데이터
 		return mav;
@@ -152,6 +155,7 @@ public class AdminController {
 			map.put("blackhost", blackhost);//map에 자료 저장
 			map.put("count", count); //레코드 갯수 파일
 			map.put("pager", pager); //페이지 네비게이션을 위한 변수
+			map.put("page", page); //페이지 네비게이션을 위한 변수
 			mav.setViewName("admin/admin_hostlist");//포워딩할 뷰
 			mav.addObject("map", map);//보낼 데이터
 			return mav;
@@ -209,6 +213,7 @@ public class AdminController {
 			map.put("roomlist", roomlist);//map에 자료 저장
 			map.put("count", count); //레코드 갯수 파일
 			map.put("pager", pager); //페이지 네비게이션을 위한 변수
+			map.put("page", page); //페이지 네비게이션을 위한 변수
 			mav.setViewName("admin/admin_roomlist");//포워딩할 뷰
 			mav.addObject("map", map);//보낼 데이터
 			return mav;
@@ -234,10 +239,11 @@ public class AdminController {
 		//숙소승인
 		@RequestMapping("changestate")
 		public String changestate(@RequestParam int room_idx, 
-				@RequestParam String state) {
+				@RequestParam String state,
+				@RequestParam(defaultValue = "1") int page) {
 				System.out.println("요청상태 : "+state+", room_idx: "+room_idx);
 				adminService.changestate(room_idx,state);
-				return "redirect:/admin/rooms";
+				return "redirect:/admin/rooms?page="+page;
 		}
 		//숙소승인 현황판
 		@RequestMapping("confirm")

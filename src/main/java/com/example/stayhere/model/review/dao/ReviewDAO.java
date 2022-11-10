@@ -50,5 +50,6 @@ public interface ReviewDAO {
 	public List<ReviewDTO> getreview(String userid);//게스트별 리뷰가져오기
 	public List<ReviewAccuseDTO> getaccuse(String userid);//게스트 신고 가져오기
 	public List<ReviewDTO> roomreview(int room_idx);//룸리뷰 불러오기
+	public void insertaccuse(ReviewAccuseDTO radto);//리뷰 글 신고하기
 }
 

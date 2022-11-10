@@ -63,6 +63,7 @@ label {
       	  <p class="lead" ><a href="${path}/guest/update/${sessionScope.userid}">회원정보 수정</a></p>
       	  <p class="lead" ><a href="${path}/reservations/list/guest">예약정보</a></p>
       	  <p class="lead" ><a href="${path}/wishlist/list.do">관심스테이</a></p>
+      	  <p class="lead" ><a href="${path}/qna/scraplist">나의 스크랩</a></p>
       	  <p class="lead" ><a href="${path}/guest/delete.do" class="confirmDelete">회원탈퇴</a></p>
       	  </div>
       	  <script type="text/javascript">

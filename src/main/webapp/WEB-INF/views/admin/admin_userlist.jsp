@@ -11,13 +11,15 @@ $(function(){
 	});
 });
 function goblack(user){
+	var page = "${map.page}";
 	if(confirm(user+"님을 블랙리스트로 설정하시겠습니까?")){
-		location.href="${path}/admin/goblack?userid="+user;
+		location.href="${path}/admin/goblack?userid="+user+"&page="+page;
 	}else return;
 }
 function gonormal(user){
+	var page = "${map.page}";
 	if(confirm(user+"님을 일반회원으로 전환하시겠습니까?")){
-		location.href="${path}/admin/gonormal?userid="+user;
+		location.href="${path}/admin/gonormal?userid="+user+"&page="+page;
 	}else return;
 }
 function pagination(page){

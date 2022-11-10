@@ -175,7 +175,7 @@ public class HostController {
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
 		   fileName = FileUtils.fileUpload(uploadPath, file.getOriginalFilename(), file.getBytes());   
 		   mav.addObject("message","profile");
-		   dto.setH_profile_img( File.separator + fileName);
+		   dto.setH_profile_img(fileName);
 		} else {//file name dto.get으로 불러와서 저장 null이면
 		   fileName = H_profile_img;
 		   System.out.println(fileName);

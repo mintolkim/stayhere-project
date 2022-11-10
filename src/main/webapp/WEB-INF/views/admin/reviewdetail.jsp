@@ -18,7 +18,7 @@
 										${row.room_name}
 									</div>
 									<a class="text-decoration-none link-dark stretched-link" 
-									href="${path}/rooms/detail/${row.room_idx}">
+									href="${path}/reviews/detail.do?review_idx=${row.review_idx}">
 										<h5 class="card-title mb-3">${row.r_title}</h5>
 									</a>
 									<c:forEach begin="1" end="${row.review_star }" >

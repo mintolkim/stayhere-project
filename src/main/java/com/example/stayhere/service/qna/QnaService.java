@@ -33,4 +33,6 @@ public interface QnaService {
 	public void addAttach(String fullName);//첨부파일을 저장하는 용도
 	public void update(QnaDTO dto);//글 수정
 	public void delete(int q_idx) throws Exception;//글삭제
+	public int countguestQna(String userid);//게스트 qna 갯수
+	public List<QnaDTO> listguestQna(int start, int end, String userid);//게스트 qna스크랩 목록
 }

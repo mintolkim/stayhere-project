@@ -45,4 +45,5 @@ public interface ReviewService {
 	public void cancelAcc(String review_idx);//신고체크취소
 	public ReviewAccuseDTO accDetail(int acc_idx);//신고상세보기(신고의견)
 	public int countByAcc(int review_idx);//신고 갯수
+	public void insertaccuse(ReviewAccuseDTO radto);//리뷰 글 신고하기
 }

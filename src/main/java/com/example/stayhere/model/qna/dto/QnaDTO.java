@@ -25,4 +25,5 @@ public class QnaDTO {
 	private int likey;//qna_likey 테이블
 	private int choose ;//qna_comment 테이블
 	private String[] files;//첨부파일 이름 배열
+	private String scraper;//스크랩한 사람
 }

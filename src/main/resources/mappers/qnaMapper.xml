@@ -223,6 +223,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	) A
 	) where rn between 1 and 10 and choose=0
 	</select>
+	<!-- 게스트 qna 스크랩갯수 -->
+	<select id="countguestQna" resultType="int">
+	select count(*) from qna_scrap
+	where userid=#{userid}
+	</select>
+	<!--게스트 qna글 목록  -->
+	<select id="listguestQna"
+	resultType="com.example.stayhere.model.qna.dto.QnaDTO">
+	select *
+	from (
+	select rownum as rn, A.*
+	from (
+	select a.q_idx,a.userid,a.subject,a.category,a.view_count, a.write_date,a.show,a.passwd,
+	(select profile_img from guest where a.userid=userid) profile_img,
+	(select count(*) from qna_scrap where a.q_idx=q_idx) as scrap,
+	(select count(*) from qna_likey where a.q_idx=q_idx )as likey,
+	(select count(*) from qna_comment where a.q_idx=q_idx) as comment_count,
+	(select count(choose) from qna_comment where choose='y' and
+	a.q_idx=q_idx) as choose,
+	b.userid as scraper
+	from qna a
+	join qna_scrap b
+	on a.q_idx=b.q_idx
+	where b.userid=#{userid}
+	and a.show='y'
+	order by a.q_idx desc
+	) A
+	) where rn between #{start} and #{end}
+</select>
 </mapper>
 
 

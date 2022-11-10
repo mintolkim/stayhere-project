@@ -6,13 +6,15 @@
 <%@ include file="../include/admin_header.jsp"%>
 <script type="text/javascript">
 function goblack(user){
+	var page = "${map.page}";
 	if(confirm(user+"님을 블랙리스트로 설정하시겠습니까?")){
-		location.href="${path}/admin/goh_black?h_userid="+user;
+		location.href="${path}/admin/goh_black?h_userid="+user+"&page="+page;
 	}else return;
 }
 function gonormal(user){
+	var page = "${map.page}";
 	if(confirm(user+"님을 일반회원으로 전환하시겠습니까?")){
-		location.href="${path}/admin/goh_normal?h_userid="+user;
+		location.href="${path}/admin/goh_normal?h_userid="+user+"&page="+page;
 	}else return;
 }
 function pagination(page){

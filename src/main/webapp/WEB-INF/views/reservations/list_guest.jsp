@@ -140,6 +140,7 @@ div #tab-bar li a:hover {
 				<a href="${path}/reservations/list/guest" class="list-group-item list-group-item-action">예약내역</a>
 				<a href="#" class="list-group-item list-group-item-action">내가 작성한 리뷰</a>
 				<a href="${path}/wishlist/list.do" class="list-group-item list-group-item-action">관심스테이</a>
+				<a href="${path}/qna/scraplist" class="list-group-item list-group-item-action">나의 스크랩</a>
 			</div>
 						     
 			

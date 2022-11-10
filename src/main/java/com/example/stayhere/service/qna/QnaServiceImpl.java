@@ -172,6 +172,16 @@ public class QnaServiceImpl implements QnaService {
 		qnaDao.delete(q_idx);
 	}
 
+	@Override
+	public int countguestQna(String userid) {
+		return qnaDao.countguestQna(userid);
+	}
+
+	@Override
+	public List<QnaDTO> listguestQna(int start, int end, String userid) {
+		return qnaDao.listguestQna(start,end,userid);
+	}
+
 
 
 }

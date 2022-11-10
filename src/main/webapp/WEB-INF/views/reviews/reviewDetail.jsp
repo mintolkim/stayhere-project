@@ -133,6 +133,30 @@ function listReply() {
 	 });
 	
 	 } */
+	 
+	 
+	 //모달 열기
+	 function accuse(userid){
+		if(userid==""){
+			 if(confirm("신고는 로그인이 필요합니다. 로그인페이지로 이동하시겠습니까?")){
+				 location.href="${path}/guest/login.do";
+		}else{return;}
+		 } 
+	 	$("#accusemodal").fadeIn();
+	 }
+	 function insertaccuse(){
+		 if(confirm("해당내용으로 신고하시겠습니까? 신고내용은 관리자가 확인 후 수일내로 처리됩니다.")){
+			 $("#accuseform").submit();
+		 }else{return;}
+	 }
+	 $(function(){
+		 if("${message}" != ""){
+			 alert("${message}");
+		 }
+	 	$(".btn-close").click(function(){
+	 		$(".modal").fadeOut();
+	 	});
+	 });
 </script>
 <style type="text/css">
 .title {
@@ -194,25 +218,76 @@ function listReply() {
 						</span>
 					</div>
 					<c:if
-						test="${dto.userid == sessionScope.userid || dto.userid == sessionScope.h_userid }">
+						test="${dto.userid == sessionScope.userid || dto.userid == sessionScope.h_userid || sessionScope.userid == 'admin'}">
 						<div class="col-3 spanB" align="right">
 							<span
 								onclick="location.href='${path}/reviews/edit.do?review_idx=${dto.review_idx}'"
 								style="cursor: pointer;">[ 수정 / 삭제 ]</span> <span
-								onclick="location.href='#'" style="cursor: pointer; color: red;">[신고
-								<i class="fa-solid fa-ban"></i> ]
+								onclick="accuse('${sessionScope.userid }')" style="cursor: pointer; color: red;">
+								[<i class="bi bi-cone"></i> 신고]
 							</span>
 						</div>
 					</c:if>
-					<c:if test="${dto.userid == null }">
+					<c:if test="${sessionScope.userid == null }">
 						<div class="col-3 spanB" align="right">
-							<span onclick="location.href='#'"
-								style="cursor: pointer; color: red;">[신고 <i
-								class="fa-solid fa-ban"></i> ]
+							<span onclick="accuse('${sessionScope.userid }')" style="cursor: pointer; color: red;">
+								[<i class="bi bi-cone"></i> 신고]
 							</span>
 						</div>
 					</c:if>
 				</div>
+
+					<!--신고모달창  -->
+							<div id="accusemodal" class="modal" tabindex="-1">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">글 신고하기</h5>
+											<button type="button" class="btn-close" aria-label="Close"></button>
+										</div>
+										<form id="accuseform" action="${path }/reviews/insertaccuse" method="post">
+											<div class="modal-body" style="width: 100%;">
+												<div class="row gx-5">
+														<div class="mb-4">
+															<div class="card h-100 shadow border-0">
+																<div class="card-body p-4">
+																	<table class="table">
+																		<tr>
+																			<th scope="row" class="table-light">신고자</th>
+																			<td><input name="userid" value="${sessionScope.userid }" readonly
+																			style="border:none;">
+																			</td>
+																		</tr>
+																		<tr>
+																			<th scope="row" class="table-light">신고글</th>
+																			<td>${dto.r_title }
+																			<input type="hidden" name="review_idx" value="${dto.review_idx }">
+																			</td>
+																		</tr>
+																		<tr>
+																			<th scope="row" class="table-light">글쓴이</th>
+																			<td>
+																			<input name="writer" value="${dto.userid }" readonly
+																			style="border:none;">
+																			</td>
+																		</tr>
+																		<tr>
+																			<th scope="row" class="table-light">신고내용</th>
+																			<td><textarea rows="10" name="acc_content" style="width:100%;" placeholder="내용을 입력하세요."></textarea> </td>
+																		</tr>
+																	</table>
+																	<div align="center">
+																	<button type="button" onclick="insertaccuse()" class="btn btn-warning">제출</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
 
 				<div class="row mt-4 mb-4" style="border-bottom: 2px solid #000;"></div>
 

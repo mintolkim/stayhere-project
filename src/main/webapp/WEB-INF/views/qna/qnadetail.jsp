@@ -215,7 +215,7 @@ function dellikey(q_idx,like){
 			<div class="row">
 			 <div class="col-9">
 			<span onclick="location.href='${path}/qna/qnalist.do'" style="cursor:pointer;">
-			<i class="fa-solid fa-rotate-left"></i> 목록으로 돌아가기</span>
+			<i class="bi bi-arrow-left-circle-fill"></i> 목록으로 돌아가기</span>
 			 </div>
 			 <c:if test="${dto.userid == sessionScope.userid || dto.userid == sessionScope.h_userid }">
 			 <div class="col-3" align="right">
@@ -248,19 +248,19 @@ function dellikey(q_idx,like){
 					</div>
 				</div>
 				<div class="col-3 ms-auto" align="right">
-					<i class="fa-regular fa-eye"> ${dto.view_count }</i> &nbsp; 
+					<i class="bi bi-eye"></i> ${dto.view_count } &nbsp; 
 				<c:if test="${scrap==0 }">
 				 <div id="scraparea" onclick="addscrap('${dto.q_idx}','${dto.scrap +1}');" style="cursor:pointer; display:inline;">
-						<i class="fa-regular fa-bookmark"> ${dto.scrap }</i> &nbsp;</div> </c:if>
+						<i class="bi bi-bookmark"></i> ${dto.scrap } &nbsp;</div> </c:if>
 				<c:if test="${scrap==1 }">
 				 <div id="delscraparea" onclick="delscrap('${dto.q_idx}','${dto.scrap -1}');" style="cursor:pointer; display:inline;">
-						<i class="fa-solid fa-bookmark"> ${dto.scrap }</i> &nbsp; </div></c:if>
+						<i class="bi bi-bookmark-fill"></i> ${dto.scrap } &nbsp; </div></c:if>
 				<c:if test="${likey==0 }">
 				 <div id="likearea" onclick="addlikey('${dto.q_idx}','${dto.likey +1}');" style="cursor:pointer; display:inline;">
-						<i class="fa-regular fa-thumbs-up"> ${dto.likey }</i></div></c:if>
+						<i class="bi bi-hand-thumbs-up"></i> ${dto.likey }</div></c:if>
 				<c:if test="${likey==1 }">
 				 <div id="dellikearea" onclick="dellikey('${dto.q_idx}','${dto.likey -1}');" style="cursor:pointer; display:inline;">
-						<i class="fa-solid fa-thumbs-up"> ${dto.likey }</i></div></c:if>
+						<i class="bi bi-hand-thumbs-up-fill"></i> ${dto.likey }</div></c:if>
 				</div>
 			</div>
 			 <!-- Post content-->

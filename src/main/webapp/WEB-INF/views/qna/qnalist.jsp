@@ -4,9 +4,6 @@
 <html>
 <head>
 <%@ include file="../include/header.jsp"%>
-<!-- font awesome 아이콘 -->
-<script src="https://kit.fontawesome.com/fdfee59c02.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>STAYHERE</title>
 <style type="text/css">
 .breadcrumb-item{
@@ -181,7 +178,7 @@ text-align: center;}
 												<div class="badge mb-2"
 													style="background: #ffeed0; color: black;">${qna.category }</div>
 													<c:if test="${qna.passwd != null }">
-													 &nbsp;<i class="fa-solid fa-lock"></i>
+													 &nbsp;<i class="bi bi-lock-fill"></i>
 													</c:if>
 											</div>
 											<div class="col-3">
@@ -225,10 +222,10 @@ text-align: center;}
 									</div>
 									<div class="col-5 ms-auto">
 										<p></p>
-										<i class="fa-regular fa-eye"> ${qna.view_count }</i> &nbsp; <i
-											class="fa-regular fa-bookmark"> ${qna.scrap }</i> &nbsp; <i
-											class="fa-regular fa-thumbs-up"> ${qna.likey }</i> &nbsp; <i
-											class="fa-regular fa-comment"> ${qna.comment_count }</i>
+										<i class="bi bi-eye"></i> ${qna.view_count } &nbsp; 
+										<i class="bi bi-bookmark"></i> ${qna.scrap } &nbsp; 
+										<i class="bi bi-hand-thumbs-up"></i> ${qna.likey } &nbsp; 
+										<i class="bi bi-chat"></i> ${qna.comment_count }
 									</div>
 								</div>
 							</div>

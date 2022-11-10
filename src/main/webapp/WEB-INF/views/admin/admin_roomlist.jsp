@@ -20,6 +20,7 @@ function pagination(page){
 //숙소상태변경
 function changestate(room_idx, tmp){
 	var state;
+	var page = "${map.page}";
 	if(tmp=="reject"){
 		state="승인거절";
 	}else if(tmp =="confirm"){
@@ -29,7 +30,7 @@ function changestate(room_idx, tmp){
 	}else{
 		state="승인대기";
 	}
-	location.href="${path}/admin/changestate?room_idx="+room_idx+"&state="+state;
+	location.href="${path}/admin/changestate?room_idx="+room_idx+"&state="+state+"&page="+page;
 }
 //리뷰모달 열기
 function reviewDetail(room_idx,index){

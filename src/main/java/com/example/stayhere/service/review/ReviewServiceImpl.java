@@ -192,6 +192,11 @@ public class ReviewServiceImpl implements ReviewService {
 		return null;
 	}
 
+	@Override
+	public void insertaccuse(ReviewAccuseDTO radto) {
+		reviewDao.insertaccuse(radto);
+	}
+
 	
 	/*
 	 * @Override public int accuseCheck(String user, int review_idx) { return

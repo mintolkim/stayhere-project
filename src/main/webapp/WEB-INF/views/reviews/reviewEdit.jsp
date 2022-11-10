@@ -103,7 +103,7 @@ $(".fileDrop").on("drop", function(e) {
 				str+="<a href='${path}/reviews/displayFile?fileName="
 					+data+"'>"+getOriginalName(data)+"</a>";
 			}
-				str+="<span data-src="+data+" style='cursor:pointer;'>&nbsp;[<i class='fa-solid fa-trash'>삭제</i>]</span>";
+				str+="<span data-src="+data+" style='cursor:pointer;'>&nbsp;[<i class='bi bi-trash-fill'></i> 삭제]</span>";
 				str+="<input type='hidden' class='file' value='"
 					+fileInfo.fullName+"'></div>";
 					console.log("fileName : "+fileInfo.fullName);
