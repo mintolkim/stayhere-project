@@ -43,6 +43,25 @@ window.onload = function() {
 		document.form1.submit();
 	});
 }
+
+function enter() {
+	if (window.event.keyCode == 13) {
+		var userid=$("#userid").val(); //태그의 value 속성값
+		var passwd=$("#passwd").val();
+		if(userid==""){
+			alert("아이디를 입력하세요.");
+			$("#userid").focus(); //입력 포커스 이동
+			return; //함수 종료
+		}
+		if(passwd==""){
+			alert("비밀번호를 입력하세요.");
+			$("#passwd").focus();
+			return;
+		}
+		document.form1.action="${path}/guest/loginCheck";
+		document.form1.submit();
+    }
+}
 </script>
 <script type="text/javascript">
 
@@ -91,12 +110,12 @@ function loginKakao() {
 	<div class="container px-5 my-5" align="center">
 	<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 
-	<form name="form1">
+	<form name="form1" method="post">
 	<h2>GUEST LOGIN</h2>
 	<br>
 	<input class="form-control me-2" type="text" placeholder="id" name="userid" id="userid">
 	<br>
-	<input class="form-control me-2" type="password" placeholder="password" name="passwd" id="passwd">
+	<input class="form-control me-2" type="password" placeholder="password" name="passwd" id="passwd" onkeyup="enter()">
 	<br>
 	<input type="button" class="btn mb-0" id="login" value="login">
     <br>

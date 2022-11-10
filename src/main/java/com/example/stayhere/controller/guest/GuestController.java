@@ -283,8 +283,8 @@ public class GuestController {
 			model.addAttribute("message", "first");
 			return "guest/kakao_join";
 		}
-		model.addAttribute("message", dto.getName() + "님 환영합니다!");
-		return "main";
+		//model.addAttribute("message", dto.getName() + "님 환영합니다!");
+		return "redirect:/main";
 	}
 	@RequestMapping("kakao_join")
 	public String kakaoJoin() {
