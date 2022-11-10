@@ -219,12 +219,6 @@ $("#insert").click(function(){
 		alert("체크아웃 날짜를 확인해주십시오");
 		return;
 	} 
-	if(today==date1){
-		 alret("당일은 체크인으로 설정할 수 없습니다. \n다시 선택해주십시오.");
-	}
-	if(today==date2){
-		 alret("당일은 체크아웃으로 설정할 수 없습니다. \n다시 선택해주십시오.");
-	}
 	if(date1<date2){
 		console.log(date1);
 		console.log(date2);
