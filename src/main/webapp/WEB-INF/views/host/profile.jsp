@@ -96,10 +96,16 @@ label {
           <div class="col mb-5 h-100">
 	
 		  <!-- 프로필  -->	
-		  <div class="box" >
+	      <c:if test="${dto.h_profile_img!=null}">
+	      <div class="box" >
 		  <img class="profile" src="${path}/imgUpload/${dto.h_profile_img}">
 		  </div>
-  
+	      </c:if>
+	      <c:if test="${dto.h_profile_img==null}">
+	      <div class="box" >
+		  <img class="profile" src="${path}/resource/images/guest.png ">
+		  </div>
+	      </c:if>
                  
           </div>
           </div>
@@ -107,6 +113,12 @@ label {
 	      </div>
 	      </div>
 	  	  </section>
+	  	  
+			<c:if test="${message == 'noSales' }">
+			<script type="text/javascript">
+			alert("매출내역이 없습니다.")
+			</script>
+			</c:if>
 
 	<%-- <%=request.getRealPath("/") %> --%>
 	</div>

@@ -5,7 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+import org.json.simple.JSONObject;
+import com.example.stayhere.model.guest.dto.GuestDTO;
 import com.example.stayhere.model.host.dto.HostDTO;
+import com.example.stayhere.model.reservations.dto.ReservationsDTO;
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
 
 public interface HostService {
@@ -25,5 +29,15 @@ public interface HostService {
 	 public int getRoomCount(String h_userid,String select); //룸 목록
 	 public int getConfirmRoom(String h_userid); //룸 목록
 	 public int emailCheck(String h_email);
-	public String findByPasswd(String h_userid);
+	 public String findByPasswd(String h_userid);
+	 public JSONObject getChartData(String h_userid);
+	 public List<ReservationsDTO> hostMontlyMoney(String h_userid);
+	 public JSONObject getweeklyData(String h_userid,String today,String week);
+	 public List<ReservationsDTO> hostWeeklyMoney(String h_userid, String today,String week);
+	 public JSONObject getRoom_Data(String h_userid);
+	 public List<ReservationsDTO> getRoomData(String h_userid);
+	 public Integer weeklySum(String h_userid, String today,String week);
+	 public int yearSum(String h_userid);
+	 public boolean resCheck(String h_userid);
+
 }

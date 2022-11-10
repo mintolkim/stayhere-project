@@ -48,4 +48,7 @@ public class ReservationsDTO {
 	private String month;
 	private int monthlymoney;
 	private int yearmoney;
+	private String day;
+	//host 주간집계
+	private int weeklymoney;
 }

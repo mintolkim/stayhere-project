@@ -198,14 +198,6 @@ $("#insert").click(function(){
 	today = new Date();
 	date1 = new Date(check_in);
 	date2 = new Date(check_out);
-	
-	days = date1.getTime() - date2.getTime() ;
-	btDays = days / (1000*60*60*24) ;
-	
-	checkin = date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate();
-	checkout = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
-	
-	rToday = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
 
 	if(date1<today){
 		alert("체크인 날짜를 확인해주십시오");
@@ -215,15 +207,15 @@ $("#insert").click(function(){
 		alert("체크아웃 날짜를 확인해주십시오");
 		return;
 	} 
-	if(rToday==checkin){
+	if(today==date1){
 		 alret("당일은 체크인으로 설정할 수 없습니다. \n다시 선택해주십시오.");
 	}
-	if(rToday==checkout){
+	if(today==date2){
 		 alret("당일은 체크아웃으로 설정할 수 없습니다. \n다시 선택해주십시오.");
 	}
 	if(date1<date2){
-		console.log("왜 되다 안되다 그러니");
-	
+		console.log(date1);
+		console.log(date2);
 	}else{
 		alert("체크인 날짜와 체크아웃 날짜를 확인해주십시오");
 		return;
@@ -239,6 +231,7 @@ $("#insert").click(function(){
 	
 	
 	});
+
 });
 
 function fileCheck(el) { 

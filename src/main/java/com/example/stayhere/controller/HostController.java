@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -309,11 +310,91 @@ public class HostController {
 		
 		return mav;
 	}
-	
+
 	@RequestMapping("rooms_Sales/{h_userid}")
 	public ModelAndView rooms_Sales(@PathVariable String h_userid,ModelAndView mav) {
-		mav.setViewName("host/rooms_Sales");
-		mav.addObject("dto", hostService.viewHost(h_userid));
+		boolean result = hostService.resCheck(h_userid);
+		if(result){
+			int yearSum = hostService.yearSum(h_userid);
+			Map<String, Object> map=new HashMap<>();
+			map.put("yearSum", yearSum);
+			map.put("dto", hostService.viewHost(h_userid));
+			mav.addObject("map", map);
+			mav.setViewName("host/rooms_Sales_monthly");
+		}else{
+			mav.addObject("message","noSales");
+			mav.addObject("dto", hostService.viewHost(h_userid));
+			mav.setViewName("host/profile");
+			
+		}
 		return mav;
 	}
+	
+	 @ResponseBody
+	 @RequestMapping("montlychart") 
+	 public JSONObject montlychart(HttpSession session) {
+	 String h_userid =(String)session.getAttribute("h_userid");
+	 return hostService.getChartData(h_userid); 
+	 }
+	 
+	@RequestMapping("rooms_Sales/{h_userid}/weekly")
+	public ModelAndView rooms_Sales_week(@PathVariable String h_userid,ModelAndView mav) {
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 7);
+		Date date2 = new Date(cal.getTimeInMillis());
+		SimpleDateFormat formatter = new SimpleDateFormat("yy-MM-dd");
+		String today = formatter.format(date);
+		String week = formatter.format(date2);
+		Integer weeklySum = hostService.weeklySum(h_userid,today,week);
+		if(weeklySum!=null) {
+		Map<String, Object> map=new HashMap<>();
+		map.put("weeklySum", weeklySum);
+		map.put("dto", hostService.viewHost(h_userid));
+		map.put("today", date);
+		map.put("week", date2);
+		mav.addObject("map", map);
+		mav.setViewName("host/rooms_Sales_weekly");
+		}else {
+		int yearSum = hostService.yearSum(h_userid);
+		Map<String, Object> map=new HashMap<>();
+		map.put("yearSum", yearSum);
+		map.put("dto", hostService.viewHost(h_userid));
+		mav.addObject("map", map);
+		mav.addObject("message","noWeekend");
+		mav.setViewName("host/rooms_Sales_monthly");
+		}
+			
+		return mav;
+	}
+	 
+	@ResponseBody
+	@RequestMapping("weeklychart") 
+	public JSONObject weeklychart(HttpSession session) {
+		String h_userid =(String)session.getAttribute("h_userid");
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 7);
+		Date date2 = new Date(cal.getTimeInMillis());
+		SimpleDateFormat formatter = new SimpleDateFormat("yy-MM-dd");
+		String today = formatter.format(date);
+		String week = formatter.format(date2);
+		return hostService.getweeklyData(h_userid,today,week); 
+	}
+	
+ 	 @RequestMapping("rooms_Sales/{h_userid}/room")
+	 public ModelAndView rooms_Sales_room(@PathVariable String h_userid,ModelAndView mav) {
+		mav.setViewName("host/rooms_Sales_room");
+		mav.addObject("dto", hostService.viewHost(h_userid));
+		return mav;
+	 }
+ 	 
+	 @ResponseBody
+	 @RequestMapping("roomchart") 
+	 	public JSONObject roomchart(HttpSession session) {
+		 String h_userid =(String)session.getAttribute("h_userid");
+		 return hostService.getRoom_Data(h_userid); 
+	 }
+
 }
+
