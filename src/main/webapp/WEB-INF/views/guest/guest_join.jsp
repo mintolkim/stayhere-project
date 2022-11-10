@@ -258,9 +258,6 @@
 					<p><input type="tel" class="form-control" id="phone" name="phone" placeholder="010-1234-5678"></p>
 					<div class="text-start" id="phone_chk"></div>     	
 				</div>
-				<div class="col-8 offset-4">
-					<button type="submit" id="submit" class="btn btn-lg" disabled="disabled">회원가입</button>
-				</div>  
 		      
 				<br>
 				<div class="input-group-addon">

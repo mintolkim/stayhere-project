@@ -323,14 +323,16 @@
 															<span class="carousel-control-next-icon"
 																aria-hidden="true"></span> <span class="visually-hidden">Next</span>
 														</button>
+														<c:if test="${sessionScope.h_userid == null}">
 														<div class="btn boder-0 shadow-none card-img-overlay-top text-end">
 															<i id="wish-icon-${row.room_idx}" class="bi-heart text-danger fw-bold fs-5"
 																onclick="wishListToggle(event, ${row.room_idx})"></i>
 														</div>
+														</c:if>
 													</div>
 												</div>
 												<div class="col-md-8">
-													<div class="card-body p-4">
+													<div class="card-body p-4 d-flex flex-column justify-content-between" style="height: 300px">
 														<div
 															class="d-flex justify-content-between align-items-center py-1 pt-2">
 															<h4 class="room-title fw-bold mb-0 text-truncate px-2 ">
@@ -352,10 +354,18 @@
 														<p class="card-text text-secondary mt-0 px-2 small">
 															<i class="bi bi-geo-alt-fill pe-1"></i>${row.city}, ${row.country}
 														</p>
-														<p class="card-text text-secondary px-2 mb-4"> ${row.contents}<span>...</span></p>
+														<p class="card-text text-secondary px-2 mb-2"> ${row.contents}<span>...</span></p>
 														<p class="card-text text-secondary mb-1 px-2 small">
 															<i class="bi bi-calendar-check pe-1"></i>
-															<fmt:formatDate pattern="MM월 dd일" value="${row.check_in}" />
+															<fmt:parseDate var="check_in" value="${map.checkin_date}" pattern="yyyy-MM-dd" />
+															<c:choose>
+																<c:when test="${row.check_in < check_in}">
+																	<fmt:formatDate pattern="MM월 dd일" value="${check_in}" />
+																</c:when>
+																<c:otherwise>
+																	<fmt:formatDate pattern="MM월 dd일" value="${row.check_in}" />
+																</c:otherwise>
+															</c:choose>
 															<span>~</span>
 															<fmt:formatDate pattern="MM월 dd일" value="${row.check_out}" />
 														</p>
@@ -363,15 +373,12 @@
 															<i class="bi bi-check-square-fill pe-1"></i> 
 															침대	${row.beds} · 화장실 ${row.baths} · 최대인원 ${row.max_people}
 														</p>
-														<p class="card-text mt-3 text-end">
+														<p class="card-text mt-2 text-end">
 															<span class="fw-bold fs-4"> ￦ <fmt:formatNumber
 																	pattern="#,###" value="${row.room_price}" />
 															</span> /박  
-															
-															${map.date_diff}
 															<c:if test="${map.date_diff > 1}">
-															<span>·</span>
-															<span class="text-secondary">총액 ￦ 
+															<span class="text-secondary d-block">총액 ￦ 
 															<fmt:formatNumber	pattern="#,###" value="${row.room_price * map.date_diff}" />
 															</span>
 															</c:if>
@@ -380,7 +387,6 @@
 												</div>
 											</div>
 										</div>
-										</a>
 								</section>
 							</c:forEach>
 						</div>
@@ -671,14 +677,17 @@
 			location.href = "${path}/search/" + cityname +"/" + checkIn + "/" + checkOut;
     }
     
-	//디테일 페이지로 이동하기
-	function goToDetail(room_idx){
-		if(room_idx != ""){
-			location.href= "${path}/rooms/detail/"+room_idx;
-		} else {
-			alert("에러.....");
-		}
-	}
+    //디테일 페이지로 이동하기
+    function goToDetail(room_idx){
+       var checkIn = $("#checkin_date").val();
+       var checkOut = $("#checkout_date").val();
+       
+       if(room_idx != ""){
+          location.href= "${path}/rooms/searchDetail/"+room_idx +"/" + checkIn + "/" + checkOut;
+       } else {
+          alert("에러.....");
+       }
+    }
 	
 	
 	//페이지 로드시 위시리스트 체크여부 확인
@@ -707,7 +716,7 @@
 	
 	//위시리스트 버튼 클릭
 	function wishListToggle(event, room_idx) {
-	    event.stopPropagation(); //부모태그 이벤트 막기..적용안됨..
+	    event.stopPropagation(); //부모태그 이벤트 막기
 	    var userid = '${sessionScope.userid}';
 	    var add = $("#wish-icon-"+room_idx).hasClass('bi-heart');
 	    var del = $("#wish-icon-"+room_idx).hasClass('bi-heart-fill');
@@ -793,10 +802,6 @@
     	 var scrollTop = $(this).scrollTop(); // 위로 스크롤된 길이
  			 var windowsHeight = $(this).height(); //웹브라우저의 창의 높이
  			 var documentHeight = $(document).height(); // 문서 전체의 높이
-    	 
- 			 console.log("scrollTop : " + scrollTop);
- 			 console.log("windowsHeight : " + windowsHeight);
- 			 console.log("documentHeight : " + documentHeight);
  		
  			 if(windowsHeight > 730){
          if ($(this).scrollTop() > searchBar.top + 400) {

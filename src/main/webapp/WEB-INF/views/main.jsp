@@ -24,7 +24,7 @@
 <!-- 컨텐츠 수정 영역 start -->
 <!-- search-bar -->
 <div class="bg-image-full">
-<div class="py-5 search-bg-wrap" style="background-image: url('${path}/resources/images/main_bg_03.jpg')">
+<div class="py-5 search-bg-wrap" style="background-image: url('${path}/resources/images/main_bg.jpg')">
 	<div class="container search-wrap">
 		<div class="search-fixed">
 		<div class="search-bar border px-4">
@@ -121,10 +121,12 @@
 										<span class="visually-hidden">Next</span>
 									</button>
 								</div>
+								<c:if test="${sessionScope.h_userid == null}">
 								<div class="btn boder-0 shadow-none card-img-overlay-top text-end">
 									<i id="wish-icon-${row.room_idx}" class="bi-heart text-danger fw-bold fs-5"
 										onclick="wishListToggle(event, ${row.room_idx})"></i>
 								</div>
+								</c:if>
 							</div>
 							<div class=" card-body">
 								<div
@@ -143,7 +145,15 @@
 								<p class="card-text text-secondary mb-0 small">
 									침대	${row.beds} · 화장실 ${row.baths}</p>
 								<p class="card-text text-secondary mb-0 small">
-									<fmt:formatDate pattern="MM월 dd일" value="${row.check_in}" />
+									<fmt:parseDate var="check_in" value="${map.today}" pattern="yyyy-MM-dd" />
+									<c:choose>
+										<c:when test="${row.check_in < check_in}">
+											<fmt:formatDate pattern="MM월 dd일" value="${check_in}" />
+										</c:when>
+										<c:otherwise>
+											<fmt:formatDate pattern="MM월 dd일" value="${row.check_in}" />
+										</c:otherwise>
+									</c:choose>
 									<span>~</span>
 									<fmt:formatDate pattern="MM월 dd일" value="${row.check_out}" />
 								</p>	

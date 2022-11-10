@@ -41,10 +41,10 @@ public class GuestDAOImpl implements GuestDAO {
 	}
 
 	@Override
-	public GuestDTO loginCheck(GuestDTO dto) {
-		//String name = sqlSession.selectOne("guest.loginCheck",dto);
-		//return (name == null) ? false : true ;
-		return sqlSession.selectOne("guest.loginCheck", dto);
+	public boolean loginCheck(GuestDTO dto) {
+		String name = sqlSession.selectOne("guest.loginCheck",dto);
+		return (name == null) ? false : true ;
+//		return sqlSession.selectOne("guest.loginCheck", dto);
 	}
 
 
@@ -143,6 +143,11 @@ public class GuestDAOImpl implements GuestDAO {
 	@Override
 	public int getmonthguest(String today) {
 		return sqlSession.selectOne("guest.getmonthguest",today);
+	}
+
+	@Override
+	public String findByPasswd(String userid) {
+		return sqlSession.selectOne("guest.findByPasswd", userid);
 	}
 
 }

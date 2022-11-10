@@ -53,11 +53,11 @@ public class ChatRoomDAOImple implements ChatRoomDAO {
 	}
 
 	@Override
-	public ChatRoomDTO findByChatId(int room_idx, String userid) {
+	public ChatRoomDTO findByChatInfo(int room_idx, String userid) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("room_idx", room_idx);
 		map.put("userid", userid);
-		return sqlSession.selectOne("chat.findByChatId", map);
+		return sqlSession.selectOne("chat.findByChatInfo", map);
 	}
 
 	@Override
@@ -95,6 +95,29 @@ public class ChatRoomDAOImple implements ChatRoomDAO {
 	@Override
 	public ChatRoomDTO findByReadCheck(int c_idx) {
 		return sqlSession.selectOne("chat.findByReadCheck", c_idx);
+	}
+
+	@Override
+	public int getChatRoomCount(String sessionId, String keyword) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("sessionId", sessionId);
+		map.put("keyword", "%"+keyword+"%");
+		return sqlSession.selectOne("chat.getChatRoomCount",map);
+	}
+
+	@Override
+	public List<ChatListDTO> getChatRoomList(int start, int end, String sessionId, String keyword) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("sessionId", sessionId);
+		map.put("keyword", "%"+keyword+"%");
+		return sqlSession.selectList("chat.getChatRoomList", map);
+	}
+
+	@Override
+	public String findByHostProfile(String h_userid) {
+		return sqlSession.selectOne("chat.findByHostProfile", h_userid);
 	}
 
 
