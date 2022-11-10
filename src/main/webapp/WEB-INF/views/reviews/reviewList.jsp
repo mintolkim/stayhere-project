@@ -25,11 +25,7 @@ $(function() {
 function list(page) {
 	location.href = "${path}/reviews/list.do?curPage=" + page;
 }
-//조회
-function selectReview() {
-	let select = $("#selectReview").val();
-	location.href = "${path}/reviews/reviewList.do?select=" + select;
-}
+
 </script>
 <style type="text/css">
 .reBanner {
@@ -91,16 +87,6 @@ function selectReview() {
 				<p>
 					⭐&nbsp;숙소후기 <b>${map.view_count}</b>개
 				</p>
-				<!-- 정렬 -->
-				<div class="col-2">
-					<!--글 정렬 선택  -->
-					<select class="form-select" id="selectReview"
-						onchange="selectReview()" aria-label="select">
-						<option value="review_idx">최신순</option>
-						<option value="review_star">별점순</option>
-						<option value="view_count">조회순</option>
-					</select>
-				</div>
 
 				<!-- 리뷰목록 -->
 				<div class="row gx-5 mainContents">
