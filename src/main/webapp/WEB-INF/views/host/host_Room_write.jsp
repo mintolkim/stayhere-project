@@ -250,6 +250,16 @@ function fileCheck(el) {
  
 function inputPrice(obj) {
     obj.value = comma(uncomma(obj.value));
+    document.getElementById("room_price").value = uncomma(obj.value)
+}
+
+function input(obj) {
+    obj.value = comma(uncomma(obj.value));
+}
+
+function inputAddPrice(obj) {
+    obj.value = comma(uncomma(obj.value));
+    document.getElementById("add_people").value = uncomma(obj.value)
 }
 
 function comma(str) {
@@ -372,7 +382,7 @@ function uncomma(str) {
             <label>1인당 추가금액</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus2" type="button">-</button>
-			  <input type="text" class="form-control" style="text-align: center;" id="add_people_result" value="<fmt:formatNumber type="number" maxFractionDigits="3" value="30000" />" onkeyup="inputPrice(this)">
+			  <input type="text" class="form-control" style="text-align: center;" id="add_people_result" value="<fmt:formatNumber type="number" maxFractionDigits="3" value="30000" />" onkeyup="inputAddPrice(this)">
 			  <input type="hidden" id="add_people" name="add_people" value="30000">
 			  <button class="btn-warning" id="plus2" type="button">+</button>
 			</div>
@@ -402,7 +412,7 @@ function uncomma(str) {
             <label>화장실 갯수</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus3" type="button">-</button>
-			  <input type="text" class="form-control" style="text-align: center;" id="baths" name="baths" value="1" onkeyup="inputPrice(this)">
+			  <input type="text" class="form-control" style="text-align: center;" id="baths" name="baths" value="1" onkeyup="input(this)">
 			  <button class="btn-warning" id="plus3" type="button">+</button>
 			</div>
 			
@@ -424,7 +434,7 @@ function uncomma(str) {
             <label>침대 갯수</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus4" type="button">-</button>
-			  <input type="text" class="form-control" style="text-align: center;" id="beds" name="beds" value="1" onkeyup="inputPrice(this)">
+			  <input type="text" class="form-control" style="text-align: center;" id="beds" name="beds" value="1" onkeyup="input(this)">
 			  <button class="btn-warning" id="plus4" type="button">+</button>
 			</div>
 			
@@ -448,7 +458,7 @@ function uncomma(str) {
             <label>최대 인원</label>
 			<div class="input-group mb-3">
 			  <button class="btn-warning" id="minus5" type="button"> - </button>
-			  <input type="text" class="form-control" style="text-align: center;" id="max_people" name="max_people" value="2" onkeyup="inputPrice(this)">
+			  <input type="text" class="form-control" style="text-align: center;" id="max_people" name="max_people" value="2" onkeyup="input(this)">
 			  <button class="btn-warning" id="plus5" type="button"> + </button>
 			</div>
 			 <script>

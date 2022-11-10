@@ -1,4 +1,4 @@
-package com.example.stayhere.controller.guest;
+package com.example.stayhere.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
