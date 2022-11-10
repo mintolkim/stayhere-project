@@ -13,7 +13,6 @@ public interface ReviewDAO {
 	public void delete(int review_idx) throws Exception; //삭제
 	public void increaseViewcnt(int review_idx) throws Exception; //조회수 증가 처리
 	public int countArticle() throws Exception;//레코드 갯수 계산
-	public List<ReviewDTO> reviewsCategory(int review_idx, Date write_date, int view_count, int review_star);//조회(최신순, 조회수, 별점순)
 	public List<ReviewDTO> listAll(int start, int end, String select) throws Exception; //전체목록
 	public ReviewDTO detail(int review_idx);//리뷰상세보기
 	public List<ReviewDTO> reviewsByRoom(int room_idx);//숙소 별 리뷰 목록

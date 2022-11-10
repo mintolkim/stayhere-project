@@ -100,12 +100,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 
 	@Override
-	public List<ReviewDTO> reviewsCategory(int review_idx, Date write_date, int view_count, int review_star) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public ReviewDTO detail(int review_idx) {
 		return sqlSession.selectOne("review.detail", review_idx);
 	}

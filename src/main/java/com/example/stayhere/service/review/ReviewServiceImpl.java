@@ -61,9 +61,6 @@ public class ReviewServiceImpl implements ReviewService {
 	@Transactional
 	@Override
 	public void delete(int review_idx) throws Exception {
-		//댓글삭제
-		//첨부삭제
-		//리뷰게시물 삭제
 		reviewDao.delete(review_idx);
 	}
 
@@ -107,12 +104,6 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public double starByRoom(int room_idx) {
 		return reviewDao.starByRoom(room_idx);
-	}
-
-	@Override
-	public List<ReviewDTO> reviewsCategory(int review_idx, Date write_date, int view_count, int review_star) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
