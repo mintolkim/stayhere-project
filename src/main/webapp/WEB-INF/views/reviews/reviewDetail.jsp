@@ -99,15 +99,16 @@ function listReply() {
 		}
 	});
 }
-/* function accuseCheck(review_idx){
-		var flag=confirm("해당 리뷰를 신고하시겠습니까?");
-		if(flag) {
-			location.href="${path}/reviews/accuseCheck.do?review_idx="+review_idx;
-		}else {
-			return;
-		}
-		//신고확인 경고창
-		//신고체크 컨트롤러보내기?
+/*//신고기능
+function accuseCheck(review_idx){
+	var flag=confirm("해당 리뷰를 신고하시겠습니까?");
+	if(flag) {
+		location.href="${path}/reviews/accuseCheck.do?review_idx="+review_idx;
+	}else {
+		return;
+	}
+	//신고확인 경고창
+	//신고체크 컨트롤러보내기?
 	 $.ajax({
 	 type: 'POST',
 	 dataType:'json',
@@ -124,7 +125,7 @@ function listReply() {
 	 }
 	 });
 	
-	 } */
+	 }*/
 </script>
 <style type="text/css">
 .title {
@@ -194,13 +195,13 @@ function listReply() {
 						<div class="col-3 spanB" align="right">
 							<span class="btn btn-outline-warning" style="cursor: pointer;"
 									onclick="location.href='${path}/reviews/edit.do?review_idx=${dto.review_idx}'">수정/삭제</span>
-							<%-- <span	class="btn btn-outline-danger" onclick="accuseCheck(${dto.review_idx})"
+							<span	class="btn btn-outline-danger" onclick="accuseCheck(${dto.review_idx})"
 									style="cursor: pointer;"> 
 								<i class="bi bi-exclamation-square-fill">신고</i>
-							</span> --%>
+							</span>
 						</div>
 					</c:if>
-					<!-- 신고기능추가하면 
+					<!-- 비회원 접근시 -->
 					<c:if test="${dto.userid == null }">
 						<div class="col-3 spanB" align="right">
 							<span	class="btn btn-outline-danger" onclick="accuseCheck(${dto.review_idx})"
@@ -208,7 +209,7 @@ function listReply() {
 								<i class="bi bi-exclamation-square-fill">신고</i>
 							</span>
 						</div>
-					</c:if>-->
+					</c:if>
 				</div>
 
 				<div class="row mt-4 mb-4" style="border-bottom: 2px solid #000;"></div>
