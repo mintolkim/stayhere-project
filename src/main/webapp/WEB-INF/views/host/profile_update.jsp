@@ -40,8 +40,6 @@ a { text-decoration: none;}
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background-color: gray;
-    background-color: #c3c3c3;
 }
 label {
 	font-size: 10px;

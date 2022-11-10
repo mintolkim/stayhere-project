@@ -35,7 +35,6 @@ label {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background-color: #c3c3c3;
 }
 </style>
 
@@ -103,7 +102,7 @@ label {
 	      </c:if>
 	      <c:if test="${dto.h_profile_img==null}">
 	      <div class="box" >
-		  <img class="profile" src="${path}/resource/images/guest.png ">
+		  <img class="profile" src="${path}/resources/images/guest.png">
 		  </div>
 	      </c:if>
                  
