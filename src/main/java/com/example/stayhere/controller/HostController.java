@@ -1,5 +1,8 @@
 package com.example.stayhere.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +31,6 @@ import com.example.stayhere.model.rooms.dto.RoomsDTO;
 import com.example.stayhere.service.host.HostService;
 import com.example.stayhere.service.rooms.RoomsService;
 import com.example.stayhere.util.Pager;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("host/*")

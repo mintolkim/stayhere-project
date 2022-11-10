@@ -208,6 +208,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	public int countByUser(String userid) {
 		return chatRoomDao.countByUser(userid);
 	
+	}
+	
   @Override
   public int getChatRoomCount(String sessionId, String keyword) {
 		return chatRoomDao.getChatRoomCount(sessionId, keyword);
