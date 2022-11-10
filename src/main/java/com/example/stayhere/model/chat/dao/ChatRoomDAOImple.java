@@ -97,5 +97,10 @@ public class ChatRoomDAOImple implements ChatRoomDAO {
 		return sqlSession.selectOne("chat.findByReadCheck", c_idx);
 	}
 
+	@Override
+	public int countByUser(String userid) {
+		return sqlSession.selectOne("chat.countByUser", userid);
+	}
+
 
 }

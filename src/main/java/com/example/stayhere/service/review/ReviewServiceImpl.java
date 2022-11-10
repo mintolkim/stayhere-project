@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.stayhere.model.review.dao.ReviewDAO;
-import com.example.stayhere.model.review.dto.ReviewAccuseDTO;
 import com.example.stayhere.model.review.dto.ReviewDTO;
 import com.example.stayhere.model.review_comment.dto.ReCommentDTO;
 
@@ -19,6 +18,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Inject
 	ReviewDAO reviewDao;
+	
 	
 	@Override
 	public void deleteFile(String fileName) {
@@ -116,35 +116,17 @@ public class ReviewServiceImpl implements ReviewService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public List<ReviewDTO> reviewsByUser(int userid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	/*
+	 * @Override public List<ReviewDTO> userReviews(String userid) { return
+	 * reviewDao.userReviews(userid); }
+	 */
 
 	@Override
 	public ReviewDTO detail(int review_idx) {
 		return reviewDao.detail(review_idx);
 	}
 
-	@Override
-	public void addlikey(int review_idx, String userid) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int likeycheck(int review_idx, String userid) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void dellikey(int review_idx, String userid) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public List<ReCommentDTO> comment(int review_idx) {
@@ -163,47 +145,31 @@ public class ReviewServiceImpl implements ReviewService {
 		
 	}
 
-	/*
-	 * public List<ReviewAccuseDTO> acclist(int start, int end) throws Exception {
-	 * // TODO Auto-generated method stub return null; }
-	 */
-
 	@Override
-	public void checkAcc(String review_idx) {
+	public void updateAttach(String fullname, int review_idx) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void cancelAcc(String review_idx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int countByAcc(int review_idx) {
+	public int checkAttach(String fullname, int review_idx) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public ReviewAccuseDTO accDetail(int acc_idx) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ReviewDTO> getreview(String userid) {
+		return reviewDao.getreview(userid);
 	}
 
-	
-	/*
-	 * @Override public int accuseCheck(String user, int review_idx) { return
-	 * reviewDao.accuseCheck(user, review_idx); }
-	 * 
-	 * @Override public void accuseCancel(int review_idx) {
-	 * reviewDao.accuseCancel(review_idx); }
-	 */
+	@Override
+	public int countByUser(String userid) {
+		return reviewDao.countByUser(userid);
+	}
 
-	
-
-
-	
+	@Override
+	public int getReviewId(int res_idx) {
+		return reviewDao.getReviewId(res_idx);
+	}
 
 }

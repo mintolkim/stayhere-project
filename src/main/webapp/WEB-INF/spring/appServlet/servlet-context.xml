@@ -51,7 +51,7 @@
 	<!-- 파일업로드를 위한 디렉토리 설정 -->
 	<!-- String uploadPath=new String("c:/upload" > 배포 디렉토리로 변경); -->
 	<beans:bean id="uploadPath" class="java.lang.String">
-	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\styahere-project\resources\imgUpload" />
+	   <beans:constructor-arg value="C:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\styahere-project\resources\imgUpload" />
 	</beans:bean>
 	
 	
@@ -88,6 +88,12 @@
 	  <mapping path="/chat" />
 	  <mapping path="/chatlist" />
 	  <mapping path="/chatroom/{room_idx}/{userid}" />
+	  <mapping path="/reviews/write.do" />
+	  <mapping path="/reservations/reserve/{room_idx}" />
+	  <mapping path="/reservations/result.do" />
+	  <mapping path="/reservations/list/guest" />
+	  <mapping path="/reservations/list/host" />
+
 	  <beans:ref bean="loginInterceptor" />
 	 </interceptor> 
 	 </interceptors>

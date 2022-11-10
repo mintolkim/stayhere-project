@@ -199,4 +199,10 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		return chatRoomDao.findByReadCheck(c_idx);
 	}
 
+
+	@Override
+	public int countByUser(String userid) {
+		return chatRoomDao.countByUser(userid);
+	}
+
 }

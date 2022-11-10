@@ -52,7 +52,7 @@ table tr td{
   <!-- nav -->
 	<%@ include file="../include/navbar.jsp" %>
   <!-- 본문영역 시작-->
-  <section class="col-lg-10 mt-3 mb-5 px-5 mx-auto" id="features">
+  <section class="col-lg-10 mt-4 mb-5 px-5 mx-auto" id="features">
     <div class="container px-5">
 	    <!-- 숙소 이름 -->
 		<div class="container" style="padding: 0;">	
@@ -82,9 +82,12 @@ table tr td{
 			  </div>
 
 		 <!-- 찜 하트 -->
-		 <div class="d-flex justify-content-end" style="width: 50%; position: relative; float: right;">
-	      <i id="wish-icon-${room.room_idx}" class="bi-heart text-danger fw-bold fs-2" onclick="wishListToggle(event, ${room.room_idx})"></i>
-		 </div>
+		 <c:if test="${sessionScope.h_userid == null && sessionScope.userid != null}">
+			 <div class="d-flex justify-content-end" style="width: 50%; position: relative; float: right;">
+		      <i id="wish-icon-${room.room_idx}" class="bi-heart text-danger fw-bold fs-2" onclick="wishListToggle(event, ${room.room_idx})"></i>
+			 </div>
+		 </c:if>
+		 
 		 </div>
 		 
 		</div>
@@ -135,9 +138,19 @@ table tr td{
           <div class="d-flex justify-content-start" style="width: 80%; position: relative; float: left;">
            <span class="fs-4">${host.h_userid}님이 호스팅하는 게스트용 별채 전체</span>
           </div>
-          <div class="d-flex justify-content-end" style="width: 8%; position: relative; float: right;">
-           <img src="${path}/imgUpload/${host.h_profile_img}" width="50px" height="50px" style="border-radius: 50%">
-          </div>
+          
+          <c:if test="${host.h_profile_img != null}">
+	          <div class="d-flex justify-content-end" style="width: 8%; position: relative; float: right;">
+	           <img src="${path}/imgUpload/${host.h_profile_img}" width="50px" height="50px" style="border-radius: 50%">
+	          </div>
+		  </c:if>
+
+          <c:if test="${host.h_profile_img == null}">
+	          <div class="d-flex justify-content-end" style="width: 8%; position: relative; float: right;">
+	           <img src="${path}/resources/images/guest.png" width="50px" height="50px" style="border-radius: 50%">
+	          </div>
+		  </c:if>
+		 
 		  <div style="clear: both; font-size: 16px;">
 		   <span>최대 인원 ${room.max_people}명 · </span>
 		   <span>침대 ${room.beds}개 · </span>
@@ -154,8 +167,7 @@ table tr td{
         
          <hr class="gray_line">
         
-         <!-- 숙소 편의시설 및 숙소 이용규칙 표기(체크인 체크아웃 시간, 흡연금지,파티나 이벤트 금지 등)-->
-                           
+         <!-- 숙소 편의시설 및 숙소 이용규칙 표기 -->                      
          <div class="container" style="padding: 0;">
 			<table class="table" style="border-color: white;">
 			    <tr>
@@ -213,12 +225,24 @@ table tr td{
 			  <label for="floatingInput">체크아웃</label>
 			</div>
 			<div class="form-floating mb-3">
-			  <input type="number" class="form-control" name="res_person" id="res_person" min="2" max="${room.max_people}" value="2">
+			  <input type="number" class="form-control" name="res_person" id="res_person" min="2" max="${room.max_people}" value="2" onKeyup="this.value=this.value.replace(/[^0-${room.max_people}]/g,'');"/>
 			  <label for="floatingInput">예약인원</label>
 			</div>
-			<div class="d-grid gap-2">
-			  <button class="btn btn-warning" id="btnReserve" type="button">예약하기</button>
-			</div>
+			
+			<c:if test="${sessionScope.h_userid == null}">
+				<div class="d-grid gap-2">
+				  <button class="btn btn-warning" id="btnReserve" type="button">예약하기</button>
+				</div>
+			</c:if>
+			
+			<c:if test="${sessionScope.h_userid != null}">
+				<div class="d-grid gap-2">
+				  <button class="btn btn-warning" id="btnReserveHost" type="button">예약하기</button>
+				</div>
+			</c:if>
+			
+			
+			
            </div>
            <input type="hidden" name="room_idx" id="room_idx" value="${room.room_idx}">
            <input type="hidden" name="check_in" id="check_in" value="<fmt:formatDate value="${room.check_in}" pattern="yyyy-MM-dd" />">
@@ -253,10 +277,21 @@ table tr td{
 	  	  <c:forEach var="row"  items="${review}" begin="0" end="3">
 			<div class="card" style="width: 18rem; margin: 3px;">
 			  <div class="card-body">
-			    <h5 class="card-title"><img src="${path}/imgUpload/${row.profile_img}" width="30px" height="30px" style="border-radius: 50%">&nbsp;${row.userid}</h5>
+			    <h5 class="card-title">
+			    
+				<c:if test="${row.profile_img != null}">			 
+			    <img src="${path}/imgUpload/${row.profile_img}" width="30px" height="30px" style="border-radius: 50%">
+			    </c:if>
+			    
+				<c:if test="${row.profile_img == null}">			 
+			    <img src="${path}/resources/images/guest.png" width="30px" height="30px" style="border-radius: 50%">
+			    </c:if>
+			    
+			    &nbsp;${row.userid}</h5>
+			   
 			    <h6 class="card-subtitle mb-2 text-muted"><fmt:formatDate value="${row.write_date}" pattern="yyyy.MM.dd hh:mm" /> </h6>
 			    <p class="card-text">${row.r_title}</p>
-			    <a href="#" class="card-link" id="btnReview">더보기 > </a>
+			    <a href="#" class="card-link" id="btnReview" onclick="review(${row.review_idx})">더보기 > </a>
 			  </div>
 			</div>
 	      </c:forEach>
@@ -289,9 +324,19 @@ table tr td{
 		  <div class="card-header">Host</div>
 		  <div class="card-body">
 		    <div class="d-flex">
+
+		    <c:if test="${host.h_profile_img != null}">
 		     <div class="d-flex">
 		      <img src="${path}/imgUpload/${host.h_profile_img}" width="60px" height="60px" style="border-radius: 50%">
 		     </div>
+		    </c:if>
+
+          	<c:if test="${host.h_profile_img == null}">
+		     <div class="d-flex">
+		      <img src="${path}/resources/images/guest.png" width="60px" height="60px" style="border-radius: 50%">
+		     </div>
+          	</c:if>
+		     
 		     <div style="margin-left: 20px;">
 		      <span class="card-title fs-5">호스트 : ${host.h_userid}님</span>
 		      <p class="card-text" style="font-size: 14px;">회원 가입일 : <fmt:formatDate value="${host.h_join_date}" pattern="yyyy.MM.dd" /> </p>
@@ -306,6 +351,7 @@ table tr td{
  <!-- 본문 영역 끝 -->
  
  <!-- 채팅 아이콘  -->
+<c:if test="${sessionScope.h_userid == null && sessionScope.userid != null}">
  <div class="btn-chatting-icon">
  	<form method="post" id="chatForm">
  			<input type="hidden" name="room_idx" value="${room.room_idx}">
@@ -318,10 +364,15 @@ table tr td{
  			</button>
  	</form>
 </div>
-  
+</c:if>
  
 <script type="text/javascript">
 	$(function(){
+		var checkin_date=$("#checkin_date").val();
+		var checkout_date=$("#checkout_date").val();
+		
+		console.log("검색한 체크인 : "+checkin_date+" 검색한 체크 아웃 : "+checkout_date);
+		
 		wishListCheck();
 		
 		//채팅아이콘 스크립트
@@ -431,11 +482,38 @@ table tr td{
 
 <script type="text/javascript">
 	 $(function(){
+		$("#btnReserveHost").click(function(){
+		   alert("호스트는 예약이 불가합니다. \n 게스트로 로그인 후 다시 시도하세요!"); 	
+		   location.href="${path}/guest/login.do";
+		});
+		 
 	    $("#btnReserve").click(function(){
+	    	var checkin_date=$("#checkin_date").val();
+	    	var checkout_date=$("#checkout_date").val();
+	    	var res_person=$("#res_person").val();
+	    	
+	    	if(checkin_date=="") {
+	    		alert("체크인 날짜를 선택하세요.");
+				$("#checkin_date").focus();
+				return;
+	    	}
+	    	if(checkout_date=="") {
+	    		alert("체크인 날짜를 선택하세요.");
+				$("#checkout_date").focus();
+				return;
+	    	}
+	    	if(res_person=="") {
+	    		alert("예약인원을 선택하세요.");
+				$("#res_person").focus();
+				return;
+	    	}
 	    	dateCal();
 	    });
 		console.log('${redateList}');
          
+		var check_out=$("#check_out").val();
+		console.log("호스팅 끝나는 날짜"+check_out);
+		
 		var option = {
              locale: "ko", //한국어로 언어설정
              dateFormat: "Y-m-d",   //출력 설정
@@ -444,6 +522,7 @@ table tr td{
              disable: ${redateList},
              showMonths : 2, // 2개월 캘린더 표기 
              minDate : new Date().fp_incr(1), //최소 날짜, 현재시간으로 셋팅 "today"현재날짜
+             maxDate : check_out,
              plugins: [new rangePlugin({ input: "#checkout_date"})] //플러그인 설정 input-box 2개에 표기
          }
 
@@ -492,6 +571,7 @@ table tr td{
 	    	$("#res_form").submit();
 	    }
 
+	    //사용x
 	    function resdate_check() {
 	    	var room_idx=$("#room_idx").val();
 	    	var checkin_date=$("#checkin_date").val();
@@ -536,6 +616,11 @@ table tr td{
 	        }
 	     });
 	    };
+	    
+	    /* 리뷰 상세 페이지 이동 */
+	    function review(review_idx) {
+	    	location.href="${path}/reviews/detail.do?review_idx="+review_idx;
+	    }
 </script>
     
 <script type="text/javascript">

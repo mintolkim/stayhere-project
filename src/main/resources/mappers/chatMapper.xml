@@ -78,8 +78,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where c_idx=#{c_idx}
 	</select>
 	
-	
-	
+	<!-- 게스트별 채팅 건수  -->
+	<select id="countByUser" resultType="int">
+		select count(*) 
+		from chatroom 
+		where userid=#{userid}
+	</select>
 	
 	
 	

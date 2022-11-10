@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -79,11 +78,10 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return sqlSession.selectOne("review.starByRoom" ,room_idx);
 	}
 
-	@Override
-	public List<ReviewDTO> reviewsByUser(int userid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/*
+	 * @Override public List<ReviewDTO> userReviews(String userid) { return
+	 * sqlSession.selectOne("review.userReviews"); }
+	 */
 	
 	@Override
 	public void deleteFile(String fileName) {
@@ -122,24 +120,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 
 	@Override
-	public void addlikey(int review_idx, String userid) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int likeycheck(int review_idx, String userid) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void dellikey(int review_idx, String userid) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public List<ReCommentDTO> comment(int review_idx) {
 		return sqlSession.selectList("review.comment",review_idx);
 	}
@@ -159,9 +139,7 @@ public class ReviewDAOImpl implements ReviewDAO {
 		map.put("review_idx", review_idx);
 		map.put("comment_idx", comment_idx);
 		sqlSession.delete("reivew.delComment",map);
-		
 	}
-
 	
 	@Override
 	public int checkAttach(String fullName, int review_idx) {
@@ -169,30 +147,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 		map.put("fullName", fullName);
 		map.put("review_idx", review_idx);
 		return sqlSession.selectOne("review.checkattach",map);
-	}
-	
-	@Override
-	public void checkAcc(String review_idx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void cancelAcc(String review_idx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int countByAcc(int review_idx) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ReviewAccuseDTO accDetail(int acc_idx) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -209,5 +163,16 @@ public class ReviewDAOImpl implements ReviewDAO {
 	public List<ReviewAccuseDTO> getaccuse(String userid) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public int countByUser(String userid) {
+		return sqlSession.selectOne("review.countByUser",userid);
+	}
+
+	@Override
+	public int getReviewId(int res_idx) {
+		return sqlSession.selectOne("review.getReviewId",res_idx);
 	}
 }

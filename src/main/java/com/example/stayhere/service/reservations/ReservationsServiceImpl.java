@@ -58,9 +58,8 @@ public class ReservationsServiceImpl implements ReservationsService {
 	}
 
 	@Override
-	public int countRes(String userid, int res_idx) throws Exception{
-		// TODO Auto-generated method stub
-		return 0;
+	public int countAllRes(String userid) {
+		return reservationsDao.countAllRes(userid);
 	}
 
 	@Transactional
@@ -280,6 +279,11 @@ public class ReservationsServiceImpl implements ReservationsService {
 	@Override
 	public List<ReservationsDTO> resCateTotalMoney() {
 		return reservationsDao.resCateTotalMoney();
+	}
+
+	@Override
+	public void reviewCheck(int res_idx) {
+		reservationsDao.reviewCheck(res_idx);
 	}
 
 

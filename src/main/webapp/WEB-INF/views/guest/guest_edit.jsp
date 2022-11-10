@@ -7,7 +7,7 @@
 <%@ include file="../include/header.jsp"%>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<title>프로필 수정</title>
+<title>STAYHERE</title>
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- Bootstrap icons-->
@@ -16,96 +16,70 @@
 <link href="${path}/resources/css/styles.css" rel="stylesheet" />
 
 <style type="text/css">
-.display-5 {margin-bottom: 20px;}
-.btn {margin-top: 20px;}
-.col-lg-6 {margin-bottom: 3%;}
-a { text-decoration: none;}
-/* .content {
-  width : 296px;
-  top: 50%;
-  left: 50%;
-  text-align: left;
-} */
-.btn{
-	/*width: 296px;*/
-	width:100%;
-	height: 40px;
-	background-color: #ffcd4a;
-    border: solid 2px #ffcd4a; 
+a { 
+ text-decoration: none;
 }
-.box {
-    width: 250px;
-    height: 250px; 
-    border-radius: 70%;
-    overflow: hidden;
+#profile-tab a {
+ color: black;
+ text-decoration: none;
+}
+#profile-tab a:hover {
+ color: #ffc107;
+ text-decoration: none;
 }
 .profile {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background-color: gray;
-    background-color: #c3c3c3;
-}
-.box2 {
-    width: 250px;
-    height: 250px; 
-    border-radius: 70%;
-    overflow: hidden;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
 }
 label {
-	font-size: 10px;
+ font-size: 12px;
 }
-.lead{
-	margin-top: 1%;
-}
-.bi {
-	font-size: 30px;
-}
-
-
-hr {
-width: 100%
+#btnSave {
+ width: 100%;
 }
 </style>
 <script type="text/javascript">
 window.onload = function() {
-	//id와pw 적합여부 검사(3~12자리, 영어대소문자, 숫자만 가능)
+	//id와pw 적합여부 검사
 	let val = /^[a-zA-Z0-9]{3,15}$/	
 	
 	//형식검사
-	function check( val, target ) {
-		if( val.test( target ) ) {
+	function check(val, target) {
+		if(val.test(target)) {
 			return true;
 		}
 	}
     //패스워드 유효성 검사
   	$("#passwd").blur(function() {
   		var passwd = $("#passwd").val();
-  		var passwd2 = $("#passwd2").val();	      		
+  		var passwd2 = $("#passwd2").val();
+  		var confirm_passwd_check = $("#confirm_passwd_check").val();
   		if(!check(val,passwd)) {
   			$("#passwd_check").text("패스워드가 형식에 맞지 않습니다.");
-  			$("#passwd_check").css("margin-left", "155px");
+  			$("#passwd_check").css("font-size", "12px");
   			$("#passwd_check").css("color", "red");
   			$("#passwd").val("");
   			$("#submit").attr("disabled", true);
   		} else{
   			$("#passwd_check").text("");
   			//패스워드 입력확인
-  			$("#confirm_passwd_check").blur(function() {
+  			$("#passwd2").blur(function() {
   				var passwd = $("#passwd").val();
+  				var passwd2 = $("#passwd2").val();	 	      		
   				var confirm_passwd_check = $("#confirm_passwd_check").val();
-  				
   				if(passwd !='' && passwd2 !='') {
-  					if( passwd == passwd2 ) {
+  					if(passwd == passwd2) {
   						$("#confirm_passwd_check").text("비밀번호가 같습니다.");
-  						$("#confirm_passwd_check").css("margin-left", "155px");
+  			  			$("#confirm_passwd_check").css("font-size", "12px");
   						$("#confirm_passwd_check").css("color", "blue");
   						$("#submit").attr("disabled", false);
   					} else {
   						$("#confirm_passwd_check").text("비밀번호가 틀립니다.");
-  						$("#confirm_passwd_check").css("margin-left", "155px");
+  						$("#confirm_passwd_check").css("font-size", "12px");
   						$("#confirm_passwd_check").css("color", "red");
-  						$("#passwd2" ).val("");
+  						$("#passwd2").val("");
   						$("#submit").attr("disabled", true);
   					}
   				} else {
@@ -180,75 +154,88 @@ window.onload = function() {
  <!-- nav -->
  <%@ include file="../include/navbar.jsp" %>
  <!-- 본문영역-->
- <section class="py-5" id="features">
- 	<div class="container px-5 my-5" align="center">
-		<!-- Hi! -->
-		<div class="row justify-content-center">
-			<div class="col-lg-6">
-				<h2 class="fw-bolder mb-0">M　Y　P　A　G　E</h2>
-				<p class="lead" style="margin-top: 4%;">${sessionScope.name}님 반가워요</p>
-				${dto.email} | <span><a href="${path}/guest/update/${sessionScope.userid}">프로필 수정</a></span>
+  <section class="mt-3 mb-5" id="features">
+	<div class="container">
+		<div class="row">
+			
+			<div class="list-group col-lg-3 mt-4" id="profile-tab" align="center">
+				<div style="width: 80%;">
+					<c:if test="${dto.profile_img != null}">			 
+						<img class="profile" src="${path}/imgUpload/${dto.profile_img}" style="border-radius: 50%; width: 230px; height: 230px;">
+					</c:if>
+					
+					<c:if test="${dto.profile_img == null}">
+						<img class="profile" src="${path}/resources/images/guest.png" style="border-radius: 50%; width: 230px; height: 230px;">
+					</c:if>
+				
+					<br><br>
+					<a href="${path}/guest/guest_view/${sessionScope.userid}" class="list-group-item list-group-item-action">마이 페이지</a>
+					<a href="${path}/reservations/list/guest" class="list-group-item list-group-item-action">예약 정보</a>
+					<a href="${path}/reviews/reviewUserList/${sessionScope.userid}" class="list-group-item list-group-item-action">내가 작성한 리뷰</a>
+					<a href="${path}/chatlist" class="list-group-item list-group-item-action">채팅목록</a>
+					<a href="${path}/wishlist/list.do" class="list-group-item list-group-item-action">관심 스테이</a>
+				</div>
 			</div>
-			<hr>
-		</div>
 
-		<!-- content -->
-
-		<div class="row gx-5">
-          <div class="col-lg-4 mb-5 mb-lg-0">
-          <p><a>프로필</a></p>
-      	  <p><a href="${path}/guest/update/${sessionScope.userid}">회원정보 수정</a></p>
-      	  <p><a href="${path}/reservations/list/guest">예약정보</a></p>
-      	  <p><a href="${path}/wishlist/list.do">관심스테이</a></p>
-      	  <p><a href="${path}/guest/delete.do" class="confirmDelete">회원탈퇴</a></p>      	  
-      	  </div>
-      	  
-      	  <!-- 프로필 -->
-      	  
-		<div class="col-lg-8">
-        	<div class="row gx-5 row-cols-1 row-cols-md-2">
-            	<div class="col mb-5 h-100" align="left">
-                	<p class="lead"><b>회원정보 수정</b></p>
+			<div class="col-lg-9 mt-4 mb-5">
+				<div align="center">
+		            <p style="text-align: center; font-size: 20px; font-weight: bold; letter-spacing: 12px;">MY PAGE</p>
+					<p style="text-align: center; font-size: 14px; letter-spacing: 8px;">마이페이지</p>
+	
+					<p class="fs-4 mt-5">${sessionScope.name}님 반가워요!</p>
+					<p class="fs-6">스테이히어와 함께 ${cntCheckout}번의 여행을 했어요.</p>
+					
+					<span>${dto.email} |</span>
+					<span><a href="${path}/guest/update/${sessionScope.userid}">프로필 수정</a></span> 
+				</div>		
+				
+				<br><br>
+				
+				<hr class="gray_line mx-auto" style="width: 100%;">
+				
+            	<div>
                     <form name="form1" method="post" enctype="multipart/form-data">
                     	<input type="hidden" value="${sessionScope.userid}">
-                  		<div class="box">
-                  	 		<c:if test="${dto.profile_img != null}">
+                  		<div class="mx-auto" style="width: 50%;" align="center">
+                  	 	 	<c:if test="${dto.profile_img != null}">
                   	 	 		<div class="profile_img">
-                  	 	 		<img class="profile" src="${path}/imgUpload/${dto.profile_img}" ></div>
+                  	 	 			<img class="profile" src="${path}/imgUpload/${dto.profile_img}" style="border-radius: 50%; width: 250px; height: 250px;">
+                  	 	 		</div>
                   	 	 	</c:if>
                   	 	 	<!-- 로그인유저의 profile_img가없다면 디폴트 이미지 노출 -->
                   	 	 	<c:if test="${dto.profile_img == null}">
-                  	 	 		<img class="profile" src="${path}/resources/images/guest.png">
-                  	 	 	</c:if>
-                  	 	 </div>    
-                  	 	<label class="lead" for="file" style="text-align: center;"><i class="bi bi-camera"></i>&nbsp;사진 수정하기</label> 
-                  	 	<input type="file" id="file" name="file" style="display: none;">
-						<input type="hidden" name="profile_img" value="${dto.profile_img}">                 	 
-
-<script>
-$("#file").change(function(){
-	if(this.files && this.files[0]) {
-		var reader = new FileReader;
-		reader.onload = function(data) {
-			$(".box img").attr("src", data.target.result);
+                  	 	 		<div class="profile_imgDefault">
+                  	 	 			<img class="profile" src="${path}/resources/images/guest.png" style="border-radius: 50%; width: 250px; height: 250px;">
+                  	 	 		</div>
+                  	 	 	</c:if>          
+	                  	 	<label class="lead fs-6 mt-2" for="file"><i class="bi bi-camera fs-4"></i>&nbsp;사진 수정하기</label> 
+	                  	 	<input type="file" id="file" name="file" style="display: none;">
+							<input type="hidden" name="profile_img" value="${dto.profile_img}">                 	 
+                  	 	 </div>    	 	 
+	<script>
+	$("#file").change(function(){
+		if(this.files && this.files[0]) {
+			var reader = new FileReader;
+			reader.onload = function(data) {
+				$(".box img").attr("src", data.target.result);
+				}
+			reader.readAsDataURL(this.files[0]);
 			}
-		reader.readAsDataURL(this.files[0]);
-		}
-	});
- </script>
-                  		<div>
+		});
+	 </script>
+                  		 <div class="mx-auto" style="width: 50%;">
                         	<input class="form-control me-2" type="hidden" id = "userid" value ="${dto.userid}"/>
                         	<label>아이디</label>
-			      	    	<p class="lead" id="useridTemp">${dto.userid}</p>
+                        	<input class="form-control me-2" value="${dto.userid}" disabled>
                   			<div>
                         		<label>비밀번호</label>
 			      	    		<input class="form-control me-2" type="password" name="passwd" id="passwd" value="${dto.passwd}">
-			      	    		<div id="passwd_check"></div>	      	    
+			      	    		<div class="text-start" id="passwd_check"></div>	      	    
                   			</div>
                   			<div>
                         		<label>비밀번호확인</label>
 			      	    		<input class="form-control me-2" type="password" name="passwd2" id="passwd2" value="${dto.passwd}">			      	  
-			      	    		<div id="confirm_passwd_check"></div>			      	  
+			      	    		<div class="text-start" id="confirm_passwd_check"></div>			      	  
                   			</div>  
                   			<div>
                         		<label>이메일</label>
@@ -263,13 +250,16 @@ $("#file").change(function(){
                         		<label>휴대폰</label>
 			      	    		<input class="form-control me-2" name="phone" id="phone" value="${dto.phone}">
                   			</div>
+	                      	<button class="btn btn-warning mb-1 mt-3" type="submit" id="btnSave" name="btnSave">수정하기</button>
+				            <span><a href="${path}/guest/delete.do" class="confirmDelete">탈퇴</a></span>
                   		</div>
-                      	<button class="btn btn-block" type="submit" id="btnSave" name="btnSave">수정하기</button>
                     </form>
                   </div>
-              </div>
+		   </div> 
+
 		</div>
  	</div>
+
  </section>
  </main>
  <!--footer -->

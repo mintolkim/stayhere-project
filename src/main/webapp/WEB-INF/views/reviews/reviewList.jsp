@@ -18,7 +18,12 @@ $(function() {
 //작성
 $(function() {
 	$("#btnWrite").click(function() {
-		location.href = "${path}/reviews/write.do";
+		var flag=confirm("'이용완료'된 숙박내역을 확인해주세요.");
+		if(flag) {
+			location.href="${path}/reservations/list/guest"
+		}else {
+			return;
+		}
 	});
 });
 //페이지 이동
@@ -131,14 +136,6 @@ function selectReview() {
 
 				<!--리뷰검색 -->
 				<!--<input type="text" name="search" placeholder="Search.."> -->
-
-				<!-- 포토리뷰와 일반리뷰 구분 -->
-				<!-- <div class="btn-group justify-content-center" role="group" aria-label="Basic radio toggle button group">
-				<input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-					<label class="btn btn-outline-primary" for="btnradio1">포토리뷰</label>
-				<input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"> 
-					<label class="btn btn-outline-primary" for="btnradio2">일반리뷰</label> 
-			</div> -->
 
 				<!-- 정렬 -->
 				<div class="col-2" align="right">
