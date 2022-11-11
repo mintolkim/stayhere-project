@@ -54,7 +54,7 @@ function mykeydown() {
 		writer="${sessionScope.h_userid}";
 	}else{
 		if(confirm("로그인이 필요합니다. 로그인페이지로 이동하시겠습니까?")){
-			location.href="${path}/guest/login.do";
+			location.href="${path}/guest/login.do"; return;
 			}else return;
 	}
 	var qidx= $("#qidx").val();
@@ -108,7 +108,7 @@ function addscrap(q_idx,scrap){
 		userid="${sessionScope.h_userid}";
 	}else{
 		if(confirm("로그인이 필요합니다. 로그인페이지로 이동하시겠습니까?")){
-			location.href="${path}/guest/login.do";
+			location.href="${path}/guest/login.do"; return;
 		}else return;
 	}
 	$.ajax({
@@ -121,7 +121,7 @@ function addscrap(q_idx,scrap){
 		},
 		success: function(result){
 			if(result==1)
-			location.href="${path}/qna/qnadetail.do?q_idx="+q_idx;
+			location.href="${path}/qna/qnadetail.do?q_idx="+q_idx; 
 		},
 		error: function(result){
 			alert("이미 스크랩하신 글입니다.");
@@ -136,7 +136,7 @@ function addlikey(q_idx,like){
 		userid="${sessionScope.h_userid}";
 	}else{
 		if(confirm("로그인이 필요합니다. 로그인페이지로 이동하시겠습니까?")){
-			location.href="${path}/guest/login.do";
+			location.href="${path}/guest/login.do"; return;
 		}else return;
 	}
 	$.ajax({

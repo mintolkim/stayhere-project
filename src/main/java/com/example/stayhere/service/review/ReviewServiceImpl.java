@@ -50,26 +50,18 @@ public class ReviewServiceImpl implements ReviewService {
 		if(files==null) return;
 		for(String fullName: files) { 
 			reviewDao.updateAttach(fullName, dto.getReview_idx()); 
-			
-			/*
-			 * if(reviewDao.checkAttach(fullName, dto.getReview_idx()) == 0){
-			 * reviewDao.updateAttach(fullName, dto.getReview_idx()); }
-			 */ 
 		}
 	}
 	
 	@Transactional
 	@Override
 	public void delete(int review_idx) throws Exception {
-		//댓글삭제
-		//첨부삭제
-		//리뷰게시물 삭제
 		reviewDao.delete(review_idx);
 	}
 
 	@Override
-	public List<ReviewDTO> listAll(int start, int end, String select) throws Exception {
-		return reviewDao.listAll(start, end, select);
+	public List<ReviewDTO> listAll(int start, int end) throws Exception {
+		return reviewDao.listAll(start, end);
 	}
 
 	@Override
@@ -107,12 +99,6 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public double starByRoom(int room_idx) {
 		return reviewDao.starByRoom(room_idx);
-	}
-
-	@Override
-	public List<ReviewDTO> reviewsCategory(int review_idx, Date write_date, int view_count, int review_star) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

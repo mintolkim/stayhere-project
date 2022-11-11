@@ -8,9 +8,14 @@
 <!-- 그외 페이지별 들어갈 script & css 추가 영역  start-->
 
 <!-- 그외 페이지별 들어갈 script & css 추가 영역 end -->
-<title>STAYHERE</title>
+<title>STAYHERE-chatlist</title>
 
 <style type="text/css">
+
+a { text-decoration: none; color: black;}
+.lead a { color: black; font-size: 16px;}
+.lead a:hover { color: black; font-size: 16px; font-weight: 640;}
+
 .title {
     text-align: center;
     font-size: 26px;
@@ -48,30 +53,44 @@
 <body class="d-flex flex-column">
 
 	<%@ include file="../include/navbar.jsp"%>
-	
-	<!-- 컨텐츠 수정 영역 start -->
-	<div class="container">
-		<section class="col-lg-12 mt-3 mb-5 mb-3 mx-5 px-5" id="features">
-			<div class="default_width container-fluid mx-5" align="center">
-				<div class="row" align="center">
-					<!-- 사이트바  -->
-					<div class="list-group col-sm-2 mt-4 mx-2 px-2" id="profile-tab">
-						<div class="container" id="box">
-							<img class="profile" src="./resources/images/guest.png">
-						</div>
-						<br> 
-						<a	href="${path}/guest/guest_view/${sessionScope.userid}" class="list-group-item list-group-item-action">프로필</a> 
-						<a href="${path}/reservations/list/guest"	class="list-group-item list-group-item-action">예약내역</a> 
-						<a href="" class="list-group-item list-group-item-action">내가 작성한 리뷰</a> 
-						<a href="${path}/chatlist" class="list-group-item list-group-item-action">나의 채팅목록</a>
-						<a href="#" class="list-group-item list-group-item-action">관심스테이</a>
-					</div>
-					
-					<!-- 타이틀  -->
-					<div class="col-sm-8 mt-2 mx-2 mb-2" align="center">
-						<p class="title border-bottom pb-3">My Chat List</p>
 
-						<c:choose>
+	<!-- 모드 선언 -->
+	<c:if test="${sessionScope.userid != null}">
+		<c:set var="mode" value="guest"/>
+	</c:if>
+	
+	<c:if test="${sessionScope.h_userid != null}">
+		<c:set var="mode" value="host"/>
+	</c:if>
+
+	
+	<!-- 호스트 모드 -->
+	<c:if test="${mode == 'host'}">
+		<main class="flex-shrink-0">
+			<!-- 본문영역-->
+			<section class="" id="features">
+				<div class="container my-5" align="center">
+					<!-- Hi! -->
+					<div class="row justify-content-center">
+						<p class="lead">${sessionScope.h_name}님의 채팅목록</p>
+						<div class="col-lg-6 mb-5">
+							<h2 class="fw-bolder mb-0" style="letter-spacing: 10px;">Host Chat List</h2>
+						</div>
+						<hr>
+					</div>
+
+					<!-- content -->
+					<section class="" id="features">
+						<div class="container my-5">
+							<div class="row gx-5">
+								<!-- 호스트 메뉴 리스트 -->
+								<div class="col-lg-4 mb-5 mb-lg-0">
+									<%@ include file="../include/host_sidebar.jsp"%>
+								</div>
+								
+								<!-- 목록 -->
+								<div class="col-lg-8">
+									<c:choose>
 							<c:when test="${map.count <= 0}">
 								<div class="mt-5">
 									<h5>채팅목록이 하나도 존재하지 않습니다.</h5>
@@ -146,64 +165,119 @@
 									</div>
 								</div>
 								<!--결과 끝 -->
-
 								<!-- 페이지네이션 -->
-								<nav class="d-flex justify-content-center my-2"
-									aria-label="Search results pages">
-									<ul class="pagination">
-										<c:choose>
-											<c:when test="${map.pager.curPage > 1}">
-												<li class="page-item"><a class="page-link" href="#"
-													aria-label="Previous"
-													onclick="pagination('${map.pager.prevPage}')"> <span
-														aria-hidden="true">&laquo;</span>
-												</a></li>
-											</c:when>
-											<c:otherwise>
-												<li class="page-item disabled"><a class="page-link"
-													href="#" aria-label="Previous"> <span
-														aria-hidden="true">&laquo;</span>
-												</a></li>
-											</c:otherwise>
-										</c:choose>
-										<c:forEach var="num" begin="${map.pager.blockBegin}"
-											end="${map.pager.blockEnd}">
-											<c:choose>
-												<c:when test="${num == map.pager.curPage}">
-													<li class="page-item active" aria-current="page"><a
-														class="page-link">${num}</a></li>
-												</c:when>
-												<c:otherwise>
-													<li class="page-item"><a class="page-link" href="#"
-														onclick="pagination('${num}')">${num}</a></li>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-										<c:choose>
-											<c:when test="${map.pager.curPage < map.pager.totPage}">
-												<li class="page-item"><a class="page-link" href="#"
-													aria-label="Next"
-													onclick="pagination('${map.pager.nextPage}')"> <span
-														aria-hidden="true">&raquo;</span>
-												</a></li>
-											</c:when>
-											<c:otherwise>
-												<li class="page-item disabled"><a class="page-link"
-													href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-												</a></li>
-											</c:otherwise>
-										</c:choose>
-									</ul>
-								</nav>
-								<!-- 페이지 네이션 끝 -->
+								<%@ include file="../chat/chat_paging.jsp" %>
+							</c:otherwise>
+						</c:choose>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+		</main>
+	</c:if>
+
+
+	<!-- 게스트 모드 -->
+	<c:if test="${mode == 'guest'}">
+	<!-- 본문영역-->
+	<section class="mt-3 mb-5" id="features">
+		<div class="container" align="center">
+			<div class="row">
+			
+				<!-- 프로필 탭 -->
+				<%@ include file="../include/profile_tab.jsp" %>			     
+					
+				<div class="col-lg-9 mt-4 mb-5" align="center">
+					<p style="text-align: center; font-size: 20px; font-weight: bold; letter-spacing: 12px;">My Chat List</p>
+					<p style="text-align: center; font-size: 14px; letter-spacing: 8px;">나의채팅목록</p>
+					<c:choose>
+						<c:when test="${map.count <= 0}">
+							<div class="mt-5">
+								<h5>채팅목록이 하나도 존재하지 않습니다.</h5>
+							</div>
+						</c:when>
+						<c:otherwise>
+					
+						<!-- 검색바 -->
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="count">
+								<span>총 <strong>${map.count}개</strong>의 채팅방이 검색되었습니다.
+								</span>
+							</div>
+							<div class="search-order">
+								<form name="searchForm" class="d-flex align-items-center">
+									<div class="search-input">
+										<input class="form-control" name="keyword" id="keyword"
+											placeholder="검색어를 입력해주세요"
+											onkeypress="javascript:if(event.keyCode==13) searchChatList(searchForm)">
+									</div>
+									<div class="search-btn">
+										<i class="bi-search btn btn-custom"
+											onclick="searchChatList(searchForm)"></i>
+									</div>
+								</form>
+							</div>
+						</div>
+						<!-- 검색바 끝 -->
+
+						<!--결과 정보-->
+						<div class="list-wrap">
+							<div class="chat-list-item">
+								<c:forEach var="row" items="${map.chatlist}">
+									<section class="chat-list my-3">
+										<div class="card my-2 border rounded-5">
+											<div class="row g-0">
+												<div class="col-md-3">
+													<div class="thumb">
+														<img src="${path}/imgUpload/${row.photo1}">
+													</div>
+												</div>
+												<div class="col-md-9 chat-info-1">
+												<!--생성-->
+													<div class="card-body d-flex flex-column justify-content-between">
+														<div class="d-flex py-1 pt-2">
+															<h5 class="room-name fw-bold mb-0 text-truncate px-2 ">
+																[${row.room_name}] ${row.senderId}님과의 채팅</h5>
+															<p class="icon-${row.c_idx} mb-0"></p>
+														</div>
+														<div class="info my-3">
+															<!-- <p class="card-text text-secondary ps-2 small"> -->
+															<%-- <i class="bi bi-house-door-fill"></i> 방정보 : ${row.room_name} --%>
+															<!-- </p> -->
+															<p class="card-text text-secondary ps-2 small">
+																<i class="bi bi-calendar-check-fill"></i> 채팅생성일자 :
+																<fmt:formatDate value="${row.create_date}" pattern="yyyy-MM-dd(E) HH:mm:ss" />
+															</p>
+														</div>
+														<div class="btn-group">
+															<button type="button" class="btn btn-custom btn-sm"
+																onclick="chatPopUp('${row.room_idx}','${row.h_userid}','${row.userid}')">채팅하기</button>
+														</div>
+													</div>
+													<!--끝-->
+												</div>
+											</div>
+										</div>
+									</section>
+								</c:forEach>
+							</div>
+						</div>
+						<!--결과 끝 -->
+								<!-- 페이지네이션 -->
+								<%@ include file="../chat/chat_paging.jsp" %>
 							</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
 			</div>
 		</section>
-	</div>
 	<!-- 컨텐츠 수정 영역 end -->
+	
+	</c:if>
+	
+	
 	<%@ include file="../include/footer.jsp"%>
 
 	<script type="text/javascript">

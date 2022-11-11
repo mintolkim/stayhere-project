@@ -40,11 +40,10 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 	//리뷰게시물 목록 리턴
 	@Override
-	public List<ReviewDTO> listAll(int start, int end, String select) throws Exception {
+	public List<ReviewDTO> listAll(int start, int end) throws Exception {
 		Map<String,Object> map = new HashMap<>();
 		map.put("start", start);
 		map.put("end", end);
-		map.put("select", select);
 		return sqlSession.selectList("review.listAll", map);
 	}
 
@@ -100,12 +99,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 
 	@Override
-	public List<ReviewDTO> reviewsCategory(int review_idx, Date write_date, int view_count, int review_star) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public ReviewDTO detail(int review_idx) {
 		return sqlSession.selectOne("review.detail", review_idx);
 	}
@@ -140,9 +133,9 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return sqlSession.selectOne("review.checkattach",map);
 	}
 
-@Override
+	@Override
 	public List<ReviewDTO> getreview(String userid) {
-		return sqlSession.selectList("review.getguestreview",userid);
+		return sqlSession.selectList("review.getreview",userid);
 	}
 
 	@Override

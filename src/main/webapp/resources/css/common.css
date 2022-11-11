@@ -200,3 +200,11 @@
 }
 
 
+.selected {
+	font-weight: 700 !important;
+}
+
+.noselected{
+	color : #6c757d !important;
+}
+

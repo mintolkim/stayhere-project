@@ -111,7 +111,7 @@ background: linear-gradient(Orange,#FACC2E);
 					aria-labelledby="navbarDropdown">
 					<li><a class="dropdown-item" href="${path}/main">MALL</a></li>
 					<li><hr class="dropdown-divider" /></li>
-					<li><a class="dropdown-item" href="#!">로그아웃</a></li>
+					<li><a class="dropdown-item" href="${path}/guest/logout.do">로그아웃</a></li>
 				</ul></li>
 		</ul>
 		</form>

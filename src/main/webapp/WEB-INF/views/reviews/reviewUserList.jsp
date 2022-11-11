@@ -101,8 +101,7 @@ a {
 						</thead>
 						<tbody>
 						<c:forEach var="row" items="${map.list}">
-						<c:choose>
-							<c:when test="${row.show == 'y'}">
+							<c:if test="${row.show == 'y'}">
 						<tr id="tableBody">
 							<td>
 								<a href="${path}/rooms/detail/${row.room_idx}">
@@ -125,8 +124,8 @@ a {
 								onclick="location.href='${path}/reviews/edit.do?review_idx=${row.review_idx}'">수정/삭제</button>
 							</td>
 						</tr>
-						</c:when>
-						</c:choose>
+						</c:if>
+						
 						</c:forEach>
 						</tbody>
 					</table>

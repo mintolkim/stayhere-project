@@ -6,10 +6,6 @@
 <%@ include file="../include/header.jsp"%>
 <title>STAYHERE</title>
 <script type="text/javascript">
-$(function() {
-	let selection = "${map.select}";
-	$("#selectReview").val(selection).prop("selected", true);
-});
 //작성
 $(function() {
 	$("#btnWrite").click(function() {
@@ -74,8 +70,8 @@ function list(page) {
 						<h1 class="fs-3 fw-bolder">리뷰게시판에서 숙박후기를 확인하세요</h1>
 					</c:when>
 					<c:otherwise>
-						<h1 class="fs-3 fw-bolder">리뷰를 작성하여 숙박경험을 공유하세요</h1>
-						<button type="button" class="btn btn-warning" id="btnWrite">리뷰작성</button>
+						<h1 class="fs-3 fw-bolder">리뷰를 작성하여 경험을 공유하세요</h1>
+						<button type="button" class="btn btn-warning" id="btnWrite">작성하기</button>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -150,7 +146,7 @@ function list(page) {
 											</div>
 											<div class="col-5 ms-auto"><p><p>
 													<i class="bi bi-eye"> ${row.view_count}</i>&nbsp; &nbsp;
-													<i class="bi bi-chat-right-dots"> ${row.comment_count}</i>
+													<i class="bi bi-chat"> ${row.comment_count}</i>
 											</div>
 										</div>
 									</div>
