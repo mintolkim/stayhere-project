@@ -59,15 +59,15 @@ function delComment(review_idx, comment_idx) {
 									<!-- 댓글 아이디 & 내용-->
 									<div class="d-flex mb-4">
 
-										<div class="rounded-circle me-3" id="reviewGuestImage">
+										<div class="rounded-circle">
 											<!-- 로그인 유저 프로필 이미지 -->
 												<c:if test="${co.profile_img == null }">
-													<img class="rounded-circle"
+													<img class="rounded-circle mt-4"
 														src="${path }/resources/images/guest.png"
 														style="width: 50px; height: 50px;" />
 												</c:if>
 												<c:if test="${co.profile_img != null }">
-													<img class="rounded-circle"
+													<img class="rounded-circle mt-4"
 														src="${path }/imgUpload/${co.profile_img}"
 														style="width: 50px; height: 50px;" />
 												</c:if>
@@ -84,10 +84,6 @@ function delComment(review_idx, comment_idx) {
 														<span class="ms-1"
 															onclick="delComment(${co.review_idx},${co.comment_idx})"
 															style="cursor: pointer; font-size: 13px;">[댓글삭제]</span>
-
-														<%-- <span class="ms-1"
-													onclick="delComment(${co.review_idx},${co.comment_idx});"
-													style="cursor: pointer; font-size: 13px;">[댓글삭제]</span> --%>
 													</c:if>
 												</div>
 												<div class="mt-3">${co.contents}</div>

@@ -50,11 +50,6 @@ public class ReviewServiceImpl implements ReviewService {
 		if(files==null) return;
 		for(String fullName: files) { 
 			reviewDao.updateAttach(fullName, dto.getReview_idx()); 
-			
-			/*
-			 * if(reviewDao.checkAttach(fullName, dto.getReview_idx()) == 0){
-			 * reviewDao.updateAttach(fullName, dto.getReview_idx()); }
-			 */ 
 		}
 	}
 	
@@ -65,8 +60,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewDTO> listAll(int start, int end, String select) throws Exception {
-		return reviewDao.listAll(start, end, select);
+	public List<ReviewDTO> listAll(int start, int end) throws Exception {
+		return reviewDao.listAll(start, end);
 	}
 
 	@Override
