@@ -130,7 +130,7 @@ function loginKakao() {
 	</form>
 
 	<br>
-	<a href="${path}/guest/join.do">아이디가 있으십니까?</a>
+	<a href="${path}/guest/join.do">아이디가 없으십니까?</a>
 	<a href="${path}/guest/findpw.do">비밀번호를 잊어버리셨나요?</a>
 	<!-- LoginInterceptor message -->
 	<c:if test="${param.msg == 'nologin' }">
