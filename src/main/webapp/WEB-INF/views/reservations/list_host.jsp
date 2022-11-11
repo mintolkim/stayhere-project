@@ -48,6 +48,14 @@ function checkout(res_idx) {
 }
 
 /* 해당 예약 리뷰 확인 */
+function reviewCheck(res_idx) {
+	var flag=confirm("리뷰페이지로 이동하시겠습니까?");
+	if(flag) {
+		location.href="${path}/reviews/detailReview.do?res_idx="+res_idx;	
+	}else {
+		return;
+	}
+}
 
 </script>
 <style type="text/css">
@@ -79,9 +87,15 @@ table thead, table tbody {
 <body class="d-flex flex-column h-100">
  <main class="flex-shrink-0">
   <!-- nav -->
-	<%@ include file="../include/navbar.jsp" %>
+  <%@ include file="../include/navbar.jsp" %>
+ 
+  <!-- 뒤로가기 버튼 -->
+  <div class="mt-3">
+  	<i class="bi bi-arrow-left-circle fs-1 mx-5" onclick="window.history.back();"></i>
+  </div>
+ 
   <!-- 본문영역-->
-  <section class="py-5" id="features">
+  <section class="mt-2 mb-5" id="features">
  
 	<div class="container" align="center">
 		<div class="container">
@@ -302,7 +316,15 @@ table thead, table tbody {
 					      <td>${res.phone}</td>
 						  <td><fmt:formatNumber value="${res.total_price}" pattern="#,###,###"/> </td>
 					      <td>${res.res_state}</td>
-					      <td><button class="btn btn-outline-warning btn-sm" onclick="reviewCheck('${res.res_idx}')" style="font-size: 14px;">후기</button></td>
+					      
+					      <c:if test="${res.review_check == 'y'}">
+					    	  <td><button class="btn btn-outline-warning btn-sm" onclick="reviewCheck('${res.res_idx}')" style="font-size: 14px;">리뷰</button></td>
+					      </c:if>
+
+					      <c:if test="${res.review_check == 'n'}">
+					    	  <td><button class="btn btn-outline-secondary btn-sm" style="font-size: 14px;" disabled>리뷰</button></td>
+					      </c:if>
+					      
 					    </tr>
 					  </c:if>
 					</c:forEach>			

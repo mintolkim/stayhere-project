@@ -4,33 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>STAYHERE</title>
 <%@ include file="../include/header.jsp" %>
 <style type="text/css">
 a {
-	text-decoration: none;
-}
-
-#profile-tab a {
-color: black;
-text-decoration: none;
-}
-#profile-tab a:hover {
-color: #ffc107;
-text-decoration: none;
-}
-div #tab-bar li a:hover {
-color: #ffc107;
-text-decoration: none;
-}
-.profile {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
-#profile-tab a:hover {
-	color: #ffc107;
 	text-decoration: none;
 }
 </style>
@@ -44,27 +21,22 @@ function list(page){
 <body class="d-flex flex-column h-100">
  <main class="flex-shrink-0 ">
   <!-- nav -->
-	<%@ include file="../include/navbar.jsp" %>
-  <section class="col-lg-12 mt-3 mb-5 mb-3 mx-5 px-5" id="features">
-	<div class="default_width container-fluid mx-5 px-5" align="center">
-		<div class="row" align="center">
-			<!-- 왼쪽 프로필영역 -->
-			<div class="list-group col-sm-2 mt-4 mx-2 px-2" id="profile-tab">
-				<div class="container" id="box">
-					<img class="profile" src="${path}/imgUpload/${map.guest.profile_img}" style="border-radius: 50%; width: 230px; height: 230px;">
-				</div>
-				<br>
-				<a href="${path}/guest/guest_view/${sessionScope.userid}" class="list-group-item list-group-item-action">프로필</a>
-				<a href="${path}/reservations/list/guest" class="list-group-item list-group-item-action">예약내역</a>
-				<a href="#" class="list-group-item list-group-item-action">내가 작성한 리뷰</a>
-				<a href="${path}/wishlist/list.do" class="list-group-item list-group-item-action">관심스테이</a>
-				<a href="${path}/qna/scraplist" class="list-group-item list-group-item-action">나의 스크랩</a>
-			</div>
+  <%@ include file="../include/navbar.jsp" %>
+  <!-- 본문영역-->
+  <section class="mt-3 mb-5" id="features">
+	<div class="container" align="center">
+		<div class="row">
+			
+		<!-- 프로필 탭 -->
+		<%@ include file="../include/profile_tab.jsp" %>			     
+			
 			<!--본문 영역  -->
-			<div class="col-sm-8 mt-4 mx-2 mb-5" align="center">
-	            <p class="mb-5" style="text-align: center; font-size: 26px; font-weight: bold; letter-spacing: 10px;">My Scraplist</p>
+			<div class="col-lg-9 mt-4 mb-5" align="center">
+	            <p style="text-align: center; font-size: 20px; font-weight: bold; letter-spacing: 12px;">My Scraplist</p>
+	            <p style="text-align: center; font-size: 14px; letter-spacing: 8px;">나의스크랩</p>
 	             
-	             <!-- 카드 -->
+	            <br><br>
+	            <!-- 카드 -->
 				<div class="row gx-5">
 					<c:forEach var="qna" items="${map.list }" varStatus="vs">
 						<div class="col-lg-6 mb-4">

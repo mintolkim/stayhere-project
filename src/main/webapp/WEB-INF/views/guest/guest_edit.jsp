@@ -5,33 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="../include/header.jsp"%>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>STAYHERE</title>
-<!-- Favicon-->
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-<!-- Bootstrap icons-->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-<!-- Core theme CSS (includes Bootstrap)-->
-<link href="${path}/resources/css/styles.css" rel="stylesheet" />
-
 <style type="text/css">
 a { 
  text-decoration: none;
-}
-#profile-tab a {
- color: black;
- text-decoration: none;
-}
-#profile-tab a:hover {
- color: #ffc107;
- text-decoration: none;
-}
-.profile {
-	width: 100%;
-	height: 100%;
-	border-radius: 50%;
-	object-fit: cover;
 }
 label {
  font-size: 12px;
@@ -138,7 +115,7 @@ window.onload = function() {
 		confirm("프로필을 수정하시겠습니까?")
 		if(confirm){
 			document.form1.action="${path}/guest/edit/${sessionScope.userid}"; 
-			//document.form1.userid.value=${dto.userid};
+			//document.form1.userid.value=${guest.userid};
 			document.form1.action="${path}/guest/edit.do";
 			document.form1.submit();
 		}
@@ -158,25 +135,8 @@ window.onload = function() {
 	<div class="container">
 		<div class="row">
 			
-			<div class="list-group col-lg-3 mt-4" id="profile-tab" align="center">
-				<div style="width: 80%;">
-					<c:if test="${dto.profile_img != null}">			 
-						<img class="profile" src="${path}/imgUpload/${dto.profile_img}" style="border-radius: 50%; width: 230px; height: 230px;">
-					</c:if>
-					
-					<c:if test="${dto.profile_img == null}">
-						<img class="profile" src="${path}/resources/images/guest.png" style="border-radius: 50%; width: 230px; height: 230px;">
-					</c:if>
-				
-					<br><br>
-					<a href="${path}/guest/guest_view/${sessionScope.userid}" class="list-group-item list-group-item-action">마이 페이지</a>
-					<a href="${path}/reservations/list/guest" class="list-group-item list-group-item-action">예약 정보</a>
-					<a href="${path}/reviews/reviewUserList/${sessionScope.userid}" class="list-group-item list-group-item-action">내가 작성한 리뷰</a>
-					<a href="${path}/chatlist" class="list-group-item list-group-item-action">채팅목록</a>
-          <a href="${path}/qna/scraplist"class="list-group-item list-group-item-action">나의 스크랩</a>
-					<a href="${path}/wishlist/list.do" class="list-group-item list-group-item-action">관심 스테이</a>
-				</div>
-			</div>
+		<!-- 프로필 탭 -->
+		<%@ include file="../include/profile_tab.jsp" %>			     
 
 			<div class="col-lg-9 mt-4 mb-5">
 				<div align="center">
@@ -186,7 +146,7 @@ window.onload = function() {
 					<p class="fs-4 mt-5">${sessionScope.name}님 반가워요!</p>
 					<p class="fs-6">스테이히어와 함께 ${cntCheckout}번의 여행을 했어요.</p>
 					
-					<span>${dto.email} |</span>
+					<span>${guest.email} |</span>
 					<span><a href="${path}/guest/update/${sessionScope.userid}">프로필 수정</a></span> 
 				</div>		
 				
@@ -198,20 +158,20 @@ window.onload = function() {
                     <form name="form1" method="post" enctype="multipart/form-data">
                     	<input type="hidden" value="${sessionScope.userid}">
                   		<div class="mx-auto" style="width: 50%;" align="center">
-                  	 	 	<c:if test="${dto.profile_img != null}">
+                  	 	 	<c:if test="${guest.profile_img != null}">
                   	 	 		<div class="profile_img">
-                  	 	 			<img class="profile" src="${path}/imgUpload/${dto.profile_img}" style="border-radius: 50%; width: 250px; height: 250px;">
+                  	 	 			<img class="profile" src="${path}/imgUpload/${guest.profile_img}" style="border-radius: 50%; width: 250px; height: 250px;">
                   	 	 		</div>
                   	 	 	</c:if>
                   	 	 	<!-- 로그인유저의 profile_img가없다면 디폴트 이미지 노출 -->
-                  	 	 	<c:if test="${dto.profile_img == null}">
+                  	 	 	<c:if test="${guest.profile_img == null}">
                   	 	 		<div class="profile_imgDefault">
                   	 	 			<img class="profile" src="${path}/resources/images/guest.png" style="border-radius: 50%; width: 250px; height: 250px;">
                   	 	 		</div>
                   	 	 	</c:if>          
 	                  	 	<label class="lead fs-6 mt-2" for="file"><i class="bi bi-camera fs-4"></i>&nbsp;사진 수정하기</label> 
 	                  	 	<input type="file" id="file" name="file" style="display: none;">
-							<input type="hidden" name="profile_img" value="${dto.profile_img}">                 	 
+							<input type="hidden" name="profile_img" value="${guest.profile_img}">                 	 
                   	 	 </div>    	 	 
 	<script>
 	$("#file").change(function(){
@@ -225,31 +185,31 @@ window.onload = function() {
 		});
 	 </script>
                   		 <div class="mx-auto" style="width: 50%;">
-                        	<input class="form-control me-2" type="hidden" id = "userid" value ="${dto.userid}"/>
+                        	<input class="form-control me-2" type="hidden" id = "userid" value ="${guest.userid}"/>
                         	<label>아이디</label>
-                        	<input class="form-control me-2" value="${dto.userid}" disabled>
+                        	<input class="form-control me-2" value="${guest.userid}" disabled>
                   			<div>
                         		<label>비밀번호</label>
-			      	    		<input class="form-control me-2" type="password" name="passwd" id="passwd" value="${dto.passwd}">
+			      	    		<input class="form-control me-2" type="password" name="passwd" id="passwd" value="${guest.passwd}">
 			      	    		<div class="text-start" id="passwd_check"></div>	      	    
                   			</div>
                   			<div>
                         		<label>비밀번호확인</label>
-			      	    		<input class="form-control me-2" type="password" name="passwd2" id="passwd2" value="${dto.passwd}">			      	  
+			      	    		<input class="form-control me-2" type="password" name="passwd2" id="passwd2" value="${guest.passwd}">			      	  
 			      	    		<div class="text-start" id="confirm_passwd_check"></div>			      	  
                   			</div>  
                   			<div>
                         		<label>이메일</label>
-			      	    		<input class="form-control me-2"  name="email" id="email" value="${dto.email}">
+			      	    		<input class="form-control me-2"  name="email" id="email" value="${guest.email}">
 			      	    		<div id="mail_chk"></div>			      	  
                   			</div>
                   			<div>
                         		<label>이름</label>
-			      	    		<input  class="form-control me-2" name="name" id="name" value="${dto.name}">
+			      	    		<input  class="form-control me-2" name="name" id="name" value="${guest.name}">
                   			</div>
                   			<div>
                         		<label>휴대폰</label>
-			      	    		<input class="form-control me-2" name="phone" id="phone" value="${dto.phone}">
+			      	    		<input class="form-control me-2" name="phone" id="phone" value="${guest.phone}">
                   			</div>
 	                      	<button class="btn btn-warning mb-1 mt-3" type="submit" id="btnSave" name="btnSave">수정하기</button>
 				            <span><a href="${path}/guest/delete.do" class="confirmDelete">탈퇴</a></span>
