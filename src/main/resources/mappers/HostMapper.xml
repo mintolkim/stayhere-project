@@ -145,7 +145,7 @@ select count(*) from rooms where h_userid=#{h_userid} and admin_confirm='승인'
 <select id="hostMontlyMoney" resultType="ReservationsDTO">
 select to_char(res_date,'MM"월"') month, nvl(sum(total_price),0) monthlymoney
 from reservations
-where res_date between '2021-01-01' and '2022-12-30'
+where res_date between to_date('20220101','yyyyMMdd') and to_date('20221231','yyyyMMdd')
 and h_userid=#{h_userid}
 and res_state !='취소완료' 
 group by to_char(res_date,'MM"월"')
@@ -164,22 +164,22 @@ order by day
 
 <select id="weeklySum" resultType="int">
 select sum(total_price) from reservations
-where res_state !='예약취소' 
+where res_state !='취소완료' 
 and res_date between #{today} and #{week}
 and h_userid=#{h_userid}
 </select>
 
 <select id="yearSum" resultType="int">
 select sum(total_price) from reservations
-where res_state !='예약취소' 
-and res_date between '2022-01-01' and '2022-12-31'
+where res_state !='취소완료' 
+and res_date between to_date('20220101','yyyyMMdd') and to_date('20221231','yyyyMMdd')
 and h_userid=#{h_userid}
 </select>
 
 <select id="getRoomData" resultType="ReservationsDTO">
 select room_name, nvl(sum(total_price),0) yearmoney
 from reservations
-where res_date between '2022-01-01' and '2022-12-30'
+where res_date between to_date('20220101','yyyyMMdd') and to_date('20221231','yyyyMMdd')
 and h_userid=#{h_userid}
 and res_state !='취소완료' 
 group by room_name
@@ -273,7 +273,7 @@ select count(*) from host
 <select id="resCheck" resultType="ReservationsDTO">
 select res_idx
 from reservations
-where  res_state !='예약취소' 
+where  res_state !='취소완료' 
 and h_userid=#{h_userid}
 </select>
 
