@@ -108,6 +108,11 @@ function enter() {
 	alert("로그아웃 처리되었습니다.")
 	</script>
 	</c:if>
+	<c:if test="${message == 'delete' }">
+	<script type="text/javascript">
+	alert("지금까지 STAYHERE 를 이용해주셔서 감사합니다.");
+	</script>
+	</c:if>
 		 
 	</div>
   </section>
