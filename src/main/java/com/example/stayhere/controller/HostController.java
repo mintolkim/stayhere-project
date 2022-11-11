@@ -57,20 +57,20 @@ public class HostController {
 	public ModelAndView login_check(HostDTO dto, HttpSession session, ModelAndView mav) {
 		//데이터베이스의 정보 가져오기
 		HostDTO DBdto = hostService.viewHost(dto.getH_userid());
-		dto.setH_name(DBdto.getH_name()); //가져온 데이터베이스 정보를 받아서 이름값 dto에 넣기
-		//입력한 비밀번호와 db에 저장된 패스워드가 일치하는지 체크
-		//pwdEncoder.matches(파라미터로 받은 패스워드값, DB에 저장되어 있는 패스워드값)
-		boolean passcheck = pwdEncoder.matches(dto.getH_passwd(), DBdto.getH_passwd());
-		if(passcheck) { //패스워드가 일치한다면 true
-			dto.setH_passwd(DBdto.getH_passwd()); //db에서 가져온 패스워드를 dto에 저장
+		if(DBdto == null) {
+			mav.setViewName("host/login");
+			mav.addObject("message", "error");
+		} else if(pwdEncoder.matches(dto.getH_passwd(), DBdto.getH_passwd())) {
+			dto.setH_name(DBdto.getH_name()); //가져온 데이터베이스 정보를 받아서 이름값 dto에 넣기
+			dto.setH_passwd(DBdto.getH_passwd());
 			boolean result = hostService.loginCheck(dto, session);
 			if(result) { //로그인 체크 결과가 참이면 즉, 로그인 성공시
 				mav.setViewName("redirect:/main");
-			} else {
+			} else { //로그인 실패
 				mav.setViewName("host/login");
 				mav.addObject("message", "error");
 			}
-		} else { //패스워드가 일치하지 않으면
+		} else { //패스워드가 일치하지 않습니다.
 			mav.setViewName("host/login");
 			mav.addObject("message", "error");
 		}
