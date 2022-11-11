@@ -217,7 +217,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resultType="com.example.stayhere.model.reservations.dto.ReservationsDTO">
 		select TO_CHAR(res_date,'MM"월"') month, nvl(sum(total_price),0) monthlymoney
 		from reservations
-		where res_date between '2021-01-01' and '2022-12-30'
+		where res_date between to_date('20221101','yyyyMMdd') and to_date('20231230','yyyyMMdd')
 		and res_state !='취소완료' 
 		group by TO_CHAR(res_date,'MM"월"')
 		order by month
@@ -229,7 +229,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from reservations a
 		inner join rooms b
 		on a.room_idx=b.room_idx
-		where a.res_date between '2021-01-01' and '2022-12-30'
+		where a.res_date between to_date('20221101','yyyyMMdd') and to_date('20231230','yyyyMMdd')
 		and a.res_state !='취소완료'
 		group by b.room_type
 	</select>
