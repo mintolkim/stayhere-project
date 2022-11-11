@@ -184,7 +184,11 @@ public class ChatController {
 		String sessionId = "";
 		String userid = (String)session.getAttribute("userid");
 		String h_userid = (String)session.getAttribute("h_userid");
-		if(userid != null) { sessionId = userid;}
+		GuestDTO g_dto = null;
+		if(userid != null) { 
+			sessionId = userid;
+			g_dto=guestService.view_Guest(userid);
+		}
 		if(h_userid != null) { sessionId = h_userid;}
 				
 		int count = chatRoomService.getChatRoomCount(sessionId, keyword);
@@ -193,7 +197,6 @@ public class ChatController {
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
 		List<ChatListDTO> chatlist = chatRoomService.getChatRoomList(start, end, sessionId, keyword);
-		GuestDTO g_dto=guestService.view_Guest(userid);
 		
 		//senderid 적용
 		for (ChatListDTO dto : chatlist) {
