@@ -190,16 +190,17 @@ function listReply() {
 						<div class="col-3 spanB" align="right">
 							<span class="btn btn-outline-warning" style="cursor: pointer;"
 								onclick="location.href='${path}/reviews/edit.do?review_idx=${dto.review_idx}'"
-								>[ 수정 / 삭제 ]</span> <span
-								onclick="accuse('${sessionScope.userid }')" style="cursor: pointer; color: red;">
-								[<i class="bi bi-cone"></i> 신고]
+								> 수정 / 삭제 </span> 
+								<span class="btn btn-outline-danger"
+								onclick="accuse('${sessionScope.userid }')" style="cursor: pointer;">
+								<i class="bi bi-cone"></i> 신고
 							</span>
 						</div>
 					</c:if>
 					<c:if test="${sessionScope.userid == null }">
 						<div class="col-3 spanB" align="right">
-							<span onclick="accuse('${sessionScope.userid }')" style="cursor: pointer; color: red;">
-								[<i class="bi bi-cone"></i> 신고]
+							<span onclick="accuse('${sessionScope.userid }')" style="cursor: pointer;">
+								<i class="bi bi-cone"></i> 신고
 							</span>
 						</div>
 					</c:if>

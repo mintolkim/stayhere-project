@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					join reservations d
 					on a.res_idx = d.res_idx
 					where show='y'
-					order by ${select} desc
+					order by review_idx desc
 				) A
 		) where rn between #{start} and #{end}
 	</select>
@@ -76,13 +76,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE show = 'y'
 	</select>
 	
-	<!-- 페이징용 갯수 계산 
-	<select id="countReviewCo" resultType="int">
-		select count(*) 	
-		from review a	join review_comment b
-		on a.review_idx = b.review_idx
-	</select>-->
-	
 	<select id="detail" resultType="ReviewDTO">
 		SELECT
 			a.review_idx, 
@@ -107,18 +100,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		on a.room_idx = c.room_idx
 		where review_idx=#{review_idx}
 	</select>
-	
-	<!--  신고하기체크 
-	<select id="accuseCheck" resultType="int">
-		update review set accuse = 'y'
-		where review_idx = #{review_idx}
-	</select>
-	
-	신고하기취소
-	<select id="accuseCancel">
-		update review set accuse = 'n'
-		where review_idx = #{review_idx}
-	</select> -->
 	
 	<insert id="addAttach">
 		insert into review_attach (fullName, review_idx) values
@@ -263,24 +244,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			on r.userid = g.userid
 		) where room_idx=#{room_idx} order by review_idx desc	
 	</select>
-	<!--(admin page) 게스트 리뷰글 가져오기  -->
-	<select id="getguestreview" resultType="ReviewDTO">
-	select *
-		from (
-			select 
-                room_idx, 
-                review_idx, 
-                r.userid, 
-                write_date, 
-                r_title, 
-                review_content, 
-                review_star,
-                (select room_name from rooms where r.room_idx=room_idx) as room_name,
-                g.profile_img
-			from review r join guest g 
-			on r.userid = g.userid
-		) where userid=#{userid} order by review_idx desc
-	</select>
+	
+
+	
 	<!--리뷰 글 신고하기 -->
 	<insert id="insertaccuse">
 	 INSERT INTO review_accuse(acc_idx, review_idx, userid, writer, acc_content) 

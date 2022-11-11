@@ -85,7 +85,7 @@ public class ReviewController {
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
 
-		List<ReviewDTO> list = reviewService.listAll(start, end, select);
+		List<ReviewDTO> list = reviewService.listAll(start, end);
 		logger.info(list.toString());
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map = new HashMap<>();
@@ -93,7 +93,6 @@ public class ReviewController {
 		map.put("list", list);
 		map.put("view_count", view_count); // 레코드 갯수 파일
 		map.put("pager", pager);
-		map.put("select", select);
 		mav.setViewName("reviews/reviewList");
 		mav.addObject("map", map);
 		return mav;
@@ -296,15 +295,6 @@ public class ReviewController {
 		return new ResponseEntity<String>("deleted"
 				,HttpStatus.OK);//uploadAjax.jsp의 if(result=="deleted")와 연결
 	}
-
-
-	//첨부파일 목록을 리턴(참고용 board 컨트롤러)
-	//ArrayList를 json 배열로 변환하여 리턴
-	//@RequestMapping("getAttach/{bno}")
-	//@ResponseBody //view가 아닌 List<String>데이터 자체를 리턴
-	//public List<String> getAttach(@PathVariable int bno){
-	//	return reviewService.getAttach(bno);
-	//}
 
 	//리뷰수정
 	@RequestMapping("update.do")
