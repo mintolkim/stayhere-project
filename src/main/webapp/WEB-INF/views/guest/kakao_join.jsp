@@ -236,7 +236,7 @@
 
         		<div class="form-group">
         			<label class="col-form-label col-4">이메일</label>
-        			<p><input type="email" class="form-control" id="email" name="email" placeholder="stayhere@stayhere.com" ></p>
+        			<p><input type="email" class="form-control" id="email" name="email" value="${email}" readonly="readonly"></p>
         			<div class="input-group" id="mail_chk">
         				<input type="text" class="form-control mail-check-input" placeholder="인증번호를 입력하세요" disabled="disabled" maxlength="12" name="">
         				<button type="button" class="btn" id="btnMailCheck">본인인증</button>
