@@ -151,6 +151,7 @@
 	            let userid = document.form1.userid.value.trim();
 	            let passwd = document.form1.passwd.value.trim();
 	            let passwd2 = document.form1.passwd2.value.trim();
+	            let phone = document.form1.phone.value.trim();
 
 	            if(userid == "") {
 	                alert('ID를 입력하셔야 합니다.')
@@ -165,6 +166,11 @@
 	            if(passwd2 == "") {
 	                alert('비밀번호확인을 하셔야합니다.')
 	                document.form1.passwd2.focus();
+	                return false;
+	            }
+	            if(phone == "") {
+	                alert('연락처를 입력하셔야 합니다.')
+	                document.form1.phone.focus();
 	                return false;
 	            }
 	            if(document.form1.name.value.trim() == "") {
@@ -247,7 +253,7 @@
           
         		<div class="form-group">
         			<label class="col-form-label col-4">연락처</label>
-        			<p><input type="tel" class="form-control" id="phone" name="phone" placeholder="010-1234-5678"></p>
+        			<p><input type="tel" class="form-control" id="phone" name="phone" placeholder="010-1234-5678" required></p>
         			<div class="col-8" id="phone_chk"></div>     	
         		</div>
         		<div class="col-8 offset-4">

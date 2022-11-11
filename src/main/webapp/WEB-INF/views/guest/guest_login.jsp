@@ -120,7 +120,7 @@ function loginKakao() {
 	<input type="button" class="btn mb-0" id="login" value="login">
     <br>
     <div class="form-group row">
-    	<div class="or-seperator"><b>or</b></div>
+    	<div class="or-seperator mt-3"><b>or</b></div>
     </div>
     <br>
     <div id="kakao_id_login" style="text-align: center">
