@@ -69,7 +69,7 @@ a {
 					  <div class="row my-5" style="height: 200px;">
 					    <div class="col border border-light mx-5 py-5">
 					      <a href="${path}/reviews/reviewUserList/${sessionScope.userid}"><i class="bi bi-pencil-square fs-1"></i>
-					      <p class="fs-5">리뷰 ${wish_count}건</a></p>
+					      <p class="fs-5">리뷰 ${_count}건</a></p>
 					    </div>
 					    <div class="col border border-light mx-5 py-5">
 					      <a href="${path}/chatlist"><i class="bi bi-chat-dots fs-1"></i>
