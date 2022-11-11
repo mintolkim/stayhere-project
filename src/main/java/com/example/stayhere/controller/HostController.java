@@ -243,7 +243,7 @@ public class HostController {
 			}else {
 				hostService.delete(h_userid,session);
 				mav.addObject("message", "delete");
-				mav.setViewName("login");
+				mav.setViewName("host/login");
 			}
 
 			return mav;
