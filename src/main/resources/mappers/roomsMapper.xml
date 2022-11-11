@@ -261,7 +261,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 r.admin_confirm,
 				rp.photo1
 				from rooms r join room_photo rp on r.room_idx = rp.room_idx
-				where admin_confirm='승인'
+				where r.admin_confirm='승인'
 			order by room_idx desc
 	</select>
 	<!-- 승인대기숙소 불러오기 -->
@@ -293,7 +293,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             on r.room_idx = rp.room_idx
             join host h
             on r.h_userid=h.h_userid
-            where admin_confirm = '승인대기'
+            where r.admin_confirm = '승인대기'
 			order by room_idx desc
 	</select>
 	<!-- 승인거절숙소 불러오기 -->
@@ -316,7 +316,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 r.admin_confirm,
 				rp.photo1
 				from rooms r join room_photo rp on r.room_idx = rp.room_idx
-				where admin_confirm='승인거절'
+				where r.admin_confirm='승인거절'
 			order by room_idx desc
 	</select>
 	<!--인기숙소 불러오기  -->

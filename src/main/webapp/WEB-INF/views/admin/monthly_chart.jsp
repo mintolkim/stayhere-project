@@ -159,7 +159,7 @@ $("#btn-print").on('click',function(){
 		<div id="layoutSidenav_content" class="print-page-area">
 		<div class="text" style="margin-left:100px; margin-top:50px;">
 		 <h3 class="fw-bolder" >STAYHERE 연간 실적 추이 </h3>
-		  <h5>[2021.12 - 2022.11]</h5></div>
+		  <h5>[2022.11 - 2023.12]</h5></div>
 			<div style="margin-right:250px;" align="right">
 			<select class="form-select" style="width:120px;display:inline;"id="selection" onchange="selectoption()">
 				<option disabled selected>차트선택</option>
