@@ -5,6 +5,10 @@
 <head>
 <%@ include file="../include/header.jsp"%>
 <title>STAYHERE</title>
+<!-- 부트스트랩 아이콘 -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
 <style type="text/css">
 a {
  text-decoration: none;
