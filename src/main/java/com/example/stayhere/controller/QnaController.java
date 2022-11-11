@@ -420,10 +420,10 @@ import com.example.stayhere.util.UploadFileUtils;
 			 map.put("list", list);
 			 map.put("count", count);
 			 map.put("pager", pager);
-			 map.put("guest", g_dto);
-			mav.setViewName("guest/guest_qna");
-			mav.addObject("map", map);
-			return mav;
+		 	 mav.setViewName("guest/guest_qna");
+		 	 mav.addObject("guest", g_dto);
+			 mav.addObject("map", map);
+		 	 return mav;
 		}
 		
  }

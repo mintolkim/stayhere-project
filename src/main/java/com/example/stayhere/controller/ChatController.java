@@ -193,6 +193,7 @@ public class ChatController {
 		int start = pager.getPageBegin();
 		int end = pager.getPageEnd();
 		List<ChatListDTO> chatlist = chatRoomService.getChatRoomList(start, end, sessionId, keyword);
+		GuestDTO g_dto=guestService.view_Guest(userid);
 		
 		//senderid 적용
 		for (ChatListDTO dto : chatlist) {
@@ -211,6 +212,7 @@ public class ChatController {
 		map.put("pager", pager);
 		map.put("count", count);
 		mav.addObject("map", map);
+		mav.addObject("guest", g_dto);
 		mav.setViewName("chat/chat_list");
 		return mav;
 	}

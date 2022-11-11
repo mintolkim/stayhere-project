@@ -25,7 +25,6 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link" href="${path}/search">FIND	STAY</a></li>
-					<li class="nav-item"><a class="nav-link" href="about.html">PROMOTION</a></li>
 					<li class="nav-item"><a class="nav-link" href="${path}/reviews/list.do">REVIEW</a></li>
 					<li class="nav-item"><a class="nav-link" href="${path }/qna/qnalist.do">QNA</a></li>
 					<c:if test="${sessionScope.userid == null && sessionScope.h_userid == null}">
@@ -47,10 +46,10 @@
 								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item" href="${path}/guest/guest_view/${sessionScope.userid}">마이 페이지</a></li>
 								<li><a class="dropdown-item" href="${path}/reservations/list/guest">예약 정보</a></li>
+								<li><a class="dropdown-item" href="${path}/reviews/reviewUserList/${sessionScope.userid}">내가 작성한 리뷰</a></li>
+								<li><a class="dropdown-item" href="${path}/chatlist">1:1채팅 목록</a></li>
+								<li><a class="dropdown-item" href="${path }/qna/scraplist">스크랩</a></li>
 								<li><a class="dropdown-item" href="${path}/wishlist/list.do">관심 스테이</a></li>
-								<li><a class="dropdown-item" href="${path}/chatlist">내 채팅목록</a></li>
-								<li><a class="dropdown-item" href="${path }/qna/scraplist">나의스크랩</a></li>
-								<li><hr class="dropdown-divider" /></li>
 								<li><a class="dropdown-item" href="${path}/guest/logout.do">로그아웃</a></li>
 						</ul></li>
 							</c:if>
