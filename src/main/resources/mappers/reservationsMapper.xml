@@ -278,15 +278,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 이번달 매출 -->
 	<select id="getThismonth" resultType="int">
-		 select sum(total_price) from reservations
-		where res_state !='예약취소' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'MONTH')
+		 select nvl(sum(total_price),0) from reservations
+		where res_state !='취소완료' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'MONTH')
 		=TO_CHAR(to_date(#{today},'yy-MM-dd'),'MONTH')
 	</select>
 	
 	<!-- 이번년도 매출 -->
 	<select id="getThisyear" resultType="int">
-		 select sum(total_price) from reservations
-		where res_state !='예약취소' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'YEAR')
+		 select nvl(sum(total_price),0) from reservations
+		where res_state !='취소완료' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'YEAR')
 		=TO_CHAR(to_date(#{today},'yy-MM-dd'),'YEAR')
 	</select>
 

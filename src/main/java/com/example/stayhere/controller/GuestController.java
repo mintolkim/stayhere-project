@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.stayhere.controller.FileUtils;
 import com.example.stayhere.model.guest.dto.GuestDTO;
 import com.example.stayhere.service.chat.ChatRoomService;
 import com.example.stayhere.service.guest.GuestService;
@@ -31,7 +30,10 @@ import com.example.stayhere.service.reservations.ReservationsService;
 import com.example.stayhere.service.review.ReviewService;
 import com.example.stayhere.service.wishlist.WishlistService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 @RequestMapping("guest/*")
 public class GuestController {
 	
@@ -75,12 +77,13 @@ public class GuestController {
 	public ModelAndView loginCheck(GuestDTO dto, HttpSession session, ModelAndView mav) {
 		//데이터 베이스의 정보 가져오기
 		GuestDTO DBDto = guestService.view_Guest(dto.getUserid());
-		dto.setName(DBDto.getName()); //데이터베이스 정보를 받아서 이름값 dto에 넣기
-		//입력한 비밀번호와 가져온 db비밀번호 체크
-		boolean passcheck = guestService.isPasswdMatch(dto.getPasswd(), DBDto.getPasswd());
-		if(passcheck) { //패스워드가 일치한다면
-			dto.setPasswd(DBDto.getPasswd()); //db에서 가져온 패스워드를 dto에 저장
-			boolean result = guestService.loginCheck(dto, session);
+		if(DBDto == null) { //DBDto 값이 null 일때 오류
+			mav.setViewName("guest/guest_login");
+			mav.addObject("message", "error");
+		} else if(guestService.isPasswdMatch(dto.getPasswd(), DBDto.getPasswd())){ //패스워드 값이 일치한다면
+			dto.setName(DBDto.getName()); //데이터베이스 정보를 받아서 이름값 dto에 넣기
+			dto.setPasswd(DBDto.getPasswd()); // 암호화된 비밀번호 저장
+			boolean result = guestService.loginCheck(dto, session); //로그인 체크 
 			if(result) { //로그인 체크 결과가 참이면 즉, 로그인성공
 				mav.setViewName("redirect:/main");
 			} else { // 로그인 실패
@@ -145,7 +148,7 @@ public class GuestController {
 		mav.addObject("review_count", review_count);
 		mav.addObject("chat_count", chat_count);
 		
-		mav.addObject("dto", guestService.view_Guest(userid));
+		mav.addObject("guest", guestService.view_Guest(userid));
 		mav.setViewName("guest/guest_view");
 		return mav;
 	}
@@ -157,7 +160,7 @@ public class GuestController {
 		logger.info("이용완료 개수"+cntCheckout);
 		
 		mav.addObject("cntCheckout", cntCheckout);
-		mav.addObject("dto", guestService.view_Guest(userid));
+		mav.addObject("guest", guestService.view_Guest(userid));
 		mav.setViewName("guest/guest_edit");
 		return mav;
 	}
