@@ -108,7 +108,7 @@ function drawChart(){
 	      <div class="col-md-8" align="center">
 	      <jsp:useBean id="now" class="java.util.Date" />
 	      <h4>
-	      <fmt:formatDate value="${now}" pattern="yyyy"/> 년 매출
+	           월별 매출
 	      </h4>
 	      <br>
 	 	    매출합계: <fmt:formatNumber type="number" value="${map.yearSum}" maxFractionDigits="3" /> 원 

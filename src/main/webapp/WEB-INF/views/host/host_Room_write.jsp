@@ -313,7 +313,7 @@ function uncomma(str) {
             <h4 class="card-title">숙소 등록</h4>
             <div align="left" id="room_write">
             <label>숙소 이름</label>
-            <input class="form-control me-2" type="text" placeholder="Room's name" name="room_name" id="room_name" maxlength="65">
+            <input class="form-control me-2" type="text" placeholder="Room's name" name="room_name" id="room_name" maxlength="55">
             <br>
             <label>소개글</label>
             <textarea class="form-control" rows="3" style="height: 100px;" id="contents" name="contents"></textarea>

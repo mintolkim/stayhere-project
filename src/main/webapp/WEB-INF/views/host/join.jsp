@@ -259,7 +259,7 @@ function checkEmail(){
 		<input class="form-control me-2" type="text" placeholder="Phone" name="h_phone" id="h_phone">
 		<br>
 		<br>
-		<input class="form-control me-2" type="text" placeholder="Corporate Registration Mumber" name="h_manager_num" id="h_manager_num">
+		<input class="form-control me-2" type="text" placeholder="Corporate Registration Number" name="h_manager_num" id="h_manager_num">
 		<br>
 		<br>
 		<input type="button" class="btn btn-warning" id="join" value="Join">

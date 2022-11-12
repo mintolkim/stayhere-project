@@ -344,7 +344,7 @@ public class HostController {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, 7);
 		Date date2 = new Date(cal.getTimeInMillis());
-		SimpleDateFormat formatter = new SimpleDateFormat("yy-MM-dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String today = formatter.format(date);
 		String week = formatter.format(date2);
 		Integer weeklySum = hostService.weeklySum(h_userid,today,week);
@@ -377,7 +377,7 @@ public class HostController {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, 7);
 		Date date2 = new Date(cal.getTimeInMillis());
-		SimpleDateFormat formatter = new SimpleDateFormat("yy-MM-dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String today = formatter.format(date);
 		String week = formatter.format(date2);
 		return hostService.getweeklyData(h_userid,today,week); 
