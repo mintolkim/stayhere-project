@@ -38,7 +38,7 @@ a {
 	            <p style="text-align: center; font-size: 20px; font-weight: bold; letter-spacing: 12px;">MY PAGE</p>
 				<p style="text-align: center; font-size: 14px; letter-spacing: 8px;">마이페이지</p>
 
-				<p class="fs-4 mt-5">${sessionScope.name}님 반가워요!</p>
+				<p class="fs-4 mt-5">${guest.name}님 반가워요!</p>
 				<p class="fs-6">스테이히어와 함께 ${cntCheckout}번의 여행을 했어요.</p>
 				
 				<span>${guest.email} |</span>
@@ -69,7 +69,7 @@ a {
 					  <div class="row my-5" style="height: 200px;">
 					    <div class="col border border-light mx-5 py-5">
 					      <a href="${path}/reviews/reviewUserList/${sessionScope.userid}"><i class="bi bi-pencil-square fs-1"></i>
-					      <p class="fs-5">리뷰 ${_count}건</a></p>
+					      <p class="fs-5">리뷰 ${review_count}건</a></p>
 					    </div>
 					    <div class="col border border-light mx-5 py-5">
 					      <a href="${path}/chatlist"><i class="bi bi-chat-dots fs-1"></i>

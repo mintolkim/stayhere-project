@@ -10,24 +10,6 @@
 a {
  text-decoration: none;
 }
-
-#profile-tab a {
- color: black;
-	text-decoration: none;
-}
-
-#profile-tab a:hover {
- color: #ffc107;
- text-decoration: none;
-}
-
-.profile {
-	width: 100%;
-	height: 100%;
-	border-radius: 50%;
-	object-fit: cover;
-}
-
 #tableBody td{
 	padding-top: 15px;
 	vertical-align: middle;
@@ -52,27 +34,10 @@ a {
 	<section class="mt-3 mb-5" id="features">
 		<div class="container" align="center">
 			<div class="row">
-					
- 				<div class="list-group col-lg-3 mt-4 " id="profile-tab">	
-					<div style="width: 80%;">
-						<c:if test="${guest.profile_img != null}">			 
-							<img class="profile" src="${path}/imgUpload/${guest.profile_img}" style="border-radius: 50%; width: 230px; height: 230px;">
-						</c:if>
-						<br>
-						<c:if test="${guest.profile_img == null}">
-							<img class="profile" src="${path}/resources/images/guest.png" style="border-radius: 50%; width: 230px; height: 230px;">
-							<br>
-						</c:if>
-	
-						<br>
-						<a href="${path}/guest/guest_view/${sessionScope.userid}" class="list-group-item list-group-item-action">마이 페이지</a>
-						<a href="${path}/reservations/list/guest" class="list-group-item list-group-item-action">예약 정보</a>
-						<a href="${path}/reviews/reviewUserList/${sessionScope.userid}" class="list-group-item list-group-item-action">내가 작성한 리뷰</a>
-						<a href="${path}/chatlist" class="list-group-item list-group-item-action">채팅목록</a>
-						<a href="${path}/wishlist/list.do" class="list-group-item list-group-item-action">관심 스테이</a>
-					</div>
-				</div>
 						
+			<!-- 프로필 탭 -->
+			<%@ include file="../include/profile_tab.jsp" %>			     
+			
 				<div class="col-lg-9 mt-4 mb-5" align="center">	
 		            <p style="text-align: center; font-size: 20px; font-weight: bold; letter-spacing: 12px;">My Review List</p>
 					<p style="text-align: center; font-size: 14px; letter-spacing: 8px;">내가작성한리뷰</p>
@@ -80,7 +45,7 @@ a {
 					
 					<div class="col" align="left">
 						<c:if test="${map.review_count == 0}">
-							<span class="fs-5">작성한 리뷰가 없습니다.</span>
+							<span class="fs-6">작성한 리뷰가 없습니다.</span>
 						</c:if>
 						<c:if test="${map.review_count > 0}">
 							<i class="bi bi-pencil-square"></i><span class="fs-6">&nbsp;${map.review_count}개의 리뷰가 있습니다.</span>
