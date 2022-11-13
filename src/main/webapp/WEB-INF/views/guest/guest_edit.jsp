@@ -93,14 +93,14 @@ window.onload = function() {
     });
 	document.getElementById("btnSave").onclick = function() {
 	  	//파일 검사
-	  	if (document.form1.profile_img.value.trim() != "") {
-	    	var fileValue = document.form1.profile_img.value.trim().split('\\');
+	  	if (document.form1.file.value.trim() != "") {
+	    	var fileValue = document.form1.file.value.trim().split('\\');
 	    	var filename = fileValue[fileValue.length-1];
 	    	var fileEname = filename.substring(filename.length-4, filename.length);
 	    	if (fileEname == '.jpg' || fileEname == '.png' || fileEname == '.gif' || fileEname == '.GIF' || fileEname == '.PNG' || fileEname == '.JPG') {
 	    	} else {
 	    		alert('사진파일만 첨부해주세요.(jpg, png, gif)');
-	    		document.form1.profile_img.value ='';
+	    		document.form1.file.value ='';
 	    		return false;
 	    		}
 	    	}
@@ -143,7 +143,7 @@ window.onload = function() {
 		            <p style="text-align: center; font-size: 20px; font-weight: bold; letter-spacing: 12px;">MY PAGE</p>
 					<p style="text-align: center; font-size: 14px; letter-spacing: 8px;">마이페이지</p>
 	
-					<p class="fs-4 mt-5">${sessionScope.name}님 반가워요!</p>
+					<p class="fs-4 mt-5">${guest.name}님 반가워요!</p>
 					<p class="fs-6">스테이히어와 함께 ${cntCheckout}번의 여행을 했어요.</p>
 					
 					<span>${guest.email} |</span>
@@ -159,7 +159,7 @@ window.onload = function() {
                     	<input type="hidden" value="${sessionScope.userid}">
                   		<div class="mx-auto" style="width: 50%;" align="center">
                   	 	 	<c:if test="${guest.profile_img != null}">
-                  	 	 		<div class="profile_img">
+                  	 	 		<div class="box">
                   	 	 			<img class="profile" src="${path}/imgUpload/${guest.profile_img}" style="border-radius: 50%; width: 250px; height: 250px;">
                   	 	 		</div>
                   	 	 	</c:if>

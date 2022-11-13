@@ -89,7 +89,7 @@ table tr td{
 			  </div>
 
 		 <!-- 찜 하트 -->
-		 <c:if test="${sessionScope.h_userid == null && sessionScope.userid != null}">
+		 <c:if test="${sessionScope.h_userid == null}">
 			 <div class="d-flex justify-content-end" style="width: 50%; position: relative; float: right;">
 		      <i id="wish-icon-${room.room_idx}" class="bi-heart text-danger fw-bold fs-2" onclick="wishListToggle(event, ${room.room_idx})"></i>
 			 </div>
@@ -354,12 +354,14 @@ table tr td{
 		      <a href="mailto:﻿${host.h_email}?subject=[${room.room_name}]문의"><button type="button" class="btn btn-warning" style="font-size: 14px;">호스트에게 메일보내기</button></a>
 		 	 </div>
 			</div>
-
+		  </div>
+		</div>
+	</div>
 		</section>
 		<!-- 본문 영역 끝 -->
  
  <!-- 채팅 아이콘  -->
-<c:if test="${sessionScope.h_userid == null && sessionScope.userid != null}">
+<c:if test="${sessionScope.h_userid == null}">
  <div class="btn-chatting-icon">
  	<form method="post" id="chatForm">
  			<input type="hidden" name="room_idx" value="${room.room_idx}">

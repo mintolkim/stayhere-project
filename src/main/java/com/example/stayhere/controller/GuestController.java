@@ -211,7 +211,20 @@ public class GuestController {
 		}//비밀번호가 일치하면 현재 비밀번호가 변경되지 않고 그대로 업데이트 된다. 
 		
 		guestService.update_Guest(dto);
-		mav.addObject("dto", guestService.view_Guest(userid));
+		
+		int cntCheckout=reservationsService.cntCheckout(userid);		
+		int res_count=reservationsService.countAllRes(userid);
+		int wish_count=wishlistService.wishCount(userid);
+		int review_count=reviewService.countByUser(userid);
+		int chat_count=chatroomService.countByUser(userid);
+		
+		mav.addObject("cntCheckout", cntCheckout);
+		mav.addObject("res_count", res_count);
+		mav.addObject("wish_count", wish_count);
+		mav.addObject("review_count", review_count);
+		mav.addObject("chat_count", chat_count);
+		
+		mav.addObject("guest", guestService.view_Guest(userid));
 		mav.setViewName("guest/guest_view");
 		return mav;
 	}	
