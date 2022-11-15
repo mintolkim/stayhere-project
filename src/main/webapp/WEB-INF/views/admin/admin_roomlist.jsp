@@ -85,6 +85,8 @@ $(function(){
 		win.focus();
 		setTimeout(function(){win.print();win.close();}, 1000);
 	});
+	let select= "${map.select}";
+	$("#selectRoom").val(select).prop("selected",true);
 });
 </script>
 <style type="text/css">
@@ -109,7 +111,7 @@ text-align: center;}
            	<!--글 정렬 선택  -->
 				<select class="form-select" id="selectRoom" onchange="selectroom()" 
 				style="width:200px; display:inline;">
-					<option value="q_idx">최신등록순</option>
+					<option value="room_idx">최신등록순</option>
 					<option value="total_price">매출순</option>
 					<option value="res_count">예약순</option>
 					<option value="review_count">리뷰순</option>

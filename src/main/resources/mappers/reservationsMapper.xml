@@ -279,15 +279,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 이번달 매출 -->
 	<select id="getThismonth" resultType="int">
 		 select nvl(sum(total_price),0) from reservations
-		where res_state !='취소완료' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'MONTH')
-		=TO_CHAR(to_date(#{today},'yy-MM-dd'),'MONTH')
+		where res_state !='취소완료' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'MM')
+		=TO_CHAR(to_date(#{today},'yy-MM-dd'),'MM')
 	</select>
 	
 	<!-- 이번년도 매출 -->
 	<select id="getThisyear" resultType="int">
-		 select nvl(sum(total_price),0) from reservations
-		where res_state !='취소완료' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'YEAR')
-		=TO_CHAR(to_date(#{today},'yy-MM-dd'),'YEAR')
+		<!--  select nvl(sum(total_price),0) from reservations
+		where res_state !='취소완료' and TO_CHAR(to_date(res_date,'yy-MM-dd'),'yy')='22' -->
+		select nvl(sum(total_price),0) from reservations
+		where res_state !='취소완료' and checkin_date like '2022%'
 	</select>
 
 	<!-- 예약 가능한 날짜인지 체크 -->
