@@ -165,7 +165,7 @@ order by day
 <select id="weeklySum" resultType="int">
 select sum(total_price) from reservations
 where res_state !='취소완료' 
-and res_date between to_date(#{today},'yyyyMMdd') and to_date(#{week},'yyyyMMdd')
+and res_date between to_date(#{today},'yyyyMMdd') and to_date(#{week},'yyyyMMdd')vW
 and h_userid=#{h_userid}
 </select>
 
