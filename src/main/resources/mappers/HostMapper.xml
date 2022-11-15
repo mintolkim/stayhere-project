@@ -155,7 +155,7 @@ order by month
 <select id="hostWeeklyMoney" resultType="ReservationsDTO">
 select TO_CHAR(res_date,'dd"일"') day, nvl(sum(total_price),0) weeklymoney
 from reservations
-where res_date between #{today} and #{week}
+where res_date between to_date(#{today},'yyyyMMdd') and to_date(#{week},'yyyyMMdd')
 and h_userid=#{h_userid}
 and res_state !='취소완료' 
 group by TO_CHAR(res_date,'dd"일"')
@@ -165,7 +165,7 @@ order by day
 <select id="weeklySum" resultType="int">
 select sum(total_price) from reservations
 where res_state !='취소완료' 
-and res_date between #{today} and #{week}
+and res_date between to_date(#{today},'yyyyMMdd') and to_date(#{week},'yyyyMMdd')
 and h_userid=#{h_userid}
 </select>
 
