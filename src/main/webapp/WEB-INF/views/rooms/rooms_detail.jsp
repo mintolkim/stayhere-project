@@ -89,7 +89,7 @@ table tr td{
 			  </div>
 
 		 <!-- 찜 하트 -->
-		 <c:if test="${sessionScope.h_userid == null}">
+		 <c:if test="${sessionScope.h_userid == null && sessionScope.userid != 'admin'}">
 			 <div class="d-flex justify-content-end" style="width: 50%; position: relative; float: right;">
 		      <i id="wish-icon-${room.room_idx}" class="bi-heart text-danger fw-bold fs-2" onclick="wishListToggle(event, ${room.room_idx})"></i>
 			 </div>

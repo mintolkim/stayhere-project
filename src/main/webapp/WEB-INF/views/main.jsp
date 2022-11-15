@@ -13,8 +13,58 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
+<!-- jquery ui -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <!-- 그외 페이지별 들어갈 script & css 추가 영역 end -->
 <title>STAYHERE</title>
+
+<style type="text/css">
+/* Autocomplete
+----------------------------------*/
+.ui-autocomplete { 
+	position: absolute;
+	cursor: default;
+}       
+.ui-autocomplete-loading { 
+	background: white;
+}
+
+/* workarounds */
+* html .ui-autocomplete { 
+	width:1px; 
+	} /* without this, the menu expands to 100% in IE6 */
+
+/* Menu
+----------------------------------*/
+.ui-menu {
+        list-style:none;
+        padding: 10px;
+        margin: 0;
+        display:block;
+}
+.ui-menu .ui-menu {
+        margin-top: -3px;
+}
+.ui-menu .ui-menu-item {
+        margin:0;
+        padding: 0;
+}
+.ui-menu .ui-menu-item a {
+        text-decoration:none;
+        display:block;
+        padding:.2em .4em;
+        line-height:1.5;
+        zoom:1;
+}
+
+.ui-menu .ui-menu-item a.ui-state-hover,
+.ui-menu .ui-menu-item a.ui-state-active {
+        margin: -1px;
+}
+
+</style>
 
 </head>
 <body class="d-flex flex-column">
@@ -121,7 +171,7 @@
 										<span class="visually-hidden">Next</span>
 									</button>
 								</div>
-								<c:if test="${sessionScope.h_userid == null}">
+								<c:if test="${sessionScope.h_userid == null && sessionScope.userid != 'admin'}">
 								<div class="btn boder-0 shadow-none card-img-overlay-top text-end">
 									<i id="wish-icon-${row.room_idx}" class="bi-heart text-danger fw-bold fs-5"
 										onclick="wishListToggle(event, ${row.room_idx})"></i>
@@ -179,21 +229,8 @@
 
 	$(function(){
 		wishListCheck();
-		
-		//상위 링크 이동 맊기 () 이미지 위 버튼 클릭 
-		$(".stop-action button").on("click", function(e){
-			e.stopPropagation();
-		});
-				
-		$('.indicators').carousel({
-	      // 슬리아딩 자동 순환 지연 시간
-	      // false면 자동 순환하지 않는다.
-	      interval: false,
-	      // hover를 설정하면 마우스를 가져대면 자동 순환이 멈춘다.
-	      pause: "hover",
-	      // 순환 설정, true면 1 -> 2가면 다시 1로 돌아가서 반복
-	      wrap: true
-		});
+		indicatorsHandler();
+		autocomplete();
 	});
 
 	var curPage = 1;
@@ -232,12 +269,30 @@
 // 			console.log(data);
 				$("#room-list").append(data); //불러온 데이터 추가
 				wishListCheck(); // 위시리스트 체크 여부 확인
+				indicatorsHandler();
 				isLoading = false;
 				$("#load").hide(); //로딩바 숨기기
 			}
 		});
 	}
 	
+	//썸네일 이미지 인디캐이터 버튼 및 자동스크롤 제어
+	function indicatorsHandler(){
+		//상위 링크 이동 맊기 () 이미지 위 버튼 클릭 
+		$(".stop-action button").on("click", function(e){
+			e.stopPropagation();
+		});
+				
+		$('.indicators').carousel({
+	      // 슬리아딩 자동 순환 지연 시간
+	      // false면 자동 순환하지 않는다.
+	      interval: false,
+	      // hover를 설정하면 마우스를 가져대면 자동 순환이 멈춘다.
+	      pause: "hover",
+	      // 순환 설정, true면 1 -> 2가면 다시 1로 돌아가서 반복
+	      wrap: true
+		});
+	}
 	
 	//디테일 페이지로 이동하기
 	function goToDetail(room_idx){
@@ -333,6 +388,55 @@
 	    	}
 	    }
 	}
+
+	//검색어 자동완성 기능
+	function autocomplete(){
+		$("#cityname").autocomplete({ 
+			source : function(request, response){
+				$.ajax({
+					type : "get",
+					url: "${path}/api/search_list",
+					data : { keyword : request.term }, //검색된 키워드 값 보내기
+					dataType: "json",
+					success: function(data){ //성공
+//	 					console.log("data : " + data);
+						//서버에서  json 데이터 response 후 목록 추가
+						response(
+							$.map(data, function(item) {
+//	 							console.log(item);
+//	 							console.log(item.CITY);
+//	 							console.log(item.COUNTRY);
+								return {
+									label: item.CITY + ", " + item.COUNTRY, //목록에 표시되는 값
+									value : item.CITY + ", " + item.COUNTRY // 선택 시 input창에 표시되는 값
+								}
+							})
+						);
+					},
+					error : function(){ //실패
+						alert("서버 오류....");
+					}
+				});
+			},
+			select : function(event, ui){ //아이템 선택시 실행 ui, item이 선택된 항목을 나타내는 객체
+// 				console.log(ui);
+// 				console.log(ui.item.label);
+// 				console.log(ui.item.value);
+			},
+			focus: function(event, ui){
+				return false;
+			},
+			minLength: 1, //최소 글자수
+			autoFocus: true, // 첫번째 항목에 자동으로 초점이 맞춰짐 (ture시)
+			classes : {
+				"ui-autocomplete" : 'hightlight'
+			},
+			delay : 500, //딜레이시간(ms)
+			close: function(event){
+// 				console.log(event);
+			}
+		});
+	}
 	
 </script>
 
@@ -341,7 +445,7 @@
 	 $(function(){
          var option = {
              locale: "ko", //한국어로 언어설정
-             dateFormat: "Y-m-d",   //출력 술정
+             dateFormat: "Y-m-d",   //출력 설정
              allowInput : false, //사용자 정의 입력설정
              mode : "range",  //범위
              showMonths : 2, // 2개월 캘린더 표기 
@@ -355,7 +459,6 @@
 	 });
 	 
      var searchBar = $(".search-wrap").offset();
-     
           
      $(window).on("scroll", function () {
     	 
@@ -405,7 +508,9 @@
 	 
 	</script>
 
-<!-- footer -->
+
+
+	<!-- footer -->
 <%@ include file="./include/footer.jsp" %>
 
 </body>

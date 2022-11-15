@@ -8,7 +8,7 @@
 <!-- 그외 페이지별 들어갈 script & css 추가 영역  start-->
 
 <!-- 그외 페이지별 들어갈 script & css 추가 영역 end -->
-<title>STAYHERE-chatlist</title>
+<title>STAYHERE-채팅리스트</title>
 
 <style type="text/css">
 

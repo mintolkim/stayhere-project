@@ -73,31 +73,54 @@
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	
 	<!--인터셉터 빈 등록  -->
-	<beans:bean id="loginInterceptor" class="com.example.stayhere.interceptor.LoginInterceptor">
-	</beans:bean>
+	<beans:bean id="SessionInterceptor" class="com.example.stayhere.interceptor.SessionInterceptor" />
+	<beans:bean id="HostInterceptor" class="com.example.stayhere.interceptor.HostInterceptor" />
+	<beans:bean id="GuestInterceptor" class="com.example.stayhere.interceptor.GuestInterceptor" />
 	<!-- 인터셉터 호출을 위한 url mapping -->
 	<interceptors>
+	 
 	 <interceptor>
-	  <mapping path="/qna/insert.do" />
-	  <mapping path="/qna/qnawrite.do" />
-	  <mapping path="/rooms/write.do" />
+	  <mapping path="/guest/login.do" />
+	  <mapping path="/host/login.do" />
+	  <mapping path="/guest/join.do" />
+	  <mapping path="/host/join.do" />
+	  <beans:ref bean="SessionInterceptor" />
+	 </interceptor> 
+	 
+	 <!-- 호스트 영역 -->
+	 <interceptor>
+	  <mapping path="/host/profile/{h_userid}" />
 	  <mapping path="/host/edit.do" />
 	  <mapping path="/host/delete.do" />
-	  <mapping path="/wishlist/list.do" />
-	  <mapping path="/wishlist/insert.do" />
-	  <mapping path="/chat" />
-	  <mapping path="/chatlist" />
-	  <mapping path="/reservations/reserve/{room_idx}" />
-	  <mapping path="/reservations/result.do" />
-	  <mapping path="/reservations/list/guest" />
+	  <mapping path="/rooms/write.do" />
+	  <mapping path="/host/rooms_List.do" />
+	  <mapping path="/host/rooms_Confirm.do" />
+	  <mapping path="/host/rooms_Sales/{h_userid}" />
 	  <mapping path="/reservations/list/host" />
+	  <beans:ref bean="HostInterceptor" />
+	 </interceptor> 
+	 
+	 <!-- 게스트 영역 -->
+	 <interceptor>
+	  <mapping path="/guest/guest_view/{userid}" />
 	  <mapping path="/guest/edit.do" />
 	  <mapping path="/guest/delete.do" />
-	  <mapping path="/reviews/addcomment.do" />
+	  <mapping path="/reservations/list/guest" />
+	  <mapping path="/reservations/reserve/{room_idx}" />
+	  <mapping path="/reservations/result.do" />
+	  <mapping path="/reviews/reviewUserList/{userid}" />
+	  <mapping path="/chat" />
+	  <mapping path="/chatlist" />
 	  <mapping path="/chatroom/{room_idx}/{h_userid}/{userid}" />
-
-	  <beans:ref bean="loginInterceptor" />
+	  <mapping path="/qna/scraplist" />
+	  <mapping path="/qna/insert.do" />
+	  <mapping path="/qna/qnawrite.do" />
+	  <mapping path="/wishlist/list.do" />
+	  <mapping path="/wishlist/insert.do" />
+	  <mapping path="/reviews/addcomment.do" />
+	  <beans:ref bean="GuestInterceptor" />
 	 </interceptor> 
+	 
 	 </interceptors>
 	 
 	 

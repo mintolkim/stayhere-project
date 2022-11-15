@@ -95,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 검색어 리스트  -->
 	<select id="search_list" resultType="String">
-	 select CONCAT(city,CONCAT(', ',country)) from rooms
+	 select distinct CONCAT(city,CONCAT(', ',country)) from rooms
 	</select>
 	
 	<!-- 기본검색 룸 갯수 -->
@@ -234,6 +234,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select nvl(min(room_price),0) from rooms
 	</select>
 	
+	
+	<!-- 검색어 리스트 -->
+	<select id="searchList" resultType="map">
+		select distinct city, country from rooms
+		where (city like #{keyword} or room_name like #{keyword} or country like #{keyword} or address1 like #{keyword} or address2 like #{keyword})
+	</select>
 	
 	
 	

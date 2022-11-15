@@ -33,4 +33,5 @@ public interface RoomsDAO {
 	public List<RoomsDTO> getpopular(String today);//인기숙소 top10
 	public List<String> search_list();//검색어 리스트
 	public List<String> matchDetail(int room_idx);//해당숙소의 예약된 날짜 불러오기
+	public List<Map<String, Object>> searchList(String keyword); //검색어 리스트 2
 }
