@@ -70,11 +70,11 @@ public class HostServiceImpl implements HostService {
 		// Mail Server 설정
 		String charSet = "utf-8";
 		String hostSMTP = "smtp.naver.com"; //구글 이용시 smtp.gmail.com
-		String hostSMTPid = "hogu6372@naver.com";
-		String hostSMTPpwd = "1q2w3e4r!!!";
+		String hostSMTPid = "project-test-user@naver.com";
+		String hostSMTPpwd = "project!test";
 
 		// 보내는 사람 EMail, 제목, 내용
-		String fromEmail = "hogu6372@naver.com";
+		String fromEmail = "project-test-user@naver.com";
 		String fromName = "stayhere 관리자";
 		String subject = "";
 		String msg = "";
