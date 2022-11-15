@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				where (to_char(check_in, 'yyyyMMdd') <![CDATA[<=]]> #{today} 
 				or to_char(check_in, 'yyyyMMdd') <![CDATA[>=]]> #{today})
 				and to_char(check_out, 'yyyyMMdd') >= #{tomorrow} and admin_confirm='승인'
-				order by review_star desc) A
+				order by review_star desc, check_out asc) A
 		) where rn between #{start} and #{end} and (re_date !=0 or reserved_room is null)
 	</select>
 

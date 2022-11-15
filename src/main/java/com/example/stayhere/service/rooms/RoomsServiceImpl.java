@@ -70,7 +70,7 @@ public class RoomsServiceImpl implements RoomsService {
 		List<RoomsDTO> list = roomsDao.getRoomDefalutList(start, end, cityname, checkin_date, checkout_date);
 		for(RoomsDTO dto : list) {
 			String contents = dto.getContents();
-			contents = contents.replace("<p>", "").replace("</p>", "").replace("<br>","");
+			contents = contents.replace("&nbsp;", " ").replace("&n", " ").replace("&nb", " ").replace("&nbs", " ").replace("<br>","");
 			dto.setContents(contents);
 		}
 		return list;
@@ -86,7 +86,7 @@ public class RoomsServiceImpl implements RoomsService {
 		List<RoomsDTO> list = roomsDao.getRoomOptionList(start, end, param);
 		for(RoomsDTO dto : list) {
 			String contents = dto.getContents();
-			contents = contents.replace("<p>", "").replace("</p>", "").replace("<br>","");
+			contents = contents.replace("&nbsp;", " ").replace("&n", " ").replace("&nb", " ").replace("&nbs", " ").replace("<br>","");
 			dto.setContents(contents);
 		}
 		return list;
@@ -153,5 +153,10 @@ public class RoomsServiceImpl implements RoomsService {
 		}
 		logger.info("re_date를 yyyy-MM-dd형태로 변환 : "+list.toString());
 		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> searchList(String keyword) {
+		return roomsDao.searchList(keyword);
 	}	
 }

@@ -204,6 +204,11 @@ public class RoomsDAOImpl implements RoomsDAO {
 	@Override
 	public int getRoomAllCount(String today) {
 		return sqlSession.selectOne("rooms.getRoomallCount",today);
+	}
+
+	@Override
+	public List<Map<String, Object>> searchList(String keyword) {
+		return sqlSession.selectList("search.searchList","%" + keyword + "%");
 	}	
 	
 }

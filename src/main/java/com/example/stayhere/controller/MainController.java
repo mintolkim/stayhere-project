@@ -105,5 +105,15 @@ public class MainController {
 //		int end = pager.getPageEnd();
 //		return roomsService.getRoomAllList(start, end);
 //	}
+	
+	
+	/*
+	 * 인터셉터 세션 체크 페이지
+	 * 
+	 */
+	@GetMapping("check")
+	public String sessionCheck() {
+		return "include/session_check";
+	}
 
 }

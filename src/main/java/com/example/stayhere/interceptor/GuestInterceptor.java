@@ -4,20 +4,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-public class LoginInterceptor extends HandlerInterceptorAdapter{
+public class GuestInterceptor extends HandlerInterceptorAdapter{
 	//메인액션이 실행되기 전 항상 실행됨
 @Override
 public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 		throws Exception {
 	//세션객체 생성
 	HttpSession session=request.getSession();
-	//게스트, 호스트 둘다 로그인이 안되어 있으면
-	if(session.getAttribute("userid")==null&&session.getAttribute("h_userid")==null) {
-		response.sendRedirect(request.getContextPath()+"/guest/login.do?msg=nologin");
+	//게스트가 널 값이면..
+	if(session.getAttribute("userid") == null) {
+		response.sendRedirect(request.getContextPath()+"/check?msg=noSessionGuest");
 		return false; //메인 액션으로 가지 않음
 	}else {
 		return true;//메인액션으로 이동시킴

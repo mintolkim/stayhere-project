@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.stayhere.model.rooms.dto.RoomsDTO;
@@ -33,6 +34,7 @@ public class SearchController {
 	
 	@Inject
 	RoomsService roomsService;
+	
 	@Inject
 	WishlistService wishService;
 
@@ -121,6 +123,7 @@ public class SearchController {
 		log.info("날짜 차이 : " + dateDif);
 
 		// 검색갯수
+		cityname = cityname.replace(",", "");
 		int count = roomsService.getRoomDefalutCount(cityname, checkin_date, checkout_date);
 		int pageScale = 10; // 게시물 표시 갯수
 		Pager pager = new Pager(pageScale, count, page);
@@ -159,6 +162,7 @@ public class SearchController {
 			throws Exception {
 
 		// PathVariable값 param으로 묶기
+		cityname = cityname.replace(",", "");
 		param.put("cityname", "%"+cityname+"%");
 		param.put("checkin_date", DateParse.dateToStr(checkin_date));
 		param.put("checkout_date", DateParse.dateToStr(checkout_date));
@@ -197,8 +201,7 @@ public class SearchController {
 		int end = pager.getPageEnd();
 
 		List<RoomsDTO> list = roomsService.getRoomOptionList(start, end, param);
-		RoomsDTO dto = new RoomsDTO();
-		log.info("getContentsdto :" + dto.getContents());
+		log.info("list :" +list);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
@@ -223,5 +226,18 @@ public class SearchController {
 //	@ResponseBody
 //	public Map<String, Object> search()
 	
+	
+	/*
+	 * 검색어 리스트  메인,옵션 검색시 ajax호출
+	 * 데이터 조회후 json타입으로 반환
+	 */
+	
+	@GetMapping("api/search_list")
+	@ResponseBody
+	public List<Map<String, Object>> searchList(String keyword) throws Exception {
+		keyword = keyword.replace(",", "");
+		List<Map<String, Object>> resultList = roomsService.searchList(keyword);
+		return resultList;
+	}
 	
 }
