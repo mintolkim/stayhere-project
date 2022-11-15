@@ -159,7 +159,7 @@ function listAttach(){
 					str+="<a href='${path}/reviews/displayFile?fileName="
 						+this+"'>"+getOriginalName(this)+"</a>";
 				}
-					str+="<span data-src="+this+" style='cursor:pointer;'>&nbsp;[<i class='fa-solid fa-trash'>삭제</i>]</span>";
+					str+="<span data-src="+this+" style='cursor:pointer;'>&nbsp;[<i class='bi bi-trash-fill'>삭제</i>]</span>";
 					str+="<input type='hidden' class='file' value='"
 						+fileInfo.fullName+"'></div>";
 						console.log("fileName : "+fileInfo.fullName);
