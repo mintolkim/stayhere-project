@@ -127,7 +127,7 @@ display:none;}
 								<div class="fw-bold mt-3">${co.writer }
 								<c:if test="${co.choose == 'y'}">
 								<span style="font-size:15px; color:#fab005;">
-								&nbsp;<i class="fa-solid fa-circle-check"> 채택댓글</i></span></c:if>
+								&nbsp;<i class="bi bi-check-circle-fill"></i>채택댓글</span></c:if>
 								</div>
 								<div class="fw-lighter" style="font-size:15px;">
 								<fmt:formatDate value="${co.write_date }"

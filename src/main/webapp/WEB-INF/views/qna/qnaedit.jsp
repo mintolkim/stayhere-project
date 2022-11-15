@@ -126,7 +126,7 @@ $(".fileDrop").on("drop",function(e){
 				str+="<a href='${path}/qna/displayFile?fileName="
 					+data+"'>"+getOriginalName(data)+"</a>";
 			}
-				str+="<span data-src="+data+" style='cursor:pointer;'>&nbsp;[<i class='fa-solid fa-trash'>삭제</i>]</span>";
+				str+="<span data-src="+data+" style='cursor:pointer;'>&nbsp;[<i class='bi bi-trash3-fill'></i> 삭제]</span>";
 				str+="<input type='hidden' class='file' value='"
 					+fileInfo.fullName+"'></div>";
 					console.log("fileName : "+fileInfo.fullName);
@@ -180,7 +180,7 @@ function listAttach(){
 					str+="<a href='${path}/qna/displayFile?fileName="
 						+this+"'>"+getOriginalName(this)+"</a>";
 				}
-					str+="<span data-src="+this+" style='cursor:pointer;'>&nbsp;[<i class='fa-solid fa-trash'>삭제</i>]</span>";
+					str+="<span data-src="+this+" style='cursor:pointer;'>&nbsp;[<i class='bi bi-trash3-fill'></i> 삭제]</span>";
 					str+="<input type='hidden' class='file' value='"
 						+fileInfo.fullName+"'></div>";
 						console.log("fileName : "+fileInfo.fullName);
@@ -234,7 +234,7 @@ function listAttach(){
      <th>첨부파일</th>
      <td>
 		<div class="fileDrop" id="fileDrop">
-			<div id="dragzone" align="center"><i class="fa-solid fa-circle-plus"> 파일을 드래그해서 추가해주세요.</i></div>
+			<div id="dragzone" align="center"><i class="bi bi-plus-circle-fill"></i> 파일을 드래그해서 추가해주세요.</div>
 		<div class="uploadedList"></div>
 		</div>
 	</td>

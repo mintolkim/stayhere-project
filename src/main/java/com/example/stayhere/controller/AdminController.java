@@ -212,6 +212,7 @@ public class AdminController {
 			Map<String, Object> map=new HashMap<>();
 			map.put("roomlist", roomlist);//map에 자료 저장
 			map.put("count", count); //레코드 갯수 파일
+			map.put("select", select); 
 			map.put("pager", pager); //페이지 네비게이션을 위한 변수
 			map.put("page", page); //페이지 네비게이션을 위한 변수
 			mav.setViewName("admin/admin_roomlist");//포워딩할 뷰
@@ -268,5 +269,4 @@ public class AdminController {
 						adminService.changestate(room_idx,state);
 						return "redirect:/admin/confirm";
 				}
-		
 }

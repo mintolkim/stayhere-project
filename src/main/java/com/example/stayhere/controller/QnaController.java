@@ -249,8 +249,7 @@ import com.example.stayhere.util.UploadFileUtils;
 				String fileName=upload.getOriginalFilename();
 				//파일을 바이트 배열로 변환
 				byte[] bytes=upload.getBytes();
-				//이미지를 업로드할 디렉토리
-				String uploadPath="C:\\work\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\styahere-project\\resources\\imgUpload\\";
+				//이미지를 업로드할 디렉토리/var/lib/tomcat9/webapps/styahere-project/resources/imgUpload/
 				out=new FileOutputStream(new File(uploadPath+fileName));
 				//서버로 업로드
 				out.write(bytes);

@@ -185,25 +185,16 @@ function listReply() {
 							<i class="bi bi-arrow-left"></i>&nbsp;목록으로
 						</span>
 					</div>
-					<c:if
-						test="${dto.userid == sessionScope.userid || dto.userid == sessionScope.h_userid || sessionScope.userid == 'admin'}">
-						<div class="col-3 spanB" align="right">
+				<div class="col-3 spanB" align="right">
+					<c:if test="${dto.userid == sessionScope.userid || dto.userid == sessionScope.h_userid || sessionScope.userid == 'admin'}">
 							<span class="btn btn-outline-warning" style="cursor: pointer;"
 								onclick="location.href='${path}/reviews/edit.do?review_idx=${dto.review_idx}'"
-								> 수정 / 삭제 </span> 
+								> 수정 / 삭제 </span> </c:if>
 								<span class="btn btn-outline-danger"
 								onclick="accuse('${sessionScope.userid }')" style="cursor: pointer;">
 								<i class="bi bi-cone"></i> 신고
 							</span>
 						</div>
-					</c:if>
-					<c:if test="${sessionScope.userid == null }">
-						<div class="col-3 spanB" align="right">
-							<span onclick="accuse('${sessionScope.userid }')" style="cursor: pointer;">
-								<i class="bi bi-cone"></i> 신고
-							</span>
-						</div>
-					</c:if>
 				</div>
 
 					<!--신고모달창  -->

@@ -12,7 +12,7 @@
 <script type="text/javascript">
 /* 예약 정보 팝업 */
 function reserveDetail(res_idx) {
-	const url = "${path}/reservations/popupDeatil?res_idx="+res_idx;
+	const url = "${path}/reservations/popupDeatil.do?res_idx="+res_idx;
 	
 	const op = "width=450, height=800, location=no, toolbar=no";
 	
