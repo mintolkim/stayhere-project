@@ -138,6 +138,8 @@ $("#update").click(function(){
 	photo2=$("#photo2").val();
 	photo3=$("#photo3").val();
 	photo4=$("#photo4").val();
+	lng=$("#lng").val();
+	lat=$("#lat").val();
 	check_in=$("#check_in").val();
 	check_out=$("#check_out").val();	
 	
@@ -201,6 +203,17 @@ $("#update").click(function(){
 		$("#check_out").focus(); //입력 포커스 이동
 		return; //함수 종료
 	}
+	if(lat==""){
+		alert("주소를 다시 입력해주세요");
+		$("#lat").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	if(lng==""){
+		alert("주소를 다시 입력해주세요. 계속 오류시에 다시 작성 부탁드립니다.");
+		$("#lng").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	
 	today = new Date();
 	date1 = new Date(check_in);
 	date2 = new Date(check_out);
@@ -343,8 +356,8 @@ function uncomma(str) {
 			
  			<label>주소</label>
 			<input type="text" name="address1" id="address1" class="form-control me-2" placeholder="Room's address" value="${dto.address1}">
-			<input type="hidden" name="lat" value="${dto.lat}">
-			<input type="hidden" name="lng" value="${dto.lng}">
+			<input type="hidden" name="lat" value="${dto.lat}" id="lat">
+			<input type="hidden" name="lng" value="${dto.lng}" id="lng">
 			<br>
  			<div class="input-group mb-2" align="center">
 			<input type="text" name="zipcode" id="zipcode" class="form-control me-2" placeholder="우편번호" style="width: 20%;" value="${dto.zipcode}">

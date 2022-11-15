@@ -93,7 +93,7 @@ public class GuestServiceImpl implements GuestService {
 		String charSet = "utf-8";
 		String hostSMTP = "smtp.naver.com"; //구글 이용시 smtp.gmail.com
 		String hostSMTPid = "hogu6372@naver.com";
-		String hostSMTPpwd = "1q2w3e4r!!";
+		String hostSMTPpwd = "1q2w3e4r!!!";
 
 		// 보내는 사람 EMail, 제목, 내용
 		String fromEmail = "hogu6372@naver.com";

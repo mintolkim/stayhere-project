@@ -125,6 +125,8 @@ $("#insert").click(function(){
 	photo4=$("#photo4").val();
 	check_in=$("#check_in").val();
 	check_out=$("#check_out").val();
+	lng=$("#lng").val();
+	lat=$("#lat").val();
 	
 	if(room_name==""){
 		alert("숙소 이름을 입력하세요");
@@ -204,6 +206,16 @@ $("#insert").click(function(){
 	if(check_out==""){
 		alert("체크아웃 날짜를 등록해주세요");
 		$("#check_out").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	if(lat==""){
+		alert("주소를 다시 입력해주세요");
+		$("#lat").focus(); //입력 포커스 이동
+		return; //함수 종료
+	}
+	if(lng==""){
+		alert("주소를 다시 입력해주세요. 계속 오류시에 다시 작성 부탁드립니다.");
+		$("#lng").focus(); //입력 포커스 이동
 		return; //함수 종료
 	}
 	
@@ -331,8 +343,8 @@ function uncomma(str) {
 			
  			<label>주소</label>
 			<input type="text" name="address1" id="address1" class="form-control me-2" placeholder="Room's address">
-			<input type="hidden" name="lat">
-			<input type="hidden" name="lng">
+			<input type="hidden" name="lat" id="lat">
+			<input type="hidden" name="lng" id="lng">
 			<br>
  			<div class="input-group mb-2" align="center">
 			<input type="text" name="zipcode" id="zipcode" class="form-control me-2" placeholder="우편번호" style="width: 20%;">
