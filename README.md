@@ -7,4 +7,4 @@
 <h3>📙 Youtube Url </h3>
 <br>
 <h3>📙 사용 기술 </h3>
-<img src="https://drive.google.com/uc?export=view&id=1RJEgOiWeO9fwwCcTn_eKqSKCWRcusfxa" style="width: 60%;"/>
+<img src="https://drive.google.com/uc?export=view&id=1RJEgOiWeO9fwwCcTn_eKqSKCWRcusfxa" style="width: 70%;"/>
