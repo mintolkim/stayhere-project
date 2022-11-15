@@ -45,6 +45,8 @@
         padding: 10px;
         margin: 0;
         display:block;
+        overflow-y: scroll !important;
+				height: 200px !important;
 }
 .ui-menu .ui-menu {
         margin-top: -3px;
