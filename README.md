@@ -49,7 +49,9 @@
       <td><img src="https://user-images.githubusercontent.com/104129721/202236323-5aa93c95-2e40-41b7-b22f-7ac4724570ae.png"/></td>
     </tr>
     <tr>
-      <td align="center"><b>김민정</b></td><td align="center"><b>김남현</b></td><td align="center"><b>김세정</b></td>
+      <td align="center"><b>김민정</b><br>호스트 페이지 전체<br>숙소 등록/수정/삭제 구현<br>다음지도, 카카오맵 API</td>
+      <td align="center"><b>김남현</b><br>메인/숙소검색 페이지 전체<br>호스트와 게스트의 1:1 채팅 구현<br>위시리스트, 로그인 일부 구현</td>
+      <td align="center"><b>김세정</b><br>리뷰게시판 전체(작성,수정,삭제)<br>게스트 리뷰목록</td>
     </tr>
     <tr>
       <td><img src="https://user-images.githubusercontent.com/104129721/202236366-473bc6d6-b0a3-4159-8fc6-63dd6cfc9ed1.png"/></td>
@@ -57,8 +59,11 @@
       <td><img src="https://user-images.githubusercontent.com/104129721/202236476-8939bbad-ce68-41ec-97b5-1aa0afd8d589.png"/></td>
     </tr>
     <tr>
-      <td align="center"><b>김지혜</b></td><td align="center"><b>문호성</b></td><td align="center"><b>장예슬</b></td>
+      <td align="center"><b>김지혜</b><br>숙소 상세페이지(지도API)<br>예약 및 결재기능(결제API/메일발송API)<br>호스트/게스트 예약페이지 목록<br>WISHLIST 일부</td>
+      <td align="center"><b>문호성</b><br>게스트 페이지<br>비밀번호 암호화, 메일발송 API<br>WISHLIST 일부</td>
+      <td align="center"><b>장예슬</b><br>지도 검색페이지<br>QnA 페이지 전체(글쓰기,글수정,글삭제)<br>ADMIN페이지 전체<br>(숙소목록,회원목록,매출현황 등)</td>
     </tr>    
   </table>
 </div>
 <h3>📙 기간 : 22.10.17~22.11.18 </h3>
+<h3>📙 상세 기능 설명 Notion </h3>
