@@ -40,3 +40,24 @@
 ✔️ 지도API를 활용하여 숙소검색, 위시리스트 등에서 지역에 대한 직관적인 시각정보 제공<br>
 
 <h3>📙 기간 : 22.10.17~22.11.18 </h3>
+<h3> 팀원 </h3>
+<div align="center">
+  <table >
+    <tr>
+      <td><img src="https://user-images.githubusercontent.com/104129721/202236174-a56371d7-8493-4f43-9d91-a62e558fa5f0.png"/></td>
+      <td><img src="https://user-images.githubusercontent.com/104129721/202236238-1ebcabc6-af44-4e8d-a6f7-4b96c31722e7.png"/></td>
+      <td><img src="https://user-images.githubusercontent.com/104129721/202236323-5aa93c95-2e40-41b7-b22f-7ac4724570ae.png"/></td>
+    </tr>
+    <tr>
+      <td align="center"><b>김민정</b></td><td align="center"><b>김남현</b></td><td align="center"><b>김세정</b></td>
+    </tr>
+    <tr>
+      <td><img src="https://user-images.githubusercontent.com/104129721/202236366-473bc6d6-b0a3-4159-8fc6-63dd6cfc9ed1.png"/></td>
+      <td><img src="https://user-images.githubusercontent.com/104129721/202236427-924f8e79-5dd1-4da0-a37d-785866b9b9ac.png"/></td>
+      <td><img src="https://user-images.githubusercontent.com/104129721/202236476-8939bbad-ce68-41ec-97b5-1aa0afd8d589.png"/></td>
+    </tr>
+    <tr>
+      <td align="center"><b>김지혜</b></td><td align="center"><b>문호성</b></td><td align="center"><b>장예슬</b></td>
+    </tr>    
+  </table>
+</div>
