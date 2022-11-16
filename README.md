@@ -47,7 +47,7 @@
     <tr>
       <td><img src="https://user-images.githubusercontent.com/104129721/202236366-473bc6d6-b0a3-4159-8fc6-63dd6cfc9ed1.png"/></td>
       <td align="center"><img src="https://user-images.githubusercontent.com/104129721/202236427-924f8e79-5dd1-4da0-a37d-785866b9b9ac.png" style="width: 80%;"/></td>
-      <td><img src="https://user-images.githubusercontent.com/104129721/202236476-8939bbad-ce68-41ec-97b5-1aa0afd8d589.png"/></td>
+      <td><img src="https://user-images.githubusercontent.com/104129721/202243209-45f91264-d00d-4fd0-ae8b-4d42d99511bb.png"/></td>
     </tr>
     <tr>
       <td align="center"><b>김지혜</b><br>숙소 상세페이지(지도API)<br>예약 및 결제기능<br>(결제API/메일발송API)<br>호스트/게스트 예약페이지 목록<br>WISHLIST 일부</td>
@@ -56,6 +56,7 @@
     </tr>    
   </table>
 </div>
+
 <h3>📙 프로젝트 목적</h3>
 ✔️ 에어비앤비 사이트 구현 <br>
 ✔️ 호스트가 숙소를 등록 관리 <br>
