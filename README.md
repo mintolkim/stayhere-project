@@ -42,7 +42,7 @@
     <tr>
       <td align="center"><b>김민정</b><br>호스트 페이지 전체<br>숙소 등록/수정/삭제 구현<br>다음지도, 카카오맵 API 등</td>
       <td align="center"><b>김남현</b><br>메인/숙소검색 페이지 전체<br>호스트와 게스트의<br>1:1 채팅 구현<br>위시리스트, 로그인 일부 구현</td>
-      <td align="center"><b>김세정</b><br>리뷰게시판 전체(작성,수정,삭제)<br>게스트 리뷰목록 등</td>
+      <td align="center"><b>김세정</b><br>리뷰게시판 전체<br>(작성,수정,삭제)<br>게스트 리뷰목록 등</td>
     </tr>
     <tr>
       <td><img src="https://user-images.githubusercontent.com/104129721/202236366-473bc6d6-b0a3-4159-8fc6-63dd6cfc9ed1.png"/></td>
