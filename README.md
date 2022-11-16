@@ -50,7 +50,7 @@
       <td><img src="https://user-images.githubusercontent.com/104129721/202236476-8939bbad-ce68-41ec-97b5-1aa0afd8d589.png"/></td>
     </tr>
     <tr>
-      <td align="center"><b>김지혜</b><br>숙소 상세페이지(지도API)<br>예약 및 결기능(결제API/메일발송API)<br>호스트/게스트 예약페이지 목록<br>WISHLIST 일부</td>
+      <td align="center"><b>김지혜</b><br>숙소 상세페이지(지도API)<br>예약 및 결제기능(결제API/메일발송API)<br>호스트/게스트 예약페이지 목록<br>WISHLIST 일부</td>
       <td align="center"><b>문호성</b><br>게스트 페이지<br>비밀번호 암호화, 메일발송 API<br>WISHLIST 일부</td>
       <td align="center"><b>장예슬</b><br>지도 검색페이지<br>QnA 페이지 전체(글쓰기,글수정,글삭제)<br>ADMIN페이지 전체<br>(숙소목록,회원목록,매출현황 등)</td>
     </tr>    
