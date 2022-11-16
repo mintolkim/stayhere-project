@@ -257,6 +257,7 @@ $(document).ready(function(){
     }
 //검색 옵션
 	var star = Math.floor("${map.reviewStar}");
+	var people = "${map.max_people}"
 	var bed = "${map.bed}";
 	var bath = "${map.bath}";
 	var lower = Number("${map.lower}");
@@ -264,6 +265,9 @@ $(document).ready(function(){
 	var align = "${map.align}";
 if(star!=""){
 	$("#rate"+star).prop("checked",true);
+}
+if(people!=""){
+	$("#peopleoption").val(people).prop("selected",true);
 }
 if(bed!=""){
 	$("#bedoption").val(bed).prop("selected",true);
@@ -580,6 +584,7 @@ function deleteWish(index,room_idx){
     </td>
     <td>후기 평점</td>
     <td>가격 검색(원) </td>
+    <td>인원 수 </td>
     <td>침대 수</td>
     <td>욕실 수</td>
     <td>정렬선택</td>
@@ -587,7 +592,7 @@ function deleteWish(index,room_idx){
    <tr>
    <td>
     <div id="reviewstar">
-     <input type="radio" name="reviewStar" value="5" id="rate5" onclick="changeoption()"><label	for="rate5" class="bi bi-star-fill"></label>
+    <input type="radio" name="reviewStar" value="5" id="rate5" onclick="changeoption()"><label	for="rate5" class="bi bi-star-fill"></label>
 	 <input type="radio" name="reviewStar" value="4" id="rate4" onclick="changeoption()"><label for="rate4" class="bi bi-star-fill"></label>
 	 <input type="radio" name="reviewStar" value="3" id="rate3" onclick="changeoption()"><label for="rate3" class="bi bi-star-fill"></label>
 	 <input type="radio" name="reviewStar" value="2" id="rate2" onclick="changeoption()"><label for="rate2" class="bi bi-star-fill"></label>
@@ -610,21 +615,29 @@ function deleteWish(index,room_idx){
   </div>
 </div>
    </td>
+    <td>
+    <select id="peopleoption" name="max_people" class="form-select form-select-sm" aria-label=".form-select-sm" onchange="changeoption()">
+    <option selected value="0" disabled>선택</option>
+    <option value="2">2명</option>
+    <option value="3">3명</option>
+    <option value="4">4명이상</option>
+   </select>
+   </td>
    <td>
    <select id="bedoption" name="bed" class="form-select form-select-sm" aria-label=".form-select-sm" onchange="changeoption()">
     <option selected value="0"disabled>선택</option>
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
+    <option value="1">1개</option>
+    <option value="2">2개</option>
+    <option value="3">3개</option>
     <option value="4">4개이상</option>
    </select>
    </td>
    <td>
     <select id="bathoption" name="bath" class="form-select form-select-sm" aria-label=".form-select-sm" onchange="changeoption()">
     <option selected value="0" disabled>선택</option>
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
+    <option value="1">1개</option>
+    <option value="2">2개</option>
+    <option value="3">3개</option>
     <option value="4">4개이상</option>
    </select>
    </td>

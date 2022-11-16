@@ -44,17 +44,20 @@ public class SearchController {
 			@PathVariable String cityname,
 			@PathVariable String checkin_date, 
 			@PathVariable String checkout_date,
+			@RequestParam(defaultValue = "0") int max_people,
 			@RequestParam(defaultValue = "0") int bed, 
 			@RequestParam(defaultValue = "0") int bath,
 			@RequestParam(defaultValue = "0") double reviewStar, 
 			@RequestParam(defaultValue = "0") int lower, 
 			@RequestParam(defaultValue = "1000000") int higher, 
 			@RequestParam(defaultValue = "room_idx") String align,
+			
 			HttpSession session) {
 		System.out.println("들어온 도시이름 : "+cityname+",체크인날짜 : "+checkin_date+", 체크아웃날짜 : "+checkout_date+
 				", 침대 수: "+bed+", 욕실수 : "+bath+",리뷰평점: "+reviewStar+",최소가격: "+lower+",최대가격: "+higher);
 		String city = cityname.replace(",","");
 		RoomsDTO roomdto = new RoomsDTO();
+		roomdto.setMax_people(max_people);
 		roomdto.setBeds(bed);
 		roomdto.setBaths(bath);
 		roomdto.setReview_star(reviewStar);
@@ -83,6 +86,7 @@ public class SearchController {
 		map.put("cityname", cityname);//map에 자료 저장
 		map.put("checkin_date", checkin_date);//map에 자료 저장
 		map.put("checkout_date", checkout_date);//map에 자료 저장
+		map.put("max_people", max_people);
 		map.put("bed", bed);
 		map.put("bath", bath);
 		map.put("reviewStar", reviewStar);
@@ -150,7 +154,7 @@ public class SearchController {
 	/*
 	 * 검색화면에서 옵션검색 시 호출되는 메소드
 	 * @PathVariable : 여행지검색키워드, 체크인날짜, 체크아웃날짜
-	 * @RequestParam : Map형태로 넘어오는 모든 파라미터값을 저장 (sort, bed, bath, people, lower, higher, page) 
+	 * @RequestParam : Map형태로 넘어오는 모든 파라미터값을 저장 (align, bed, bath, people, lower, higher, page, reviewStar) 
 	 * @throws Exception
 	 */
 	@GetMapping("search/{cityname}/{checkin_date}/{checkout_date}")

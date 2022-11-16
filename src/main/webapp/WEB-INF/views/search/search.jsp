@@ -135,13 +135,12 @@
 							<!-- 정렬기준 옵션 -->
 							<div class="sort-option border-bottom py-4">
 								<div class="filter-name mb-3 fw-bold">정렬기준</div>
-								<select class="form-select" name="sort" id="sort"
+								<select class="form-select" name="align" id="align"
 									onchange="filterFormSubmit(filterFrom)">
-									<option value="res_count" selected>추천순</option>
-									<option value="price_desc">가격높은순</option>
-									<option value="price_asc">가격낮은순</option>
-									<option value="review_desc">평점높은순</option>
-									<option value="review_asc">평점낮은순</option>
+									<option value="room_idx" selected>최신순</option>
+									<option value="review_count">리뷰순</option>
+									<option value="res_count">예약순</option>
+									<option value="room_price">가격순</option>
 								</select>
 							</div>
 							
@@ -149,7 +148,7 @@
 							<div class="review-option border-bottom py-4">
 								<div class="filter-name mb-3 fw-bold">후기평점</div>
 								<input class="form-check-input" type="radio" name="reviewStar"
-									id="review-0" value="0" onchange="filterFormSubmit(filterFrom)" checked>
+									id="review-0" value="0.0" onchange="filterFormSubmit(filterFrom)" checked>
 								<label class="form-check-label" for="review-1">0+</label> 
 								<input class="form-check-input" type="radio" name="reviewStar"
 									id="review-1" value="1" onchange="filterFormSubmit(filterFrom)">
@@ -234,9 +233,9 @@
 
 								<!-- 인원수 옵션  -->
 								<div class="personnel-filter row mb-1">
-									<label for="personnel" class="col-sm-6 col-form-label">인원수</label>
+									<label for="max_people" class="col-sm-6 col-form-label">인원수</label>
 									<div class="col-sm-6">
-										<select class="form-select" name="people" id="people"
+										<select class="form-select" name="max_people" id="max_people"
 											onchange="filterFormSubmit(filterFrom)">
 											<option value="" disabled selected>선택</option>
 											<option value="2">2명</option>
@@ -248,7 +247,7 @@
 
 								<!-- 침대옵션 -->
 								<div class="beds-filter row mb-1">
-									<label for="beds" class="col-sm-6 col-form-label">침대수</label>
+									<label for="bed" class="col-sm-6 col-form-label">침대수</label>
 									<div class="col-sm-6">
 										<select class="form-select" name="bed" id="bed"
 											onchange="filterFormSubmit(filterFrom)">
@@ -263,7 +262,7 @@
 
 								<!-- 화장실 옵션 -->
 								<div class="baths-filter row mb-1">
-									<label for="baths" class="col-sm-6 col-form-label">화장실수</label>
+									<label for="bath" class="col-sm-6 col-form-label">화장실수</label>
 									<div class="col-sm-6">
 										<select class="form-select" name="bath" id="bath"
 											onchange="filterFormSubmit(filterFrom)">
@@ -736,18 +735,18 @@
     	const rangeInput = document.querySelectorAll(".range-input input");
 			const range = document.querySelector(".slider .progress");
 			
-			var sort = searchParams.get("sort");
+			var align = searchParams.get("align");
 			var reviewStar = searchParams.get("reviewStar");
     	var minVal = searchParams.get("lower");
     	var maxVal = searchParams.get("higher");
-    	var people = searchParams.get("people");
+    	var max_people = searchParams.get("max_people");
     	var bed = searchParams.get("bed");
     	var bath = searchParams.get("bath");
 
-    	if(sort != null){
-    		$("#sort").val(sort).attr("selected", "selected");
+    	if(align != null){
+    		$("#align").val(align).attr("selected", "selected");
     	} else {
-    		$("#sort").val("res_count").attr("selected", "selected");
+    		$("#align").val("room_idx").attr("selected", "selected");
     	}
     	
     	if(reviewStar != null){
@@ -761,8 +760,8 @@
      		range.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
 			}
     	
-    	if(people != null){
-    		$("#people").val(people).attr("selected", "selected");
+    	if(max_people != null){
+    		$("#max_people").val(max_people).attr("selected", "selected");
     	}
     	
     	if(bed != null){
