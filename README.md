@@ -14,7 +14,7 @@ https://youtu.be/mexeHOVkB4g
 <td>OS</td><td>Microsoft Window 10</td>
 </tr>
 <tr>
-<td>Language</td><td>Java 1.8, Spring 5.0.3 RELEASE, Servlet/JSP, HTML5, CSS3, JavaScript, XML, Oracle 19c , Jquery, Json 2.8, Mybatis 3.4.5, JUnit</td>
+<td>Language</td><td>JDK8, Spring 5.0.3 RELEASE, Servlet/JSP, HTML5, CSS3, JavaScript, XML, Oracle 19c , Jquery, Json 2.8, Mybatis 3.4.5, JUnit</td>
 </tr>
 <tr>
 <td>Web Application Server</td><td>Apache Tomcat 9, Canonical-Ubuntu, Linux</td>
